@@ -120,7 +120,7 @@
             # 调用socket.socket()函数来建立一个socket
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             # 把socket设置成可复用的(reusable)
-            s.setsocket(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             # 把主机设置成空字符串，程序这样可以接受来自任意地方的连接
             # 把端口设置成51423
             s.bind((host, port))
@@ -134,7 +134,7 @@
                 clientsock, clientaddr = s.accept()
                 # 使用文件类对象
                 clientfile = clientsock.makefile('rw', 0)
-                clientfile.write("Welcom, " + str(clientaddr) + "\n")
+                clientfile.write("Welcome, " + str(clientaddr) + "\n")
                 clientfile.write("Please enter a string: ")
                 # 从客户端读一个字符串，显示一个应答
                 line = clientfile.readline().strip()
@@ -142,6 +142,48 @@
                 # 关闭文件对象和socket对象
                 clientfile.close()
                 clientsock.close()
+        }
+    }
+
+    1.5.2 高级接口
+    {
+        python有很多协议模块
+        
+        例子，使用高级模块实现与Gopher服务器的通信
+        {
+            import gopherlib, sys
+
+            host = sys.argv[1]
+            file = sys.argv[2]
+
+            # 让gopherlib模块负责建立socket和连接
+            f = gopherlib.send_selector(file, host)
+            for line in f.readlines():
+                sys.stdout.write(line)
+        }
+
+        例子，python使用高级模块处理URL
+        {
+            import urllib, sys
+
+            host = sys.argv[1]
+            file = sys.argv[2]
+
+            f = urllib.urlopen('gopher://%s%s' % (host, file))
+            for line in f.readlines():
+                sys.stdout.write(line)
+        }
+
+        例子，使用urllib模块实现多种文件下载程序
+        {
+            import urllib, sys
+
+            f = urllib.urlopen(sys.argv[1])
+            while 1:
+                buf = f.read(2048)
+                if not len(buf):
+                    break
+                sys.stdout.write(buf)
         }
     }
 }
