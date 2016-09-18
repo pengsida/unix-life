@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import os, sys
 import socket
 
 host = ''
@@ -6,7 +8,7 @@ port = 51423
 # 调用socket.socket()函数来建立一个socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 把socket设置成可复用的(reusable)
-s.setsocket(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 # 把主机设置成空字符串，程序这样可以接受来自任意地方的连接
 # 把端口设置成51423
 s.bind((host, port))
@@ -20,7 +22,7 @@ while 1:
     clientsock, clientaddr = s.accept()
     # 使用文件类对象
     clientfile = clientsock.makefile('rw', 0)
-    clientfile.write("Welcom, " + str(clientaddr) + "\n")
+    clientfile.write("Welcome, " + str(clientaddr) + "\n")
     clientfile.write("Please enter a string: ")
     # 从客户端读一个字符串，显示一个应答
     line = clientfile.readline().strip()
