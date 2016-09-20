@@ -136,3 +136,29 @@ WSGI服务器的实现
         print('WSGIServer: Serving HTTP on port {port} ...\n'.format(port = PORT))
         httpd.serve_forever()
 }
+
+上面一段代码其实来得有点莫名其妙，里面的一些语句功能还未了解。需要进一步知道WSGI和CGI的用法
+
+WSGI的强大：提供了Python web服务器和Python Web框架之间的一个最小的接口
+下面的代码片段展示了WSGI接口的服务器和框架端
+{
+    # 参数为一个可调的application
+    def run_application(application):
+        headers_set = []
+        environ = {}
+
+        def start_response(status, response_headers, exc_info = None):
+            # 服务器把状态，响应头和响应体合并到HTTP响应里
+            headers_set[:] = [status, response_headers]
+
+        # 参数为一个包含了WSGI/CGI变量的字典和一个可调用的start_response
+        result = application(environ, start_response)
+    
+    def app(environ, start_response):
+        start_response('200 OK', [('Content-Type', 'text/plain')])
+        return ['Hello world!']
+    
+    run_application(app)
+}
+
+这个博客文章我看来只能说真是太烂了
