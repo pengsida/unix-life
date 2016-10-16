@@ -81,4 +81,24 @@ unix环境高级编程第七章
             在use_atexit.c中展示了如何使用atexit函数。
         }
     }
+
+    7.8 进程资源限制
+    {
+        进程的资源限制在系统初始化时由进程0建立的，然后由每个后续进程继承。
+        有两个针对于进程限制的函数
+        {
+            int getrlimit(int resource, struct rlimit *rlptr); 用于查询进程的资源限制
+            int settlimit(int resource, struct rlimit *rlptr); 用于更改进程的资源限制
+
+            rlptr指针指向如下的结构体
+            struct rlimit
+            {
+                rlim_t rlim_cur; // 软限制值
+                rlim_t rlim_max; // 硬限制值
+            };
+
+            resource参数在apue书中表7-3中列出。
+            在print_rlimit.c中展示了如何打印由系统支持的所有资源当前的软限制和硬限制。
+        }
+    }
 }
