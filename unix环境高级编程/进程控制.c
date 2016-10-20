@@ -119,5 +119,27 @@ unix环境高级编程第八章
                 在test_condition_race.c中演示了这个例子。
             }
         }
+
+        用fork创建新进程，用exec可以执行新程序，exit函数可以处理终止，wait函数可以等待终止，这些都是基本的进程控制原语。
+
+        exec函数
+        {
+            6中exec函数
+            {
+                int execl(const char* pathname, const char *arg0);
+                int execv(const char* pathaname, const char* argv[]);
+                int execle(const char* pathname, const char* arg0);
+                int execve(const char* pathname, char* const argv[]);
+                int execlp(const char* filename, const char* arg0);
+                int execvp(const char* filename, char* const argv[]);
+
+                函数名中的l表示list，v表示vector
+                excel、excelp、execle都要求新程序的每一个命令行参数都说明为一个单独的参数
+                execv、execvp、execve都要求应该先构造一个指向各参数的指针数组。
+                6个函数中execve是内核的系统调用，其它五个是库函数，它们最终都要调用execve函数。
+
+                在test_exec.c函数演示了exec函数。
+            }    
+        }
     }
 }
