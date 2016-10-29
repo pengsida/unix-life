@@ -114,5 +114,61 @@ fork函数源码
         p->tss.gs = gs & 0xffff;
         p->tss.ldt = _LDT(nr); // 把GDT中本任务LDT段描述符的选择符保存在本任务的TSS段中。当CPU执行切换任务时，会自动从TSS中把LDT段描述符的选择符加载到ldtr寄存器中
         p->tss.trace_bitmap = 0x80000000;
+
+        // 有必要去看一下汇编与C
+        // 如果当前任务使用了协处理器，就保存其上下文
+        // 汇编指令clts用于清除控制寄存器CR0中的人物已交换TS标志
+        // 每当发生任务切换，CPU都会设置该标志。该标志用于管理数学协处理器。如果该标志置位，那么每个ESC指令都会被捕获(异常7)。如果协处理器存在标志MP也同时置位的话，那么WAIT指令也会捕获。
+        // 指令fnsave用于把协处理器的所有状态保存到目的操作数制定的内存区域中(tss.i387)
+        if(last_task_used_math == current)
+            __asm__("clts; fnsave %0" :: "m" (p->tss.i387));
+        // 复制进程页
+        // 如果复制出错，则复位任务数组中相应项并释放为该新任务分配的用于任务结构的内存页
+        if(copy_mem(nr,p))
+        {
+            task[nr] = NULL;
+            free_page((long)p);
+            return -EAGAIN;
+        }
+
+        for(i = 0; i < NR_OPEN; ++i)
+            if(f = p->filp[i]) // 如果父进程有文件是打开的，则将对应文件的打开次数增一
+                f->f_count++;
+        // 这里创建的子进程与父进程共享这些打开的文件，所以将当前进程的pwd、root和executable引用次数均增一
+        if(current->pwd)
+            current->pwd->i_count++;
+        if(current->root)
+            current->root->i_count++;
+        if(current->executable)
+            current->executable->i_count++;
+        
+        // 随后在GDT表中设置新任务TSS段和LDT段描述符项，这两个段的限长均被设置成104字节
+        // gdt+(nr<<1)+FIRST_TSS_ENTRY是任务nr的GDT描述符项在全局表中的地址
+        // gdt+(nr<<1)+FIRST_LDT_ENTRY是任务nr的LDT描述符项在全局表中的地址
+        set_tss_desc(gdt+(nr<<1)+FIRST_TSS_ENTRY, &(p->tss));
+        set_ldt_desc(gdt+(nr<<1)+FIRST_LDT_ENTRY, &(p->ldt));
+        // 程序把新进程设置成就绪态，任务寄存器tr由CPU自动加载
+        p->state = TASK_RUNNING;
+        // 最后返回新进程号
+        return last_pid;
+    }
+
+    // 为新进程取得不重复的进程号last_pid
+    int find_empty_process(void)
+    {
+        int i;
+        repeat:
+            // 首先获取新的进程号，如果last_pid增一后超出进程号的正数表示范围，则重新从1开始使用pid号。
+            if((++last_pid)<0) last_pid=1;
+            // 如果在任务数组中搜索到pid号已经被其他任务使用，则重新获得一个pid号，last_pid是一个全局变量，不用返回。
+            for(i = 0; i < NR_TASKS; ++i)
+                if(task[i] && task[i]->pid == last_pid)
+                    goto repeat;
+        // 在任务数组中为新任务寻找一个空闲项，并返回项号。
+        for(i = 1; i < NR_TASKS; ++i)
+            if(!task[i])
+                return i;
+        // 如果任务数组中的64个项已经被全部占用，则返回出错码。
+        return -EAGAIN;
     }
 }
