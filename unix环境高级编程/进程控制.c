@@ -142,4 +142,11 @@ unix环境高级编程第八章
             }    
         }
     }
+
+    8.4 解释器文件
+    {
+        形式: #! pathname {optional-argument}
+        内核使调用exec函数的进程实际执行的并不是该解释器文件，而是该解释器文件第一行中pathname所指定的文件。
+        解释器文件是文本文件，它的起始行是#! pathname {optional-argument}。其中pathname是对应的解释器
+    }
 }
