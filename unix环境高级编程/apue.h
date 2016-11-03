@@ -127,4 +127,5 @@ void	WAIT_CHILD(void);
 
 #include "error.c"
 #include "tellwait.c"
+#include "lockreg.c"
 #endif	/* _APUE_H */
