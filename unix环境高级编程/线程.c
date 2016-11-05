@@ -62,4 +62,26 @@
         对读写锁进行解锁，需要使用这个函数：int pthread_rwlock_unlock(pthread_rwlock_t *rwlock)
         如果希望进行加锁而不被阻塞，使用这两个函数：int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock)和int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock)
     }
+
+    4.条件变量
+    {
+        条件变量：线程可用的另一种同步机制。
+        条件变量与互斥量一起使用时，允许线程以无竞争的方式等待特定的条件发生。
+        初始化条件变量时，使用这个函数：int pthread_cond_init(pthread_cond_t *restrict cond, pthread_condattr_t *restrict attr)
+        销毁条件变量时，使用这个函数：int pthread_cond_destroy(pthread_cond_t *cond)
+        使用条件变量等待条件变为真，有这个函数：int pthread_cond_wait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex)
+        可以给定时间等待条件变为真，有这个函数：int pthread_cond_timedwait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex, const struct timespec *restrict timeout)
+        上述函数的第三个参数类型是timespec，是一个结构体
+        {
+            struct timespec
+            {
+                time_t tv_sec;
+                long tv_nsec;
+            };
+            时间值是一个绝对数而不是相对数。
+        }
+        条件变量的工作机制：调用者把锁住的互斥量传给函数pthread_cond_wait()，让互斥量对条件进行保护，使得条件检验时条件不发生变化，函数把调用线程放到等待条件的线程列表上，然后对互斥量解锁。
+        如果条件满足了，使用这个函数将等待线程唤醒：int pthread_cond_signal(pthread_cond_t *cond)
+        如果条件满足了，使用这个函数将所有等待线程唤醒：int pthread_cond_broadcast(pthread_cond_t *cond)
+    }
 }

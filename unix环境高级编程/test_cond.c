@@ -1,0 +1,33 @@
+#include <pthread.h>
+
+struct msg
+{
+    struct msg * m_next;
+};
+
+struct msg * workq;
+pthread_cond_t qready = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t qlock = PTHREAD_MUTEX_INITIALIZER;
+
+void process_msg(void)
+{
+    struct msg* mp;
+    for(;;)
+    {
+        pthread_mutex_lock(&qlock);
+        while(workq == NULL)
+            pthread_cond_wait(&qready, &qlock); // 在调用pthread_cond_wait()之前，需要将qlock锁住。函数把调用线程放到等待条件的线程列表上，然后对互斥量解锁。函数返回时，互斥量将再次被锁住。
+        mp = workq;
+        workq = mp->m_next;
+        pthread_mutex_unlock(&qlock);
+    }
+}
+
+void enqueue_msg(struct msg* mp)
+{
+    pthread_mutex_lock(&qlock);
+    mp->m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&qlock);
+    pthread_cond_signal(&qready);
+}
