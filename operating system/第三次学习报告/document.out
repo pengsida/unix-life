@@ -7,3 +7,7 @@
 \BOOKMARK [2][-]{subsection.2.1}{用于任务管理的数据结构}{section.2}% 7
 \BOOKMARK [2][-]{subsection.2.2}{任务切换}{section.2}% 8
 \BOOKMARK [2][-]{subsection.2.3}{任务地址空间}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{编写保护模式}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{从实模式跳转到保护模式}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{从保护模式跳转到实模式}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.3}{完整的例子}{section.3}% 13
