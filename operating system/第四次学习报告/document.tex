@@ -1,0 +1,246 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{第四次学习报告 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\section{系统调用}
+\section{LDT的实现}
+\subsection{LDT的定义}
+	首先我们需要在GDT表中增加局部描述符表的描述符。
+	\begin{lstlisting}
+		[SECTION .gdt]
+		LABEL_GDT: Descriptor 0,LDT
+		; 添加的描述符
+		LABEL_DESC_LDT: Descriptor 0,LDTLen-1,DA_LDT
+		; 相应的选择符
+		SelectorLDT equ LABEL_DESC_LDT - LABEL_GDT
+	\end{lstlisting}
+	
+	然后我们需要定义一个LDT表。LDT表和GDT表其实很类似，我在其中定义了一个指向CODEA代码段的段描述符。
+	\begin{lstlisting}
+		; 定义LDT表
+		[SECTION .ldt]
+		ALIGN 32
+		LABEL_LDT:
+		LABEL_LDT_DESC_CODEA: Descriptor 0,CodeALen-1,DA_C+DA_32
+		LDTLEN equ $-LABEL_LDT
+		
+		SelectorLDTCodeA equ LABEL_LDT_DESC_CODEA-LABEL_LDT+4
+		LDTLen equ $-LABEL_LDT
+		
+		; 定义在LDT表中段描述符指向的代码段
+		[SECTION .la]
+		ALIGN 32
+		[BITS 32]
+		LABEL_CODE_A:
+			mov ax,SelectorVideo
+			mov gs,ax
+			mov edi,(80*12+0)*2
+			mov ah,0Ch
+			mov al,'L'
+			mov [gs:edi],ax
+		CodeALen equ $-LABEL_CODE_A
+	\end{lstlisting}
+	
+	上面代码段中，我们应该注意的是这个语句。
+	\begin{lstlisting}
+		SelectorLDTCodeA equ LABEL_LDT_DESC_CODEA-LABEL_LDT+4
+	\end{lstlisting}
+	
+	这个选择符的定义和GDT选择符的定义有不同。在解释为什么这么写之前，我想重新说一下自己对段选择符的认识。因为在第二次学习报告中，我对它的描述实在过于粗糙。\par
+	段选择符是段的一个16位标志符。段选择符并不直接指向段，而是指向段描述符表中定义段的段描述符。段选择符的结构如下图。
+	\fic{1.png}
+	从图中可以看出，段选择符有3个字段内容：
+	\begin{itemize}
+		\item 请求特权级RPL。RPL被用于特权级保护机制中。
+		\item 表指示标志TI。当TI=0时，表示描述符在GDT中。当TI=1时，表示描述符在LDT中。因为一个任务执行时，可以同时访问到LDT和GDT，所以必须做这样的区别，以防在索引时放生混淆。
+		\item 索引值。用于索引在GDT表或LDT表中的段描述符。
+	\end{itemize}
+	
+	\begin{lstlisting}
+		; 这里特意加4，就是为了将段选择符中的第2位TI标志置一
+		SelectorLDTCodeA equ LABEL_LDT_DESC_CODEA-LABEL_LDT+4
+	\end{lstlisting}
+\subsection{LDT的初始化}
+	需要注意的是，既然在GDT表中添加了指向LDT表的段描述符，就应该在16位代码段中初始化它。
+	\begin{lstlisting}
+		[SECTION .16]
+		[BITS 16]
+			
+			; 初始化LDT在GDT中的描述符
+			xor eax,eax
+			mov ax,ds
+			shl eax,4
+			add eax,LABEL_LDT
+			mov word [LABEL_DESC_LDT + 2], ax
+			shr eax,16
+			mov byte [LABEL_DESC_LDT + 4], al
+			mov byte [LABEL_DESC_LDT + 7], ah
+	\end{lstlisting}
+	
+	LDT表和GDT表区别仅仅在于全局和局部的不同，所以初始化LDT表中描述符和之前的操作很类似。具体情况看下面的代码。
+	\begin{lstlisting}
+		[SECTION .16]
+		[BITS 16]
+			; 初始化LDT表中的描述符
+			xor eax,eax
+			mov ax,ds
+			shl eax,4
+			add eax,LABEL_CODE_A
+			mov word [LABEL_LDT_DESC_CODEA + 2], ax
+			shr eax,16
+			mov byte [LABEL_LDT_DESC_CODEA + 4], al
+			mov byte [LABEL_LDT_DESC_CODEA + 7], ah
+	\end{lstlisting}
+\subsection{调用LDT中的代码段}
+	\begin{lstlisting}
+		[SECTION .s32]
+		[BITS 32]
+			; 将LDT表的段选择符加载进LDTR寄存器中
+			; 在LDTR寄存器中的LDT段描述符存放着LDT表的基址
+			; 对LDT表中的代码段描述符进行寻址时，以LDTR中LDT表的描述符中的基址为准
+			; 偏移量由段选择符制定，用于索引LDT表中存放着的代码段描述符
+			; 当发生任务切换时，LDTR会更换新任务的LDT
+			mov ax,SelectorLDT
+			lldt ax
+			; CPU根据代码段描述符中的TI标志判断是索引GDT表还是索引LDT表
+			jmp SelectorLDTCodeA:0
+	\end{lstlisting}
+\subsection{总结如何添加LDT表}
+	\begin{itemize}
+		\item 添加一个LDT表，里面可以类似于GDT表，存放代码段、数据段或堆栈段。
+		\item 在GDT表中添加新LDT表的段描述符。
+		\item 在16位代码段中初始化新LDT表的段描述符。同时初始化LDT表中存放着的所有段描述符。
+	\end{itemize}
+
+\section{保护机制的实现}
+\subsection{保护机制的相应理论}
+	虽然我在第二次学习报告中也提到了保护机制，但是过于粗糙。我自己感觉对它的认识也不够深入，所以在这里重新整理一下对保护机制的认识。\par
+\end{document}

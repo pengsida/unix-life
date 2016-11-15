@@ -1,0 +1,6 @@
+\BOOKMARK [1][-]{section.1}{系统调用}{}% 1
+\BOOKMARK [1][-]{section.2}{LDT的实现}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{LDT的定义}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{LDT的初始化}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{调用LDT中的代码段}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{总结如何添加LDT表}{section.2}% 6
