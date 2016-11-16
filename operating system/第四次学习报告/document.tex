@@ -131,6 +131,129 @@
 \begin{document}
 
 \section{系统调用}
+	虽然在第一次报告中提到过系统调用，但是由于当时自己了解地不够全面，所以这次重新完整地学习系统调用。
+\subsection{系统调用的过程}
+	用户空间的程序无法直接执行内容代码，也就无法直接调用内核空间中的函数。系统通过以下方式实现系统调用。
+	\begin{itemize}
+		\item 应用程序以软中断的方式通知内核自己需要一个系统调用。\par
+			  在x86上，软中断的中断向量号为128，所以可以通过int \$0x80指令触发软中断。
+			  int \$0x80之后，系统切换到内核态，并执行第128号异常处理程序system\_call()。这个程序在entry\_64.S文件中用汇编语言编写。
+		\item 内核代表应用程序在内核空间执行系统调用。\par
+			  在陷入内核前，应用程序将相应的系统调用号放入eax中，当系统调用处理程序运行时，可能直接从eax中得到数据。在执行相应的系统调用前，需要验证系统调用号的有效性。实现代码如下。
+			  \begin{lstlisting}
+	cmpl $__NR_syscall_max, %eax
+	ja 1f ; 如果系统调用号大于__NR_syscall_max，则返回-ENOSYS
+			  \end{lstlisting}
+			  如果系统调用号有效，就执行系统调用表中相应的系统调用。
+			  \begin{lstlisting}
+	; %rax存放着系统调用号
+	; 因为是64位系统，系统调用表中的表项是以8字节类型存放的，所以需要将给定的系统调用号乘以8
+	call *sys_call_table(,%rax,8)
+			  \end{lstlisting}
+	\end{itemize}
+
+	上述过程只是讲述了内核空间如何执行系统调用。除此之外，还需要明白应用程序在用户空间是怎么以软中断的方式通知内核自己需要一个系统调用。\par
+	Linux在unistd.h中提供了一组宏，用于直接对系统调用进行访问。这组宏可以设置好寄存器并调用陷入指令。实现代码如下。
+	\begin{lstlisting}[language=C]
+	#define _syscall0(type, name) \
+	type name(void) \
+	{\
+		long __res; \
+		__asm__ volatile(
+			"int $0x80" \
+			: "=a" (__res)
+			: "0" (__NR_##name)); \
+		if(__res >= 0) \
+			return (type) __res; \
+		errno = -__res; \
+		return -1;\
+	}
+	\end{lstlisting}
+
+	假设现在有一个系统调用foo()，我们就可以用下面的方式在用户空间调用它。
+	\begin{lstlisting}[language=C]
+	__syscall0(long, foo)
+	// 这里的宏会展开为 long foo(){/*...*/}
+
+	int main()
+	{
+		// ...
+		foo();
+		//...
+		return 0;
+	}
+	\end{lstlisting}
+
+	需要注意的是，系统不只拥有\_syscall0()这一个宏，它提供了一组宏，这组宏是\_syscalln()。这里的n代表了需要传递给系统调用的参数个数。
+	宏所需要的参数个数是2+2n，第一个参数是系统调用函数返回类型，第二个参数是系统调用名称，随后是系统调用每个参数的类型和名称。
+
+\subsection{注册系统调用的步骤}
+	下面通过将foo()加入为系统调用来说明这个步骤。
+\begin{itemize}
+	\item 首先，需要在系统调用表的最后加入一个表项。现在要把foo()注册为一个正式的系统调用，就要把sys\_foo加入到系统调用表中。实现代码如下：
+	\begin{lstlisting}
+	ENTRY(sys_call_table)
+		.long sys_restart_syscall
+		;...
+		.long sys_perf_event_open ; 最后一项
+		; 将sys_foo加到这个表的末尾
+		.long sys_foo
+	\end{lstlisting}
+
+	因为我对linux汇编还不是很熟悉，所以去查询了以下几条指令的意思：
+	\begin{lstlisting}
+	ENTRY()
+	; 这是一个宏，定义于linux-2.6.35.5/include/Linux/linkage.h。格式如下：
+	#define ENTRY(name) \
+	.globl name \
+	ALIGN \
+	name:
+
+	; .globl symbol 的含义是：
+	; 定义该symbol为global的，也就是其他文件可以访问并使用该symbol
+
+	; .long val 的含义是：
+	; 该指令在当前区定义一个32位长整数的常数。需要注意该指令无法在bss段中使用
+	\end{lstlisting}
+
+	\item 接下来，将foo()的系统调用号加到<arch/arm/include/uapi/asm/unistd.h>中。实现代码如下：
+	\begin{lstlisting}[language=C]
+	#if defined(__thumb) || defined(__ARM_EABI)
+	#define __NR_SYSCALL_BASE 0
+	#else
+	#define __NR_SYSCALL_BASE __NR_OABI_SYSCALL_BASE
+	#endif
+
+	#define __NR_restart_syscall (__NR_SYSCALL_BASE + 0)
+	// ...
+	// 最后一个系统调用号
+	#define __NR_pkey_free (__NR_SYSCALL_BASE + 396)
+	// 在最后一行添加foo()的系统调用号
+	#define __NR_foo (__NR_SYSCALL_BASE + 397)
+	\end{lstlisting}
+
+	\item 最后在内核代码中定义这个系统调用函数。
+	\begin{lstlisting}[language=C]
+	asmlinkage long sys_foo()
+	{
+		return THREAD_SIZE;
+	}
+
+	// asmlinkage在linkage.h中有定义
+	#ifdef CONFIG_X86_32
+	#define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+	#endif
+	// __attribute__((regparm(0)))告诉编译器参数只能通过堆栈来传递
+	// X86里面的系统调用都是先将参数压入stack以后调用sys_*函数的，所以必须告诉编译器只能通过堆栈传递参数
+	\end{lstlisting}
+\end{itemize}
+\subsection{学习系统调用后的反思}
+	在前面几个小节，我学会了如何在操作系统中新建一个系统调用。这一开始让我兴奋，随后而来的是疑惑，
+	因为我并不了解系统是如何支持系统调用这个行为的。我也不了解int \$0x80之后，系统具体发生了什么。
+	我觉得这还需要我学习了系统的中断机制和特权保护机制后，知道如何去实现它们后，才能真正地理解系统调用。
+
+\clearpage
+
 \section{LDT的实现}
 \subsection{LDT的定义}
 	首先我们需要在GDT表中增加局部描述符表的描述符。
@@ -239,6 +362,8 @@
 		\item 在GDT表中添加新LDT表的段描述符。
 		\item 在16位代码段中初始化新LDT表的段描述符。同时初始化LDT表中存放着的所有段描述符。
 	\end{itemize}
+
+\clearpage
 
 \section{保护机制的实现}
 \subsection{保护机制的相应理论}

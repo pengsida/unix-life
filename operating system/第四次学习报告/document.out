@@ -1,6 +1,11 @@
 \BOOKMARK [1][-]{section.1}{系统调用}{}% 1
-\BOOKMARK [1][-]{section.2}{LDT的实现}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{LDT的定义}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{LDT的初始化}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{调用LDT中的代码段}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{总结如何添加LDT表}{section.2}% 6
+\BOOKMARK [2][-]{subsection.1.1}{系统调用的过程}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{注册系统调用的步骤}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{学习系统调用后的反思}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{LDT的实现}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{LDT的定义}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{LDT的初始化}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.3}{调用LDT中的代码段}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.4}{总结如何添加LDT表}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{保护机制的实现}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{保护机制的相应理论}{section.3}% 11
