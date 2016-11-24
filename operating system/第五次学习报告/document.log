@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  21 NOV 2016 00:17
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  22 NOV 2016 18:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1797,7 +1797,7 @@ Package: xeCJK-listings 2016/05/14 v3.4.0 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=2.5cm,right=2.5cm].
 
-(./document.aux)
+No file document.aux.
 \openout1 = `document.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 131.
@@ -1816,7 +1816,7 @@ LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 131.
 LaTeX Font Info:    ... okay on input line 131.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 131.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 131.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 131.
@@ -1950,42 +1950,29 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 131.
 LaTeX Info: Redefining \pageref on input line 131.
 LaTeX Info: Redefining \nameref on input line 131.
-
-(./document.out) (./document.out)
 \@outlinefile=\write3
 \openout3 = `document.out'.
+
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 131.
-
 (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
 )
 
 LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 135.
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 134.
 
+File: 1.png Graphic file (type QTm)
+<use  "1.png" >
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 145.
+LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 152.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 145.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 145.
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1995,6 +1982,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [1
 
 ]
+File: 2.png Graphic file (type QTm)
+ <use  "2.png" >
+
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 167.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 171.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 171.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 172.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2002,6 +2007,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [2]
+File: 3.png Graphic file (type QTm)
+ <use  "3.png" >
+
+LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 220.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2009,17 +2019,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [3]
-File: 1.png Graphic file (type QTm)
- <use  "1.png" >
+
+LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 241.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[4
+[4]
 
-]
+LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 296.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2028,308 +2040,44 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [5]
 
+Package lastpage Warning: Rerun to get the references right on input line 299.
+
+
+AED: lastpage setting LastPage
+
+LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 299.
+
+
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [6]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[7
-
-]
-File: 2.png Graphic file (type QTm)
- <use  "2.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[8]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[9]
-File: 3.png Graphic file (type QTm)
- <use  "3.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[10]
-File: 4.png Graphic file (type QTm)
- <use  "4.png" >
-File: 5.png Graphic file (type QTm)
- <use  "5.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[12]
-File: 6.png Graphic file (type QTm)
- <use  "6.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[13
-
-]
-File: 7.png Graphic file (type QTm)
- <use  "7.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[14]
-File: 7.png Graphic file (type QTm)
- <use  "7.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15
-
-]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.610 ...我编写了四个函数，分别是from_
-                                                  east()、from_west()、fro...
-
-? 
-! Emergency stop.
-<inserted text> 
-                $
-l.610 ...我编写了四个函数，分别是from_
-                                                  east()、from_west()、fro...
-End of file on the terminal!
-
- 
-Here is how much of TeX's memory you used:
- 31738 strings out of 493591
- 572274 string characters out of 6143546
- 828970 words of memory out of 5000000
- 34729 multiletter control sequences out of 15000+600000
- 9347 words of font info for 79 fonts, out of 8000000 for 9000
- 1347 hyphenation exceptions out of 8191
- 48i,12n,72p,10365b,1870s stack positions out of 5000i,500n,10000p,200000b,80000s
-Output written on document.pdf (15 pages).
-nsistent, however.
-
-[14]
-File: 7.png Graphic file (type QTm)
- <use  "7.png" >
-
-LaTeX Warning: Reference `LastPage' on page 15 undefined on input line 573.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15
-
-]
-
-LaTeX Warning: Reference `LastPage' on page 16 undefined on input line 615.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[16]
-
-LaTeX Warning: Reference `LastPage' on page 17 undefined on input line 658.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[17]
-
-LaTeX Warning: Reference `LastPage' on page 18 undefined on input line 714.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[18]
-Overfull \hbox (5.55135pt too wide) in paragraph at lines 733--734
-\EU1/TimesNewRoman(0)/m/n/10.95 ing_sources \EU1/华文中宋(0)/m/n/10.95 之 后 也 不 会 等 
-于 \EU1/TimesNewRoman(0)/m/n/10.95 0\EU1/华文中宋(0)/m/n/10.95 。| 此 时，|  如 果 \EU1/Ti
-mesNewRoman(0)/m/n/10.95 manager() \EU1/华文中宋(0)/m/n/10.95 被 挂 起，|  就 不 会 被 \EU1
-/TimesNewRoman(0)/m/n/10.95 pthread_cond_signal()
- []
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.735 ...�在对资源解锁前，先将remaining_
-                                                  sources加一，这样就�...
-
-? 
-! Emergency stop.
-<inserted text> 
-                $
-l.735 ...�在对资源解锁前，先将remaining_
-                                                  sources加一，这样就�...
-End of file on the terminal!
-
- 
-Here is how much of TeX's memory you used:
- 31790 strings out of 493591
- 573165 string characters out of 6143546
- 826724 words of memory out of 5000000
- 34780 multiletter control sequences out of 15000+600000
- 9355 words of font info for 80 fonts, out of 8000000 for 9000
- 1347 hyphenation exceptions out of 8191
- 48i,13n,72p,10365b,1870s stack positions out of 5000i,500n,10000p,200000b,80000s
-Output written on document.pdf (18 pages).
-or the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[29]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[30]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[31]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[32]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[33]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[34]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[35]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[36]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[37]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[38]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[39]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[40]) 
-AED: lastpage setting LastPage
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[41]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 976.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 976.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 299.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 299.
  (./document.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 976.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 976.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 299.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 299.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 976.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 299.
  ) 
 Here is how much of TeX's memory you used:
- 32038 strings out of 493591
- 577924 string characters out of 6143546
- 829124 words of memory out of 5000000
- 35023 multiletter control sequences out of 15000+600000
- 9347 words of font info for 79 fonts, out of 8000000 for 9000
+ 31387 strings out of 493591
+ 566321 string characters out of 6143546
+ 758940 words of memory out of 5000000
+ 34389 multiletter control sequences out of 15000+600000
+ 9355 words of font info for 80 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,12n,72p,10365b,1870s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,13n,72p,10365b,2185s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on document.pdf (41 pages).
+Output written on document.pdf (6 pages).

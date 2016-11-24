@@ -521,7 +521,7 @@
 	\end{lstlisting}
 
 \subsection{添加门描述符}
-\subsubsection{定义门描述符}
+% \subsubsection{定义门描述符}
 	首先在GDT表中添加门描述符。
 	\begin{lstlisting}
 	[SECTION .gdt]
@@ -541,10 +541,436 @@
 	LABEL_GDT: Descriptor 0, 0, 0
 	\end{lstlisting}
 
-\subsubsection{初始化门描述符}
-	门描述符不像段描述符一样拥有段基址，所以在定义门描述符时即可完成初始化，也就不用在16位代码段中另外初始化门描述了。
+% \subsubsection{初始化门描述符}
+% 	门描述符不像段描述符一样拥有段基址，所以在定义门描述符时即可完成初始化，也就不用在16位代码段中另外初始化门描述了。
 
-\subsubsection{使用门描述符}
+% \subsubsection{使用门描述符}
+
+
+\clearpage
+
+\section{迟到的实验一}
+	之前一直以为实验一只是编译内核，周四上课的时候才知道实验一还有同步互斥问题，所以在此尝试做一下，
+	如果代码有问题请老师指出错误。
+
+\subsection{问题描述}
+\subsubsection{现状}
+	有两条道路双向两个车道，即每条路每个方向只有一个车道，两条道路十字交叉。
+	假设车辆只能向前直行，而不允许转弯和后退。如下图所示。
+	\sizedfic{0.5}{7.png}
+\subsubsection{资源需求}
+	车辆为了向前，对资源有如下需求。
+	\begin{itemize}
+		\item 向北行驶的车辆1需要象限a和象限b。
+		\item 向西行驶的车辆2需要象限b和象限c。
+		\item 向南行驶的车辆3需要象限c和象限d。
+		\item 向东行驶的车辆4需要象限d和象限a。
+	\end{itemize}
+\subsubsection{交通规则}
+	每个车辆都需要满足如下的规则。
+	\begin{itemize}
+		\item 有多个方向的车辆同时到达十字路口时，需要遵循右边车辆优先通行规则，除非该车在十字路口等待时收到一个立即通行的信号。
+		\item 同一车道上的车辆必须依照顺序通过十字路口。
+		\item 向北行驶的车辆只有在占用象限a的情况下才能判断象限b是否有空。
+			  对于其他方向的车辆也是如此。
+	\end{itemize}
+
+\subsubsection{要求}
+	\begin{itemize}
+		\item 避免产生死锁。
+		\item 避免产生饥饿。
+	\end{itemize}
+
+\subsection{解决方案}
+	周日一天都坐在电脑前面写这个代码，不得不说，虽然这个问题描述起来简单，实际写起来需要考虑的东西确实很多。
+	也是自己对多线程编程不够熟悉，这次算是积累了经验。
+\subsubsection{对死锁的仿真}
+	为了达到死锁的效果，就必须仿真现实中的情况。现实中汽车过十字路口总是要时间的，所以我写了一个sleep()函数，
+	实现代码如下：
+	\begin{lstlisting}[language = C]
+	void sleep(int seconds)
+	{
+		pthread_mutex_t mutex;
+		pthread_mutex_init(&mutex, NULL);
+		pthread_cond_t cond;
+		pthread_cond_init(&cond, NULL);
+		struct timeval now;
+		struct timespec outtime;
+		gettimeofday(&now, NULL);
+		outtime.tv_sec = now.tv_sec + seconds;
+		outtime.tv_nsec = now.tv_usec * 1000;
+		pthread_mutex_lock(&mutex);
+		pthread_cond_timedwait(&cond, &mutex, &outtime);
+		pthread_mutex_unlock(&mutex);
+		pthread_mutex_destroy(&mutex);
+		pthread_cond_destroy(&cond);
+	}
+	\end{lstlisting}
+
+	为了仿真四个方向来车，我编写了四个函数，分别是from\_east()、from\_west()、from\_south()和from\_north()函数。
+	在函数中，我首先写了让四辆小车同时到达路口时死锁。
+	\begin{lstlisting}[language = C]
+	void * from_north(void *arg)
+	{
+		car_num num_struct = *(car_num*)arg;
+		int num = num_struct.total_num;
+		int north_num = num_struct.direction_num;
+		
+		pthread_mutex_lock(&source_c);
+		printf("car %d from North arrives at crossing\n", num);
+		
+		pthread_mutex_lock(&source_d);
+		sleep(1);
+		pthread_mutex_unlock(&source_c);
+		
+		printf("car %d from North leaving crossing\n", num);
+		pthread_mutex_unlock(&source_d);
+		
+		return (void*)0;
+	}
+	\end{lstlisting}
+
+	其他三个函数类似于上述函数的形式，在main()分别创建四个函数的线程。运行之后，能得到死锁的结果。
+	这样就达成了死锁的仿真。
+
+\subsubsection{死锁的解决}
+	这个总结是写在完成代码之后的，所以从此时看来，我觉得我解决死锁的方法并不好。在给出当前解决方案后，我会分析可能发生的错误。\par
+	在一开始，我觉得可以用计数信号量完成，所以声明了一个全局变量remaining\_sources。变量名很直观，就是四个路口剩余的数量。
+	我简单得考虑了，只要有车到达，remaining\_sources就减一。只要有车离开，remaining\_sources就加一。
+	当remaining\_sources为0时，则通知manager()函数处理，自己将当前路口解锁，并被pthread\_cond\_wait()函数挂起。\par
+	manager()函数等待着remaining\_sources为0的情况。
+	一旦remaining\_sources为0，它首先发出一行字符串，说明检测到了死锁。
+	然后使用pthread\_cond\_wait()等待当前其他三个方向的车离开。
+	当其他三个线程的任意一个线程离开路口时，会对remaining\_sources进行条件检查，如果发现正处于remaining==0的情况，
+	则用pthread\_cond\_signal()唤醒manager()函数。manager()函数被唤醒后，接着唤醒之前被挂起的线程。\par
+	这个想法在大部分情况是有效的，但是会有特殊情况。实现代码如下：
+	\begin{lstlisting}[language = C]
+	void * from_north(void *arg)
+	{
+		// ...
+		pthread_mutex_lock(&source_c);
+		printf("car %d from North arrives at crossing\n", num);
+		
+		--remaining_sources;
+		if(remaining_sources == 0)
+		{
+			direction = NORTH;
+			pthread_cond_signal(&manager_lock_cond);
+			pthread_mutex_unlock(&source_c);
+			pthread_cond_wait(&north_wait_manager, &manager_lock);
+			pthread_mutex_lock(&source_c);
+		}
+		
+		pthread_mutex_lock(&source_d);
+		sleep(1);
+		pthread_mutex_unlock(&source_c);
+		
+		if(remaining_sources == 0)
+			pthread_cond_signal(&manager_unlock_cond);
+		
+		printf("car %d from North leaving crossing\n", num);
+		++remaining_sources;
+		pthread_mutex_unlock(&source_d);
+		// ...
+		
+		return (void*)0;
+	}
+
+	// ...
+
+	void * manager(void *arg)
+	{
+		while(1)
+		{
+			pthread_mutex_lock(&manager_lock);
+			pthread_cond_wait(&manager_lock_cond, &manager_lock);
+			switch(direction)
+			{
+				case NORTH:
+					printf("DEADLOCK: car jam detected, signalling East to go\n");
+					break;
+				case EAST:
+					printf("DEADLOCK: car jam detected, signalling South to go\n");
+					break;
+				case WEST:
+					printf("DEADLOCK: car jam detected, signalling North to go\n");
+					break;
+				case SOUTH:
+					printf("DEADLOCK: car jam detected, signalling West to go\n");
+					break;
+				default:
+					err_exit();
+					break;
+			}
+			pthread_cond_wait(&manager_unlock_cond, &manager_lock);
+			switch(direction)
+			{
+				case NORTH:
+					pthread_cond_signal(&north_wait_manager);
+					break;
+				case EAST:
+					pthread_cond_signal(&east_wait_manager);
+					break;
+				case WEST:
+					pthread_cond_signal(&west_wait_manager);
+					break;
+				case SOUTH:
+					pthread_cond_signal(&south_wait_manager);
+					break;
+				default:
+					err_exit();
+					break;
+			}
+			pthread_mutex_unlock(&manager_lock);
+		}
+		return (void*)0;
+	}
+	\end{lstlisting}
+
+	这个方法乍一想真的很好，但是之后运行的时候有点问题，这让我开始思考其中的错误。现在谈一种情况，当三个路口north、east和south都被占用了，
+	此时remaining\_sources为1。此时north方向的线程特别快，一下子都离开了路口，但是还没来得及将remaining\_sources加一。
+	此时west方向的车来了，而且及时将remaining\_sources减一并判断了，此时remaining\_sources为0，于是执行我预先的操作。\par
+	可惜的是，因为north方向的车已经走了，所以实际上死锁情况并不存在，remaining\_sources之后也不会等于0。
+	此时，如果manager()被挂起，就不会被pthread\_cond\_signal()唤醒。这样west方向的车也就不会被唤醒，也就出现了问题。\par
+	为了避免问题，我已经在代码中修改，让north方向的车，在对资源解锁前，先将remaining\_sources加一，这样就不会出现上述情况了。
+	但是我感觉还是不太安全，这种判断变量值的方法和我之后使用的专门函数管理的方法相比，还是有点不靠谱。
+
+\subsubsection{让同方向的车按序通过路口}
+	我定义了一个函数north\_manager()专门管理同一方向车的通行顺序。
+	为了让车按顺序通过，我首先将同一方向的车进行编号，如下所示：
+	\begin{lstlisting}[language = C]
+	struct car_num
+	{
+		int total_num;
+		int direction_num;
+	};
+	typedef struct car_num car_num;
+
+	// ...
+
+	int main()
+	{
+		for(i = 0; i < len; ++i)
+		{
+			car_nums[i].total_num = i + 1;
+			switch(cars[i])
+			{
+				case 'n':
+					car_nums[i].direction_num = north_num;
+					++north_num;
+					break;
+				case 'e':
+					car_nums[i].direction_num = east_num;
+					++east_num;
+					break;
+				case 'w':
+					car_nums[i].direction_num = west_num;
+					++west_num;
+					break;
+				case 's':
+					car_nums[i].direction_num = south_num;
+					++south_num;
+					break;
+				default:
+					err_exit();
+					break;
+			}
+		}
+	}
+	\end{lstlisting}
+
+	得到各个方向的车的编号后，就可以让north\_manager()发挥作用了。首先north方向的所有线程一开始都会调用pthread\_cond\_wait()被挂起。
+	为了让车能在north\_manager()函数发出信号前已经在wait，我给每个线程都配备了相应的锁。并且让north\_manager()先睡眠1秒，
+	确保线程都持有锁或者在等待中了。为了让north\_manager()函数能够唤醒特定的线程，我为每个线程声明了相应的条件变量。 \par
+	只要看north\_manager()就很容易发现，函数只是依次在唤醒线程，这也就达到了同一方向的车按顺序通过的目的。
+	当然，函数需要等当前线程离开后才能唤醒下一线程。所以当north\_manager()唤醒一个线程后，就通过pthread\_cond\_wait()被挂起。
+	当该线程离开时，通过pthread\_cond\_signal()唤醒north\_manager()。
+
+	\begin{lstlisting}[language = C]
+	pthread_mutex_t* north_order_lock;
+	pthread_mutex_t* east_order_lock;
+	pthread_mutex_t* west_order_lock;
+	pthread_mutex_t* south_order_lock;
+
+	pthread_cond_t* north_order;
+	pthread_cond_t* east_order;
+	pthread_cond_t* west_order;
+	pthread_cond_t* south_order;
+
+	void * from_north(void *arg)
+	{
+		car_num num_struct = *(car_num*)arg;
+		int num = num_struct.total_num;
+		int north_num = num_struct.direction_num;
+		
+		pthread_mutex_lock(north_order_lock+north_num);
+		pthread_cond_wait(north_order+north_num, north_order_lock+north_num);
+		pthread_mutex_unlock(north_order_lock+north_num);
+		
+		pthread_mutex_lock(&source_c);
+		
+		pthread_mutex_lock(&source_d);
+		sleep(1);
+		pthread_mutex_unlock(&source_c);
+		
+		pthread_mutex_lock(north_order_lock+north_num);
+		pthread_mutex_unlock(north_order_lock+north_num);
+		pthread_cond_signal(&north_manager_cond);
+
+		pthread_mutex_unlock(&source_d);
+		
+		return (void*)0;
+	}
+	void * north_manager(void *arg)
+	{
+		int i;
+		sleep(1);
+		for(i = 0; i < north_num; ++i)
+		{
+			pthread_mutex_lock(north_order_lock+i);
+			pthread_mutex_unlock(north_order_lock+i);
+			pthread_cond_signal(north_order+i);
+			
+			pthread_mutex_lock(north_order_lock+i);
+			pthread_cond_wait(&north_manager_cond, north_order_lock+i);
+			pthread_mutex_unlock(north_order_lock+i);
+		}
+		
+		return (void*)0;
+	}
+	\end{lstlisting}
+
+\subsubsection{右边优先以及解决饥饿}
+	我发现对右边优先的理解不同，可能给出的解决方案有比较大的偏差。所以我先叙述一下自己对“右边优先”这一概念的理解。
+	当north方向的车和east方向的车都在请求c路口时，north方向的车有较高的优先级。
+	因为north方向有较高的优先级，所以如果north方向有一个很长的车队，那么c路口就会一直被north方向的车占用，
+	east方向的车也就发生了饥饿。\par
+	为了避免饥饿，当north方向的车首先占用c路口后，把east方向的车调为较高的优先级。
+	如果之后还有north方向的车和east方向的车同时请求，依据优先级，east方向的车就可以请求得到c路口资源。\par
+	为了实现这一想法，我首先定义了一个请求队列的数据结构。这个结构只有两个变量，一个是队列长度，一个是请求队列中的车。
+	根据实际情况，队列长度是不可能超过2的。如果超过了2，就调用err\_exit()返回异常情况。\par
+	north方向的车在占有c路口之前，先更新请求队列，并通过pthread\_cond\_signal()函数向source\_c\_manager()函数发出请求。
+	source\_c\_manager()函数根据队列长度和队列中各方向车的优先级做出相应的安排。
+	值得注意的是，当请求队列只有一辆车时，处理完该情况后，需要将各方向车的优先级还原为初始情况。\par
+	实现代码如下：
+	\begin{lstlisting}[language = C]
+	struct request_queue
+	{
+		int directions[2];
+		int len;
+	};
+
+	typedef struct request_queue request_queue;
+
+	void err_exit()
+	{
+		printf("somthing wrong!!!\n");
+		exit(1);
+	}
+
+	void * from_north(void *arg)
+	{	
+		pthread_mutex_lock(&c_queue_lock);
+		request_c_queue.directions[request_c_queue.len] = NORTH;
+		++request_c_queue.len;
+		pthread_cond_signal(&request_source_c);
+		pthread_cond_wait(&north_wait_c, &c_queue_lock);
+		pthread_mutex_unlock(&c_queue_lock);
+		
+		pthread_mutex_lock(&source_c);
+		
+		pthread_mutex_lock(&d_queue_lock);
+		request_d_queue.directions[request_d_queue.len] = NORTH;
+		++request_d_queue.len;
+		pthread_cond_signal(&request_source_d);
+		pthread_cond_wait(&north_wait_d, &d_queue_lock);
+		pthread_mutex_unlock(&d_queue_lock);
+		
+		pthread_mutex_lock(&source_d);
+		sleep(1);
+		pthread_mutex_unlock(&source_c);
+		
+		pthread_mutex_lock(&c_queue_lock);
+		if(request_c_queue.len != 0)
+			pthread_cond_signal(&request_source_c);
+		pthread_mutex_unlock(&c_queue_lock);
+
+		pthread_mutex_unlock(&source_d);
+		
+		pthread_mutex_lock(&d_queue_lock);
+		if(request_d_queue.len != 0)
+			pthread_cond_signal(&request_source_d);
+		pthread_mutex_unlock(&d_queue_lock);
+		
+		return (void*)0;
+	}
+
+	void * source_a_manager(void *arg)
+	{
+		pthread_mutex_t lock;
+		int south_level = CPL0;
+		int west_level = CPL1;
+		
+		pthread_mutex_init(&lock, NULL);
+		pthread_cond_signal(&south_wait_a);
+		request_a_queue.len = 0;
+		while(1)
+		{
+			pthread_mutex_lock(&lock);
+			pthread_cond_wait(&request_source_a, &lock);
+			
+			pthread_mutex_lock(&a_queue_lock);
+			if(request_a_queue.len == 1)
+			{
+				--request_a_queue.len;
+				south_level = CPL0;
+				west_level = CPL1;
+				switch(request_a_queue.directions[0])
+				{
+					case SOUTH:
+						pthread_cond_signal(&south_wait_a);
+						break;
+					case WEST:
+						pthread_cond_signal(&west_wait_a);
+						break;
+					default:
+						err_exit();
+						break;
+				}
+			}
+			else if(request_a_queue.len == 2)
+			{
+				--request_a_queue.len;
+				if(south_level == CPL0)
+				{
+					south_level = CPL1;
+					west_level = CPL0;
+					request_a_queue.directions[0] = WEST;
+					pthread_cond_signal(&south_wait_a);
+				}
+				else
+				{
+					south_level = CPL0;
+					west_level = CPL1;
+					request_a_queue.directions[0] = SOUTH;
+					pthread_cond_signal(&west_wait_a);
+				}
+			}
+			else
+				err_exit();
+			pthread_mutex_unlock(&a_queue_lock);
+			
+			pthread_mutex_unlock(&lock);
+		}
+		return (void*)0;
+	}
+	\end{lstlisting}
+
+\subsubsection{总结}
+	将死锁、按顺序通过、右边优先和饥饿等问题解决后，实验一算是完成了。
+	不过我始终觉得死锁问题的解决方案不够好，不够稳定，可能在我某些没考虑到的情况，它就出错了。
+
+\subsection{实现代码}
+	\lstinputlisting[language = C]{main.c}
 	
-
 \end{document}

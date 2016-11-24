@@ -13,3 +13,21 @@
 \BOOKMARK [3][-]{subsubsection.3.1.2}{页级保护}{subsection.3.1}% 13
 \BOOKMARK [2][-]{subsection.3.2}{编写保护机制}{section.3}% 14
 \BOOKMARK [3][-]{subsubsection.3.2.1}{对段描述符属性的编程}{subsection.3.2}% 15
+\BOOKMARK [3][-]{subsubsection.3.2.2}{对段选择符属性的编程}{subsection.3.2}% 16
+\BOOKMARK [3][-]{subsubsection.3.2.3}{小结}{subsection.3.2}% 17
+\BOOKMARK [1][-]{section.4}{调用门的实现}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{添加门描述符}{section.4}% 19
+\BOOKMARK [3][-]{subsubsection.4.1.1}{定义门描述符}{subsection.4.1}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.2}{初始化门描述符}{subsection.4.1}% 21
+\BOOKMARK [3][-]{subsubsection.4.1.3}{使用门描述符}{subsection.4.1}% 22
+\BOOKMARK [1][-]{section.5}{迟到的实验一}{}% 23
+\BOOKMARK [2][-]{subsection.5.1}{问题描述}{section.5}% 24
+\BOOKMARK [3][-]{subsubsection.5.1.1}{现状}{subsection.5.1}% 25
+\BOOKMARK [3][-]{subsubsection.5.1.2}{资源需求}{subsection.5.1}% 26
+\BOOKMARK [3][-]{subsubsection.5.1.3}{交通规则}{subsection.5.1}% 27
+\BOOKMARK [3][-]{subsubsection.5.1.4}{要求}{subsection.5.1}% 28
+\BOOKMARK [2][-]{subsection.5.2}{解决方案}{section.5}% 29
+\BOOKMARK [3][-]{subsubsection.5.2.1}{对死锁的仿真}{subsection.5.2}% 30
+\BOOKMARK [3][-]{subsubsection.5.2.2}{死锁的解决}{subsection.5.2}% 31
+ction.5.2}% 31
+\BOOKMARK [2][-]{subsection.5.3}{实现代码}{section.5}% 32
