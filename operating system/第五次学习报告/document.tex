@@ -130,6 +130,10 @@
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
+\tableofcontents
+
+\clearpage
+
 \section{实现特权级转移}
 \subsection{理论知识}
 	特权级转移需要借助堆栈切换。当调用门用于把程序控制转移到一个更高级别的非一致性代码段时，处理器会自动切换到目的代码段特权级的堆栈。
@@ -294,6 +298,142 @@
 		call SelectorCallGateTest:0
 		jmp $
 	SegCodeRing3Len equ $-LABEL_CODE_RING3
+	\end{lstlisting}
+
+\section{分页机制}
+	分页机制的理论已经在第二次报告中提到了，这里就直接写代码实现吧。
+\subsection{分页机制的实现}
+\subsubsection{启动分页机制}
+	代码中使用两极页表机制，第一级为页目录，大小为4KB，有1024个表项，每个表项对应一个第二级页表。
+	第二级页表也有1024个表项，每个表项对应一个物理页。
+	首先我会先初始化页目录，然后初始化每一个页表。之后，将页目录基址存放cr3中。然后将cr0的PG位置一，表示开启分页机制。
+	我在第一次报告中提到过cr0和cr3，以下是它们的结构图。
+	\fic{4.png}
+	\fic{5.png}
+
+	在代码中添加SetupPaging函数，用于启动分页机制。代码如下：
+	\begin{lstlisting}
+	; 页目录为4KB
+	PageDirBase equ 200000h
+	; 页表开始地址
+	PageTblBase equ 201000h
+	; ...
+	; 在GDT表中添加页目录和页表的描述符
+	[SECTION .gdt]
+	LABEL_DESC_PAGE_DIR: Descriptor PageDirBase, 4095, DA_DRW
+	LABEL_DESC_PAGE_TBL: Descriptor PageTblBase, 1023, DA_DRW | DA_LIMIT_4K
+	; ...
+	SelectorPageDir equ LABEL_DESC_PAGE_DIR - LABEL_GDT
+	SelectorPageTbl equ LABEL_DESC_PAGE_TBL - LABEL_GDT
+	; ...
+	; 在32位代码段中添加SetupPaging函数，用于启动分页机制
+	[SECTION .s32]
+	[BITS 32]
+	LABEL_SEG_CODE32:
+		call SetupPaging
+	SetupPaging:
+		mov ax, SelectorPageDir
+		mov es, ax
+		mov ecx, 1024
+		xor edi, edi
+		xor eax, eax
+		mov eax, PageTblBase | PG_P | PG_USU | PG_RWW
+	.1:
+		; 初始化页目录
+		; 将页表的基地址存入页目录中
+		; stosd的功能是将eax的内容移入到es所指的地址中
+		stosd ; 每次edi会自动加一
+		add eax, 4096 ; 一个页表的大小为4KB
+		loop .1 ; 当计数寄存器为0时，结束循环
+
+		; 初始化所有页表
+		mov ax, SelectorPageTbl
+		mov es, ax
+		mov ecx, 1024 * 1024
+		xor edi, edi
+		xor eax, eax
+		mov eax, PG_P | PG_USU | PG_RWW
+	.2:
+		stosd
+		add eax, 4096 ; 每个表项指向一个4K的帧
+		loop .2
+		; 将页目录基地址存入cr3中
+		mov eax, PageDirBase
+		mov cr3, eax
+		; 将cr0的最高位PG标志置一
+		mov eax, cr0
+		or eax, 80000000h
+		mov cr0, eax
+		jmp short .3
+	.3:
+		nop
+		ret
+	\end{lstlisting}
+
+\subsubsection{利用分页机制节约内存}
+	在上一节的代码中，虽然实现了代码，但是也暴露了两个问题：
+	\begin{itemize}
+		\item 分页机制确实是实现了，但是它没有带来实质性的好处。
+		\item 页表占用的内存太大了。
+	\end{itemize}
+
+	在代码实现中，我用了4MB的空间用于存放页表，这些页表可以映射4GB的内存空间。
+	假设现在的内存空间只有16MB大小，那么页表数根本不需要那么多，只需要4个就够了。
+	所以，操作系统有必要知道内存的容量，从而进行内存管理。\par
+
+	可以通过执行指令int 15h，来获得机器内存空间的大小。首先介绍一下int 15h指令。
+	15h是中断向量号，进行软中断后，系统会根据eax寄存器的值执行相应的系统调用。
+	下面相应的功能表，来源来自维基百科。
+	\sizedfic{1}{6.png}
+	
+	该中断处理函数需要五个输入参数，如下：
+	\begin{itemize}
+		\item eax。根据上述的功能表可知，当eax = 0E820h时，中断函数将返回机器内存大小。
+		\item ebx。ebx放置着"continuation value"，用于寻找下一个地址范围描述符结构ARDS。首次调用int 15h时，将ebx置为0。
+		\item es:di。这个指向一个地址范围描述符结构ARDS。
+		\item ecx。用于表示ARDS的大小，以字节为单位。
+		\item edx。签名‘SMAP’，需要将edx设为0534D4150h，BIOS使用该签名对调用者将要请求的系统映像信息进行校验。
+	\end{itemize}
+
+	函数也有五个输出值，如下：
+	\begin{itemize}
+		\item CF。CF=0，表示没有发生错误。
+		\item eax。存放着签名'SMAP'，0534D4150h。
+		\item es:di。和输入值相同，只想一个地址范围描述符结构ARDS。
+		\item ecx。BIOS会对ARDS进行信息填写，ecx中存放一个数值，这个数值代表了BIOS填写了ARDS多少字节。
+		\item ebx。ebx放置着下一个地址描述符所需要的后续值。如果ebx的值为0，代表着当前的ARDS是最后一个地址范围描述符。
+	\end{itemize}
+
+	下图是地址范围描述符ARDS的数据结构：
+	\fic{7.png}
+
+	其中，Type的取值有三种情况：
+	\begin{itemize}
+		\item 1，表示这个内存段是一段可以被OS使用的RAM。
+		\item 2，表示这个地址段正在被使用或者被系统保留，所以一定不可以被OS使用。
+		\item 其他数，表示这个内存段被保留，留作以后使用，不可以被OS使用。
+	\end{itemize}
+
+	只能在实模式下使用int 15h，所以在16位代码段中添加相应地代码。将得到的内存空间信息写入缓冲区_MemChkBuf中。下面是实现代码：
+	\begin{lstlisting}
+	_MemChkBuf: times 256 db 0
+	_dwMCRNumber: dd 0
+	; ...
+	[SECTION .s16]
+	[BITS 16]
+		mov ebx, 0 ; 将ebx的值置为一
+		mov di, _MemChkBuf ; 将内存信息写入缓冲区
+	.loop:
+		mov eax, 0E820h
+		mov ecx, 20 ; 写入缓冲区的字节数
+		mov edx, 0534D4150h
+		int 15h
+		jc LABEL_MEM_CHK_FAIL ; 检查CF标志
+		add di, 20 ; 指向下一个内存信息写入地址
+		inc dword [_dwMCRNumber]
+		cmp ebx, 0 ; 检查是否为最后一个地址范围描述符
+		jne .loop
+		jmp LABEL_MEM_CHK_OK
 	\end{lstlisting}
 
 \end{document}

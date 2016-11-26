@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  22 NOV 2016 18:51
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  26 NOV 2016 08:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1774,36 +1774,35 @@ File: lstlang3.sty 2015/06/04 1.6 listings language file
 . - 'normal' (m/n) with NFSS spec.: <->"华文中宋/OT:script=hani;language=DFLT;"
 . - 'small caps'  (m/sc) with NFSS spec.: 
 .................................................
-(/usr/local/texlive/2016/texmf-dist/tex/latex/lastpage/lastpage.sty
-Package: lastpage 2015/03/29 v1.2m Refers to last page's name (HMM; JPG)
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip89
-\f@ncyO@elh=\skip90
-\f@ncyO@erh=\skip91
-\f@ncyO@olh=\skip92
-\f@ncyO@orh=\skip93
-\f@ncyO@elf=\skip94
-\f@ncyO@erf=\skip95
-\f@ncyO@olf=\skip96
-\f@ncyO@orf=\skip97
-)
-(/usr/local/texlive/2016/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
-Package: xeCJK-listings 2016/05/14 v3.4.0 xeCJK patch file for listings
-\l__xeCJK_listings_max_char_int=\count323
-\l__xeCJK_listings_flag_int=\count324
-)
 
-LaTeX Warning: Unused global option(s):
-    [left=2.5cm,right=2.5cm].
+! LaTeX Error: Missing \begin{document}.
 
-No file document.aux.
-\openout1 = `document.aux'.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.125 \tableofcontents
+                      
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.125 \tableofcontents
+                      
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 131.
-LaTeX Font Info:    ... okay on input line 131.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 131.
-LaTeX Font Info:    ... okay on input line 131.
+ 
+Here is how much of TeX's memory you used:
+ 30319 strings out of 493591
+ 549368 string characters out of 6143546
+ 652940 words of memory out of 5000000
+ 33392 multiletter control sequences out of 15000+600000
+ 4532 words of font info for 45 fonts, out of 8000000 for 9000
+ 1347 hyphenation exceptions out of 8191
+ 48i,0n,72p,10365b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
+ 131.
 LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 131.
 LaTeX Font Info:    ... okay on input line 131.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 131.
@@ -1816,7 +1815,7 @@ LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 131.
 LaTeX Font Info:    ... okay on input line 131.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 131.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 131.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 131.
@@ -1950,28 +1949,57 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 131.
 LaTeX Info: Redefining \pageref on input line 131.
 LaTeX Info: Redefining \nameref on input line 131.
+
+(./document.out) (./document.out)
 \@outlinefile=\write3
 \openout3 = `document.out'.
-
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 131.
-(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
-)
+*************************************************
+* fontspec warning: "script-not-exist"
+* 
+* Font 'STSongti-SC-Regular' does not contain script 'CJK'.
+*************************************************
+\g__fontspec_family_STSongti-SC-Regular_int=\count327
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font STSongti-SC-Regular/I (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'STSongti-SC-Regular(0)' created for font 'STSongti-SC-Regular'
+. with options [Script={CJK}].
+. 
+. This font family consists of the following NFSS series/shapes:
+. - 'normal' (m/n) with NFSS spec.: <->"STSongti-SC-Regular/OT:"
+. - 'small caps'  (m/sc) with NFSS spec.: - 'bold' (bx/n) with NFSS spec.:
+. <->"STSongti-SC-Regular/B/OT:"
+. - 'bold small caps'  (bx/sc) with NFSS spec.: - 'bold italic' (bx/it) with
+. NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
+. - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
+.................................................
+(./document.toc
 
 LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 134.
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
 
-File: 1.png Graphic file (type QTm)
-<use  "1.png" >
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
 
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 152.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+))
+\tf@toc=\write4
+\openout4 = `document.toc'.
+
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1979,38 +2007,29 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
+(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
+
+)
 [1
+
+]
+File: 1.png Graphic file (type QTm)
+ <use  "1.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2
 
 ]
 File: 2.png Graphic file (type QTm)
  <use  "2.png" >
 
 LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 167.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 171.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 171.
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-
-LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 172.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[2]
-File: 3.png Graphic file (type QTm)
- <use  "3.png" >
-
-LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 220.
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 171.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2019,9 +2038,8 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [3]
-
-LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 241.
-
+File: 3.png Graphic file (type QTm)
+ <use  "3.png" >
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2030,9 +2048,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4]
 
-LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 296.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
@@ -2040,44 +2055,62 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [5]
 
-Package lastpage Warning: Rerun to get the references right on input line 299.
-
-
-AED: lastpage setting LastPage
-
-LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 299.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 299.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 299.
- (./document.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 299.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 299.
+File: 4.png Graphic file (type QTm)
+ <use  "4.png" >
+File: 5.png Graphic file (type QTm)
+ <use  "5.png" >
 
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+[7]
+File: 6.png Graphic file (type QTm)
+ <use  "6.png" >
 
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-LaTeX Warning: There were undefined references.
+[8]
 
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+[9]
+File: 7.png Graphic file (type QTm)
+ <use  "7.png" >
+! Missing $ inserted.
+<inserted text> 
+                $
+l.417 ...�到的内存空间信息写入缓冲区_
+                                                  MemChkBuf中。下面是�...
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 299.
- ) 
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.417 ...�到的内存空间信息写入缓冲区_
+                                                  MemChkBuf中。下面是�...
+End of file on the terminal!
+
+ 
 Here is how much of TeX's memory you used:
- 31387 strings out of 493591
- 566321 string characters out of 6143546
+ 31488 strings out of 493591
+ 569447 string characters out of 6143546
  758940 words of memory out of 5000000
- 34389 multiletter control sequences out of 15000+600000
- 9355 words of font info for 80 fonts, out of 8000000 for 9000
+ 34468 multiletter control sequences out of 15000+600000
+ 10924 words of font info for 88 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,13n,72p,10365b,2185s stack positions out of 5000i,500n,10000p,200000b,80000s
-
-Output written on document.pdf (6 pages).
+ 48i,12n,87p,10365b,2185s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on document.pdf (9 pages).
