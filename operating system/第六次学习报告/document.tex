@@ -1,0 +1,388 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{第六次学习报告 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{中断和异常的实现}
+\subsection{设置8259A}
+	8259A是中断机制中所有外围设备的一个代理，这个代理可以根据优先级在同时发生中断的设备中选择应该处理的请求。
+	除此之外，还可以通过对8259A的寄存器的设置来屏蔽或打开相应的中断。可屏蔽外部中断与CPU是通过8259A连接起来的。
+	8259A与CPU的连接如下图所示：
+	\fic{1.png}
+
+	由图可知，每一片8259A有8根中断信号线，两片级联的8259A可以挂接15个不同的外部设备。这些外部设备发出中断请求时，
+	8259A将其与相应的中断向量号对应起来。所以我们需要设置8259A。\par
+
+	设置8259A的过程就是向其相应的端口写入特定的ICW。主8259A的端口有20h和21h，从8259A的端口有A0h和A1h。
+	ICW全称是Initialization Command Word，大小为一个字节。初始化8259A的过程如下：
+	\begin{itemize}
+		\item 首先往端口20h和A0h写入ICW1。ICW1的格式如图所示：
+		\sizedfic{0.5}{2.png}
+		\item 然后往端口21h和A1h写入ICW2。主8259A和从8259A的ICW2内容可以不一样。
+		写入ICW2时涉及与中断向量号的对应。比如，往主8259A写入ICW2时，如果ICW2为20h，那么IRQ0～IRQ7就对应中断向量20h～27h。
+		ICW2的格式如图所示：
+		\sizedfic{0.4}{3.png}
+		\item 然后往端口21h和A1h写入ICW3。主8259A的ICW3和从8259A的ICW3的格式不同。两个ICW3如图所示：
+		\fic{4.png}
+		\item 最后往端口21h和A1h写入ICW4。ICW4的格式如图所示：
+		\sizedfic{0.5}{5.png}
+	\end{itemize}
+
+	实现代码如下所示：
+	\begin{lstlisting}
+	; io_delay函数用于等待操作完成
+	io_delay:
+		nop
+		nop
+		nop
+		nop
+		ret
+
+	Init8259A:
+		; 往端20h写入ICW1
+		mov al, 011h
+		out 020h, al
+		call io_delay
+		; 往端A0h写入ICW1
+		out 0A0h, al
+		call io_delay
+		; 往端21h写入ICW2
+		mov al, 020h
+		out 021h, al
+		call io_delay
+		; 往端A1h写入ICW2
+		mov al ,028h
+		out 0A1h, al
+		call io_delay
+		; 往端21h写入ICW3
+		mov al, 004h
+		out 021h, al
+		call io_delay
+		; 往端A1h写入ICW3
+		mov al, 002h
+		out 0A1h, al
+		call io_delay
+		; 往端21h写入ICW4
+		mov al, 001h
+		out 021h, al
+		call io_delay
+		; 往端A1h写入ICW4
+		out 0A1h, al
+		call io_delay
+	\end{lstlisting}
+
+	除了ICW字段，8259A还接受OCW字段。OCW全称为operation control word。我们在两种情况下用到OCW字段。这两种情况是：
+	\begin{itemize}
+		\item 当屏蔽或打开外部中断时。此时端口21h或A1h写入OCW1。OCW1的格式如下图：
+		\sizedfic{0.4}{6.png}
+
+		如果想屏蔽某一个外部中断，将对应的那一位设为1就可以了。实现代码如下：
+		\begin{lstlisting}
+		mov al, 11111111b
+		out 0A1h, al
+		call io_delay
+		\end{lstlisting}
+
+		\item 发送EOI给8259A来通知它中断处理结束了，以便继续接收中断。此时往端口20h或A0h写OCW2。OCW2的格式如下图：
+		\sizedfic{0.4}{7.png}
+
+		实现代码如下所示：
+		\begin{lstlisting}
+		mov al, 20h
+		out 20h, al
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{建立IDT}
+	IDT表和GDT表格式类似，它存放着中断门描述符、陷阱门描述符和任务门描述符。IDT将每一个中断向量号和一个描述符对应起来。实现代码如下：
+	\begin{lstlisting}
+	[SECTION .idt]
+	ALIGN 32
+	[BITS 32]
+	LABEL_IDT:
+	.01h: Gate SelectorCode32, SpuriousHandler, 0, DA_386IGate
+	; ...
+	IdtLen equ $ - LABEL_IDT
+	IdtPtr dw IdtLen - 1
+		   dd 0
+	\end{lstlisting}
+
+	加载IDT的代码如下：
+	\begin{lstlisting}
+	xor eax, eax
+	mov ax, ds
+	shl eax, 4
+	add eax, LABEL_IDT
+	mov dword [IdtPtr + 2], eax
+
+	cli
+
+	lidt [IdtPtr]
+	\end{lstlisting}
+
+\subsection{实现一个中断}
+	修改一下IDT，将第80h号中断的中断处理函数改为\_UserIntHandler。实现代码如下所示：
+	\begin{lstlisting}
+	[SECTION .idt]
+	ALIGN 32
+	[BITS 32]
+	LABEL_IDT:
+	; ...
+	.080h: Gate SelectorCode32, UserIntHandler, 0, DA_386IGate
+	; ...
+	IdtLen equ $ - LABEL_IDT
+	IdtPtr dw IdtLen - 1
+	       dd 0
+	; ...
+	[SECTION .s32]
+	[BITS 32]
+	_UserIntHandler:
+	UserIntHandler equ _UserIntHandler - $$
+		mov ax, SelectorVideo
+		mov gs, ax
+		mov ah, 0Ch
+		mov al, 'I'
+		mov [gs:((80 * 0 + 70) * 2)], ax
+		iretd
+	\end{lstlisting}
+
+	然后在32位代码段中添加如下代码，就可以实现一个中断。代码如下：
+	\begin{lstlisting}
+	call Init8259A
+	int 080h
+	\end{lstlisting}
+
+\subsection{时钟中断试验}
+	如果想打开时钟中断，一方面要打开外部中断，一方面要设计相应的中断处理程序。\par
+	首先打开外部中断，需要向8259A的21h或A1h写入相应的OCW1，并且设置IF位为1。时钟中断请求为IRQ0。
+	实现代码如下：
+	\begin{lstlisting}
+	; 打开定时器中断
+	mov al, 11111110b
+	out 021h, al
+	call io_delay
+	; 屏蔽从8159A的所有中断
+	mov al, 11111111b
+	out 0A1h, al
+	call io_delay
+
+	ret
+	\end{lstlisting}
+
+	在初始化8259A中，我们将IRQ0的中断向量号设置为20h，所以需要在IDT的第20h项中写相应的时钟中断处理程序。
+	\begin{lstlisting}
+	[SECTION .idt]
+	ALIGN 32
+	[BITS 32]
+	LABEL_IDT:
+	; ...
+	.20h: Gate SelectorCode32, ClockHandler, 0, DA_386IGate
+	; ...
+
+	[SECTION .s32]
+	[BITS 32]
+	; 这个函数实现了将屏幕第0行、第70行的字符加一的功能
+	_ClockHandler:
+	ClockHandler equ _ClockHandler - $$
+		inc byte [gs:((80 * 0 + 70) * 2)]
+		; 向端口20h写入OCW2，通知中断处理程序结束
+		mov al, 20h
+		out 20h, al
+		iretd
+	\end{lstlisting}
+
+	下面是查看时钟中断效果的代码：
+	\begin{lstlisting}
+	; 首先将屏幕第0行、第70行的字符设置为a
+	mov ax, SelectorVideo
+	mov gs, ax
+	mov ah, 0Ch
+	mov al, 'a'
+	mov [gs:((80 * 0 + 70) * 2)], ax
+	; 初始化8259A
+	call Init8259A
+	; 打开时钟中断
+	mov al, 11111110b
+	mov 021h, al
+	call io_delay
+	; 设置IF位为1，打开外部中断
+	sti
+	; 让程序陷入循环，可以查看每次时钟中断后屏幕上字符的变化
+	jmp $
+	\end{lstlisting}
+
+\subsection{几点需要注意的事}
+	\begin{itemize}
+		\item 当中断产生时，大多会有特权级变换。通过中断门和陷阱门的中断相当于用call指令调用一个调用门，所以和第五次学习报告中特权级变换的内容一样。
+		\item 中断或异常发生时，会和call指令一样进行压栈操作。需要注意的是，有些中断会产生出错码。如果有出错码，
+		在iretd执行时，出错码是不会从堆栈中自动弹出的。所以在执行iretd之前，应该先将出错码从堆栈中清除掉。
+		\item 中断门和陷阱门唯一的区别在于，中断门会对中断允许标志IF产生影响。由中断门向量引起的中断会复位IF，在iretd指令执行后，会恢复IF位的原值。
+	\end{itemize}
+
+\clearpage
+
+\section{保护模式下的I/O}
+	I/O的控制权限是需要严格控制的，操作系统通过IOPL和I/O许可位图实现对I/O控制权限的限制。
+\subsection{IOPL}
+	IOPL字段位于Eflags寄存器的第12、13位。如下图所示：
+	\fic{8.png}
+
+	操作系统将一些指令定义为I/O敏感指令，这些指令只有在CPL$\le$IOPL时才能执行，如果低特权级的任务试图执行这些指令将会引起一般性保护异常。
+	I/O敏感指令包括in、ins、out、outs、cli和sti。\par
+	IOPL字段是可以修改的，程序可以通过popf和iretd指令修改IOPL字段。只有当任务特权级为0时，popf和iretd才可以成功修改IOPL的值。
+	否则即使执行了指令，IOPL也不会改变，不过也不会引起异常。\par
+	popf指令还可以用来改变IF标志，只有当CPL$\le$IOPL时，才能成功修改IF标志，否则IF将维持原值，不会产生任何异常。
+
+\subsection{I/O许可位图}
+	在第五次学习报告中，我有实现过TSS。其中代码有一处是“I/O位图基址”。
+	I/O位图基址指向的就是I/O许可位图。I/O许可位图的每一位用于表示一个字节的端口地址是否可用。如果该位为0，表示此位对应的端口号可用，为1则代表不可用。
+	I/O许可位图的使用使得即便在同一特权级下不同任务也可以有不同的I/O访问权限。\par
+	I/O许可位图就位于TSS段中，而I/O位图基址实际上是以TSS的地址为基址的偏移。如果I/O位图基址大等于TSS段界限，就表示TSS段中没有I/O许可位图。
+	由于每个任务都有单独的TSS，所以每个任务都有自己单独的I/O许可位图。\par
+	下面是一个任务中I/O许可位图的实现代码：
+	\begin{lstlisting}
+	[SECTION .tss3]
+	LABEL_TSS3:
+		DW $ - LABEL_TSS3 + 2 ; 指向I/O许可位图
+	times 12 DB 0FFh ; 端口00h~5fh都不可用
+		DB 11111101b ; 端口60h~67h，只有端口61h可以用
+		DB 0FFh ; I/O许可位图结束标志,I/O许可位图必须以0FFh结尾
+	TSS3Len equ $ - LABEL_TSS3
+	\end{lstlisting}
+
+\clearpage
+
+\section{linux下的内存管理}
+
+\end{document}

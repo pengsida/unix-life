@@ -1,0 +1,306 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{第一次学习笔记 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{第一个Java程序}
+\subsection{名字管理}
+	Java为了给一个类库生成不会与其他名字混淆的名字，让程序员反过来使用自己的Internet域名，从而保证它们是独一无二的。
+	比如域名为MindView.net，那么各种应用工具库就被命名为net.mindview.utility.foibles。
+	反转域名后，句点就用来代表子目录的划分。\par
+\subsection{static关键字}
+	现在有两个需求，如下所示：
+	\begin{itemize}
+		\item 只想为某个特定域分配单一存储空间，而不去考虑究竟要创建多少对象，甚至根本就不创建任何对象。
+		\item 希望某个函数不与包含它的类的任何对象关联在一起。也就是说，即使没有创建对象，也可以调用这个函数。
+	\end{itemize}
+
+	static关键字可以满足这两方面的需求。当声明一个事物是static的时候，就意味着这个域或这个函数不会与包含它的那个类的任何对象实例关联在一起。\par
+	引用static变量有两种方法。可以通过一个对象去定位它，也可以通过其类名直接引用。\par
+	static函数的重要用法是在不创建任何对象的前提下就可以调用它。
+	Java中禁止使用全局函数，这时候static就派上了用场。程序员可以通过类本身来调用static函数和static变量。
+	在没有全局变量和全局函数的情况下，可以在类中置入static函数和static域。在其他类中就可以直接通过类名访问这些static函数和static域。
+
+\subsection{Hello world}
+	下面是第一个完整的程序，可以打印出“hello world”：
+	\begin{lstlisting}[language = Java]
+	import java.util.*;
+
+	public class HelloWorld
+	{
+		public static void main(String[] args)
+		{
+			System.out.println("hello world");
+		}
+	}
+	\end{lstlisting}
+\subsection{编码风格}
+	代码风格的规定如下：
+	\begin{itemize}
+		\item 类名的首字母要大些。如果类名由几个单词构成，那么就把它们并在一起，其中每个内部单词的首字母都采用大写形式。
+		\item 其他内容，第一个字母采用小写。如果该内容由几个单词构成，那么就把它们并在一起，其中每个内部单词的首字母都采用大写形式。
+	\end{itemize}
+
+\section{初始化与清理}
+\subsection{初始化}
+	类似于C++的方式，Java也采用了构造器进行初始化。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Rock
+	{
+		Rock()
+		{
+			System.out.println("Hello world");
+		}
+	}
+	\end{lstlisting}
+
+	和C++一样，Java的构造器也可以进行重载。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Tree
+	{
+		int height;
+		Tree()
+		{
+			System.out.println("Planting a seeding");
+			height = 0;
+		}
+		Tree(int inititalHeight)
+		{
+			height = inititalHeight;
+			System.out.println("Creating new Tree that is " + height + " feer tall");
+		}
+	}
+	\end{lstlisting}
+
+	关于默认构造器，这里需要注意：如果程序员没有提供任何构造器，编译器将自动生成一个默认构造器；如果程序员写了一个构造器，编译器就不会自动生成一个默认构造器。
+
+\subsection{this关键字}
+	Java的this关键字和C++的this关键字有区别。C++的this关键字是该对象的地址，而Java中是没有指针的。Java的this关键字表示该对象的引用。例子如下：
+	\begin{lstlisting}[language = Java]
+	public class Leaf
+	{
+		int i = 0;
+		Leaf increment()
+		{
+			++i;
+			return this; // 相当于返回当前对象
+		}
+	}
+	\end{lstlisting}
+\subsubsection{利用this调用构造器}
+	在构造器中，如果为this添加了参数列表，将产生对符合此参数列表的某个构造器的明确调用。例子如下：
+	\begin{lstlisting}
+	public class Flower
+	{
+		int petalCount = 0;
+		String s = "initial value";
+		Flower(int petals)
+		{
+			petalCount = petals;
+		}
+		Flower(String ss)
+		{
+			s = ss;
+		}
+		Flower(String s, int petals)
+		{
+			this(petals);
+			// 不能再写this(s)，否则会覆盖原有的内容
+			this.s = s;
+		}
+		void print()
+		{
+			// 在非构造函数中不能使用this(s)
+			System.out.println("Hello world!");
+		}
+	}
+	\end{lstlisting}
+
+\subsection{清理}
+	Java拥有一个垃圾回收器，用于释放由new分配的内存。在其他情况下，如果该内存区域不是由new分配，那么垃圾回收器就不知道该如何释放这块特殊内存。\par
+	为了解决这种情况，Java允许在类中定义一个名为finalize()的函数。一旦垃圾回收器准备释放对象占用的存储空间，将首先调用其finalize()函数，并在垃圾回收动作发生时，
+	真正地回收对象占用的内存。\par
+	finalize()函数与C++中的析构函数有区别，因为C++中的对象一定会被销毁，而Java中的对象不一定总是被垃圾回收器回收，而且垃圾回收并不等于析构。
+	需要知道的是，只要程序没有濒临存储空间用完的时刻，垃圾回收器就不会释放程序所创建的任何对象的存储空间。\par
+
+\subsubsection{finalize函数的用途}
+	finalize函数不会负责释放对象所占有的内存。无论对象是如何创建的，垃圾回收器都会负责释放对象占据的所有内存。
+	只有当Java程序中调用了本地方法分配空间时，finalize函数才会派上用场。
+	本地方法是一种在Java中调用非Java代码的方式。在非Java代码中，可能会调用C的malloc函数分配存储空间，此时只有使用了free函数，该内存空间才会释放。
+	所以在对象释放时，需要在finalize函数中调用free函数来释放这块特殊的内存，否则将引起内存泄漏。\par
+
+	下面是使用finalize()函数的例子：
+	\begin{lstlisting}[language = Java]
+	class Book
+	{
+		boolean checkedOut = false;
+		Book(boolean checkOut)
+		{
+			checkedOut = checkOut;
+		}
+		void checkIn()
+		{
+			checkedOut = false;
+		}
+		protected void finalize()
+		{
+			if(checkedOut)
+				System.out.println("Error: checked out");
+		}
+	}
+
+	public class TerminationCondition
+	{
+		public static void main(String[] args)
+		{
+			Book novel = new Book(true);
+			novel.checkIn();
+			new Book(true);
+			System.gc();
+		}
+	}
+	\end{lstlisting}
+
+	以上程序通过finalize()函数确保所有Book对象在被当作垃圾回收钱都应该被check in。当有一本书没有check in时，程序将输出错误情况。
+	类似的，如果一个对象代表了一个打开的文件，在对象被回收前程序员应该关闭这个文件。finalize()函数可以用来检查文件是否关闭。
+	finalize函数更多地被用来发现程序中隐晦的缺陷。
+
+\subsubsection{垃圾回收器的工作机制}
+	首先需要意识到，Java中除了基本类型，所有对象都在堆上分配空间。然而Java从堆分配空间的速度，可以和其他语言从堆栈上分配空间的速度相媲美。\par
+	对比一下Java与C++的堆空间分配机制。C++的堆像一个院子，里面的每个对象都负责管理自己的地盘。如果对象被销毁了，这个地盘必须加以重新利用。
+	在Java中，堆更像一个堆栈，每分配一个新对象，它就往前移动一格。\par
+	Java这样的实现方式会导致频繁的内存页面调度。为了避免这种情况的出现，Java使用了垃圾回收器。垃圾回收器工作的时候，一边回收空间，一边讲堆中的对象排列紧凑。
+	通过垃圾回收器对对象重新排列，实现了一种告诉的、有无限空间可供分配的堆模型。
+
+\end{document}

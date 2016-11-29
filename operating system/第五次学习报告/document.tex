@@ -414,7 +414,7 @@
 		\item 其他数，表示这个内存段被保留，留作以后使用，不可以被OS使用。
 	\end{itemize}
 
-	只能在实模式下使用int 15h，所以在16位代码段中添加相应地代码。将得到的内存空间信息写入缓冲区_MemChkBuf中。下面是实现代码：
+	只能在实模式下使用int 15h，所以在16位代码段中添加相应地代码。将得到的内存空间信息写入缓冲区\_MemChkBuf中。下面是实现代码：
 	\begin{lstlisting}
 	_MemChkBuf: times 256 db 0
 	_dwMCRNumber: dd 0
@@ -435,5 +435,328 @@
 		jne .loop
 		jmp LABEL_MEM_CHK_OK
 	\end{lstlisting}
+
+	现在内存信息都保存在缓冲区\_MemChkBuf中，需要有相应的代码计算其中的内存大小。
+	为了实现这一功能，我定义了一个数据段。并且在32位代码中添加了CalMemSize函数用于计算内存大小。
+	下面是实现代码：
+	\begin{lstlisting}
+	; 定义数据段
+	[SECTION .data1]
+	ALIGN 32
+	[BITS 32]
+	LABEL_DATA:
+	_szRAMSize db "RAM size:", 0
+	_dwMCRNumber: dd 0
+	_dwMemSize: dd 0
+	; 定义一个ARDS数据结构，大小为20字节
+	_ARDSStruct:
+		_dwBaseAddrLow: dd 0
+		_dwBaseAddrHigh: dd 0
+		_dwLengthLow: dd 0
+		_dwLengthHigh: dd 0
+		_dwType: dd 0
+		
+	szRAMSize equ _szRAMSize - $$
+	dwMemSize equ _dwMemSize - $$
+	dwMCRNumber equ _dwMCRNumber - $$
+	ARDSStruct equ _ARDSStruct - $$
+		dwBaseAddrLow equ _dwBaseAddrLow - $$
+		dwBaseAddrHigh equ _dwBaseAddrHigh - $$
+		dwLengthLow equ _dwLengthLow - $$
+		dwLengthHigh equ _dwBaseAddrHigh - $$
+		dwType equ _dwType - $$
+	
+	; 在32位代码中添加CalMemSize函数
+	[SECTION .s32]
+	[BITS 32]
+	DispMemSize:
+		mov ax, SelectorData
+		mov ds, ax
+		mov es, ax
+		mov esi, MemChkBuf
+		; mov [ds:dwMCRNumber] to ecx
+		mov ecx, [dwMCRNumber]
+	.loop:
+
+		; 开始一个循环，将缓冲区中20字节读入ARDS结构中
+		mov edx, 5
+		; 将es:edi指向_ARDSStruct
+		mov edi, ARDSStruct
+	.1:
+		mov eax, esi
+		; 将eax移入[es:edi]，并将edi加4
+		stosd
+		add esi, 4
+		dec edx
+		cmp edx, 0
+		jnz .1
+
+		cmp dword [dwType], 1 ; 查看内存段的类型
+		jne .2 ; 如果内存段可用，则跳转到.2
+		mov eax, [dwBaseAddrLow]
+		add eax, [dwLengthLow]
+		cmp eax, [dwMemSize]
+		jb .2
+		; mov eax to [es:dwMemSize]
+		mov [dwMemSize], eax
+	.2:
+		loop .loop
+	\end{lstlisting}
+
+	这里就能得到内存大小了，存储在dwMemSize中。随后根据内存大小计算应该初始化多少页目录项和页表项。
+	下面是实现的代码：
+	\begin{lstlisting}
+	SetupPaging:
+		xor edx, edx
+		; eax存放着内存空间总大小
+		mov eax, [dwMemSize]
+		; ebx存放着一个页表对应的大小
+		mov ebx, 40000h
+		; div指令，eax除以ebx，商存储在eax中，余数存储在edx中
+		div ebx
+		; ecx中存放着商
+		mov ecx, eax
+		; 检查余数是否为0
+		test edx, edx
+		jz .no_remainder
+		; 如果余数不为零，需要初始化的页表数加一
+		inc ecx
+	.no_remainder:
+		push ecx
+		; 虽然根据ecx中值的大小初始化页目录和页表
+	\end{lstlisting}
+
+\subsection{感受分页机制}
+	由于分页机制的存在，程序使用的都是线性地址空间，而不再是物理地址。
+	这样操作系统就为应用程序提供了一个不依赖于物理内存的平台，应用程序也不必关心实际上有多少物理内存，也不必关心正在使用的是哪一段内存，
+	甚至不必关心某一个地址是在物理内存里面还是在硬盘中。\par
+	首先说一下我想实现的功能。我定义了两个函数ProcPagingDemo和LinearAddrDemo，ProPagingDemo函数实现了向LinearAddrDemo这个线性地址的转移。
+	一开始，我让LinearAddrDemo映射到物理地址空间中的ProcFoo处。虽然我切换页目录表和页表，让LinearAddrDemo映射到ProcBar这个物理地址上。\par
+	程序一开始的时候，分页机制是默认物理地址等于线性地址的。这样我让LinearAddrDemo和ProcFoo的值相等，这样调用LinearAddrDemo时，就相当于调用ProcFoo处的代码。
+	虽然分页机制将LinearAddrDemo映射到ProcBar，这样调用LinearAddrDemo时，就相当于调用ProcBar处的代码。\par
+	\begin{lstlisting}
+	LinearAddrDemo equ 00401000h
+	ProcFoo equ 00401000h
+	ProcBar equ 00501000h
+	ProcPagingDemo equ 00301000h
+	\end{lstlisting}
+
+	为了将代码放置在ProcFoo和ProcBar这两个地方，还需要写两个函数，在程序运行时将这两个函数的执行代码复制过去。所以需要写一个复制函数MemCpy。
+	实现代码如下：
+	\begin{lstlisting}
+	; void* MemCpy(void* es:pDest, void* ds:pSrc, int iSize);
+	MemCpy:
+		push ebp
+		mov ebp, esp
+
+		push esi
+		push edi
+		push ecx
+
+		mov edi, [ebp + 8] ; pDest
+		mov esi, [ebp + 12] ; pSrc
+		mov ecx, [ebp + 16] ; iSize
+	.1:
+		cmp ecx, 0
+		jz .2
+
+		mov al, [ds:esi]
+		inc esi
+
+		mov byte [es:edi], al
+		inc edi
+
+		dec ecx
+		jmp .1
+	.2:
+		mov eax, [ebp + 8]
+
+		pop ecx
+		pop edi
+		pop esi
+		mov esp, ebp
+		pop ebp
+
+		ret
+	\end{lstlisting}
+
+	这个代码是逐字节复制的，比较简单，就不详细说明了。需要注意的是，这个函数假设源数据存放在ds段中，目的地址在es段中，所以在调用这个函数之前，需要给ds和es赋值。
+	而且这个函数需要三个参数，根据实现代码，需要将长度、源代码地址和目的地址压入栈中。需要注意的是，因为在调用函数之前压入了3个参数，一个参数的大小是4字节。
+	为了在调用函数结束后跳过这三个参数，需要将esp指针的值加12。\par
+	下面是相应的初始化代码：
+	\begin{lstlisting}
+	PagingDemo:
+		mov ax, cs
+		mov ds, ax
+		mov ax, SelectorFlatRW
+		mov es, ax
+
+		push LenFoo
+		push OffsetFoo
+		push ProcFoo
+		call MemCpy
+		add esp, 12
+
+		push LenBar
+		push OffsetBar
+		push ProcBar
+		call MemCpy
+		add esp, 12
+
+		push LenPagingDemoAll
+		push OffsetPagingDemoProc
+		push ProcPagingDemo
+		call MemCpy
+		add esp, 12
+
+	PagingDemoProc:
+	OffsetPagingDemoProc equ PagingDemoProc - $$
+		mov eax, LinearAddrDemo
+		call eax
+		retf
+	LenPagingDemoAll equ $ - PagingDemoProc
+
+	foo:
+	OffsetFoo equ foo - $$
+		mov ah, 0Ch
+		mov al, 'F'
+		mov [gs:((80 * 17 + 0) * 2)], ax
+		mov al, 'o'
+		mov [gs:((80 * 17 + 1) * 2)], ax
+		mov [gs:((80 * 17 + 2) * 2)], ax
+		ret
+	LenFoo equ $ - foo
+	
+	bar:
+	OffsetBar equ bar - $$
+		mov ah, 0Ch
+		mov al, 'B'
+		mov [gs:((80 * 18 + 0) * 2)], ax
+		mov al, 'o'
+		mov [gs:((80 * 18 + 1) * 2)], ax
+		mov [gs:((80 * 18 + 2) * 2)], ax
+		ret
+	LenBar equ $ - bar
+	\end{lstlisting}
+
+	所有初始化工作做好之后，就可以在分页机制下，通过调用ProcPagingDemo从而调用LinearAddrDemo线性地址处的代码。
+	注意，LinearAddrDemo的值是00401000h。而分页机制中直接让线性地址等于物理地址。
+	所以页表中偏移00401000h的位置指向的就是00401000h，也就是SelectorFlatRW:ProcFoo函数的地址。
+	这样相当于调用ProcFoo处的代码。
+	调用代码如下：
+	\begin{lstlisting}
+	; 通过分段机制得到相应的线性地址LinearAddrDemo
+	; LinearAddrDemo为00401000h
+	; 高10位为0000000001b，这样对应页目录中的第二个页表
+	; 中间10位为000000000001b，这样对应页表中的第二个页
+	; 一个页的大小是4k，一个页表就能指向4M的地址
+	; 第二个页表的第二个页就是4M+4k，所以物理地址是00401000h
+	; 所以LinearAddrDemo线性地址对应的代码是ProcFoo
+	call SelectorFlatC:ProcPagingDemo
+	\end{lstlisting}
+
+	之后变换页表和页目录，让页表中偏移00401000h的位置指向的是00501000h，也就是ProcBar函数的地址。
+	下面是切换页目录和页表的实现代码：
+	\begin{lstlisting}
+	PSwitch:
+		mov ax, SelectorFlatRW
+		mov es, ax
+		mov edi, PageDirBase1
+		xor eax, eax
+		mov eax, PageTblBase1 | PG_P | PG_USU | PG_RWW
+		mov ecx, [PageTableNumber]
+	.1:
+		stosd
+		add eax, 4096
+		loop .1
+
+		mov eax, [PageTableNumber]
+		mov ebx, 1024
+		mul ebx
+		mov ecx, ecx
+		mov edi, PageTblBase1
+		xor eax, eax
+		mov eax, PG_P | PG_USU | PG_RWW
+	.2:
+		stosd
+		add eax, 4096
+		loop .2
+
+		; 改变了LinearAddrDemo对应的物理地址
+		; 处理LinearAddrDemo的高10位，也就是页目录的偏移量
+		mov eax, LinearAddrDemo
+		shr eax, 22
+		mov ebx, 4096
+		mul ebx 
+		; ecx此时存放着相应页表的偏移字节
+		mov ecx, eax
+
+		; 处理LinearAddrDemo的中间10位，也就是页表的偏移量
+		mov eax, LinearAddrDemo
+		shr eax, 12
+		and eax, 03FFh
+		mov ebx, 4
+		mul ebx ; eax此时存放着页表的偏移字节
+		; 加上ecx后，eax此时存放着相应页的偏移字节
+		add eax, ecx
+		; 加上PageTblBase1，得到LinearAddrDemo所指的项
+		add eax, PageTblBase1
+		; 将该项的内容改为ProcBar的地址
+		mov dword [es:eax], ProcBar | PG_P | PG_USC | PG_RWW
+
+		; 改变cr3的值来切换页目录
+		mov eax, PageDirBase1
+		mov cr3, eax
+		jmp short .3
+	.3:
+		nop
+		ret
+	\end{lstlisting}
+
+	改变后，线性地址LinearAddrDemo对应的物理地址是ProcBar。
+	再次调用SelectorFlatC:ProcPagingDemo，就会调用ProcBar函数。
+
+\clearpage
+
+\section{学习Java}
+	因为最近参加了挑战杯，所以需要使用android编程。之前我使用的都是C$\backslash$C++，所以对Java不是很了解。
+	以后在学习报告中，除了操作系统的内容，还会添加Java学习的内容。
+
+\subsection{第一个Java程序}
+\subsubsection{名字管理}
+	Java为了给一个类库生成不会与其他名字混淆的名字，让程序员反过来使用自己的Internet域名，从而保证它们是独一无二的。
+	比如域名为MindView.net，那么各种应用工具库就被命名为net.mindview.utility.foibles。
+	反转域名后，句点就用来代表子目录的划分。\par
+\subsubsection{static关键字}
+	现在有两个需求，如下所示：
+	\begin{itemize}
+		\item 只想为某个特定域分配单一存储空间，而不去考虑究竟要创建多少对象，甚至根本就不创建任何对象。
+		\item 希望某个函数不与包含它的类的任何对象关联在一起。也就是说，即使没有创建对象，也可以调用这个函数。
+	\end{itemize}
+
+	static关键字可以满足这两方面的需求。当声明一个事物是static的时候，就意味着这个域或这个函数不会与包含它的那个类的任何对象实例关联在一起。\par
+	引用static变量有两种方法。可以通过一个对象去定位它，也可以通过其类名直接引用。\par
+	static函数的重要用法是在不创建任何对象的前提下就可以调用它。
+\subsubsection{Hello world}
+	下面是第一个完整的程序，可以打印出“hello world”：
+	\begin{lstlisting}[language = Java]
+	import java.util.*;
+
+	public class HelloWorld
+	{
+		public static void main(String[] args)
+		{
+			System.out.println("hello world");
+		}
+	}
+	\end{lstlisting}
+\subsubsection{编码风格}
+	代码风格的规定如下：
+	\begin{itemize}
+		\item 类名的首字母要大些。如果类名由几个单词构成，那么就把它们并在一起，其中每个内部单词的首字母都采用大写形式。
+		\item 其他内容，第一个字母采用小写。如果该内容由几个单词构成，那么就把它们并在一起，其中每个内部单词的首字母都采用大写形式。
+	\end{itemize}
+
+% \subsection{初始化与清理}
 
 \end{document}
