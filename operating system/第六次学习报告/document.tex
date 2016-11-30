@@ -384,5 +384,132 @@
 \clearpage
 
 \section{linux下的内存管理}
+\subsection{页}
+	内核用struct page结构表示系统中的每个物理页，这个结构在mm\_types.h中定义。定义代码如下：
+	\begin{lstlisting}[language = C]
+	// 这个代码省去了联合结构体
+	struct page
+	{
+		unsigned long flags;
+		atomic_t _count;
+		atomic_t _mapcount;
+		unsigned long private;
+		struct address_space* mapping;
+		pgoff_t index;
+		struct list_head lru;
+		void* virtual;
+	}
+	\end{lstlisting}
+
+	下面是对page结构体中各个域的介绍：
+	\begin{itemize}
+		\item flag域用来存放页的状态，flag的每一位单独表示一种状态，所以它至少可以同时表示出32中不同的状态。这些标志在page-flags.h文件中定义，代码如下：
+		\begin{lstlisting}[language = C]
+	enum pageflags
+	{
+		PG_locked, // 该页被锁住
+		PG_error, // 此页发生了一个I/O错误
+		PG_referenced, // used for page reclaim for anonymous pagecache
+		PG_uptodate, // 表示该页的内容是否有效
+		PG_dirty, // 该页为脏页
+		PG_lru,
+		PG_active,
+		PG_slab,
+		PG_owner_priv_1,
+		PG_arch_1,
+		PG_reserved, // 表示页永远不会被换出，也有可能不存在
+		PG_private, // 表示该页含有文件系统中特定的数据 
+		PG_private_2,
+		PG_writeback,
+		PG_head,
+		PG_swapcache,
+		PG_mappedtodisk,
+		PG_reclaim,
+		PG_swapbacked,
+		PG_unevictable,
+		PG_mlocked,
+		PG_uncached,
+		PG_hwpoison,
+		PG_young,
+		PG_idle,
+		__NR_PAGEFLAGS,
+		PG_checked = PG_owner_priv_1,
+		PG_fscache = PG_private_2,
+		PG_pinned = PG_owner_priv_1,
+		PG_savepinned = PG_dirty,
+		PG_foreign = PG_owner_priv_1,
+		PG_slob_free = PG_private,
+		PG_double_map = PG_private_2,
+		PG_isolated = PG_reclaim
+	};
+		\end{lstlisting}
+
+		\item \_count域存放在页的引用计数。
+		\item virtual域是页的虚拟地址，它就是页在虚拟内存中的地址。
+	\end{itemize}
+
+	需要知道的是，page结构只是用于描述当前时刻在相关物理页中存放的东西。这个数据结构的目的在于描述物理内存本身，而并没有描述包含在其中的数据。
+	内核使用这个数据结构来管理系统中所有的页。\par
+
+\subsection{区}
+	系统中存在两种因为硬件缺陷而引起的内存寻址问题：
+	\begin{itemize}
+		\item 一些硬件只能用特定的内存地址来执行DMA。
+		\item 一些体系结构的内存的物理寻址范围比虚拟寻址范围大得多，导致有一些内存不能永久地映射到内核空间中。
+	\end{itemize}
+
+	为了解决这两个问题，内核把页分为了六个区：
+	\begin{itemize}
+		\item ZONE\_DMA，这个区用于执行DMA操作。
+		\item ZONE\_DMA32，这个区同样用于执行DMA操作，只是这些页面只能被32位设备访问。
+		\item ZONE\_NORMAL，这个区包含的是能正常映射的页。
+		\item ZONE\_HIGHEM，这个区包含的页不能永久地映射到内核空间中。
+		\item ZONE\_MOVABLE
+		\item ZONE\_DEVICE
+	\end{itemize}
+
+	需要注意的是，区的划分是没有任何物理意义的，这只是内核为了管理页而采取的一种逻辑上的分组。
+	linux把系统的页划分为区，形成不同的内存池，然后根据用途进行分配。例如，当需要内存用于执行DMA操作，就可以从ZONE\_DMA中按照请求的数目取出页。\par
+
+	下面是区的数据结构的定义，内核用它来管理系统中所有的区：
+	\begin{lstlisting}[language = C]
+	struct zone
+	{
+		unsigned long watermark[NR_WMARK];
+		unsigned long lowmem_reserve[MAX_NR_ZONES];
+		struct per_cpu_pageset pageset[NR_CPUS];
+		spinlock_t lock;
+		struct free_area free_area[MAX_ORDER];
+		spinlock_t lru_lock;
+		struct zone_lru
+		{
+			struct list_head list;
+			unsigned long nr_saved_scan;
+		}lru[NR_LRU_LISTS];
+		struct zone_reclaim_stat reclaim_stat;
+		unsigned long pages_scanned;
+		unsigned long flags;
+		atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
+		int prev_priority;
+		unsigned int inactive_ratio;
+		wait_queue_head_t *wait_table;
+		unsigned long wait_table_hash_nr_entries;
+		unsigned long wait_table_bits;
+		struct palist_data *zone_pgdat;
+		unsigned long zone_start_pfn;
+		unsigned long spanned_pages;
+		unsigned long present_pages;
+		const char* name;
+	};
+	\end{lstlisting}
+
+	区的数据结构有3个重要的域，如下所示：
+	\begin{itemize}
+		\item watermark数组。内核使用水位为每个内存区设置合适的内存消耗基准，watermark数组持有该区水位所能达到的最小值、最低和最高水位值。
+		\item lock域。lock是一个自旋锁，用于防止这个结构被并发访问。
+		\item name域。name用于表示这个区的名字，内核启动期间将初始化这个值，三个区的名字分别为"DMA"、"Normal"和"HighMem"。
+	\end{itemize}
+
+\subsection{获得页}
 
 \end{document}

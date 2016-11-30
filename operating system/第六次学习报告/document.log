@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  29 NOV 2016 11:24
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  30 NOV 2016 18:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2063,31 +2063,33 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.255 ...�80h号中断的中断处理函数改为_
-                                                  UserIntHandler。实现代...
 
-? 
-! Emergency stop.
-<inserted text> 
-                $
-l.255 ...�80h号中断的中断处理函数改为_
-                                                  UserIntHandler。实现代...
-End of file on the terminal!
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
- 
-Here is how much of TeX's memory you used:
- 31401 strings out of 493591
- 566450 string characters out of 6143546
- 710940 words of memory out of 5000000
- 34384 multiletter control sequences out of 15000+600000
- 10900 words of font info for 85 fonts, out of 8000000 for 9000
- 1347 hyphenation exceptions out of 8191
- 48i,12n,87p,10365b,1752s stack positions out of 5000i,500n,10000p,200000b,80000s
-Output written on document.pdf (5 pages).
-ent.
+[6]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[7]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8]
+File: 8.png Graphic file (type QTm)
+ <use  "8.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [9
@@ -2099,8 +2101,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[10] 
-AED: lastpage setting LastPage
+[10] (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2110,24 +2116,42 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [11
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 388.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 388.
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[12] 
+AED: lastpage setting LastPage
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[13]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 513.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 513.
  (./document.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 388.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 388.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 513.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 513.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 388.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 513.
  ) 
 Here is how much of TeX's memory you used:
- 31461 strings out of 493591
- 569073 string characters out of 6143546
- 726940 words of memory out of 5000000
- 34441 multiletter control sequences out of 15000+600000
+ 31713 strings out of 493591
+ 572842 string characters out of 6143546
+ 732435 words of memory out of 5000000
+ 34689 multiletter control sequences out of 15000+600000
  10900 words of font info for 85 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,12n,87p,10365b,1752s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,12n,87p,10365b,1867s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on document.pdf (11 pages).
+Output written on document.pdf (13 pages).
