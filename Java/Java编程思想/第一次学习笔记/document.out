@@ -7,6 +7,8 @@
 \BOOKMARK [2][-]{subsection.2.1}{初始化}{section.2}% 7
 \BOOKMARK [2][-]{subsection.2.2}{this关键字}{section.2}% 8
 \BOOKMARK [3][-]{subsubsection.2.2.1}{利用this调用构造器}{subsection.2.2}% 9
-\BOOKMARK [2][-]{subsection.2.3}{清理}{section.2}% 10
-\BOOKMARK [3][-]{subsubsection.2.3.1}{finalize函数的用途}{subsection.2.3}% 11
-\BOOKMARK [3][-]{subsubsection.2.3.2}{垃圾回收器的工作机制}{subsection.2.3}% 12
+\BOOKMARK [2][-]{subsection.2.3}{成员初始化}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.3.1}{使用构造器进行初始化}{subsection.2.3}% 11
+\BOOKMARK [2][-]{subsection.2.4}{清理}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.4.1}{finalize函数的用途}{subsection.2.4}% 13
+\BOOKMARK [3][-]{subsubsection.2.4.2}{垃圾回收器的工作机制}{subsection.2.4}% 14

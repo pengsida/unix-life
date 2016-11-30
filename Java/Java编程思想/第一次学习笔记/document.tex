@@ -172,6 +172,8 @@
 		\item 其他内容，第一个字母采用小写。如果该内容由几个单词构成，那么就把它们并在一起，其中每个内部单词的首字母都采用大写形式。
 	\end{itemize}
 
+\clearpage
+
 \section{初始化与清理}
 \subsection{初始化}
 	类似于C++的方式，Java也采用了构造器进行初始化。例子如下：
@@ -247,6 +249,120 @@
 	}
 	\end{lstlisting}
 
+\subsection{成员初始化}
+	即使程序员没有对类的每个基本类型数据成员初始化，它们都会有一个初始值。
+	在类中定义一个对象引用时，如果不将其初始化，该对象引用的初值就是null。\par
+	与C++不同的是，如果想为类中某个变量赋初值，只要在定义类成员变量的地方将其赋值即可，而C++不允许这样的行为。
+
+\subsubsection{使用构造器进行初始化}
+	可以使用构造器进行初始化，但是这无法阻止自动初始化的进行，它将在构造器被调用前发生。\par
+	在类的内部，变量定义的先后顺序决定了初始化的顺序。即使变量定义散布于函数定义之间，它们也将在任何函数(包括构造器)被调用之前得到初始化。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Window
+	{
+		Window(int order)
+		{
+			System.out.println("order is " + order);
+		}
+	}
+
+	class House
+	{
+		Window w1 = new Window(1);
+		House()
+		{
+			w3 = new Window(4);
+		}
+		Window w2 = new Window(2);
+		Window w3 = new Window(3);
+	}
+
+	public class OrderOfInitialization
+	{
+		public static void main(String[] args)
+		{
+			House h = new House();
+		}
+	}
+	\end{lstlisting}
+
+	Java中static关键字不能应用于局部变量，只能作用于域。当类中的静态基本类型域没有初始化时，它的值会是基本类型的标准初值。如果它是一个对象引用，
+	那么它的默认初始化值是null。如果想在定义处进行初始化静态数据，采取的方法与非晶态数据没有什么不同。\par
+	静态变量只有在必要时刻才会初始化。只有类被第一次访问或使用时，类中静态成员才会被初始化，而且是类中所有静态成员变量一起被初始化。
+	此后，静态对象不会再次被初始化。需要注意的是，静态成员变量在非静态成员变量之前被初始化。
+	例子如下：
+	\begin{lstlisting}[language = Java]
+	class Bowl
+	{
+		Bowl(int marker)
+		{
+			System.out.println("order is " + marker);
+		}
+		void foo1()
+		{
+			System.out.println("foo1: Hello world");
+		}
+	}
+
+	class Table
+	{
+		static Bowl bowl1 = new Bowl(1);
+		Table()
+		{
+			System.out.println("Table()");
+			bowl2.foo();
+		}
+		void foo2()
+		{
+			System.out.println("foo2: Hello world");
+		}
+		static Bowl bowl2 = new Bowl(2);
+	}
+
+	class CupBoard
+	{
+		Bowl bowl3 = new Bowl(3);
+		static Bowl bowl4 = new Bowl(4);
+		CupBoard()
+		{
+			System.out.println("CupBoard()");
+			bowl4.foo1();
+		}
+		void foo3()
+		{
+			System.out.println("foo3: Hello world");
+		}
+		static Bowl bowl5 = new Bowl(5);
+	}
+
+	public class StaticInitialization
+	{
+		public static void main(String[] args)
+		{
+			System.out.println("Creating new CupBoard() in main");
+			new CupBoard();
+			System.out.println("Creating new CupBoard() in main");
+			new CupBoard();
+			table.foo2();
+			cupboard.foo3();
+		}
+		static Table table = new Table();
+		static CupBoard cupboard = new CupBoard();
+	}
+	\end{lstlisting}
+
+	假设有一个名为Dog的类，Dog对象创建的步骤如下：
+	\begin{itemize}
+		\item 当首次创建类型为Dog的对象，或者Dog类的静态成员变量或静态成员函数(构造器本身也是静态函数)被访问到时，Java解释器必须查找类路径，用于定位Dog.class文件，然后载入Dog.class。
+		\item 载入Dog.class之后，将执行静态初始化的所有动作。也就是说，静态初始化在类对象首次加载时进行。
+		\item 使用new创建对象时，会在堆上为Dog对象分配足够的存储空间。然后将这块存储空间清零，这样一来，Dog对象中所有基本类型都被设置成了默认值，而引用被设置为null。
+		\item 随后执行所有出现于字段定义处的初始化动作。
+		\item 执行构造器。
+	\end{itemize}
+
+\subsubsection{显式的静态初始化}
+	Java允许将多个静态初始化动作组织成一个特殊的“静态子句”。
+
 \subsection{清理}
 	Java拥有一个垃圾回收器，用于释放由new分配的内存。在其他情况下，如果该内存区域不是由new分配，那么垃圾回收器就不知道该如何释放这块特殊内存。\par
 	为了解决这种情况，Java允许在类中定义一个名为finalize()的函数。一旦垃圾回收器准备释放对象占用的存储空间，将首先调用其finalize()函数，并在垃圾回收动作发生时，
@@ -301,6 +417,13 @@
 	对比一下Java与C++的堆空间分配机制。C++的堆像一个院子，里面的每个对象都负责管理自己的地盘。如果对象被销毁了，这个地盘必须加以重新利用。
 	在Java中，堆更像一个堆栈，每分配一个新对象，它就往前移动一格。\par
 	Java这样的实现方式会导致频繁的内存页面调度。为了避免这种情况的出现，Java使用了垃圾回收器。垃圾回收器工作的时候，一边回收空间，一边讲堆中的对象排列紧凑。
-	通过垃圾回收器对对象重新排列，实现了一种告诉的、有无限空间可供分配的堆模型。
+	通过垃圾回收器对对象重新排列，实现了一种告诉的、有无限空间可供分配的堆模型。\par
+	Java垃圾回收器依据的思想是：对任何活的对象，一定能追溯到其存活在堆栈或静态存储区之中的引用。那么，只要从堆栈或静态存储区之中的引用开始遍历，就能找到所有活的对象。\par
+	Java垃圾回收器处理存活对象的方式为：先暂停程序的运行，将所有存活的对象从当前堆复制到另一个堆，没有复制的全都是垃圾。当对象被复制到新堆，它们是紧凑排列的。
+	这就避免了内存页面调度频繁的发生。这种做法称为“停止-复制”。\par
+	如果Java虚拟机发现程序很少产生垃圾甚至不产生垃圾时，Java会切换到另一种工作模式，叫做“标记-清扫”。“标记-清扫”的思路是：
+	从堆栈和静态存储区出发，遍历所有引用，进而找出所有存活的对象。每当它找到一个存活对象，就会给对象设一个标记。当标记完所有存活的对象后，清理工作才开始进行。
+	在清理过程中，没有标记的对象会被释放。这样一来，就不会有复制动作的发生，但是剩下的堆空间也会不连续。垃圾回收器要是希望得到连续空间，就要重新整理剩下的对象。
+	“标记-清扫”工作必须在程序暂停的情况下才能进行。
 
 \end{document}
