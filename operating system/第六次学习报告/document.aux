@@ -16,18 +16,61 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand*\HyPL@Entry[1]{}
 \HyPL@Entry{0<</S/D>>}
-\@writefile{toc}{\contentsline {section}{\numberline {1}中断和异常的实现}{2}{section.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}设置8259A}{2}{subsection.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}建立IDT}{5}{subsection.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}实现一个中断}{6}{subsection.1.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}时钟中断试验}{7}{subsection.1.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}几点需要注意的事}{8}{subsection.1.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}保护模式下的I/O}{9}{section.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}IOPL}{9}{subsection.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}I/O许可位图}{9}{subsection.2.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}linux下的内存管理}{11}{section.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}页}{11}{subsection.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}区}{12}{subsection.3.2}}
-\newlabel{LastPage}{{}{13}{}{page.13}{}}
-\xdef\lastpage@lastpage{13}
-\xdef\lastpage@lastpageHy{13}
+\@writefile{toc}{\contentsline {section}{\numberline {1}中断和异常的实现}{3}{section.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}设置8259A}{3}{subsection.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}建立IDT}{6}{subsection.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}实现一个中断}{7}{subsection.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}时钟中断试验}{8}{subsection.1.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}几点需要注意的事}{9}{subsection.1.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}保护模式下的I/O}{10}{section.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}IOPL}{10}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}I/O许可位图}{10}{subsection.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}linux下的内存管理}{12}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}页}{12}{subsection.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}区}{13}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}gfp\_mask标志}{14}{subsection.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}获得页}{15}{subsection.3.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}释放页}{16}{subsection.3.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}slab层}{16}{subsection.3.6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.1}slab层的设计}{16}{subsubsection.3.6.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.2}分配对象}{18}{subsubsection.3.6.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.3}使用slab层的例子}{18}{subsubsection.3.6.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}初始化与清理}{20}{section.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}初始化}{20}{subsection.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}this关键字}{20}{subsection.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}利用this调用构造器}{21}{subsubsection.4.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}成员初始化}{21}{subsection.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}使用构造器进行初始化}{21}{subsubsection.4.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}显式的静态初始化}{24}{subsubsection.4.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}数组初始化}{24}{subsubsection.4.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}清理}{24}{subsection.4.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}finalize函数的用途}{25}{subsubsection.4.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}垃圾回收器的工作机制}{25}{subsubsection.4.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}访问权限控制}{27}{section.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}包:库单元}{27}{subsection.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Java访问权限修饰词}{27}{subsection.5.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}包访问权限}{27}{subsubsection.5.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}public访问权限}{27}{subsubsection.5.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}private访问权限}{28}{subsubsection.5.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.4}protected访问权限}{29}{subsubsection.5.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}public类}{29}{subsection.5.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}复用类}{30}{section.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}类的组合}{30}{subsection.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}类的继承}{30}{subsection.6.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}基类的初始化}{31}{subsubsection.6.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}名称屏蔽}{31}{subsubsection.6.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.3}向上转型}{32}{subsubsection.6.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.4}继承技术的用途}{33}{subsubsection.6.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}final关键字}{33}{subsection.6.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.1}final数据}{33}{subsubsection.6.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.2}final函数}{33}{subsubsection.6.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.3}final类}{33}{subsubsection.6.3.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}多态}{34}{section.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}绑定}{34}{subsection.7.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}多态的缺陷}{35}{subsection.7.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}private函数无法动态绑定}{35}{subsubsection.7.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.2}域无法动态绑定}{35}{subsubsection.7.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}协变返回类型}{36}{subsection.7.3}}
+\newlabel{LastPage}{{}{37}{}{page.37}{}}
+\xdef\lastpage@lastpage{37}
+\xdef\lastpage@lastpageHy{37}

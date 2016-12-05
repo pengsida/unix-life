@@ -510,6 +510,939 @@
 		\item name域。name用于表示这个区的名字，内核启动期间将初始化这个值，三个区的名字分别为"DMA"、"Normal"和"HighMem"。
 	\end{itemize}
 
+\subsection{gfp\_mask标志}
+	内核中定义了三类分配器标志：
+	\begin{itemize}
+		\item 行为修饰符，用于表示内核应当如何分配所需的内存。
+		\item 区修饰符，用于表示从哪里分配内存。
+		\item 类型修饰符，组合了行为修饰符和区修饰符。
+	\end{itemize}
+
+	以上三个描述符都定义在gfp.h文件中，一般只使用类型修饰符。下面是各个类型修饰符及其相应描述：
+	\sizedfic{1}{9.png}
+	
+	下面介绍了各个类型修饰符使用的情形：
+	\sizedfic{1}{10.png}
+
 \subsection{获得页}
+	内核提供了一种请求内存的底层机制，并提供了相应的接口函数，这些接口函数以页为单位分配内存。其中最核心的函数为：
+	\begin{lstlisting}[language = C]
+	struct page* alloc_pages(gfp_t gfp_mask, unsigned int order);
+	\end{lstlisting}
+
+	这个函数位于gfp.h文件中，用于分配$2^{order}$个连续的物理页。函数还返回了一个指针，用于指向第一个页的page结构体。\par
+	内核使用下面的函数把给定的页转换成相应的逻辑地址，这个函数返回的是指向物理页当前逻辑地址的指针：
+	\begin{lstlisting}[language = C]
+	void* page_address(struct page* page);
+	\end{lstlisting}
+
+
+\subsection{释放页}
+	当内核不再需要页的时候，它使用下面的函数释放页：
+	\begin{lstlisting}[language = C]
+	void __free_pages(struct page* page, unsigned int order);
+	void free_pages(unsigned long addr, unsigned int order);
+	void free_page(unsigned long addr);
+	\end{lstlisting}
+
+\subsection{slab层}
+	slab层在linux内核中扮演着通用数据结构缓存层的角色。
+\subsubsection{slab层的设计}
+	slab层管理着多个高速缓存，每个高速缓存由一个或多个slab组成，slab用于存放对象。高速缓存、slab和对象的关系如下图所示：
+	\sizedfic{0.9}{11.png}
+
+	每个高速缓存使用kmem\_cache结构来表示，这个结构包含三个链表：slabs\_full、slabs\_partial、slabs\_empty。
+	这三个链表存放在kmem\_list3结构中，用于表示满、部分满或空的slab。这三个链表包含了高速缓存中所有的slab。定义代码如下：
+	\begin{lstlisting}[language = C]
+	struct kmem_cache
+	{
+		struct array_cache* array[NR_CPUS];
+		unsigned int batchcount;
+		unsigned int limit;
+		unsigned int shared;
+		unsigned int buffer_size;
+		u32 reciprocal_buffer_size;
+		unsigned int flags;
+		unsigned int num;
+		unsigned int gfporder;
+		gfp_t gfpflags;
+		size_t colour;
+		unsigned int colour_off;
+		struct kmem_cache* slabp_cache;
+		unsigned int slab_size;
+		unsigned int dflags;
+		void (*ctor)(void *obj);
+		struct list_head next;
+		struct kmem_list3* nodelists[MAX_NUMNODES];
+	};
+	\end{lstlisting}
+
+	kmem\_list3的定义如下：
+	\begin{lstlisting}[language = C]
+	struct list_head
+	{
+		struct list_head *next, *prev;
+	};
+	struct kmem_list3
+	{
+		struct list_head slabs_partial;
+		struct list_head slabs_full;
+		struct list_head slabs_free;
+		unsigned long free_objects;
+		unsigned int free_limit;
+		unsigned int colour_next;
+		spinlock_t list_lock;
+		struct array_cache* shared;
+		struct array_cache** alien;
+		unsigned long next_reap;
+		int free_touched;
+	};
+	\end{lstlisting}
+
+	slab结构体定义如下：
+	\begin{lstlisting}[language = C]
+	struct slab
+	{
+		struct list_head list;
+		unsigned long colour_off;
+		void* s_mem;
+		unsigned int inuse;
+		kmem_bufctl_t free;
+		unsigned short nodeid;
+	};
+	\end{lstlisting}
+
+	slab层可以创建新的slab。slab由一个或几个页组成，所以slab层可以通过\_\_get\_free\_pages()函数新建slab。\par
+	slab层通过下面的函数新建高速缓存：
+	\begin{lstlisting}[language = C]
+	struct kmem_cache* kmem_cache_create(
+		const char* name, // 存放高速缓存的名字
+		size_t size, // 缓存中每个元素的大小
+		size_t align, // slab中第一个对象的偏移
+		unsigned long flags, // 用于控制高速缓存的行为
+		void (*ctor)(void*) // 高速缓存的构造函数
+	);
+	\end{lstlisting}
+
+	slab层通过下面的函数销毁高速缓存：
+	\begin{lstlisting}[language = C]
+	int kmem_cache_destroy(struct kmem_cache *cachep);
+	\end{lstlisting}
+
+\subsubsection{分配对象}
+	slab层通过下面的函数获得对象，这个函数返回指向对象的指针。如果高速缓存中的所有slab都没有空闲的对象，那么就新建slab。函数如下：
+	\begin{lstlisting}[language = C]
+	void* kmem_cache_alloc(struct kmem_cache* cachep, gfp_t flags);
+	\end{lstlisting}
+
+	slab层使用下面的函数释放对象：
+	\begin{lstlisting}[language = C]
+	void kmem_cache_free(struct kmem_cache* cachep, void* objp);
+	\end{lstlisting}
+
+\subsubsection{使用slab层的例子}
+	fork.c里就使用slab层进行内存的分配。首先，内核定义了一个全局变量，这个高速缓存用于存放task\_struct结构。
+	\begin{lstlisting}[language = C]
+	struct kmem_cache* task_struct_cachep;
+	\end{lstlisting}
+
+	这个高速缓存在fork\_init()中被初始化：
+	\begin{lstlisting}[language = C]
+	task_struct_cachep = kmem_cache_create(
+		"task_struct",
+		sizeof(struct task_struct),
+		ARCH_MIN_TASKALIGN,
+		SLAB_PANIC | SLAB_NOTRACK,
+		NULL
+	);
+	\end{lstlisting}
+
+	当调用fork()函数时，系统创建新进程，调用do\_fork()函数。在复制父进程的过程中，调用copy\_process()函数。
+	该函数又调用dup\_task\_struct()。在这个函数中，将创建一个新的进程描述符，这时就用slab层中分配对象的函数分配空间给新进程描述符，代码如下：
+	\begin{lstlisting}[language = C]
+	static struct task_struct* dup_task_struct(struct task_struct* orig)
+	{
+		struct task_struct* tsk;
+		tsk = kmem_cache_alloc(task_struct_cachep, GFP_KERNEL);
+		if(!tsk)
+			return NULL;
+		// ...
+	}
+
+	static struct task_struct* copy_process(
+			unsigned long clone_flags,
+			unsigned long stack_start,
+			struct pt_regs* regs,
+			unsigned long stack_size,
+			int __user *child_tidptr,
+			struct pid* pid,
+			int trace
+								)
+	{
+		struct task_struct* p;
+		// ...
+		p = dup_task_struct(current);
+		// ...
+	}
+
+	long do_fork(
+				unsigned long clone_flags,
+				unsigned long stack_start,
+				struct pt_regs* regs,
+				unsigned long stack_size,
+				int __user *parent_tidptr,
+				int __user *child_tidptr
+				)
+	{
+		struct task_struct* p;
+		// ...
+		p = copy_process(clone_flags, stack_start, regs, stack_size, child_tidptr, NULL, trace);
+		// ...
+	}
+	\end{lstlisting}
+
+	当进程执行完后，如果没有子进程在等待，那么它的进程描述符将被释放，并返回给task\_struct\_cachep这个高速缓存，
+	实现代码如下：
+	\begin{lstlisting}[language = C]
+	kmem_cache_free(task_struct_cachep, tsk);
+	\end{lstlisting}
+
+\clearpage
+
+\section{初始化与清理}
+\subsection{初始化}
+	类似于C++的方式，Java也采用了构造器进行初始化。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Rock
+	{
+		Rock()
+		{
+			System.out.println("Hello world");
+		}
+	}
+	\end{lstlisting}
+
+	和C++一样，Java的构造器也可以进行重载。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Tree
+	{
+		int height;
+		Tree()
+		{
+			System.out.println("Planting a seeding");
+			height = 0;
+		}
+		Tree(int inititalHeight)
+		{
+			height = inititalHeight;
+			System.out.println("Creating new Tree that is " + height + " feer tall");
+		}
+	}
+	\end{lstlisting}
+
+	关于默认构造器，这里需要注意：如果程序员没有提供任何构造器，编译器将自动生成一个默认构造器；如果程序员写了一个构造器，编译器就不会自动生成一个默认构造器。
+
+\subsection{this关键字}
+	Java的this关键字和C++的this关键字有区别。C++的this关键字是该对象的地址，而Java中是没有指针的。Java的this关键字表示该对象的引用。例子如下：
+	\begin{lstlisting}[language = Java]
+	public class Leaf
+	{
+		int i = 0;
+		Leaf increment()
+		{
+			++i;
+			return this; // 相当于返回当前对象
+		}
+	}
+	\end{lstlisting}
+\subsubsection{利用this调用构造器}
+	在构造器中，如果为this添加了参数列表，将产生对符合此参数列表的某个构造器的明确调用。例子如下：
+	\begin{lstlisting}
+	public class Flower
+	{
+		int petalCount = 0;
+		String s = "initial value";
+		Flower(int petals)
+		{
+			petalCount = petals;
+		}
+		Flower(String ss)
+		{
+			s = ss;
+		}
+		Flower(String s, int petals)
+		{
+			this(petals);
+			// 不能再写this(s)，否则会覆盖原有的内容
+			this.s = s;
+		}
+		void print()
+		{
+			// 在非构造函数中不能使用this(s)
+			System.out.println("Hello world!");
+		}
+	}
+	\end{lstlisting}
+
+\subsection{成员初始化}
+	即使程序员没有对类的每个基本类型数据成员初始化，它们都会有一个初始值。
+	在类中定义一个对象引用时，如果不将其初始化，该对象引用的初值就是null。\par
+	与C++不同的是，如果想为类中某个变量赋初值，只要在定义类成员变量的地方将其赋值即可，而C++不允许这样的行为。
+
+\subsubsection{使用构造器进行初始化}
+	可以使用构造器进行初始化，但是这无法阻止自动初始化的进行，它将在构造器被调用前发生。\par
+	在类的内部，变量定义的先后顺序决定了初始化的顺序。即使变量定义散布于函数定义之间，它们也将在任何函数(包括构造器)被调用之前得到初始化。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Window
+	{
+		Window(int order)
+		{
+			System.out.println("order is " + order);
+		}
+	}
+
+	class House
+	{
+		Window w1 = new Window(1);
+		House()
+		{
+			w3 = new Window(4);
+		}
+		Window w2 = new Window(2);
+		Window w3 = new Window(3);
+	}
+
+	public class OrderOfInitialization
+	{
+		public static void main(String[] args)
+		{
+			House h = new House();
+		}
+	}
+	\end{lstlisting}
+
+	Java中static关键字不能应用于局部变量，只能作用于域。当类中的静态基本类型域没有初始化时，它的值会是基本类型的标准初值。如果它是一个对象引用，
+	那么它的默认初始化值是null。如果想在定义处进行初始化静态数据，采取的方法与非晶态数据没有什么不同。\par
+	静态变量只有在必要时刻才会初始化。只有类被第一次访问或使用时，类中静态成员才会被初始化，而且是类中所有静态成员变量一起被初始化。
+	此后，静态对象不会再次被初始化。需要注意的是，静态成员变量在非静态成员变量之前被初始化。
+	例子如下：
+	\begin{lstlisting}[language = Java]
+	class Bowl
+	{
+		Bowl(int marker)
+		{
+			System.out.println("order is " + marker);
+		}
+		void foo1()
+		{
+			System.out.println("foo1: Hello world");
+		}
+	}
+
+	class Table
+	{
+		static Bowl bowl1 = new Bowl(1);
+		Table()
+		{
+			System.out.println("Table()");
+			bowl2.foo();
+		}
+		void foo2()
+		{
+			System.out.println("foo2: Hello world");
+		}
+		static Bowl bowl2 = new Bowl(2);
+	}
+
+	class CupBoard
+	{
+		Bowl bowl3 = new Bowl(3);
+		static Bowl bowl4 = new Bowl(4);
+		CupBoard()
+		{
+			System.out.println("CupBoard()");
+			bowl4.foo1();
+		}
+		void foo3()
+		{
+			System.out.println("foo3: Hello world");
+		}
+		static Bowl bowl5 = new Bowl(5);
+	}
+
+	public class StaticInitialization
+	{
+		public static void main(String[] args)
+		{
+			System.out.println("Creating new CupBoard() in main");
+			new CupBoard();
+			System.out.println("Creating new CupBoard() in main");
+			new CupBoard();
+			table.foo2();
+			cupboard.foo3();
+		}
+		static Table table = new Table();
+		static CupBoard cupboard = new CupBoard();
+	}
+	\end{lstlisting}
+
+	假设有一个名为Dog的类，Dog对象创建的步骤如下：
+	\begin{itemize}
+		\item 当首次创建类型为Dog的对象，或者Dog类的静态成员变量或静态成员函数(构造器本身也是静态函数)被访问到时，Java解释器必须查找类路径，用于定位Dog.class文件，然后载入Dog.class。
+		\item 载入Dog.class之后，将执行静态初始化的所有动作。也就是说，静态初始化在类对象首次加载时进行。
+		\item 使用new创建对象时，会在堆上为Dog对象分配足够的存储空间。然后将这块存储空间清零，这样一来，Dog对象中所有基本类型都被设置成了默认值，而引用被设置为null。
+		\item 随后执行所有出现于字段定义处的初始化动作。
+		\item 执行构造器。
+	\end{itemize}
+
+\subsubsection{显式的静态初始化}
+	Java允许将多个静态初始化动作组织成一个特殊的“静态子句”。例子如下：
+	\begin{lstlisting}[language = Java]
+	public class Spoon
+	{
+		static int i;
+		static
+		{
+			i = 47;
+		}
+	}
+	\end{lstlisting}
+
+	静态子句只会执行一次。当首次生成这个类的一个对象或者首次访问属于这个类的静态成员变量或静态成员函数时，该代码段将执行。
+
+\subsubsection{数组初始化}
+	Java不允许指定数组的大小。例子如下：
+	\begin{lstlisting}[language = C]
+	// 现在拥有的是对数组的一个引用
+	// 我们并没有给数组对象本身分配任何空间
+	// 我们只是为该引用分配了空间
+	int a[];
+	\end{lstlisting}
+
+\subsection{清理}
+	Java拥有一个垃圾回收器，用于释放由new分配的内存。在其他情况下，如果该内存区域不是由new分配，那么垃圾回收器就不知道该如何释放这块特殊内存。\par
+	为了解决这种情况，Java允许在类中定义一个名为finalize()的函数。一旦垃圾回收器准备释放对象占用的存储空间，将首先调用其finalize()函数，并在垃圾回收动作发生时，
+	真正地回收对象占用的内存。\par
+	finalize()函数与C++中的析构函数有区别，因为C++中的对象一定会被销毁，而Java中的对象不一定总是被垃圾回收器回收，而且垃圾回收并不等于析构。
+	需要知道的是，只要程序没有濒临存储空间用完的时刻，垃圾回收器就不会释放程序所创建的任何对象的存储空间。\par
+
+\subsubsection{finalize函数的用途}
+	finalize函数不会负责释放对象所占有的内存。无论对象是如何创建的，垃圾回收器都会负责释放对象占据的所有内存。
+	只有当Java程序中调用了本地方法分配空间时，finalize函数才会派上用场。
+	本地方法是一种在Java中调用非Java代码的方式。在非Java代码中，可能会调用C的malloc函数分配存储空间，此时只有使用了free函数，该内存空间才会释放。
+	所以在对象释放时，需要在finalize函数中调用free函数来释放这块特殊的内存，否则将引起内存泄漏。\par
+
+	下面是使用finalize()函数的例子：
+	\begin{lstlisting}[language = Java]
+	class Book
+	{
+		boolean checkedOut = false;
+		Book(boolean checkOut)
+		{
+			checkedOut = checkOut;
+		}
+		void checkIn()
+		{
+			checkedOut = false;
+		}
+		protected void finalize()
+		{
+			if(checkedOut)
+				System.out.println("Error: checked out");
+		}
+	}
+
+	public class TerminationCondition
+	{
+		public static void main(String[] args)
+		{
+			Book novel = new Book(true);
+			novel.checkIn();
+			new Book(true);
+			System.gc();
+		}
+	}
+	\end{lstlisting}
+
+	以上程序通过finalize()函数确保所有Book对象在被当作垃圾回收钱都应该被check in。当有一本书没有check in时，程序将输出错误情况。
+	类似的，如果一个对象代表了一个打开的文件，在对象被回收前程序员应该关闭这个文件。finalize()函数可以用来检查文件是否关闭。
+	finalize函数更多地被用来发现程序中隐晦的缺陷。
+
+\subsubsection{垃圾回收器的工作机制}
+	首先需要意识到，Java中除了基本类型，所有对象都在堆上分配空间。然而Java从堆分配空间的速度，可以和其他语言从堆栈上分配空间的速度相媲美。\par
+	对比一下Java与C++的堆空间分配机制。C++的堆像一个院子，里面的每个对象都负责管理自己的地盘。如果对象被销毁了，这个地盘必须加以重新利用。
+	在Java中，堆更像一个堆栈，每分配一个新对象，它就往前移动一格。\par
+	Java这样的实现方式会导致频繁的内存页面调度。为了避免这种情况的出现，Java使用了垃圾回收器。垃圾回收器工作的时候，一边回收空间，一边讲堆中的对象排列紧凑。
+	通过垃圾回收器对对象重新排列，实现了一种告诉的、有无限空间可供分配的堆模型。\par
+	Java垃圾回收器依据的思想是：对任何活的对象，一定能追溯到其存活在堆栈或静态存储区之中的引用。那么，只要从堆栈或静态存储区之中的引用开始遍历，就能找到所有活的对象。\par
+	Java垃圾回收器处理存活对象的方式为：先暂停程序的运行，将所有存活的对象从当前堆复制到另一个堆，没有复制的全都是垃圾。当对象被复制到新堆，它们是紧凑排列的。
+	这就避免了内存页面调度频繁的发生。这种做法称为“停止-复制”。\par
+	如果Java虚拟机发现程序很少产生垃圾甚至不产生垃圾时，Java会切换到另一种工作模式，叫做“标记-清扫”。“标记-清扫”的思路是：
+	从堆栈和静态存储区出发，遍历所有引用，进而找出所有存活的对象。每当它找到一个存活对象，就会给对象设一个标记。当标记完所有存活的对象后，清理工作才开始进行。
+	在清理过程中，没有标记的对象会被释放。这样一来，就不会有复制动作的发生，但是剩下的堆空间也会不连续。垃圾回收器要是希望得到连续空间，就要重新整理剩下的对象。
+	“标记-清扫”工作必须在程序暂停的情况下才能进行。
+
+\clearpage
+
+\section{访问权限控制}
+	Java有四个访问权限：public、protected、包访问权限(没有关键词)和private。
+
+\subsection{包:库单元}
+	包内包含一组类，它们在单一的名字空间之下被组织在一起。
+	使用package语句指定类的名字空间。例子如下：
+	\begin{lstlisting}[language = Java]
+	package psd.mypackage;
+
+	public class MyClass
+	{
+		// ...
+	}
+	\end{lstlisting}
+
+	当同一目录下其他文件想调用这个类时，需要使用import语句。例子如下：
+	\begin{lstlisting}[language = Java]
+	import psd.mypackage.MyClass;
+
+	public class ImportedMyClass
+	{
+		public static void main(String[] args)
+		{
+			MyClass m = new MyClass();
+		}
+	}
+	\end{lstlisting}
+
+	如果两个文件不在同一目录下，就需要设置CLASSPATH。Java中的包名相当于路径名。当一个文件声明package psd.mypackage的时候，
+	这个文件应该处于CLASSPATH/psd/mypackage的目录下。如果其他目录下的文件想要调用时，只有写import psd.mypackage.*，
+	那么这个文件就会搜寻CLASSPATH/psd/mypackage的目录下的所有文件。
+
+\subsection{Java访问权限修饰词}
+\subsubsection{包访问权限}
+	当类或成员没有关键词时，对于同一包下的文件，对这个类或成员都有访问权限。
+	而对于其他包的所有类，这个类或成员就是private的。
+
+\subsubsection{public访问权限}
+	当一个类被public修饰，那么就表明自己对其他人都是可用的。例子如下：
+	\begin{lstlisting}[language = Java]
+	package access.dessert;
+
+	public class Cookie
+	{
+		public Cookie()
+		{
+			System.out.println("Hello world");
+		}
+		void bite()
+		{
+			System.out.println("bite");
+		}
+	}
+	\end{lstlisting}
+
+	Cookie类是public的，所有其他文件可以使用它创建对象。需要注意的是，bite()成员函数是具有包访问权限的，所以只有同一包的文件才能访问它。例子如下：
+	\begin{lstlisting}[language = Java]
+	import access.dessert.*;
+
+	public class Dinner
+	{
+		public static void main(String[] args)
+		{
+			Cookie x = new Cookie();
+			// x.bite(); error!!!
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{private访问权限}
+	当一个成员被private修饰，那么这个成员只能在类中使用，和C++的用法是一样的。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Sundae
+	{
+		private Sundae(){}
+		static Sundae makeASundae()
+		{
+			return new Sundae();
+		}
+	}
+
+	public class IceCream
+	{
+		public static void main(String[] args)
+		{
+			// Sundae x = new Sundae(); error!!!
+			Sundae x = Sundae.makeASundae();
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{protected访问权限}
+	protected访问权限就是继承访问权限，和C++的用法一样。例子如下：
+	\begin{lstlisting}[language = Java]
+	package access.cookie2.*;
+
+	public class Cookie
+	{
+		public Cookie()
+		{
+			System.out.println("Cookie constructor");
+		}
+		protected void bite()
+		{
+			System.out.println("bite");
+		}
+	}
+	\end{lstlisting}
+
+	处于其他类继承这个类时，就可以访问bite()函数。例子如下：
+	\begin{lstlisting}
+	import access.cookie2.Cookie;
+
+	public class Chocolate extends Cookie
+	{
+		public Chocolate()
+		{
+			System.out.println("Chocolate constructor");
+		}
+		public void chomp()
+		{
+			bite();
+		}
+	}
+	\end{lstlisting}
+
+\subsection{public类}
+	一个类只有两种访问权限：包访问权限和public。只有一个类被修饰为public，其他包下的类才可以创建该类的对象。与public类有关的限制如下：
+	\begin{itemize}
+		\item 每个文件中只能有一个public类。
+		\item public类的名称必须和文件名完全一样。
+	\end{itemize}
+
+\clearpage
+
+\section{复用类}
+	Java中复用类的两种方式：
+	\begin{itemize}
+		\item 在新的类中产生现有类的对象，这种方法称为组合。
+		\item 按照现有类的类型来创建新类，这种方法称为继承。
+	\end{itemize}
+
+\subsection{类的组合}
+	组合技术很直观，只要将对象引用置于新类中即可。例子如下：
+	\begin{lstlisting}[language = Java]
+	class WaterSource
+	{
+		private String s;
+		WaterSource()
+		{
+			System.out.println("WaterSource");
+			s = "Constructed";
+		}
+	}
+	\end{lstlisting}
+
+\subsection{类的继承}
+	Java中继承的语法和C++类似，不过Java中使用关键字extends声明。
+	如果继承基类，新类就会得到基类中所有非私有的域和成员函数。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Cleanser
+	{
+		private String s = "Cleanser";
+		public void append(String a)
+		{
+			s += a;
+		}
+		public static void main(String[] args)
+		{
+			Cleanser x = new Cleanser();
+			x.append(" hello world");
+		}
+	}
+
+	public class Detergent extends Cleanser
+	{
+		public static void main(String[] args)
+		{
+			Detergent x = new Detergent();
+			x.append(" hello world");
+			Cleanser.main(args);
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{基类的初始化}
+	如果没有特别声明，将调用基类默认的构造器或者无参数构造器。
+	如果想调用一个带参数的基类构造器，就必须使用super显式地调用基类构造器。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Game
+	{
+		Game(int i)
+		{
+			System.out.println("Hello World");
+		}
+	}
+
+	public class Chess extends Game
+	{
+		Chess()
+		{
+			super(1);
+			System.out.println("Chess constructor");
+		}
+		public static void main(String[] args)
+		{
+			Chess c = new Chess();
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{名称屏蔽}
+	与C++不同的是，Java中导出类如果重载基类中的函数，并不会屏蔽其在基类中该函数的任何版本。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Homer
+	{
+		char doh(char c)
+		{
+			return c;
+		}
+		float doh(float c)
+		{
+			return c;
+		}
+	}
+
+	class Bart extends Homer
+	{
+		String doh(String s)
+		{
+			return s;
+		}
+	}
+	\end{lstlisting}
+
+	需要注意的是，因为这个语法特点，Java中其实是没有名称屏蔽的。那么当我们要覆写基类中的一个函数时，很可能将其重载而非覆写。
+	为了防止这个错误的发生，Java提供了@Override注解相应的函数。如果这个函数是重载而非覆写时，编译器就会产生错误：
+	\begin{lstlisting}[language = Java]
+	class Lisa extends Homer
+	{
+		@Override
+		String doh(String s)
+		{
+			return s; // 将产生错误
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{向上转型}
+	继承技术最重要的不是为新的类提供函数，而是用于表现新类和基类之间的关系。新类是现有类的一种类型。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Instrument
+	{
+		public void play(){}
+		static void tune(Instrument i)
+		{
+			i.play();
+		}
+	}
+
+	public class Wind extends Instrument
+	{
+		public static void main(String[] args)
+		{
+			Wind flute = new Wind();
+			Instrument.tune(flute);
+			// tune函数接受的是Instrument对象
+			// 这里它也可以接受Wind对象
+			// 因为Wind是Instrument的一种类型
+		}
+	}
+	\end{lstlisting}
+
+	将导出类引用转换为基类引用的动作称为向上转型。在实现上看，导出类是基类的一个超集。
+	在向上转型的过程中，导出类引用转换为基类引用，并且只保留基类拥有的方法。\par
+	导出类无法继承private函数。即使在导出类中以相同的名称声明一个函数，也不会覆盖基类中相应的private函数，而是生成了一个新的函数。
+	当向上转型时，这个函数将会被丢弃。
+
+\subsubsection{继承技术的用途}
+	相对于组合技术，继承技术不常用。只有需要从新类向基类进行向上转型，继承才是必要的。
+
+\subsection{final关键字}
+	final关键字可以修饰数据、函数和类。
+\subsubsection{final数据}
+	Java中使用final告知一块数据是恒定不变的，相当于C中的const关键字。
+	需要知道的是，Java中常量必须是基本数据类型。\par
+	一个既是static又是final的域只占据一段不能改变的存储空间。\par
+	当用final修饰对象引用时，这个引用将恒定不变。也就是说，引用一旦被初始化指向一个对象，就无法再把它改为指向另一个对象，而被引用的对象本身是可以被修改的。
+	Java没有提供使任何对象恒定不变的途径。\par
+	Java允许生成空白final。也就是这个域被final修饰但又没有赋初值。final域在使用前必须被初始化。\par
+	在函数参数列表中将参数指明为final，那么在函数中就无法修改参数引用所指向的对象。
+\subsubsection{final函数}
+	使用final函数的原因如下：
+	\begin{itemize}
+		\item 将函数锁定。以防任何继承类修改它的实现。
+		\item 追求效率。当一个函数指明为final，编译器就将该函数的所有调用都转为内嵌调用。这和C++的inline关键字的作用一样。
+	\end{itemize}
+
+	类中private方法都隐式地指定为final。
+
+\subsubsection{final类}
+	当将某个类的整体定义为final，那么这个类就无法被继承。final类中的域不一定是final的。
+
+\clearpage
+
+\section{多态}
+	多态又称为动态绑定，和C++的多态类似。在讨论多态之前，先感受一下多态的特性。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Instrument
+	{
+		public void play()
+		{
+			System.out.println("Instrument.play()");
+		}
+	}
+
+	class Wind extends Instrument
+	{
+		public void play()
+		{
+			System.out.println("Wind.play()");
+		}
+	}
+
+	public class Music
+	{
+		public static void tune(Instrument i)
+		{
+			i.play();
+		}
+		public static void main(String[] args)
+		{
+			Wind flute = new Wind();
+			// tune接受Instrument类型
+			// 将Wind转为Instrument类型
+			// 输出的是：Wind.play()
+			tune(flute); 
+		}
+	}
+	\end{lstlisting}
+
+	从这个例子可以看出一个多态的现象：虽然tune函数接受一个Instrument引用，但是它知道这个Instrument引用指向的是Wind对象。
+	正是动态绑定实现了这项特性。
+
+\subsection{绑定}
+	将一个函数调用和一个函数主体关联起来称为绑定。绑定有两种类型，如下：
+	\begin{itemize}
+		\item 前期绑定。在程序执行前就将一个函数调用和一个函数主体关联起来。
+		\item 后期绑定，又称为动态绑定。在程序运行时根据对象的类型进行绑定。
+	\end{itemize}
+
+	Java中除了static方法和final方法，其他所有方法都是后期绑定的。
+
+\subsection{多态的缺陷}
+\subsubsection{private函数无法动态绑定}
+	程序不能对private函数进行动态绑定。这是因为private函数是final函数，而且导出类无法覆盖基类中的private函数。例子如下：
+	\begin{lstlisting}[language = Java]
+	class PrivateOvrride
+	{
+		private void f()
+		{
+			System.out.println("private f()");
+		}
+
+		public static void main(String[] args)
+		{
+			PrivateOvrride po = new Derived();
+			po.f(); // 不会指向Derived类中的f()，而是指向PrivateOvrride类中的f()
+		}
+	}
+
+	public class Derived extends PrivateOvrride
+	{
+		public void f()
+		{
+			System.out.println("public f()");
+		}
+	}
+	\end{lstlisting}
+
+	为了避免造成混乱的代码，导出类中的函数名不要和基类中的private函数名相同。
+
+\subsubsection{域无法动态绑定}
+	和C++一样，Java中域是无法动态绑定的。也就是说，程序无法根据对象的类型选择相应的域。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Super
+	{
+		public int field = 0;
+	}
+
+	Sub extends Super
+	{
+		public int field = 1;
+	}
+
+	public class FieldAccess
+	{
+		public static void main(String[] args)
+		{
+			Super sup = new Sub();
+			System.out.println(sup.field); // 输出0
+			Sub sub = new Sub();
+			System.out.println(sub.field); // 输出1
+		}
+	}
+	\end{lstlisting}
+
+	为了避免造成混乱的代码，不要把基类中的域和导出类的域赋予相同的名字。
+
+\subsection{协变返回类型}
+	协变返回类型表明，子类覆写基类方法时，返回的类型可以是基类方法返回类型的子类。
+
+	\begin{lstlisting}[language = Java]
+	class Grain
+	{
+		public String toString()
+		{
+			return "Grain";
+		}
+	}
+
+	class Wheat extends Grain
+	{
+		public String toString()
+		{
+			return "Wheat";
+		}
+	}
+
+	class Mill
+	{
+		Grain process()
+		{
+			return new Grain();
+		}
+	}
+
+	class WheatMill extends Mill
+	{
+		Wheat process()
+		{
+			return new Wheat();
+		}
+	}
+
+	public class CovariantReturn
+	{
+		public static void main(String[] args)
+		{
+			Mill m = new Mill();
+			Grain g = m.process();
+			System.out.println(g); // 输出Grain
+			m = new WheatMill();
+			g = m.process();
+			System.out.println(g); // 输出Wheat
+		}
+	}
+	\end{lstlisting}
+
+	
 
 \end{document}
