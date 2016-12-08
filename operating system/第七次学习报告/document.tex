@@ -1,0 +1,593 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{第七次学习报告 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{实现引导扇区}
+	一个操作系统从开机到开始运行，需要经历“引导，加载内核进入内存，跳入保护模式，开始执行内核”。
+	操作系统使用Loader模块来加载内核进入内存，并跳入保护模式。
+	引导扇区负责将Loader加载入内存。
+\subsection{引导扇区格式}
+	引导扇区是软盘的第0个扇区。
+	我们把Loader模块复制到软盘上，然后引导扇区将找到并加载它。\par
+	引导扇区开头有一个很重要的数据结构，叫做BPB。这个BPB数据结构使得软盘被操作系统识别。
+	加上BPB数据结构之后，引导扇区的格式如下面的代码所示：
+	\begin{lstlisting}
+	jmp short LABEL_START
+	nop
+
+	BS_OEMName DB 'ForrestY' ; 生厂商名字
+	BPB_BytsPerSec DW 512 ; 每扇区字节数
+	BPB_SecPerClus DB 1 ; 每簇多少扇区
+	BPB_RsvdSecCnt DB 1 ; Boot记录占用多少扇区
+	BPB_NumFATS DB 2 ; 共有多少FAT表
+	BPB_RootEntCnt DW 224 ; 根目录文件数最大值
+	BPB_TotSec16 DW 2880 ; 逻辑扇区总数
+	BPB_Media DB 0xF0 ; 媒体描述符
+	BPB_FATSz16 DW 9 ; 每FAT扇区数
+	BPB_SecPerTrk DW 18 ; 每磁道扇区数
+	BPB_NumHeads DW 2 ; 磁头数
+	BPB_HiddSec DD 0 ;  隐藏扇区数
+	BPB_TotSec32 DD 0 ; 记录扇区数
+	BS_DrvNum DB 0 ; 中断13的驱动器号
+	BS_Reservedl DB 0 ; 未使用
+	BS_BootSig DB 29h ; 扩展引导标记
+	BS_VolID DD 0 ; 卷序列号
+	BS_VolLab DB 'pengsida001' ; 卷标，必须11个字节
+	BS_FileSysType DB 'FAT12' ; 文件系统类型
+
+LABEL_START:
+	; ...
+	\end{lstlisting}
+
+\subsection{加载Loader进入内存}
+	为了加载Loader文件，我们首先需要知道Loader模块所在的位置。
+	我们假设Loader模块存放在根目录中，而根目录信息存放在根目录区中。根目录区从第19个扇区开始，由BPB\_RootEntCnt个目录条目组成。\par
+	目录条目占用32字节，它的格式如下：
+	\sizedfic{0.5}{1.png}
+
+	所以，我们只要Loader模块的目录条目，就可以根据DIR\_FstClus的值找到Loader模块。
+\subsubsection{寻找Loader的目录条目}
+	我们通过遍历根目录区来寻找Loader模块目录条目，代码如下：
+	\begin{lstlisting}
+	; 根目录的第一个扇区号是19
+	SectorNoOfRootDirectory equ 19
+	; 数据缓冲区的基地址
+	BaseOfLoader equ 09000h
+	; 数据缓冲区的偏移地址
+	OffsetOfLoader equ 0100h
+	; Loader模块的名字
+	LoaderFileName db "LOADER BIN", 0
+
+	; wSectorNo地址单元存放着要读取的扇区号
+	mov word [wSectorNo], SectorNoOfRootDirectory
+LABEL_SEARCH_IN_ROOT_DIR_BEGIN:
+	; wRootDirSizeForLoop地址单元存放着扇区数
+	cmp word [wRootDirSizeForLoop], 0
+	jz LABEL_NO_LOADERBIN
+	; 每遍历一次，扇区数减一
+	dec word [wRootDirSizeForLoop]
+	; 设置es:bx，指定数据缓冲区的地址
+	mov ax, BaseOfLoader 
+	mov es, ax
+	mov bx, OffsetOfLoader
+	; 设置要读的扇区号
+	mov ax, [wSectorNo]
+	; 设置要读的扇区数
+	mov cl, 1
+	; 读取一个扇区的内容
+	call ReadSector
+
+	mov si, LoaderFileName
+	mov di, OffsetOfLoader
+	cld
+	; dx代表着接下来的循环次数
+	; 一个扇区512字节，一个根目录条目32字节，所以需要循环16次
+	mov dx, 10h
+LABEL_SEARCH_FOR_LOADERBIN:
+	cmp dx, 0
+	jz LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR
+	dec dx
+	; 比较文件名称，文件名称为11个字节，所以比较11次
+	mov cx, 11
+LABEL_CMP_FILENAME:
+	cmp cx, 0
+	jz LABEL_FILENAME_FOUND
+	dec cx
+	; 将LoaderFileName处的字节读入al
+	lodsb
+	; 比较数据缓冲区中的字节
+	cmp al, byte [es:di]
+	jz LABEL_GO_ON
+	jmp LABEL_DIFFERENT
+LABEL_GO_ON:
+	inc di
+	jmp LABEL_CMP_FILENAME
+LABEL_DIFFERENT:
+	; 让di指向下一个条目
+	; 每个目录条目为32字节
+	and di, 0FFE0h
+	add di, 20h
+	mov si, LoaderFileName
+	jmp LABEL_SEARCH_FOR_LOADERBIN
+LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:
+	; 读取下一个扇区号
+	add word [wSectorNo], 1
+	jmp LABEL_SEARCH_IN_ROOT_DIR_BEGIN
+LABEL_NO_LOADERBIN:
+	mov dh, 2
+	call DispStr
+	jmp $
+LABEL_FILENAME_FOUND:
+	jmp $
+	\end{lstlisting}
+
+	上述代码中，用到了读取一个扇区内容的函数ReadSector。
+	需要读软盘的时候，要用到BIOS中断int 13h。\par
+	当ah=00h时，int 13h用于复位软驱，此时使用dl指定驱动器号。\par
+	当ah=02h时，int 13h用于从磁盘将数据读入es:bx指向的缓冲区中。当读取错误时，CF会被置一。
+	此时需要设置如下的寄存器值：
+	\begin{lstlisting}
+	al = 要读扇区数
+	ch = 磁道号
+	cl = 起始扇区号
+	dh = 磁头号
+	dl = 驱动器号
+	es:bx指定数据缓冲区
+	\end{lstlisting}
+
+	在代码中添加一个ReadSector函数，用于读取软盘。\par
+	ReadSector函数将al和cl作为参数，al是相对扇区号，cl是要读取的扇区数。
+	在函数中，程序根据相对扇区号获得磁道号、起始扇区号和磁头号。
+	软盘中一个磁道有18个扇区，于是将相对扇区号除以18，得到的商和余数分别是总磁道号和起始扇区号。
+	软盘中，因为有两面，所以分别要磁头号0和磁头号1标记。
+	现在还需要确定的是在哪个磁头号的第几个磁道号。
+	软盘结构中，不是先排完0磁头号再排1磁头号的，而是交错排列。
+	总磁头号为偶数的位于磁头号0，总磁头号为奇数的位于磁头号1。
+	所以只要判断总磁头号的奇偶就能得到磁头号。将总磁头号与1相与，为0的话磁头号就是0，为1的话磁头号就是1。
+	然后将总磁头号除以2，就能得到相对于磁头的起始磁道号。
+	读取软盘扇区的代码如下；
+	\begin{lstlisting}
+ReadSector:
+	push bp
+	mov bp, sp
+	sub esp, 2
+	; 处理int 13h所需要的参数
+	; cl存放着要读取的扇区数
+	mov byte [bp-2], cl
+	push bx
+	; bl存放着每个磁道上的扇区数
+	mov bl, [BPB_SecPerTrk]
+	; ax/bl，商放在al中，余数放在ah中
+	div bl
+	; 得到当前磁道中的起始扇区号
+	inc ah
+	; 设置cl的值为起始扇区号
+	mov cl, ah
+	mov dh, al
+	shr al, 1
+	; 设置ch的值为磁道号
+	mov ch, al
+	; 设置dh的值为磁头号
+	and dh, 1
+	pop bx
+	; 设置dl的值为驱动器号
+	mov dl, [BS_DrvNum]
+.GoOnReading:
+	mov ah, 2
+	mov al, byte [bp-2]
+	int 13h
+	jc .GoOnReading
+
+	add esp, 2
+	pop bp
+	ret
+	\end{lstlisting}
+
+\subsubsection{寻找FAT项}
+	现在我们得到Loader模块的目录条目了，也就能得到Loader模块对应的开始簇号，也就能够得到Loader.bin的起始扇区号。
+	通过这个扇区号，我们可以做到两件事：
+	\begin{itemize}
+		\item 把起始扇区装入内存。
+		\item 通过这个扇区号找到FAT中的项，从而找到Loader占用的其他所有扇区。\par
+		在此先介绍一下软盘上的文件系统FAT12，它由引导扇区、两个FAT表、根目录区和数据区组成，格式如下图:
+		\sizedfic{0.6}{2.png}
+
+		我们之前获得的根目录条目就存放在根目录区中。现在我们拥有Loader模块的簇号，需要根据FAT表来找到Loader的所有簇。
+		FAT表由FAT项组成，每个FAT项长为12字节，FAT项的值代表文件下一个簇号。如果FAT项的值大等于0xFF8，那么代表当前簇是本文件的最后一个簇。
+		如果FAT项的值为0xFF7，表示它是一个坏簇。
+		所以我们只要拥有起始簇号n，就对应着FAT表中第n个FAT项，从而就能找到找到文件的所有簇号，也就找到了文件所占用的所有扇区。\par
+		FAT项的格式如下：
+		\sizedfic{0.6}{3.png}
+	\end{itemize}
+
+	实现代码如下：
+	\begin{lstlisting}
+	bOdd db 0
+	SectorNoOfFAT1 equ 1
+	GetFATEntry:
+		push es
+		push bx
+		; ax存放着起始扇区号，对应着第[ax]个FAT项
+		push ax
+		; Loader模块在内存中的起始地址
+		mov ax, BaseOfLoader
+		; 在Loader模块后面留出4k空间用于存放FAT项，作为数据缓冲区
+		sub ax, 0100h
+		mov es, ax
+		; 恢复ax的值
+		pop ax
+		; bOdd用于判断FAT项从第0位开始还是从第4位开始
+		mov byte [bOdd], 0
+		; FAT项占用1.5个字节，所以ax先乘以3，再除以2
+		mov bx, 3
+		mul bx
+		mov bx, 2
+		; 商放在ax中，余数放在dx中
+		div bx
+		; 判断FAT项从第0位开始还是从第4位开始
+		; ax为奇数时，FAT项从第4位开始。ax为偶数时，FAT项从第0位开始
+		cmp dx, 0
+		jz LABEL_EVEN
+		mov byte [bOdd], 1
+	LABEL_EVEN:
+		xor dx, dx
+		; BPB_BytsPerSec是每个扇区占用的字节数
+		mov bx, [BPB_BytsPerSec]
+		; ax存放着FAT项相对于FAT的扇区号，bx存放着FAT项在扇区中的偏移
+		div bx
+		push dx
+		mov bx, 0
+		; ax加上FAT的扇区号，当前值为FAT项所在的扇区号
+		add ax, SectorNoOfFAT1
+		; cl存放着要读取的扇区数
+		mov cl, 2
+		; 读取FAT项所在的扇区，为了防止FAT项跨越两个扇区，所以一次读取两个扇区
+		call ReadSector
+		pop dx
+		add bx, dx
+		; es是数据缓冲区基地址，bx是FAT项在扇区中的偏移
+		; 现在ax中存放着FAT项的值
+		mov ax, [es:bx]
+		cmp byte [bOdd], 1
+		jnz LABEL_EVEN_2
+		; 如果FAT从第4位开始，就将ax右移4位
+		shr ax, 4
+	LABEL_EVEN_2:
+		; 如果FAT从第0位开始，就只保留ax的低12位
+		and ax, 0FFFh
+	LABEL_GET_FAT_ENTRY_OK:
+		pop bx
+		pop es
+		ret
+	\end{lstlisting}
+
+\subsubsection{加载Loader}
+	现在我们可以通过遍历根目录区来找到Loader模块对应的根目录条目。
+	从根目录条目中找到相应的簇号，然后根据FAT表中的FAT项找到文件的下一个簇号。
+	这里的簇号是相对于数据区的簇号。为了获得整个软盘中的簇号，需要加上根目录区的起始簇号，在加上根目录区簇的数量。
+	因为数据区的簇号是从2开始的，所以还要减去2。最后根据实际的簇号得到Loader模块所在的扇区号，然后将扇区号作为ReadSector函数的参数，读取相应扇区的数据。
+	实现代码如下：
+	\begin{lstlisting}
+	LABEL_FILENAME_FOUND:
+		mov ax, RootDirSectors
+		and di, 0FFE0h
+		add di, 01Ah
+		mov cx, word [es:di]
+		push cx
+		add cx, ax
+		add cx, DeltaSectorNo
+		mov ax, BaseOfLoader
+		mov es, ax
+		mov bx, OffsetOfLoader
+		mov ax, cx
+	LABEL_GOON_LOADING_FILE:
+		mov cl, 1
+		call ReadSector
+		pop ax
+		call GetFATEntry
+		; 检查FAT项的值是否是0FFFh
+		cmp ax, 0FFFh
+		jz LABEL_FILE_LOADED
+		push ax
+		; RootDirSectors是根目录扇区数
+		mov dx, RootDirSectors
+		add ax, dx
+		; 根目录开始扇区号为19，数据区第一个簇的簇号是2
+		; 为了正确求得FAT项对应的簇号，定义了DeltaSectorNo equ 17
+		; FAT项对应的簇号 = RootDirSectors + DeltaSectorNo + 起始簇号
+		add ax, DeltaSectorNo
+		; es:bx指向数据缓冲区
+		; 读取一个扇区结束后，bx的值加512字节
+		add bx, [BPB_BytsPerSec]
+		jmp LABEL_GOON_LOADING_FILE
+	\end{lstlisting}
+
+\subsubsection{执行Loader模块的代码}
+	前几个小结将Loader模块加载进了内存，放在BaseOfLoader:OffsetOfLoader处。现在只要将程序跳转到数据缓冲区的地址，就可以开始执行Loader模块的代码。
+	实现代码如下：
+	\begin{lstlisting}
+	jmp BaseOfLoader:OffsetOfLoader
+	\end{lstlisting}
+
+	回想本节一开始说的，一个操作系统从开机到开始运行，需要经历“引导，加载内核进入内存，跳入保护模式，开始执行内核”。
+	现在我们只做到了引导，也就是将Loader模块加载进内存。Loader要做的事情还有两件：
+	\begin{itemize}
+		\item 加载内核入内存。
+		\item 跳入保护模式。
+	\end{itemize}
+
+\subsection{引导扇区完整的实现代码}
+	前面小节虽然有贴代码，但是都是一些细节上的代码。现在感受一下完整的实现代码，以此对引导扇区整个的实现框架有清楚的认识。
+	在阅读代码之前，先了解一下软盘上FAT12文件系统引导扇区的格式，从而对代码框架有更全面的认识。FAT12引导扇区格式如下所示：
+	\fic{4.png}
+	
+	引导扇区实现代码如下：
+	\codefile{boot.asm}
+
+\clearpage
+
+\section{实现内核雏形}
+
+\subsection{汇编与C混合编程}
+	因为编写内核的过程中，需要用到汇编与C的混合编程，所以在此通过一个例子去熟悉它。\par
+	程序入口\_start在foo.asm中，一开始程序会调用bar.c中的函数choose()，在choose()函数中又将调用foo.asm中的函数myprint()来打印字符串。
+	整个过程如下图：
+	\fic{5.png}
+
+	例子如下，先看foo.asm的代码：
+	\begin{lstlisting}
+	; foo.asm
+	extern choose
+
+	[section .data]
+
+	num1st dd 3
+	num2nd dd 4
+
+	[section .text]
+
+	global _start
+	global myprint
+
+	_start:
+		push dword [num2nd]
+		push dword [num1st]
+		call choose
+		add esp, 8
+		mov ebx, 0
+		mov eax, 1
+		int 0x80
+	
+	myprint:
+		mov edx, [esp + 8]
+		mov ecx, [esp + 4]
+		mov ebx, 1
+		mov eax, 4
+		int 0x80
+		ret
+	\end{lstlisting}
+
+	在看bar.c的代码：
+	\begin{lstlisting}[language = C]
+	void myprint(char* msg, int len);
+	
+	int choose(int a, int b)
+	{
+		if(a >= b)
+			myprint("the first one\n", 15);
+		else
+			myprint("the second one\n", 16);
+		return 0;
+	}
+	\end{lstlisting}
+
+	以上的例子有几点需要说明的：
+	\begin{itemize}
+		\item foo.asm中一定要定义"\_start"，而且还要用过global关键字将它导出，这样链接程序才能找到它，作为程序的入口点。
+		\item 因为bar.c要用到foo.asm中的myprint()函数，所以需要用global关键字将其导出。
+		\item 因为foo.asm要用到bar.c中的函数choose()，所以要用extern关键字声明。
+	\end{itemize}
+
+\subsection{ELF文件格式}
+	内核在linux编译后是ELF格式。为了让Loader将内核装载进内存，我们还需要研究ELF格式。\par
+	ELF文件由4部分组成，分别是ELF头、程序头表、节和节头表。格式如下：
+	\fic{6.png}
+
+	ELF文件为了能够支持8位到32位不同架构的处理器，定义了下列数据结构：
+	\begin{lstlisting}[language = C]
+	// Elf32_Addr 无符号程序地址，4字节大小
+	// Elf32_Half 无符号中等大小整数，2字节大小
+	// Elf32_Off 无符号文件偏移，4字节大小
+	// Elf32_SWord 有符号大整数，4字节大小
+	// Elf32_Word 无符号大整数，4字节大小
+	\end{lstlisting}
+
+	接下来将分别介绍ELF文件的这4个部分。
+
+\subsubsection{ELF头}
+	ELF头的定义代码如下：
+	\begin{lstlisting}[language = C]
+	#define EI_NIDENT 16
+	typedef struct
+	{
+		// e_ident为16字节的字符数组，头4个字节为“.ELF”，用于表明该文件是一个ELF文件。接下来的12个字节是一些与机器无关的信息。
+		unsigned char e_ident[EI_NIDENT];
+		// e_type用于表示该文件的类型
+		Elf32_Half e_type;
+		// e_machine用于表明该程序需要的体系结构
+		Elf32_Half e_machine;
+		// e_version用于表明文件的版本
+		Elf32_Word e_version;
+		// e_entry为程序的入口地址
+		Elf32_Addr e_entry;
+		// e_phoff代表了程序头表在文件中的偏移量
+		Elf32_Off e_phoff;
+		// e_shoff代表了节头表在文件中的偏移量
+		Elf32_Off e_shoff;
+		// e_flags对于IA32而言，此项为0
+		Elf32_Word e_flags;
+		// e_ehsize代表ELF头的大小
+		Elf32_Half e_ehsize;
+		// e_phentsize代表程序头表中每个条目的大小
+		Elf32_Half e_phentsize;
+		// e_phnum代表程序头表中条目的数目
+		Elf32_Half e_phnum;
+		// e_shentsize代表节头表中每个条目的大小
+		Elf32_Half e_shentsize;
+		// e_shnum代表节头表中条目的数目
+		Elf32_Half e_shnum;
+		// e_shstrndx表示了包含节名称的字符串表所在节的序号
+		Elf32_Half e_shstrndx;
+	}Elf32_Ehdr;
+	\end{lstlisting}
+
+\subsubsection{程序头}
+	程序头描述的是一个段在文件中的位置、大小以及它被放入内存后所在的位置和大小。
+	如果我们想把一个文件加载进内存，就需要用到这些信息。以下是程序头的定义代码：
+	\begin{lstlisting}[language = C]
+	typedef struct
+	{
+		Elf32_Word p_type;
+		Elf32_Off p_offset;
+		Elf32_Addr p_vaddr;
+		Elf32_Addr p_paddr;
+		Elf32_Word p_filesz;
+		Elf32_Word p_memsz;
+		Elf32_Word p_flags;
+		Elf32_Word p_align;
+	}Elf32_Phdr;
+	\end{lstlisting}
+
+\end{document}

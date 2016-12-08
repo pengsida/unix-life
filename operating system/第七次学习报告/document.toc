@@ -1,0 +1,9 @@
+\contentsline {section}{\numberline {1}实现引导扇区}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}引导扇区格式}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}加载Loader进入内存}{2}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}寻找Loader的目录条目}{3}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}寻找FAT项}{5}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.3}加载Loader}{8}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.4}执行Loader模块的代码}{8}{subsubsection.1.2.4}
+\contentsline {subsection}{\numberline {1.3}引导扇区完整的实现代码}{9}{subsection.1.3}
+\contentsline {section}{\numberline {2}实现内核雏形}{15}{section.2}
