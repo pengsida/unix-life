@@ -1,9 +1,30 @@
-\contentsline {section}{\numberline {1}实现引导扇区}{2}{section.1}
-\contentsline {subsection}{\numberline {1.1}引导扇区格式}{2}{subsection.1.1}
-\contentsline {subsection}{\numberline {1.2}加载Loader进入内存}{2}{subsection.1.2}
-\contentsline {subsubsection}{\numberline {1.2.1}寻找Loader的目录条目}{3}{subsubsection.1.2.1}
-\contentsline {subsubsection}{\numberline {1.2.2}寻找FAT项}{5}{subsubsection.1.2.2}
-\contentsline {subsubsection}{\numberline {1.2.3}加载Loader}{8}{subsubsection.1.2.3}
-\contentsline {subsubsection}{\numberline {1.2.4}执行Loader模块的代码}{8}{subsubsection.1.2.4}
-\contentsline {subsection}{\numberline {1.3}引导扇区完整的实现代码}{9}{subsection.1.3}
-\contentsline {section}{\numberline {2}实现内核雏形}{15}{section.2}
+\contentsline {section}{\numberline {1}实现引导扇区}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}引导扇区格式}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}加载Loader进入内存}{3}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}寻找Loader的目录条目}{4}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}寻找FAT项}{6}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.3}加载Loader}{9}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.4}执行Loader模块的代码}{9}{subsubsection.1.2.4}
+\contentsline {subsection}{\numberline {1.3}引导扇区完整的实现代码}{10}{subsection.1.3}
+\contentsline {section}{\numberline {2}汇编与C混合编程}{16}{section.2}
+\contentsline {section}{\numberline {3}ELF文件}{18}{section.3}
+\contentsline {subsection}{\numberline {3.1}文件格式}{18}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}数据表示}{19}{subsubsection.3.1.1}
+\contentsline {subsection}{\numberline {3.2}ELF header}{19}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}ELF鉴别}{21}{subsubsection.3.2.1}
+\contentsline {subsection}{\numberline {3.3}Sections}{23}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Section header}{23}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}sh\_type}{24}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}sh\_flags}{26}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}特殊的节}{27}{subsubsection.3.3.4}
+\contentsline {subsection}{\numberline {3.4}字符串表}{28}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}符号表}{29}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}st\_info}{29}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}st\_shndx}{31}{subsubsection.3.5.2}
+\contentsline {subsubsection}{\numberline {3.5.3}st\_value}{31}{subsubsection.3.5.3}
+\contentsline {subsubsection}{\numberline {3.5.4}符号表的0索引}{31}{subsubsection.3.5.4}
+\contentsline {subsection}{\numberline {3.6}重定位}{32}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Program header}{33}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}程序装载}{33}{subsection.3.8}
+\contentsline {subsection}{\numberline {3.9}动态链接}{33}{subsection.3.9}
+\contentsline {section}{\numberline {4}实现内核雏形}{34}{section.4}

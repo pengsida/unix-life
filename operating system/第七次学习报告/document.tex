@@ -118,6 +118,8 @@
 
 \newcommand{\codefile}[1]{\lstinputlisting{#1}}
 
+\newcommand{\interval}{\vspace{0.5em}}
+
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -458,9 +460,7 @@ ReadSector:
 
 \clearpage
 
-\section{实现内核雏形}
-
-\subsection{汇编与C混合编程}
+\section{汇编与C混合编程}
 	因为编写内核的过程中，需要用到汇编与C的混合编程，所以在此通过一个例子去熟悉它。\par
 	程序入口\_start在foo.asm中，一开始程序会调用bar.c中的函数choose()，在choose()函数中又将调用foo.asm中的函数myprint()来打印字符串。
 	整个过程如下图：
@@ -520,74 +520,494 @@ ReadSector:
 		\item 因为foo.asm要用到bar.c中的函数choose()，所以要用extern关键字声明。
 	\end{itemize}
 
-\subsection{ELF文件格式}
-	内核在linux编译后是ELF格式。为了让Loader将内核装载进内存，我们还需要研究ELF格式。\par
-	ELF文件由4部分组成，分别是ELF头、程序头表、节和节头表。格式如下：
-	\fic{6.png}
+\clearpage
 
-	ELF文件为了能够支持8位到32位不同架构的处理器，定义了下列数据结构：
+\section{ELF文件}
+	内核在linux编译后是ELF格式。为了让Loader将内核装载进内存，我们还需要研究ELF格式。\par
+	iABI object文件格式是UNIX系统实验室作为应用程序二进制借口(ABI)而开发和发布的，又被称为ELF文件格式。
+	在ELF目标文件中有三种主要的类型，如下：
+	\begin{itemize}
+		\item 可重定位文件，保存着代码和数据，用来和其他的object文件一起来创建一个可执行文件或共享文件。
+		\item 可执行文件，保存着用来执行的程序，该文件指出了exec如来创建程序进程映像。
+		\item 共享文件，保存着代码和数据，用来被链接编辑器和动态链接器连接。链接编辑器可以将当前共享文件与其他的可重定位和共享文件链接，从而创建其他的目标文件。
+		动态链接器可以将当前共享文件与一个可执行文件和其他的共享文件链接，从而创建一个进程映像。
+	\end{itemize}
+
+	ELF目标文件由汇编器和链接编辑器创建，是程序的二进制表现形式，用于在处理器上直接运行。
+
+\subsection{文件格式}
+	object文件参与了程序的链接和程序的运行。object文件为这两个过程提供了不同的视角，因此链接过程中和执行过程中的object文件格式是不一样的。\par
+	以下是链接过程中object文件的格式：
+	\sizedfic{0.4}{7.png}
+
+	以下是执行过程中object文件的格式:
+	\sizedfic{0.3}{8.png}
+
+	可以看出，object文件由4部分组成，如下：
+	\begin{itemize}
+		\item ELF header，它位于文件的开头，描述了该文件的结构。
+		\item Program header table，用于告诉系统如何来创建一个进程的内存映像。执行过程中必须有这个程序头表。
+		\item Sections，包含了指令、数据、符号表和重定位信息等。
+		\item Section header table，包含了section的信息。每个section在这个表中有一个entry，每个entry给出了相应section的名字、大小等信息。链接过程中必须有这个节头表。
+	\end{itemize}
+
+\subsubsection{数据表示}
+	ELF文件为了能够支持8位到32位不同架构的处理器，定义了一些与机器无关的数据类型：
 	\begin{lstlisting}[language = C]
 	// Elf32_Addr 无符号程序地址，4字节大小
 	// Elf32_Half 无符号中等大小整数，2字节大小
 	// Elf32_Off 无符号文件偏移，4字节大小
 	// Elf32_SWord 有符号大整数，4字节大小
 	// Elf32_Word 无符号大整数，4字节大小
+	// unsigned char 无符号小整数，1字节大小
 	\end{lstlisting}
 
-	接下来将分别介绍ELF文件的这4个部分。
 
-\subsubsection{ELF头}
+\subsection{ELF header}
 	ELF头的定义代码如下：
 	\begin{lstlisting}[language = C]
 	#define EI_NIDENT 16
 	typedef struct
 	{
-		// e_ident为16字节的字符数组，头4个字节为“.ELF”，用于表明该文件是一个ELF文件。接下来的12个字节是一些与机器无关的信息。
 		unsigned char e_ident[EI_NIDENT];
-		// e_type用于表示该文件的类型
 		Elf32_Half e_type;
-		// e_machine用于表明该程序需要的体系结构
 		Elf32_Half e_machine;
-		// e_version用于表明文件的版本
 		Elf32_Word e_version;
-		// e_entry为程序的入口地址
 		Elf32_Addr e_entry;
-		// e_phoff代表了程序头表在文件中的偏移量
 		Elf32_Off e_phoff;
-		// e_shoff代表了节头表在文件中的偏移量
 		Elf32_Off e_shoff;
-		// e_flags对于IA32而言，此项为0
 		Elf32_Word e_flags;
-		// e_ehsize代表ELF头的大小
 		Elf32_Half e_ehsize;
-		// e_phentsize代表程序头表中每个条目的大小
 		Elf32_Half e_phentsize;
-		// e_phnum代表程序头表中条目的数目
 		Elf32_Half e_phnum;
-		// e_shentsize代表节头表中每个条目的大小
 		Elf32_Half e_shentsize;
-		// e_shnum代表节头表中条目的数目
 		Elf32_Half e_shnum;
-		// e_shstrndx表示了包含节名称的字符串表所在节的序号
 		Elf32_Half e_shstrndx;
 	}Elf32_Ehdr;
 	\end{lstlisting}
 
-\subsubsection{程序头}
-	程序头描述的是一个段在文件中的位置、大小以及它被放入内存后所在的位置和大小。
-	如果我们想把一个文件加载进内存，就需要用到这些信息。以下是程序头的定义代码：
+	ELF header各个成员解释如下：
+	\begin{itemize}
+		\item e\_ident,为16字节的字符数组，头4个字节为“.ELF”，用于表明该文件是一个ELF文件。接下来的12个字节是一些与机器无关的信息。
+		\item e\_type,用于确定该object文件的类型。下图是e\_type的值与对应的文件类型。
+		\sizedfic{0.5}{9.png}
+
+		\item e\_machine用于表明该程序需要的体系结构。下图是e\_machine的值与对应的文件类型。
+		\sizedfic{0.5}{10.png}
+
+		\item e\_version用于表明该object文件的版本。下图是e\_version的值与对应的文件类型。
+		\sizedfic{0.5}{11.png}
+
+		\item e\_entry为程序的入口地址。如果程序没有这个入口点，该成员的值将保持为0。
+		\item e\_phoff代表了程序头表在文件中的偏移量。如果object文件中没有程序头表，该成员的值将保持为0。
+		\item e\_shoff代表了节头表在文件中的偏移量。如果object文件中没有节头表，该成员的值将保持为0。
+		\item e\_flags存放着与object文件有关的处理器标志。
+		\item e\_ehsize代表ELF头的大小。
+		\item e\_phentsize代表程序头表中entry的大小。程序头表中每个entry的大小相同。
+		\item e\_phnum代表程序头表中entry的数目。
+		\item e\_shentsize代表节头表中每个条目的大小。
+		\item e\_shnum代表节头表中条目的数目。
+		\item e\_shstrndx代表着节头表中一个条目的序号，这个条目与section名字字符表有关。
+	\end{itemize}
+
+\subsubsection{ELF鉴别}
+	在前面的小节有提到，ELF文件可以支持多种机器类型。为了支持这个特性，object文件的头16个字节被用来说明如何解释该文件。这16个字节与处理器无关，和object文件剩下的内容也无关。
+	ELF header的e\_ident成员是一个数组，用于存放这16个字节。接下来解释该数组中的各个序号以及相应的值：
+	\begin{itemize}
+		\item EI\_MAG0~EI\_MAG3是4个宏，值分别为0~3。数组中该序号相应的值如下所示：
+		\sizedfic{0.5}{12.png}
+
+		这4个字节用于表示该文件格式为ELF。
+
+		\item 宏EI\_CLASS，值为4，e\_ident[EI\_CLASS]用于确定object文件的位数。值和相应的意义如下所示：
+		\sizedfic{0.5}{13.png}
+
+		\item 宏EI\_DATA，值为5，e\_ident[EI\_DATA]指定了object中特定处理器数据的编码方式。\par
+			当e\_ident[EI\_DATA]值为0时，表明了无效的编码方式。\par
+			当e\_ident[EI\_DATA]值为1时，表明了ELFDATA2LSB编码方式，值最小的字节占着最低的地址，如下所示：
+			\sizedfic{0.7}{14.png}
+
+			当e\_ident[EI\_DATA]值为2时，表明了ELFDATA2MSB编码方式，值最大的字节占着最低的地址，如下所示：
+			\sizedfic{0.7}{15.png}
+
+		\item 宏EI\_VERSION，值为6，e\_ident[EI\_VERSION]指定了ELF header的版本。
+		\item 宏EI\_PAD，值为7，用于标识e\_ident未使用字节的开头。接下来e\_ident[7]~e\_ident[15]都不会被用到，这些值都被置为0。
+	\end{itemize}
+
+% \subsubsection{程序头}
+% 	程序头描述的是一个段在文件中的位置、大小以及它被放入内存后所在的位置和大小。
+% 	如果我们想把一个文件加载进内存，就需要用到这些信息。以下是程序头的定义代码：
+% 	\begin{lstlisting}[language = C]
+% 	typedef struct
+% 	{
+% 		Elf32_Word p_type;
+% 		Elf32_Off p_offset;
+% 		Elf32_Addr p_vaddr;
+% 		Elf32_Addr p_paddr;
+% 		Elf32_Word p_filesz;
+% 		Elf32_Word p_memsz;
+% 		Elf32_Word p_flags;
+% 		Elf32_Word p_align;
+% 	}Elf32_Phdr;
+% 	\end{lstlisting}
+
+\subsection{Sections}
+	object文件中的section header table用于定位所有的section。一个section table header的索引就是这个数组的下标。
+	节头表的一些索引是比较特殊的，如下所示：
+	\begin{itemize}
+		\item SHN\_UNDEF，值为0，指向了没有定义的或无意义的section。
+		\item SHN\_LORESERVE和SHN\_LOPROC，值为0xff00，是被保留的索引的最小值。
+		\item SHN\_HIPROC，值为0xff1f，被保留的索引的最大值。从SHN\_LOPROC到SHN\_HIPROC的索引用于处理器特定的意义。
+		\item SHN\_ABS，值为0xfff1，指向的section的符号是绝对地址。
+		\item SHN\_COMMON，值为0xfff2，指向的section的符号是一个公共的符号。
+		\item SHN\_HIRESERVE，值为0xffff，是被保留的索引的最大值。从SHN\_LORESERVE到SHN\_HIRESERVE的索引都是被保留的。
+	\end{itemize}
+
+	Seciton的格式需要满足以下几点条件：
+	\begin{itemize}
+		\item object文件中的每个section都有一个相应的section header，用于描述section。
+		\item 每个section占据的空间都是连续的。
+		\item sections之间不可以相互重叠。
+	\end{itemize}
+
+\subsubsection{Section header}
+	Section header的定义代码如下：
 	\begin{lstlisting}[language = C]
 	typedef struct
 	{
-		Elf32_Word p_type;
-		Elf32_Off p_offset;
-		Elf32_Addr p_vaddr;
-		Elf32_Addr p_paddr;
-		Elf32_Word p_filesz;
-		Elf32_Word p_memsz;
-		Elf32_Word p_flags;
-		Elf32_Word p_align;
-	}Elf32_Phdr;
+		Elf32_Word sh_name;
+		Elf32_Word sh_type;
+		Elf32_Word sh_flags;
+		Elf32_Addr sh_addr;
+		Elf32_Off sh_offset;
+		Elf32_Word sh_size;
+		Elf32_Word sh_link;
+		Elf32_Word sh_info;
+		Elf32_Word sh_addralign;
+		Elf32_Word sh_entsize;
+	}Elf32_Shdr;
 	\end{lstlisting}
+
+	Section header的成员解释如下：
+	\begin{itemize}
+		\item sh\_name，是section名字字符表的索引，用于查找当前section的名字。
+		\item sh\_type，将section按内容和意义分类。
+		\item sh\_flags，用于描述section的属性。
+		\item sh\_addr，用于指定section在内存的地址。如果section不会出现在进程的内存映像空间中，那么这个值为0。
+		\item sh\_offset，用于表明该section相对于object开头的偏移。
+		\item sh\_size，表示了该section的大小。
+		\item sh\_link，该成员包含了该section在section header table中的索引链接。该索引链接的解释依靠于该section的类型。
+		\item sh\_info，它包含了多余的信息。这些信息的解释依赖于节的类型。
+		\item sh\_addralign，一些sections有地址对齐的约束。
+		\item sh\_entsize，一些sections保存着一张存放着entry的表，该成员值代表着entry的大小。如果section没有这张表，那么成员值为0。
+	\end{itemize}
+
+\subsubsection{sh\_type}
+	sh\_type定义了下列宏：
+	\sizedfic{0.4}{16.png}
+
+	以下是对sh\_type各个宏的解释：
+	\begin{itemize}
+		\item SHT\_NULL，表明该节头无效。
+		\item SHT\_PROGBITS，代表着该section保存了一些由程序定义的信息。
+		\item SHT\_SYMTAB，为链接器提供符号。
+		\item SHT\_DYNSYM，代表着该section保存着一个动态链接时所需最小的符号集合来节省空间。
+		\item SHT\_STRTAB，代表着该section保存着一个字符串表。
+		\item SHT\_RELA，代表着该section保存着具有明确加数的重定位入口。
+		\item SHT\_HASH，代表着该section保存着一个符号哈希表。
+		\item SHT\_DYNAMIC，代表该section保存着动态链接的信息。
+		\item SHT\_NOTE，代表该section保存着其他一些标志文件的信息。
+		\item SHT\_NOBITS，代表着该section在文件中不占空间。
+		\item SHT\_REL，代表该section保存着一个重定位入口，但是这个重定位入口没有明确加数。
+		\item SHT\_SHLIB，代表该section类型是保留的。如果程序包含该类型的section，那么这个程序不符合ABI。
+		\item SHT\_LOPROC到SHT\_HIPROC，这个范围内的值被保留，用于处理器特定的语义。
+		\item SHT\_LOUSER，该变量是为应用程序保留的索引的最小值。
+		\item SHT\_HIUSER，该变量是为应用程序保留的索引的最大值。在SHT\_LOUSER和SHT\_HIUSER之间的section类型可能会被应用程序使用。
+	\end{itemize}
+
+	在之前说过，section header结构体中sh\_link成员和sh\_info成员包含的信息与section的类型有关。
+	既然已经列出了section的各个类型，那么就来看看这两个成员与section类型的关系，如下表所示。
+	
+	\vspace{1em}
+
+	\begin{longtable}{p{3cm}|p{5cm}|p{5cm}}
+	\hline
+	sh\_type & sh\_link & sh\_info \\
+	\hline
+	SHT\_DYNAMIC & 该section header在字符表中的索引值被该section中的entry所使用 & 0\\
+	\hline
+	SHT\_HASH & 该section header在符号表中的索引值应用于符号哈希表中 & 0\\
+	\hline
+	SHT\_REL SHT\_RELA & 该索引值是相关的符号表的索引值 & 该section header的索引值应用于重定位\\
+	\hline
+	SHT\_SYMTAB SHT\_DYNSYM & 该索引值是相关的字符表的索引值 & 比字符表中最大的索引更大的一个值 \\
+	\hline
+	other & SHU\_UNDEF & 0 \\
+	\hline
+	\end{longtable}
+
+	\vspace{1em}
+
+\subsubsection{sh\_flags}
+
+	sh\_flags定义了如下的宏：
+	\sizedfic{0.4}{17.png}
+
+	以下是对sh\_flags各个宏的解释：
+	\begin{itemize}
+		\item SHF\_WRITE，代表该section包含了一些数据，这些数据在程序执行时可以被改写。
+		\item SHF\_ALLOC，代表该section在程序执行时占用着内存。
+		\item SHF\_EXECINSTR，代表该section包含可执行的程序指令。
+		\item SHF\_MASKPROC，这个宏中的各个位被保留，用于处理器特定的语义。
+	\end{itemize}
+
+	在section header table的索引值0处的section header的值如下所示：
+	\begin{lstlisting}[language = C]
+	Elf32_Shdr header = table[0];
+	header.sh_name = 0; // 代表该section没有名字
+	header.sh_type = SHT_NULL;
+	header.sh_flags = 0;
+	header.sh_addr = 0;
+	header.sh_offset = 0;
+	header.sh_size = 0;
+	header.sh_link = SHN_UNDEF;
+	header.sh_info = 0;
+	header.sh_addralign = 0;
+	header.entsize = 0;
+	\end{lstlisting}
+
+\subsubsection{特殊的节}
+	下面是一些特定的节，它们被系统使用，有着特定的类型和属性。
+	\vspace{0.5em}
+
+	\begin{longtable}{p{2cm}|p{3cm}|p{7cm}}
+	\hline
+	Name & Type & Attributes \\
+	\hline
+	.bss & SHT\_NOBITS & SHF\_ALLOC + SHF\_WRITE \\
+	.comment & SHT\_PROGBITS & none \\
+	.data & SHT\_PROGBITS & SHF\_ALLOC + SHF\_WRITE\\
+	.data1 & SHT\_PROGBITS & SHF\_ALLOC + SHF\_WRITE\\
+	.debug & SHT\_PROGBITS & none\\
+	.dynamic & SHT\_DYNAMIC & see below\\
+	.dynstr & SNT\_STRTAB & SHF\_ALLOC\\
+	.dynsym & SHT\_DYNSYM & SHF\_ALLOC\\
+	.fini & SHT\_PROGBITS & SHF\_ALLOC + SHF\_WRITE\\
+	.got & SHT\_PROGBITS & see below\\
+	.hash & SHT\_HASH & SHF\_ALLOC \\
+	.init & SHT\_PROGBITS & SHF\_ALLOC + SHF\_WRITE\\
+	.interp & SHT\_PROGBITS & see below\\
+	.line & SHT\_PROGBITS & none\\
+	.note & SNT\_NOTE & none\\
+	.plt & SHT\_PROGBITS & see below\\
+	.relname & SHT\_REL & see below\\
+	.relaname & SHT\_RELA & see below\\
+	.rodate & SHT\_PROGBITS & SHF\_ALLOC\\
+	.rodata1 & SHT\_PROGBITS & SHF\_ALLOC\\
+	.shstrtab & SHT\_STRTAB & none\\
+	.strtab & SHT\_STRTAB & see below\\
+	.symtab & SHT\_SYMTAB & see below \\
+	.text & SHT\_PROGBITS & SHF\_ALLOC + SHF\_EXECINSTR \\
+	\hline
+	\end{longtable}
+
+	\vspace{0.5em}
+
+	下面是对这些节的介绍：
+	\vspace{0.5em}
+	\begin{longtable}{p{1.5cm}p{10cm}}
+	.bss & 这个section保存着未初始化的数据，这些数据存放在程序内存映像中。当程序开始运行时，这些数据被初始化为0。该section不占文件空间。 \\
+	.comment & 该section保存着版本控制的信息。\\
+	.data .data1 & 这两个sections保存着初始化了的数据，这些数据存放在程序内存映像中。\\
+	.debug & 该section保存着为符号调试的信息，这些信息内容是未指明的。\\
+	.dynamic & 该section保存着动态链接的信息。\\
+	.dynstr & 该section保存着动态链接是需要的字符串。一般情况下，名字字符串与符号表的entry相关联。\\
+	.dynsym & 该section保存着动态符号表。\\
+	.fini & 该section保存着可执行指令，这些指令构成了进程的终止代码。当一个程序正常退出时，系统将执行这个section中的指令。\\
+	.got & 该section保存着全局的偏移量表。\\
+	.hash & 该section保存着一个符号的哈希表。\\
+	.init & 该section保存着可执行指令，这些指令构成了进程的初始化代码。当一个程序的main函数被调用之前，系统将执行这个section中的指令。\\
+	.interp & 该section保存着程序的interpreter的路径。\\
+	.line & 该section包含了用于符号debug的行数信息，它描述了源程序与机器代码之间的对应关系。该section的内容是未指明的。\\
+	.plt & 该section保存着过程链接表。\\
+	.rel .rela & 该section保存着重定位的信息。\\
+	.rodata .rodata1 & 该section保存着只读数据，这些数据将在进程映像中构造不可写的段。\\
+	.shstrtab &  该section保存着section的名称。\\
+	.strtab & 该section保存着字符串。一般情况下，名字字符串与符号表的entry相关联。\\
+	.symtab & 该section保存着一个符号表。\\
+	.text & 该section保存着程序的可执行指令。\\
+	\end{longtable}
+	\vspace{0.5em}
+
+\subsection{字符串表}
+	字符串表保存着以NULL终止的一系列字符。object文件使用这些字符串来描述符号和section名。通过索引字符串表我们就能获得相应的字符串。
+	字符串表的索引0是一个NULL字符，随后每个字符串都是以NULL终止的。例子如下：
+	\fic{18.png}
+
+	section header的sh\_name成员保存着字符串表的索引，用于指向section的名字。
+
+\subsection{符号表}
+	object文件的符号表存放着一个个条目，这些条目保存了一个程序在定位和重定位时需要的定义和引用的信息。
+	符号表相当于一个数组，符号表索引是相应的下标。
+	这些entry的定义代码如下：
+	\begin{lstlisting}[language = C]
+	typedef struct
+	{
+		Elf32_Word st_name;
+		Elf32_Addr st_value;
+		Elf32_Word st_size;
+		unsigned char st_info;
+		unsigned char st_other;
+		Elf32_Half st_shndx;
+	}Elf32_Sym;
+	\end{lstlisting}
+
+	下面介绍该结构体的各个成员：
+	\vspace{0.5em}
+	\begin{longtable}{p{2cm}p{8cm}}
+	\hline
+	st\_name & 这个成员的值是符号字符串表的索引。符号字符串表存放着符号的名字。如果该成员值为0，说明该符号无名。\\
+	\hline
+	st\_value & 该成员的值是相应的符号值。 \\
+	\hline
+	st\_size & 代表着符号的大小。\\
+	\hline
+	st\_info & 成员指出了符号的类型和相应的binding属性。\\
+	\hline
+	st\_other & 该成员值为0，没有相应的含义。\\
+	\hline
+	st\_shndx & 符号表条目有相对应的section。该成员的值是section header table的索引，用于定位section的section header。\\
+	\hline
+	\end{longtable}
+
+\subsubsection{st\_info}
+	st\_info包含了符号表的类型和binding属性。一个符号的binding决定了链接的可视性和行为。binding属性值定义了下列宏：
+	\sizedfic{0.5}{19.png}
+
+	下面介绍binding属性各个宏的意义：
+	\vspace{0.5em}
+	\begin{longtable}{p{3cm}p{8cm}}
+	\hline
+	STB\_LOCAL & 局部符号表，表示该符号只在当前object文件可见。\\
+	\hline
+	STB\_GLOBAL & 全局符号表，表示该符号对所有的object文件可见。\\
+	\hline
+	STB\_WEAK & 弱符号表，相当于全局符号，只是优先级较低。\\
+	\hline
+	STB\_LOPROC-STB\_HIPROC & 这个范围的值被保留，用于处理器特定的语义。\\
+	\hline
+	\end{longtable}
+	\vspace{0.5em}
+
+	全局符号与弱符号的区别如下：
+	\begin{itemize}
+		\item 当链接器链接几个可重定位的object文件时，它不允许STB\_GLOBAL符号的同名多重定义。如果全局符号与弱符号重名，将不会引起错误，而是选择忽略弱符号的定义。
+			如果普通符号与弱符号重名，也不会引起错误，链接器同样是忽略弱符号的定义。
+		\item 当链接器搜索档案库时，它将选出包含了未定义的全局符号的存档成员。这个成员的定义有可能是全局符号，也可能是弱符号。
+		链接器不会为了解决一个未定义的弱符号而选出存档成员。未定义的弱符号值为0。
+	\end{itemize}
+
+	在每个符号表中，局部符号的优先级都高于弱符号和全局符号。\par
+
+	st\_info还包含了符号的类型，它为相关的entry提供了分类。与类型相关的宏定义如下所示：
+	\fic{20.png}
+
+	下面介绍各个宏的具体含义：
+	\interval
+	\begin{longtable}{p{3cm}p{8cm}}
+	\hline
+	STT\_NOTYPE & 代表了该符号的类型没有指定。\\
+	\hline
+	STT\_OBJECT & 说明该符号和一个数据对象相关。\\
+	\hline
+	STT\_FUNC & 说明该符号和一个函数或其他可执行代码相关。这个类型的符号又称为函数符号。\\
+	\hline
+	STT\_SECTION & 说明该符号和一个section相关。这种类型的entry主要是为了重定位，一般情况下具有STB\_LOCAL约束。\\
+	\hline
+	STT\_FILE & 代表该符号给出了和目标文件相关的源文件名称。一个具有STB\_LOCAL约束的STT\_FILE类型的符号，它的section索引为SHN\_ABS。\\
+	\hline
+	STT\_LOPROC-STT\_HIPROC & 这个范围的值被保留，用于处理器特定的语义。\\
+	\hline
+	\end{longtable}
+	\interval
+
+	共享文件中函数符号具有特殊的意义。当其他的object文件从一个共享文件中引用一个函数时，链接器将自动地为引用符号创建一个链接表。
+	除了函数符号，共享的目标符号将不会自动地通过链接表引用。
+
+\subsubsection{st\_shndx}
+	该成员的值是section header table的索引，用于定位section的section header。当重定位时，section将不断移动，该成员的值也会相应的变化。
+	某些特殊的section有着相应特殊的st\_shndx，于是有相应的宏。这些宏的定义在介绍Sections的小节中有提到，如下所示：
+	\interval
+	\begin{longtable}{p{3cm}p{7cm}}
+	\hline
+	SHN\_ABS & 代表该符号的值不会随着重定位而变化。\\
+	\hline
+	SHN\_COMMON & 代表该符号标识了一个没有被分配的普通块，该符号的大小指出了需要的字节数。\\
+	\hline
+	SHN\_UNDEF & 代表该符号是未定义的。当链接器将该object文件和另一个定义了该符号的文件相链接时，该object文件中此符号将会被定义另一个文件中同名符号的定义。\\
+	\hline
+	\end{longtable}
+	\interval
+
+\subsubsection{st\_value}
+	不同类型的object文件中st\_value成员的解释不同，相应的解释如下：
+	\begin{itemize}
+		\item 在可重定位文件中，st\_value的值代表一个符号相对于当前section的偏移量。如果当前section的索引是SHN\_COMMON，那么st\_value保存着符号的强制对齐值。
+		\item 在可执行文件和可共享文件中，st\_value保存着一个虚拟地址。为了使得符号对于动态链接器更为有效，文件中的section偏移量将让步于内存层面上的虚拟地址。
+	\end{itemize}
+
+\subsubsection{符号表的0索引}
+	符号表的0索引是保留的，它的各个值如下所示：
+	\begin{lstlisting}[language = C]
+	Elf32_Sym zero_index = table[0];
+	zero_index.st_name = 0;
+	zero_index.st_valu = 0;
+	zero_index.st_size = 0;
+	zero_index.st_info = 0;
+	zero_index.st_other = 0;
+	zero_index.st_shndx = SHN_UNDEF;
+	\end{lstlisting}
+
+\subsection{重定位}
+	重定位是将符号引用与符号定义链接起来的过程。比如，当一个程序调用一个函数的时候，相关的调用必须在执行时把控制权转移到正确的目标地址。
+	为了实现这个过程，重定位文件应当包含如何修改section内容的信息，从而保证可执行文件和可共享文件中存放着用于程序映像的信息。
+	重定位条目定义如下：
+	\begin{lstlisting}[language = C]
+	typedef struct
+	{
+		Elf32_Addr r_offset;
+		Elf32_Word r_info;
+	}Elf32_Rel;
+
+	typedef struct
+	{
+		Elf32_Addr r_offset;
+		Elf32_Word r_info;
+		Elf32_SWord r_addend;
+	}Elf32_Rela;
+	\end{lstlisting}
+
+	对于结构体各个成员的解释如下：
+	\interval
+	\begin{longtable}{p{3cm}p{7cm}}
+	\hline
+	r\_offset & 该成员给出了重定位行为执行的位置。对于一个重定位文件而言，成员值是受重定位影响的存储单元相对于当前section的偏移量。
+			    对于一个可执行文件或共享文件而言，成员值是受到重定位影响的存储单元的虚拟地址。\\
+	\hline
+	r\_info & 该成员给出了受重定位影响的符号表的索引值，同时还给出了所执行的重定位的类型。比如，call指令的重定位entry的r\_info存放着被调用函数的符号表索引值。
+			  如果符号表索引值是STN\_UNDEF，那么成员值为0。重定位的类型与处理器有关。\\
+	\hline
+	r\_addend & 该成员给出了一个常量加数，用于计算重定位域的值。\\
+	\hline
+	\end{longtable}
+	\interval
+
+\subsection{Program header}
+\subsection{程序装载}
+\subsection{动态链接}
+
+\clearpage
+
+\section{实现内核雏形}
 
 \end{document}
