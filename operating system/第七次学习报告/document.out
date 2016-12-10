@@ -12,10 +12,10 @@
 \BOOKMARK [3][-]{subsubsection.3.1.1}{数据表示}{subsection.3.1}% 12
 \BOOKMARK [2][-]{subsection.3.2}{ELF\040header}{section.3}% 13
 \BOOKMARK [3][-]{subsubsection.3.2.1}{ELF鉴别}{subsection.3.2}% 14
-\BOOKMARK [2][-]{subsection.3.3}{Sections}{section.3}% 15
-\BOOKMARK [3][-]{subsubsection.3.3.1}{Section\040header}{subsection.3.3}% 16
-\BOOKMARK [3][-]{subsubsection.3.3.2}{sh_type}{subsection.3.3}% 17
-\BOOKMARK [3][-]{subsubsection.3.3.3}{sh_flags}{subsection.3.3}% 18
+\BOOKMARK [3][-]{subsubsection.3.2.2}{程序头}{subsection.3.2}% 15
+\BOOKMARK [2][-]{subsection.3.3}{Sections}{section.3}% 16
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Section\040header}{subsection.3.3}% 17
+OOKMARK [3][-]{subsubsection.3.3.3}{sh_flags}{subsection.3.3}% 18
 \BOOKMARK [3][-]{subsubsection.3.3.4}{特殊的节}{subsection.3.3}% 19
 \BOOKMARK [2][-]{subsection.3.4}{字符串表}{section.3}% 20
 \BOOKMARK [2][-]{subsection.3.5}{符号表}{section.3}% 21
