@@ -24,7 +24,9 @@
 \BOOKMARK [3][-]{subsubsection.3.5.3}{st_value}{subsection.3.5}% 24
 \BOOKMARK [3][-]{subsubsection.3.5.4}{符号表的0索引}{subsection.3.5}% 25
 \BOOKMARK [2][-]{subsection.3.6}{重定位}{section.3}% 26
-\BOOKMARK [2][-]{subsection.3.7}{Program\040header}{section.3}% 27
-\BOOKMARK [2][-]{subsection.3.8}{程序装载}{section.3}% 28
-\BOOKMARK [2][-]{subsection.3.9}{动态链接}{section.3}% 29
-\BOOKMARK [1][-]{section.4}{实现内核雏形}{}% 30
+\BOOKMARK [3][-]{subsubsection.3.6.1}{一些约定符号}{subsection.3.6}% 27
+\BOOKMARK [3][-]{subsubsection.3.6.2}{重定位类型}{subsection.3.6}% 28
+\BOOKMARK [2][-]{subsection.3.7}{Program\040header}{section.3}% 29
+\BOOKMARK [2][-]{subsection.3.8}{程序装载}{section.3}% 30
+\BOOKMARK [2][-]{subsection.3.9}{动态链接}{section.3}% 31
+\BOOKMARK [1][-]{section.4}{实现内核雏形}{}% 32

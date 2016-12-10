@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  10 DEC 2016 12:55
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  10 DEC 2016 20:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2355,6 +2355,9 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [32]
+Underfull \vbox (badness 10000) detected at line 1028
+ []
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2372,25 +2375,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [34
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1013.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1013.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1042.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1042.
  (./document.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1013.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1013.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1042.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1042.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1013.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1042.
  ) 
 Here is how much of TeX's memory you used:
- 31788 strings out of 493591
- 574563 string characters out of 6143546
+ 31789 strings out of 493591
+ 574568 string characters out of 6143546
  830183 words of memory out of 5000000
- 34746 multiletter control sequences out of 15000+600000
+ 34747 multiletter control sequences out of 15000+600000
  10924 words of font info for 88 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
  48i,12n,87p,10365b,1811s stack positions out of 5000i,500n,10000p,200000b,80000s

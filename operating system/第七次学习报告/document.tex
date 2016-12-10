@@ -989,7 +989,7 @@ ReadSector:
 
 	对于结构体各个成员的解释如下：
 	\interval
-	\begin{longtable}{p{3cm}p{7cm}}
+	\begin{longtable}{p{2cm}p{9cm}}
 	\hline
 	r\_offset & 该成员给出了重定位行为执行的位置。对于一个重定位文件而言，成员值是受重定位影响的存储单元相对于当前section的偏移量。
 			    对于一个可执行文件或共享文件而言，成员值是受到重定位影响的存储单元的虚拟地址。\\
@@ -1001,6 +1001,38 @@ ReadSector:
 	\hline
 	\end{longtable}
 	\interval
+
+	从这两个结构体的定义可以看出，只有Elf32\_Rela的条目包含了显式的加数，Elf32\_Rel的条目存放着隐式的加数。
+	对于不同的处理器架构而言，这两种entry中的一个可能是必要的或更为方便的。因此，对于特定的机器，使用哪一种entr将取决于上下文。\par
+
+	一个重定位的section与一个符号表和一个可修改的section有关。section header中的sh\_info和sh\_link成员指明了这种关系。
+
+\subsubsection{重定位类型}
+	在介绍重定位类型的宏之前，为了简化描述，做了如下的标记。
+
+	\interval
+	\begin{longtable}{p{2cm}p{9cm}}
+	\hline
+	A & 表示用于计算重定位域的加数 \\
+	\hline
+	B & 表示在执行过程中一个共享目标被加载到内存时的基地址。一般情况下，一个共享文件使用的虚拟基地址为0。\\
+	\hline
+	G & 表示了相对于全局偏移表的偏移。重定位entry的符号在执行时将会驻留在这个表中。\\
+	\hline
+	GOT & 表示了全局偏移表的地址。\\
+	\hline
+	L & 表示了一个符号的过程链接表的位置。一个过程链接表entry将重定位一个函数调用到正确的目的单元。链接器将创建初始的过程链接表，在执行过程中动态链接器将会修改这些entry。\\
+	\hline
+	P & 表示了存储单元被重定位以后的位置。\\
+	\hline
+	S & 表示了某些特定符号的值，这些符号的索引驻留在重定位entry中。\\
+	\hline
+	\end{longtable}
+	\interval
+
+	重定位类型如下图所示：
+	
+
 
 \subsection{Program header}
 \subsection{程序装载}
