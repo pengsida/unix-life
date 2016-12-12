@@ -634,23 +634,6 @@ ReadSector:
 		\item 宏EI\_PAD，值为7，用于标识e\_ident未使用字节的开头。接下来e\_ident[7]~e\_ident[15]都不会被用到，这些值都被置为0。
 	\end{itemize}
 
-% \subsubsection{程序头}
-% 	程序头描述的是一个段在文件中的位置、大小以及它被放入内存后所在的位置和大小。
-% 	如果我们想把一个文件加载进内存，就需要用到这些信息。以下是程序头的定义代码：
-% 	\begin{lstlisting}[language = C]
-% 	typedef struct
-% 	{
-% 		Elf32_Word p_type;
-% 		Elf32_Off p_offset;
-% 		Elf32_Addr p_vaddr;
-% 		Elf32_Addr p_paddr;
-% 		Elf32_Word p_filesz;
-% 		Elf32_Word p_memsz;
-% 		Elf32_Word p_flags;
-% 		Elf32_Word p_align;
-% 	}Elf32_Phdr;
-% 	\end{lstlisting}
-
 \subsection{Sections}
 	object文件中的section header table用于定位所有的section。一个section table header的索引就是这个数组的下标。
 	节头表的一些索引是比较特殊的，如下所示：
@@ -1031,15 +1014,334 @@ ReadSector:
 	\interval
 
 	重定位类型如下图所示：
-	\fic{20.png}
+	\fic{21.png}
 
+	在介绍各个重定位类型之前，首先介绍一下word32。word32是一个32位的域，4字节长，与32位intel体系有相同的字节排序。如下所示：
+	\fic{22.png}
+
+	接下来介绍各个重定位类型：
+	\interval
+	\begin{longtable}{p{3cm}p{8cm}}
+	\hline
+	R\_386\_GOT32 & 这个类型的重定位计算了全局偏移表基地址到符号的全局偏移表entry之间的距离。同时还通知了链接器建立一个全局偏移表。\\
+	\hline
+	R\_386\_PLT32 & 这个类型的重定位计算了符号的过程链接表entry的地址，同时还通知链接器建立一个过程链接表。\\
+	\hline
+	R\_386\_COPY & 这个类型的重定位用于动态链接。它的r\_offset成员指向一个可写段的位置。
+					在执行过程中，动态链接器将与共享文件的符号有关的数据拷贝到r\_offset指定的位置。\\
+	\hline
+	R\_386\_GLOB\_DAT & 这个类型的重定位用于将一个特定符号的地址设定为全局偏移表的entry。
+					    该重定位类型允许你决定符号和全局偏移表entry之间的一致性。\\
+	\hline
+	R\_386\_JMP\_SLOT & 这个类型的重定位用于动态链接。它的r\_offset成员给出了过程链接表entry的地址。
+						动态链接器可以修改该过程链接表的entry，以便向特定的符号地址传递控制。\\
+	\hline
+	R\_386\_ReLATIVE & 这个类型的重定位用于动态链接。它的偏移成员给出了共享文件中的一个位置，这个位置存放着相对地址的值。
+					   动态链接器通过将共享文件的装载地址与该相对地址相加得到相应的虚拟地址。
+					   该重定位entry在符号表的索引值必须为0。\\
+	\hline
+	R\_386\_GOTOFF & 这个类型的重定位用于计算符号值与全局偏移表地址之间的不同。另外还通知链接器建立全局偏移表。\\
+	\hline
+	R\_386\_GOTPC & 这个类型的重定位在计算中使用了全局偏移表。同时它还会通知链接器建立全局偏移表。\\
+	\end{longtable}
+	\interval
 
 \subsection{Program header}
+	program header对于可执行文件和共享文件而言是必须的，它的定义代码如下：
+	\begin{lstlisting}[language = C]
+	typedef struct
+	{
+		Elf32_Word p_type;
+		Elf32_Off p_offset;
+		Elf32_Addr p_vaddr;
+		Elf32_Addr p_paddr;
+		Elf32_Word p_filesz;
+		Elf32_Word p_memsz;
+		Elf32_Word p_flags;
+		Elf32_Word p_align;
+	}Elf32_Phdr;
+	\end{lstlisting}
+
+	\interval
+	\begin{longtable}{p{1.5cm}p{9cm}}
+	\hline
+	p\_type & 该成员指出了该元素描述了什么类型的段，或者如何解释该元素的信息。\\
+	\hline
+	p\_offset & 该成员给出了该段的基地址相对于文件开始处的偏移。\\
+	\hline
+	p\_vaddr & 该成员给出了该段在内存中的基地址。\\
+	\hline
+	p\_paddr & 该成员为该段的物理地址而保留。\\
+	\hline
+	p\_filesz & 该成员给出了文件映像中该段的字节数。\\
+	\hline
+	p\_memsz & 该成员给出了内存映像中该段的字节数。\\
+	\hline
+	p\_flags & 该成员给出了与该段相关的标志。\\
+	\hline
+	p\_align & 该成员给出了该段在内存和文件中的对齐值。\\
+	\hline 
+	\end{longtable}
+	\interval
+
+\subsubsection{p\_type}
+	p\_type定义了下列宏：
+	\fic{23.png}
+
+	对各个宏的解释如下：
+	\interval
+	\begin{longtable}{p{2cm}p{9cm}}
+	\hline
+	PT\_NULL & 表示该元素未使用，其他的成员值也是未定义的。\\
+	\hline
+	PT\_LOAD & 表示该元素指定了可载入的段。\\
+	\hline
+	PT\_DYNAMIC & 表示该元素指定了动态链接信息。\\
+	\hline
+	PT\_INTERP & 表示该元素制定了一个null-terminated路径名的位置和大小。这个段类型只对可执行文件有意义。\\
+	\hline
+	PT\_NOTE & 该数组元素指定了辅助信息的位置和大小。\\
+	\hline
+	PT\_SHLIB & 该段类型是保留的，而且具有未定义的语义。具有该类型元素的程序不遵守ABI。\\
+	\hline
+	PT\_PHDR & 该元素指定了program header table的位置和大小。\\
+	\hline
+	PT\_LOPROC-PT\_HIPROC & 该范围中的值被保留用于处理器特定的语义。\\
+	\hline
+	\end{longtable}
+	\interval
+
+\subsubsection{基地址}
+	可执行文件和共享文件中有一个基地址，这个基地址是object文件在内存映像中最低的虚拟地址。
+	基地址用于在动态链接过程中重定位该程序的内存映像。\par
+	一个可执行文件或一个共享文件的基地址由内存载入地址、页面大小的最大值和程序载入段的最低虚拟地址计算得到。
+	获得基地址的方法是将内存地址减去最大页面大小的最接近的倍数。该内存地址是否与p\_vaddr匹配取决于内存中的文件格式。\par
+
+\subsubsection{Note Section}
+	供应商或系统设计者需要用特定的信息标记一个object文件，以便其他程序检查其是否兼容。
+	SHT\_NOTE类型的section和PT\_NOTE类型的program header元素就是用于此目的。
+	这些section和program header中包含了注解信息。
+	如果注解信息不影响程序的执行行为，那么注解信息的出现不会影响一个程序ABI的一致性，否则程序将不遵守ABI的规范并出现未定义的行为。\par
+
 \subsection{程序装载}
+	当创建或增加一个进程映像时，系统将拷贝一个文件的段到一个虚拟的内存段中。
+	系统什么时候实际地读文件依赖于程序的执行行为。
+	一个进程只有在执行时需要引用逻辑页面时才需要一个物理页面。
+	进程实际执行过程中，通常会留下许多为引用的特面。为了改良系统性能，可能推迟物理上频繁的读取。
+	为了在实际操作中达到这种高效果，可执行文件和共享文件必须具有符合特定条件的段映像，这些段映像的文件偏移量和虚拟地址应该是页面大小的整数倍。\par
+
+	下面是一个可执行文件的例子：
+	\fic{24.png}
+
+	例子中文件偏移量和虚拟地址在文本段和数据段都是4KB的整数倍，不过还是会有4个文件页面混合了代码和数据：
+	\begin{itemize}
+		\item 第一个文本页面包含了ELF头、程序头以及其他信息。
+		\item 最后的文本页包含了一个数据开始的拷贝。
+		\item 第一个数据页面有一个文本结束的拷贝。
+		\item 最后的额数据页面可能会包含与正在运行的进程无关的文件信息。
+	\end{itemize}
+
+	例子中包含文本结束和数据开始的文件区域将会被影射两次，在一个虚拟地址上是文本，而另一个虚拟地址上是数据。\par
+
+	可执行文件和共享文件在段载入有两方面的不同：
+	\begin{itemize}
+		\item 一方面，可执行文件段包含了绝对代码。为了让进程正确执行，这些段必须位于建立可执行文件的虚拟地址处。
+			  因此系统使用不变的p\_vaddr作为虚拟地址。
+		\item 另一方面，共享目标段包含与位置无关的代码。这可以让不同进程的相应段虚拟地址各不相同，而且不影响执行。
+			  因为位置无关的代码在段间使用相对定址，所以内存中的虚拟地址的不同必须符合文件中虚拟地址的不同。
+	\end{itemize}
+
 \subsection{动态链接}
+	一个可执行文件可能有一个PT\_INTERP类型的program header元素。
+	在执行过程中，系统从PT\_INTERP段中取出一个路径名并由解释器文件的段创建出事的进程映像。
+	也就是说，系统为解释器编写了一个内存映像，而不是使用原始的可执行文件的段映像。
+	此时，解释器将负责接收来自于系统的控制，并且为应用程序提供一个环境变量。\par
+	解释器有两种方法接收来自系统的控制：
+	\begin{itemize}
+		\item 它会接收一个文件描述符来读取可执行文件，定位于开头。使用这个文件描述符来读取并映射该可执行文件的段到内存中。
+		\item 依赖于该可执行文件的格式，系统会将这个可执行文件载入到内存中，而不是给该解释器一个文件描述符。
+	\end{itemize}
+
+\subsubsection{动态链接器}
+	当使用动态链接方式建立一个可执行文件时，链接器会把一个PT\_INTERP类型的元素加载到可执行文件中，
+	让系统将动态链接器作为该程序的解释器。\par
+	Exec(BA\_OS)和动态链接器将一起为程序创建进程，过程如下：
+	\begin{itemize}
+		\item 将可执行文件的内存段加入到进程映像中。
+		\item 将共享对象的内存段加入到进程映像中。
+		\item 为可执行文件和它的共享对象进行重定位。
+		\item 如果有一个用于读取可执行文件的文件描述符传递给动态链接器，那么就需要关闭它。
+		\item 向程序传送控制，就像该程序直接从Exec(BA\_OS)接收控制一样。
+	\end{itemize}
+
+	链接器同时也为动态链接器构建各种可执行文件和共享文件的相关数据，如下所示：
+	\begin{itemize}
+		\item 一个具有SHT\_DYNAMIC类型的.dynamic section。这个section开头的结构体包含了其他动态链接信息的地址。
+		\item 一个SHT\_HASH类型的.hash section，包含了一个symbol hash table。
+		\item 一个SHT\_PROGBITS类型的.got section，包含了全局偏移表。
+		\item 一个SHT\_PROGBITS类型的.plt section，包含了过程链接表。
+	\end{itemize}
+
+\subsubsection{dynamic section}
+	如果一个object文件参与动态链接，那么它的program header table将会有一个PT\_DYNAMIC类型的元素。
+	这个段包含了.dynamic section。一个特殊的符号\_DYNAMIC标识了这个section。.dynamic section包含了以下的数组：
+	\begin{lstlisting}[language = C]
+	typedef struct
+	{
+		Elf32_SWord d_tag;
+		union
+		{
+			Elf32_SWord d_val;
+			Elf32_Addr d_ptr;
+		}d_un;
+	}Elf32_Dyn;
+
+	extern Elf32_Dyn _DYNAMIC[];
+	\end{lstlisting}
+
+	各成员解释如下：
+	\interval
+	\begin{longtable}{p{2cm}p{8cm}}
+	\hline
+	d\_tag & 控制着d\_un的解释。\\
+	\hline
+	d\_val & 描述了具有不同解释的整型变量。\\
+	\hline
+	d\_ptr & 描述了程序的虚拟地址。\\
+	\hline
+	\end{longtable}
+	\interval
+
+\subsubsection{Shared Object Dependencies}
+	当链接器处理一个文档库时，它取出库中的成员，并且把它们拷贝到一个输出的object文件中。当运行时没有包括一个动态链接器时，
+	那些静态链接是可用的。共享文件也提供相应的服务，动态链接器必须把正确的共享文件链接到要实现的进程映像中。
+	因此，可执行文件和共享文件之间存在着明确的依赖性。\par
+	当动态链接器为一个object文件创建内存段时，依赖关系表明了需要哪些object文件来为程序提供服务。
+	通过重复的链接这些共享object和它们的依赖关系，动态链接器可以创造出一个完整的进程映像。
+	当解决一个符号引用时，动态链接器将使用广度优先搜索来检查符号表。\par
+	在依赖关系列表中的名字既被DT\_SONAME字符串拷贝，又被建立object文件时的路径名拷贝。
+	有三种指定共享文件搜索路径的方法，如下所示：
+	\begin{itemize}
+		\item 动态数组标记DT\_RPATH保存着目录列表的字符串。
+		\item 在进程环境中LD\_LIBRARY\_PATH变量保存着目录列表的字符串。
+		\item 动态链接器通过搜索/usr/lib来获得共享文件。
+	\end{itemize}
 
 \clearpage
 
-\section{实现内核雏形}
+\section{从Loader到内核}
+\subsection{用loader加载内核到内存}
+	将内核加载到内存的过程和加载Loader的过程类似，根据根目录区的条目找到内存所在的扇区，然后将其读进内存。
+	在此再看一遍根目录条目的格式：
+	\fic{1.png}
+	
+	因为过程与之前的类似，所以在下面的代码中，我就不详细地注释了。
+	\begin{lstlisting}
+	org 0100h
+	BaseOfStack equ 0100h
+	BaseOfKernelFile equ 08000h
+	OffsetOfKernelFile equ 0h
+
+	jmp LABEL_START
+
+	LABEL_START:
+		mov ax, cs
+		mov ds, ax
+		mov es, ax
+		mov ss, cs
+		mov sp, BaseOfStack
+
+		mov word [wSectorNo], SectorNoOfRootDirectory
+		xor ah, ah
+		xor dl, dl
+		int 13h
+	LABEL_SEARCH_IN_ROOT_DIR_BEGIN:
+		cmp word [wRootDirSizeForLoop], 0
+		jz LABEL_NO_KERNELBIN
+		dec word [wRootDirSizeForLoop]
+		mov ax, BaseOfKernelFile
+		mov es, ax
+		mov ax, OffsetOfKernelFile
+		mov bx, ax
+		mov ax, [wSectorNo]
+		mov cl, 1
+		call ReadSector
+		
+		mov si, KernelFileName
+		mov di, OffsetOfKernelFile
+		cld 
+		mov dx, 10h
+	LABEL_SEARCH_FOR_KERNELBIN:
+		cmp dx, 0
+		jz LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR
+		dec dx
+		mov cx, 11
+	LABEL_CMP_FILENAME:
+		cmp cx, 0
+		jz LABEL_FILENAME_FOUND
+		dec cx
+		lodsb
+		cmp al, byte [es:di]
+		jz LABEL_GO_ON
+		jmp LABEL_DIFFERENT
+	LABEL_GO_ON:
+		inc di
+		jmp LABEL_CMP_FILENAME
+	LABEL_DIFFERENT:
+		and di, 0FFE0h
+		add di, 20h
+		mov si, KernelFileName
+		jmp LABEL_SEARCH_FOR_KERNELBIN
+	LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:
+		add word [wSectorNo], 1
+		jmp LABEL_SEARCH_IN_ROOT_DIR_BEGIN
+	LABEL_NO_KERNELBIN:
+		jmp $
+	LABEL_FILENAME_FOUND:
+		mov ax, RootDirSectors
+		and di, 0FFF0h
+		push eax
+		; 根目录条目偏移量为01Ch的地方存放着内核的大小
+		mov eax, [es:di + 01Ch]
+		mov dword [dwKernelSize], eax
+		pop eax
+
+		; 根目录条目偏移量为01Ch的地方存放着内核的开始簇号
+		add di, 01Ah
+		mov cx, word [es:di]
+		push cx
+		add cx, ax
+		add cx, DeltaSectorNo
+		mov ax, BaseOfKernelFile
+		mov es, ax
+		mov ax, OffsetOfKernelFile
+		mov bx, ax
+		mov ax, cx
+	LABEL_GOON_LOADING_FILE:
+		mov cl, 1
+		call ReadSector
+		pop ax
+		call GetFATEntry
+		cmp ax, 0FFFh
+		jz LABEL_FILE_LOADED
+		push ax
+		mov dx, RootDirSectors
+		add ax, dx
+		add ax, DeltaSectorNo
+		add bx, [BPB_BytsPerSec]
+		jmp LABEL_GOON_LOADING_FILE
+	LABEL_FILE_LOADED:
+		call KillMotor ; 关闭驱动马达
+		jmp $
+	KillMotor:
+		push dx
+		mov dx, 03F2h
+		mov al, 0
+		out dx, al
+		pop dx
+		ret
+	\end{lstlisting}
+
+	这样一来，内核就被我们加载进了内存中。
 
 \end{document}

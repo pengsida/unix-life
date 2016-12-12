@@ -24,9 +24,15 @@
 \contentsline {subsubsection}{\numberline {3.5.3}st\_value}{31}{subsubsection.3.5.3}
 \contentsline {subsubsection}{\numberline {3.5.4}符号表的0索引}{31}{subsubsection.3.5.4}
 \contentsline {subsection}{\numberline {3.6}重定位}{32}{subsection.3.6}
-\contentsline {subsubsection}{\numberline {3.6.1}一些约定符号}{33}{subsubsection.3.6.1}
-\contentsline {subsubsection}{\numberline {3.6.2}重定位类型}{33}{subsubsection.3.6.2}
-\contentsline {subsection}{\numberline {3.7}Program header}{33}{subsection.3.7}
-\contentsline {subsection}{\numberline {3.8}程序装载}{33}{subsection.3.8}
-\contentsline {subsection}{\numberline {3.9}动态链接}{33}{subsection.3.9}
-\contentsline {section}{\numberline {4}实现内核雏形}{34}{section.4}
+\contentsline {subsubsection}{\numberline {3.6.1}重定位类型}{33}{subsubsection.3.6.1}
+\contentsline {subsection}{\numberline {3.7}Program header}{35}{subsection.3.7}
+\contentsline {subsubsection}{\numberline {3.7.1}p\_type}{35}{subsubsection.3.7.1}
+\contentsline {subsubsection}{\numberline {3.7.2}基地址}{36}{subsubsection.3.7.2}
+\contentsline {subsubsection}{\numberline {3.7.3}Note Section}{36}{subsubsection.3.7.3}
+\contentsline {subsection}{\numberline {3.8}程序装载}{36}{subsection.3.8}
+\contentsline {subsection}{\numberline {3.9}动态链接}{37}{subsection.3.9}
+\contentsline {subsubsection}{\numberline {3.9.1}动态链接器}{38}{subsubsection.3.9.1}
+\contentsline {subsubsection}{\numberline {3.9.2}dynamic section}{38}{subsubsection.3.9.2}
+\contentsline {subsubsection}{\numberline {3.9.3}Shared Object Dependencies}{39}{subsubsection.3.9.3}
+\contentsline {section}{\numberline {4}从Loader到内核}{40}{section.4}
+\contentsline {subsection}{\numberline {4.1}用loader加载内核到内存}{40}{subsection.4.1}
