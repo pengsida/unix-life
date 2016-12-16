@@ -1,0 +1,1002 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{第七次学习报告 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{进入内核前的准备}
+\subsection{跳入保护模式}
+	一个操作系统从开机到开始运行，需要经历“引导，加载内核进入内存，跳入保护模式，开始执行内核”。
+	这句话我在上一次的学习报告的开头说过，上一次学习报告完成了前两个部分：引导，加载内核进入内存。
+	我在前几次的学习报告中已经讨论过保护模式的进入，接下来的代码更多的是走一下流程，感受一下如何在Loader中跳入保护模式。\par
+	我们定义了两个段描述符，一个是可执行段，一个是可读写段。这两个段的大小都是4GB，基址为0，所以之后主要靠段内的偏移来进行程序的转移。
+	在感受代码前，我们应该意识到，Loader模块的物理基址是BaseOfLoader*10h+OffsetOfLoader。
+	所以在Loader文件中的标号的实际物理地址都是该物理基址加上标号在文件中的偏移。
+	\begin{lstlisting}
+	BaseOfLoader equ 09000h
+	OffsetOfLoader equ 0100h
+	; BaseOfLoader是段基址，所以实际物理地址需要左移4位
+	BaseOfLoaderPhyAddr equ BaseOfLoader * 10h + OffsetOfLoader
+
+	LABEL_GDT:	Descriptor 0, 0, 0
+	LABEL_DESC_FLAT_C:	Descriptor 0, 0fffffh, DA_CR | DA_32 | DA_LIMIT_4K
+	LABEL_DESC_FLAT_RW: Descriptor 0, 0fffffh, DA_DRW | DA_32 | DA_LIMIT_4K
+
+	GdtLen equ $ - LABEL_GDT
+	GdtPtr dw GdtLen - 1
+		   dd BaseOfLoaderPhyAddr + LABEL_GDT
+	
+	SelectorFlatC equ LABEL_DESC_FLAT_C - LABEL_GDT
+	SelectorFlatRW equ LABEL_DESC_FLAT_RW - LABEL_GDT
+	; ...
+	LABEL_FILE_LOADED:
+		; ...
+		lgdt [GdtPtr]
+		cli
+
+		in al, 92h
+		or al, 00000010b
+		out 92h, al
+
+		mov eax, cr0
+		or eax, 1
+		mov cr0, eax
+
+		jmp dword SelectorFlatC:(BaseOfLoaderPhyAddr+LABEL_PM_START)
+
+	[SECTION .s32]
+	ALIGN 32
+	[BITS 32]
+	LABEL_PM_START:
+		$
+	\end{lstlisting}
+
+\subsection{开启分页机制}
+	既然我们进入了保护模式，就能开启分页机制了。
+	这里开启分页机制的思路和前几次学习报告中的思路是一样的，所以在代码中不会有很多注释。\par
+
+	在此重温一下ARDS数据结构：
+	\interval
+	\begin{longtable}{p{2cm}|p{3cm}|p{5cm}}
+	\hline
+	偏移 & 名称 & 意义 \\
+	\hline
+	0 & BaseAddrLow & 基地址的低32位 \\
+	\hline
+	4 & BaseAddrHigh & 基地址的高32位 \\
+	\hline
+	8 & LengthLow & 长度的低32位 \\
+	\hline
+	12 & LengthHigh & 长度的高32位 \\
+	\hline
+	16 & Type & 这个地址范围的地址类型 \\
+	\hline
+	\end{longtable}
+	\interval
+
+	其中，Type的取值有三种类型：
+	\interval
+	\begin{longtable}{p{1cm}p{8cm}}
+	\hline
+	1 & 表示这个内存段是一段可以被 OS 使用的 RAM \\
+	\hline
+	2 & 表示这个地址段正在被使用或者被系统保留，所以一定不可以被 OS 使用。\\
+	\hline
+	其他 & 表示这个内存段被保留，留作以后使用，不可以被 OS 使用。\\
+	\hline
+	\end{longtable}
+	\interval
+
+	\begin{lstlisting}
+	LABEL_START:
+		mov ax, cs
+		mov ds, ax
+		mov es, ax
+		mov ss, ax
+		mov sp, BaseOfStack
+
+		; int 15h，将ARDS结构体读入es:di所指的位置
+		; ebx用于寻找下一个地址范围描述符结构ARDS。首次调用int 15h，ebx的值应该设为0
+		mov ebx, 0 
+		mov di, _MemChkBuf
+	.MemChkLoop:
+		mov eax, 0E820h
+		; ARDS共20字节，所以通过ecx指定int 15h向es:di读入20字节的内容
+		mov ecx, 20
+		mov edx, 0534D4150h
+		int 15h
+		; 当CF=1时，表示发生错误。
+		jc .MemChkFail
+		; 让es:di指向缓冲区的下一个20字节
+		add di, 20
+		inc dword [_dwMCRNumber]
+		; 如果ebx的值为0，代表着当前的ARDS是最后一个地址范围描述符。
+		cmp ebx, 0
+		jne .MemChkLoop
+		jmp .MemChkOk
+	.MemChkFail:
+		mov dword [_dwMCRNumber], 0
+	.MemChkOk:
+		; ...
+
+	[SECTION .s32]
+	ALIGN
+	[BITS 32]
+	LABEL_PM_START:
+		mov ax, SelectorFlatRW
+		mov ds, ax
+		mov es, ax
+		mov fs, ax
+		mov ss ,ax
+		mov esp, TopOfStack
+
+		call DispMemInfo
+		call SetupPaging
+
+		jmp $
+
+	DispMemInfo:
+		push esi
+		push edi
+		push ecx
+		; ds:si指向存放ARDS的数据缓冲区
+		mov esi, MemChkBuf
+		; ecx存放着ARDS的数目
+		mov ecx, [dwMCRNumber]
+	.loop:
+		; ARDSStruct用于存放数据缓冲区当前指向的ARDS结构
+		; edi指向ARDS结构体的成员
+		mov edx, 5
+		mov edi, ARDSStruct
+	.1:
+		mov eax, dword [esi]
+		; 将eax中存放的数据放入es:edi中，edi自动加4
+		stosd
+		; 用于指向数据缓冲区的下一个ARDS结构
+		add esi, 4
+		dec edx
+		cmp edx, 0
+		jnz .1
+		cmp dword [dwType], 1
+		jne .2
+		; 这里只需要使用低32位的基地址和长度，因为高32位没有用到
+		; 基地址加长度的最大值就是内存空间的大小
+		mov eax, [dwBaseAddrLow]
+		add eax, [dwLengthLow]
+		cmp eax, [dwMemSize]
+		jb .2
+		mov [dwMemSize], eax
+	.2:
+		; 使用loop指令会检查ecx是否为0，并将ecx减一
+		loop .loop
+		
+		pop ecx
+		pop edi
+		pop esi
+		ret
+
+	SetupPaging:
+		xor edx, edx
+		mov eax, [dwMemSize]
+		; 一个页表对应4k*1024的内存大小
+		mov ebx, 400000h
+		div ebx
+		mov ecx, eax
+		; 检查edx是否为0。test指令将执行and操作，不过不会保存执行的结果
+		test edx, edx
+		jz .no_remainder
+		; 余数不为0的话，页表数目加一
+		inc ecx 
+	.no_remainder:
+		push ecx
+
+		mov ax, SelectorFlatRW
+		mov es, ax
+		mov edi, PageDirBase
+		xor eax, eax
+		mov eax, PageTblBase | PG_P | PG_USU | PG_RWW
+	.1:
+		; 将eax中的内容存入es:eax中
+		stosd
+		add eax, 4096
+		loop .1
+
+		pop eax
+		mov ebx, 1024
+		mul ebx
+		; 需要初始化的页帧数目为1024*页表数
+		mov ecx, eax
+		mov edi, PageTblBase
+		xor eax, eax
+		mov eax, PG_P | PG_USU | PG_RWW
+	.2:
+		stosd
+		add eax, 4096
+		loop .2
+
+		; 将页目录基址存入cr3中
+		mov eax, PageDirBase
+		mov cr3, eax
+		; 将cr0的PG位置一
+		mov eax, cr0
+		or eax, 80000000h
+		mov cr0, eax
+		jmp short .3
+	.3:
+		nop
+		ret
+
+	[SECTION .data1]
+	ALIGN 32
+
+	LABEL_DATA:
+	_szMemChkTitle: db "BaseAddrL BaseAddrH LengthLow LengthHigh   Type", 0Ah, 0
+	_szRAMSize: db "RAM size:", 0
+	_szReturn: db 0Ah, 0
+
+	; 用于存放ARDS结构的数量
+	_dwMCRNumber: dd 0
+	; 用于存放可用内存的大小
+	_dwMemSize: dd 0
+	; 代表了ARDS结构
+	_ARDSStruct:
+		_dwBaseAddrLow: dd 0
+		_dwBaseAddrHigh: dd 0
+		_dwLengthLow: dd 0
+		_dwLengthHigh: dd 0
+		_dwType: dd 0
+	_MemChkBuf: times 256 db 0
+
+	szMemChkTitle equ BaseOfLoaderPhyAddr + _szMemChkTitle
+	szRAMSize equ BaseOfLoaderPhyAddr + _szRAMSize
+	szReturn equ BaseOfLoaderPhyAddr + _szReturn
+	; 代表了_dwMCRNumber的地址
+	dwMCRNumber equ BaseOfLoaderPhyAddr + _dwMCRNumber
+	; 代表了_dwMemSize的地址
+	dwMemSize equ BaseOfLoaderPhyAddr + _dwMemSize
+	; 代表了ARDS结构各成员的地址
+	ARDSStruct equ BaseOfLoaderPhyAddr + _ARDSStruct
+		dwBaseAddrLow equ BaseOfLoaderPhyAddr + _dwBaseAddrLow
+		dwBaseAddrHigh equ BaseOfLoaderPhyAddr + _dwBaseAddrHigh
+		dwLengthLow equ BaseOfLoaderPhyAddr + _dwLengthLow
+		dwLengthHigh equ BaseOfLoaderPhyAddr + _dwLengthHigh
+		dwType equ BaseOfLoaderPhyAddr + _dwType
+	MemChkBuf equ BaseOfLoaderPhyAddr + _MemChkBuf
+
+	PageDirBase equ 100000h
+	PageTblBase equ 101000h
+
+	StackSpace: times 1024 db 0
+	TopOfStack equ BaseOfLoaderPhyAddr + $
+	\end{lstlisting}
+
+\subsection{重新放置内核}
+	我们在此需要根据内核的program header table的信息进行内存复制。
+	上一次学习报告中ELF文件格式的内容虽然很多，但是太晦涩难懂了。在此现在复习一遍program header table。
+
+\subsubsection{program header table}
+	program header的定义如下：
+	\begin{lstlisting}[language = C]
+	typdef struct
+	{
+		ELf32_Word p_type;
+		ELf32_Off p_offset;
+		ELf32_Addr p_vaddr;
+		ELf32_Addr p_paddr;
+		ELf32_Word p_filesz;
+		ELf32_Word p_memsz;
+		ELf32_Word p_flags;
+		ELf32_Word p_align;
+	}ELf32_Phdr;
+	\end{lstlisting}
+
+	program header描述的是系统准备程序运行所需的一个段的信息。结构体中各成员的意义如下：
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline
+	p\_type & 当前program header所描述的段的类型 \\
+	\hline
+	p\_offset & 段的第一个字节在文件中的偏移 \\
+	\hline
+	p\_vaddr & 段的第一个字节在内存中的虚拟地址 \\
+	\hline
+	p\_paddr & 在物理地址定位相关的系统中，此项是为物理地址保留的 \\
+	\hline
+	p\_filesz & 段在文件中的长度 \\
+	\hline
+	p\_memsz & 段在内存中的长度 \\
+	\hline
+	p\_flags & 与段相关的标志 \\
+	\hline
+	p\_align & 根据此项值来确定段在文件以及内存中如何对齐 \\
+	\hline
+	\end{longtable}
+	\interval
+
+	program header描述的是一个段在文件中的位置、大小以及它被放进内存后所在的位置和大小。\par
+	举一个例子，假设一个程序的object文件中有2个program header，取值如下：
+	\interval
+	\begin{longtable}{p{2.5cm}|p{3cm}|p{3cm}}
+	\hline
+	名称 & program header 0 & program header 1 \\
+	\hline
+	p\_type & 0x1 & 0x1 \\
+	\hline
+	p\_offset & 0x0 & 0x134 \\
+	\hline
+	p\_vaddr & 0x8048000 & 0x8049134 \\
+	\hline
+	p\_paddr & 0x8048000 & 0x8049134 \\
+	\hline
+	p\_filesz & 0x131 & 0x8 \\
+	\hline
+	p\_memsz & 0x131 & 0x8 \\
+	\hline
+	p\_flags & 0x5 & 0x6 \\
+	\hline
+	p\_align & 0x1000 & 0x1000 \\
+	\hline
+	\end{longtable}
+	\interval
+
+	那么这个程序在文件中的位置、大小以及它被放进内存后所在的位置和大小如下：
+	\fic{1.png}
+
+\subsection{重新放置内核}
+	由ld生成的可执行文件中p\_vaddr的值总是一个类似于0x8048XXX的值。
+	我们不能让编译器来决定内核加载到什么地方，有两种解决的方法：
+	\begin{itemize}
+		\item 一是通过修改页表让0x8048XXX映射到较低的地址。
+		\item 另一种方法是通过修改ld的选项让它生成的可执行代码中p\_vaddr的值变小。
+	\end{itemize}
+
+	第二种方法如下所示：
+	\begin{lstlisting}
+	nasm -f elf -o kernel.o kernel.asm
+	ld -s -Ttext 0x30400 -o kernel.bin kernel.o
+	\end{lstlisting}
+
+	这样子就将程序的入口地址变为0x30400，ELF header的信息会位于0x30400之前。ELF header的内容如下所示：
+	\interval
+	\begin{longtable}{p{2cm}|p{2cm}|p{8cm}}
+	\hline
+	e\_ident & ... & \\
+	\hline
+	e\_type & 2H & 可执行文件 \\
+	\hline
+	e\_machine & 3H & 80386 \\
+	\hline
+	e\_version & 1H & \\
+	\hline
+	e\_entry & 30400H & 入口地址 \\
+	\hline
+	e\_phoff & 34H & program header table在文件中的偏移量 \\
+	\hline
+	e\_shoff & 448H & section header table在文件中的偏移量 \\
+	\hline
+	e\_flags & 0H & \\
+	\hline
+	e\_ehsize & 34H & ELF header大小 \\
+	\hline
+	e\_phentsize & 20H & 每一个program header大小20H字节 \\
+	\hline
+	e\_phnum & 1H & program header table中只有一个条目 \\
+	\hline
+	e\_shentsize & 28H & 每一个section header大小28H字节 \\
+	\hline
+	e\_shnum & 4H & section header table有4个条目 \\
+	\hline
+	e\_shstndx & 3H & 包含节名称的字符串表是第3个节 \\
+	\hline
+	\end{longtable}
+	\interval
+
+	实际上，我们需要根据program header table的信息对内核在内存中的位置进行整理。
+	上面通过ld调整程序的入口地址，只是为了让可执行代码中的p\_vaddr的值变小。
+	在实际操作过程中，我们通过program header得知段在文件中的偏移p\_offset，得知段的大小p\_filesz，然后将它移动到段在内存的虚拟地址p\_vaddr。
+	如下所示：
+	\begin{lstlisting}[language = C]
+	memcpy(p_vaddr, BaseOfLoaderPhyAddr + p_offset, p_filesz);
+	\end{lstlisting}
+
+	如果program header的内容如下所示：
+	\interval
+	\begin{longtable}{p{2cm}|p{2cm}|p{8cm}}
+	\hline
+	p\_type & 1H & PT\_LOAD \\
+	\hline
+	p\_offset & 0H & 段的第一个字节在文件中的偏移 \\
+	\hline
+	p\_vaddr & 30000H & 段的第一个字节在内存中的虚拟地址 \\
+	\hline
+	p\_paddr & 30000H & \\
+	\hline
+	p\_filesz & 40DH & 段在文件中的长度 \\
+	\hline
+	p\_memsz & 40DH & 段在内存中的长度 \\
+	\hline
+	p\_flags & 5H & \\
+	\hline
+	p\_align & 1000H & \\
+	\hline
+	\end{longtable}
+	\interval
+
+	这样的话，我门内核放置函数的语句如下：
+	\begin{lstlisting}[language = C]
+	memcpy(3000h, 9000h + 0, 40Dh);
+	\end{lstlisting}
+
+	memcpy函数在第五次学习报告中有提到过，这里将它的代码实现复习一下：
+	\begin{lstlisting}
+	; 该函数使用堆栈读入输入参数，使用eax作为返回参数
+	; 函数有三个参数，分别是dest、source和size
+	MemCpy:
+		push ebp
+		mov ebp, esp
+
+		push esi
+		push edi
+		push ecx
+		; 目的地址单元
+		mov edi, [ebp + 8]
+		; 源数据地址单元
+		mov esi, [ebp + 12]
+		; 源数据内容大小
+		mov ecx, [ebp + 16]
+	.1:
+		cmp ecx, 0
+		jz .2
+		; 将源数据的1字节读入al中
+		mov al, [ds:esi]
+		; 让esi指向下一字节
+		inc esi
+		; 将al的值读入目的地址单元中
+		mov byte [es:edi], al
+		; 让esi指向下一字节
+		inc edi
+
+		dec ecx
+		jmp .1
+	.2:
+		; 让eax存放目的地址
+		mov eax, [ebp + 8]
+
+		pop ecx
+		pop edi
+		pop esi
+		mov esp, ebp
+		pop ebp
+		ret
+	\end{lstlisting}
+
+	在这里我总结一下整理内核的步骤：
+	\begin{itemize}
+		\item 根据ELF header得到e\_phnum、e\_phoff。利用这两个值就可以遍历program header table中所有的program header。
+		\item 根据program header得到p\_vaddr、p\_offset和p\_filesz。将这三个参数从后往前压栈，调用MemCpy函数。
+	\end{itemize}
+
+	这样一来，就能把内核的各个段安排到内存中合适的位置，代码如下：
+
+	\begin{lstlisting}
+		call InitKernel
+		; ...
+	InitKernel:
+		xor esi, esi
+		; 将e_phnum移入cx中
+		mov cx, word [BaseOfKernelFilePhyAddr+2Ch]
+		; movzx指令将源操作数取出来,然后置于目的操作数,目的操作数其余位用0填充
+		movzx ecx, cx
+		; 将program header table在文件中的偏移量放到esi中
+		mov esi, [BaseOfKernelFilePhyAddr+1Ch]
+		; 让esi指向program header table
+		add esi, BaseOfKernelFilePhyAddr
+	.Begin:
+		; 将program header成员p_type的值移入eax
+		mov eax, [esi + 0]
+		; 检查p_type是否是PT_NULL
+		cmp eax, 0
+		; 如果是，就避开这个program header
+		jz .NoAction
+		; 将p_filesz的值压栈，也就是将段在文件中的长度压栈
+		; ，作为函数所需的源数据大小
+		push dword [esi + 010h]
+		; 将p_offset的值存放eax，也就是将段在文件中的偏移存入eax
+		mov eax, [esi + 04h]
+		; 加上内核实际物理地址，得到段在文件中的实际物理地址
+		add eax, BaseOfKernelFilePhyAddr
+		; 将段的实际物理地址压栈，作为函数所需的源数据地址
+		push eax
+		; 将段在内存的虚拟地址压栈，作为函数所需的目的地址
+		push dword [esi + 08h]
+		; 调用MemCpy函数
+		call MemCpy
+		; 清除堆栈中的参数
+		add esp, 12
+	.NoAction:
+		; 一个program header有32个字节
+		; 让esi指向下一个program header
+		add esi, 020h
+		; 将ecx的值减一
+		dec ecx
+		jnz .Begin
+
+		ret
+	\end{lstlisting}
+
+\subsection{进入内核}
+	进入内核的代码很简单，相当于开始指向内核的代码，只要向内核跳转即可，代码如下：
+	\begin{lstlisting}
+	; 030400h是内核的程序入口
+	jmp SelectorFlatC:030400h
+	\end{lstlisting}
+
+	这样操作系统就真正地开始执行内核了。“引导，加载内核进入内存，跳入保护模式，开始执行内核”这四部分内容到此我们都完成了。
+
+\clearpage
+
+\section{内核雏形}
+\subsection{定义相关的数据结构和数据类型}
+	为了让内核的代码更清楚，在本节将定义一些相关的数据结构和数据类型。\par
+	我定义了宏PUBLIC和PRIVATE来区分文件中的普通函数和静态函数，用于更好地区分static函数和可以被其他文件引用的函数，
+
+	\begin{lstlisting}[language = C]
+	#ifndef _CONST_H_
+	#define _CONST_H_
+
+	#define PUBLIC
+	#define PRIVATE static
+
+	#define GDT_SIZE 128
+
+	#endif
+	\end{lstlisting}
+
+	为了在处理段描述符或其他数据结构时，能清楚每个成员类型的长度，我在type.h中定义了u8、u16和u32等类型，分别代表8位、16位和32位的数据类型。
+
+	\begin{lstlisting}[language = C]
+	#ifndef _TYPE_H
+	#define _TYPE_H
+
+	typedef unsigned int u32;
+	typedef unsigned short u16;
+	typedef unsigned char u8;
+
+	#endif
+	\end{lstlisting}
+
+	同时我用C语言定义了段描述符结构体。因为段描述符是第三次学习报告的内容，时间隔了比较久，所以在此再复习一下段描述符。
+	先看一下它的格式：
+	\fic{2.png}
+
+	对它的各个位解释如下：
+	\interval
+	\begin{longtable}{p{1.5cm}p{6cm}}
+	\hline
+	0-15位 & 段限长的第一部分，16位\\
+	\hline
+	16-31位 & 基地址的第一部分，16位\\
+	\hline
+	32-39位 & 基地址的第二部分，8位\\
+	\hline
+	40-47位 & 段描述符的属性的第一部分，8位\\
+	\hline
+	48-55位 & 8位，低4位是段限长的第二部分，高4位是属性的第二部分\\
+	\hline
+	56-63位 & 基地址的第三部分，8位\\
+	\hline
+	\end{longtable}
+	\interval
+
+	\begin{lstlisting}[language = C]
+	#ifndef _PROTECT_H_
+	#define _PROTECT_H_
+
+	typedef struct s_descriptor
+	{
+		u16 limit_low;
+		u16 base_low;
+		u8 base_mid;
+		u8 attr1;
+		u8 limit_high_attr2;
+		u8 base_high;
+	}DESCRIPTOR;
+
+	#endif
+	\end{lstlisting}
+
+\subsection{C与汇编程序的相互调用}
+	因为之后经常会涉及到C语言和汇编程序的相互调用，所以学习这个是很有必要的。
+\subsubsection{在汇编程序中调用C函数}
+	在汇编程序调用一个C函数时，程序首先需要按照逆向顺序把函数参数压入栈中，即函数最右的一个参数最先压入栈，函数最左的一个参数最后压入栈，然后执行call指令。
+	在调用函数返回后，程序需要将先前压入栈中的函数参数清除掉。\par
+	汇编中调用C函数的时候没有对参数的压栈有严格的约束。首先见下图这个例子：
+	\fic{3.png}
+
+	如果我们没有专门为调用函数func()压入参数就直接调用它的话，那么func()函数仍然会把存放EIP位置以上的栈中其他内容作为自己的参数使用。
+\subsubsection{在C程序中调用汇编函数}
+	在C程序中调用汇编函数时，类似于汇编程序调用C函数，程序也是将函数的最右参数最先压入栈，将函数的最左参数最后压入栈。\par
+	下面是一个例子：
+	\begin{lstlisting}
+	# 导出_myadd函数
+	.global _myadd
+
+	.text
+	# int myadd(int a, int b, int* res);
+	# eax存放着返回值
+	_myadd:
+		pushl %ebp
+		movl %esp, %ebp
+		# 4(%ebp)地址单元存放着EIP
+		# 8(%ebp)地址单元存放着第一个参数
+		# 12(%ebp)地址单元存放着第二个参数
+		# 16(%ebp)地址单元存放着第三个参数
+		movl 8(%ebp), %eax
+		movl 12(%ebp), %edx
+		xorl %ecx, %ecx
+		addl %eax, %edx
+		jo 1f
+		movl 16(%ebp), %eax
+		movl %edx, (%eax)
+		incl %ecx
+	1:
+		movl %ecx, %eax
+		movl %ebp, %esp
+		popl %ebp
+		ret
+	\end{lstlisting}
+
+	\begin{lstlisting}[language = C]
+	int myadd(int a, int b, int* res);
+
+	int main()
+	{
+		int a = 5;
+		int b = 10;
+		int c;
+		myadd(a, b, &c);
+		return 0;
+	}
+	\end{lstlisting}
+
+\subsection{移动GDT到内核}
+	之前我们在Loader模块内定义了GDT表，随后就开始执行内核。
+	为了继续利用Loader中GDT表的信息，应该将GDT表复制到内核中。\par
+	目前我们gdt寄存器中存放着Loader模块中GDT表的基地址以及GDT表的长度。
+	而我们在内核中重新定义一个GDT表，也是有一个地址，于是就可以使用memcpy函数将Loader中的GDT表的信息复制到内核中的GDT表中。
+	随后，我们应该更新gdt寄存器中的信息。
+
+\subsubsection{memcpy函数}
+	在学习Loader模块或分页机制的时候，我们都有接触过MemCpy函数。这里在linux汇编下再来感受一下，并且体验如何在C程序中调用这个函数。代码如下：
+	\begin{lstlisting}
+	[SECTION .text]
+	global memcpy
+	; void* memcpy(void* es:dest, void* ds:src, int iSize);
+	; eax存放着返回值
+	memcpy:
+		push ebp
+		; 让ebp指向栈顶
+		mov ebp, esp
+		push esi
+		push edi
+		push ecx
+
+		; ebp+4存放着EIP
+		; ebp+8存放着dest
+		; ebp+12存放着src
+		; ebp+16存放着iSize
+		mov edi, [ebp + 8]
+		mov esi, [ebp + 12]
+		mov ecx, [ebp + 16]
+	.1:
+		cmp ecx, 0
+		jz .2
+		
+		mov al, [ds:esi]
+		inc esi
+
+		mov byte [es:edi], al
+		inc edi
+
+		dec ecx
+		jmp .1
+	.2:
+		; 让eax存放着目的地址，作为返回值
+		mov eax, [ebp + 8]
+
+		pop ecx
+		pop edi
+		pop esi
+		mov esp, ebp
+		pop ebp
+
+		ret
+	\end{lstlisting}
+
+	在C程序中调用memcpy函数如下所示：
+	\begin{lstlisting}[language = C]
+	void* memcpy(void* dest, void* src, int iSize);
+
+	int main()
+	{
+		int dest[10];
+		int src[10] = {1,2,3,4,5,6,7,8,9,10};
+		memcpy(dest, src, 10);
+		return 0;
+	}
+	\end{lstlisting}
+
+\subsubsection{移动GDT}
+	有了前面的铺垫和思路的介绍，将Loader模块中GDT的内容复制到内核中新的GDT表中的代码就清晰了很多。
+	代码如下：
+
+	\begin{lstlisting}
+	SELECTOR_KERNEL_CS equ 8
+	; 引入函数
+	extern cstart
+	; 引入全局变量
+	extern gdt_ptr
+
+	; bss段用于放置未初始化的变量
+	[section .bss]
+	LABEL_STACK:
+	StackSpace resb 2*1024
+	StackTop:
+
+	; text段用于放置代码
+	[section .text]
+	
+	; 导出_start
+	global _start
+	_start:
+		; 让esp指向StackTop
+		mov esp, StackTop
+		; 将全局描述符表寄存器的内容复制给gdt_ptr地址单元
+		sgdt [gdt_ptr]
+		; 调用cstart函数
+		call cstart
+		; 将gdt_ptr地址单元中的内容加载到全局描述符寄存器中
+		lgdt [gdt_ptr]
+
+		jmp SELECTOR_KERNEL_CS:csinit
+
+	csinit:
+		push 0
+		popfd
+		hlt
+	\end{lstlisting}
+
+	\begin{lstlisting}[language = C]
+	#include"type.h"
+	#include"const.h"
+	#include"protect.h"
+
+	PUBLIC void* memcpy(void* pDst, void* pSrc, int iSize);
+	// gdt_ptr是48位，所以这里数组大小为6
+	PUBLIC u8 gdt_ptr[6];
+	// 在内核中新的GDT表可以存放128个段描述符
+	PUBLIC DESCRIPTOR gdt[GDT_SIZE];
+
+	PUBLIC void cstart()
+	{
+		memcpy((void*)gdt, (void*)(*((u32*)(&gdt_ptr[2]))), *((u16*)(&gdt_ptr[0]))+1);
+		// 指向gdt_ptr的低16位的地址
+		u16* p_gdt_limit = (u16*)(&gdt_ptr[0]);
+		// 指向gdt_ptr的高32位的地址
+		u32* p_gdt_base = (u32*)(&gdt_ptr[2]);
+		// 更新gdt_ptr中的GDT限长
+		*p_gdt_limit = GDT_SIZE * sizeof(DESCRIPTOR) - 1;
+		// 更新gdt_ptr中GDT表的基地址
+		*p_gdt_base = (u32)gdt;
+	}
+	\end{lstlisting}
+
+\subsection{显示字符串的函数disp\_str()}
+	\begin{lstlisting}
+	[SECTION .data]
+	disp_pos dd 0
+
+	[SECTION .text]
+	
+	; 导出disp_str()函数
+	global disp_str
+
+	; void disp_str(char* info);
+	disp_str:
+		push ebp
+		mov ebp, esp
+
+		; 让esi存放字符串的地址
+		mov esi, [ebp + 8]
+		mov edi, [disp_pos]
+		mov ah, 0Fh
+	.1:
+		; 将ds:esi指向的地址的一个字节读入al
+		lodsb
+		; 判断ds:edi是否指向字符串的尽头
+		test al, al
+		; 如果是，就结束程序
+		jz .2
+		; '\n'的ascii码是0Ah
+		; 判断是否读入回车键
+		cmp al, 0Ah
+		; 如果不是，就跳到.3直接输出当前字符串
+		jnz .3
+		; 如果是，就显示出回车键的效果
+		; 将eax的值压栈，保存eax的原值
+		push eax
+		; edi指向要显示的下一个字符的位置，低8位为行号，8~15位为列号
+		; 修改edi的值，先让eax保存edi的值
+		mov eax, edi
+		; 每行有160个字节
+		mov bl, 160
+		; 得到当前的行号，存放在al中
+		div bl
+		; 将列号清零
+		and eax, 0FFh
+		; eax中的值加一，行号加一
+		inc eax
+		mov bl, 160
+		; 让eax指向下一行的头一个字节
+		mul bl
+		; 修改edi的值结束，将eax中的值赋给edi
+		mov edi, eax
+		; 恢复eax的原值
+		pop eax
+		jmp .1
+	.3:
+		mov [gs:edi], ax
+		add edi, 2
+		jmp .1
+	.2:
+		mov [disp_pos], edi
+
+		pop ebp
+		ret
+	\end{lstlisting}
+
+	C程序调用disp\_str函数的例子如下：
+
+	\begin{lstlisting}[language = C]
+	PUBLIC void disp_str(char* info);
+
+	int main()
+	{
+		disp_str("hello world\n");
+		return 0;
+	}
+	\end{lstlisting}
+
+\end{document}

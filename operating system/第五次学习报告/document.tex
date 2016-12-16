@@ -399,7 +399,7 @@
 	\begin{itemize}
 		\item CF。CF=0，表示没有发生错误。
 		\item eax。存放着签名'SMAP'，0534D4150h。
-		\item es:di。和输入值相同，只想一个地址范围描述符结构ARDS。
+		\item es:di。和输入值相同，指向一个地址范围描述符结构ARDS。
 		\item ecx。BIOS会对ARDS进行信息填写，ecx中存放一个数值，这个数值代表了BIOS填写了ARDS多少字节。
 		\item ebx。ebx放置着下一个地址描述符所需要的后续值。如果ebx的值为0，代表着当前的ARDS是最后一个地址范围描述符。
 	\end{itemize}
