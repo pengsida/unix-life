@@ -1,0 +1,395 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{kvm环境的搭建 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{kvm环境的搭建}
+	首先声明，这个仅在ubuntu16.04下配置过，配置日期为2016.12.16。
+
+\subsection{搭建硬件环境}
+	在x86\_64架构的INTEL处理器中，KVM必需的硬件虚拟化扩展为INTEL的虚拟化技术(INTEL VT)。
+	首先处理器要在硬件上支持VT技术。只有在BIOS中将VT打开，才可以使用KVM。
+\subsubsection{检查处理器是否支持VT技术}
+	在linux系统中，可以通过/proc/cpuinfo文件中的CPU特性标志来查看CPU是否支持VT技术。
+	如果CPU支持VT技术，那么文件中的flags就包含"vmx"。\par
+	这里使用grep命令来查看/proc/cpuinfo中是否包含"vmx"。首先介绍一下grep命令。
+	\begin{lstlisting}[numberstyle=\color{white}]
+grep全称是Global Regular Expression Print，使用正则表达式搜索文本，并把匹配的行打印出来
+
+grep [pattern] [file] 用于在file中查找符合pattern的文本，并打印出来
+
+更多的grep信息，可以通过man grep查看。
+	\end{lstlisting}
+
+	使用如下命令就可以查看/proc/cpuinfo中是否包含了"vmx"：
+	\begin{lstlisting}
+	grep "vmx" /proc/cpuinfo
+	\end{lstlisting}
+	
+	如果在/proc/cpuinfo中包含了"vmx"，说明CPU支持VT技术，否则另外设置。
+
+\subsubsection{设置BIOS}
+	如果CPU目前不支持VT技术，就需要设置BIOS中相应的选项。\par
+	VT的选项一般在BIOS“Advanced”栏目的"CPU Configuration"中，它由"Intel Virtualization Technology"或"Intel VT"标识。
+	找到该标识后，将其设为[Enabled]就可以了。
+
+\subsection{安装KVM}
+\subsubsection{下载KVM源代码}
+	使用如下命令即可下载KVM源代码：
+	\begin{lstlisting}
+	git clone https://git.kernel.org/pub/scm/virt/kvm/kvm.git
+	\end{lstlisting}
+
+\subsubsection{配置KVM}
+	在此我们使用make menuconfig对KVM进行配置。首先安装ncurses库：
+	\begin{lstlisting}
+	sudo apt-get install libncurses5-dev
+	\end{lstlisting}
+
+	然后在KVM文件中打开terminal，然后输入如下命令：
+	\begin{lstlisting}
+	make menuconfig
+	\end{lstlisting}
+
+	然后选择"Virtualization"，如下所示：
+	\sizedfic{0.7}{1.png}
+
+	进入以后，进行如下图的配置：
+	\sizedfic{0.7}{2.png}
+
+	在配置完成后，将在KVM文件夹下生成.config文件。如果想确保KVM相关的配置正确，可以检查.config文件的相关配置项。查看命令如下：
+	\begin{lstlisting}
+	vi .config
+	/CONFIG_HAVE_KVM
+	\end{lstlisting}
+
+	光标跳到对应的配置项后，查看是否如下面几个配置：
+	\begin{lstlisting}
+	CONFIG_HAVE_KVM=y
+	CONFIG_HAVE_KVM_IROCHIP=y
+	CONFIG_HAVE_KVM_IRQFD=y
+	CONFIG_HAVE_KVM_IRQ_ROUTING=y
+	CONFIG_HAVE_KVM_ENENTFD=y
+	CONFIG_KVM_MMIO=y
+	CONFIG_KVM_ASYNC_PF=y
+	CONFIG_HAVE_KVM_MSI=y
+	CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT=y
+	CONFIG_KVM_VFIO=y
+	CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT=y
+	CONFIG_KVM_COMPAT=y
+	CONFIG_HAVE_KVM_IRQ_BYPASS=y
+	CONFIG_VIRTUALIZATION=y
+	CONFIG_KVM=m
+	CONFIG_KVM_INTEL=m
+	\end{lstlisting}
+
+\subsubsection{编译KVM}
+	KVM的编译包括三个步骤：
+	\begin{itemize}
+		\item Kernel的编译。
+		\item bzImage的编译。
+		\item 内核模块的编译。
+	\end{itemize}
+
+	第一步是编译kernel。因为kernel包含了openssl的库，所以在编译之前，需要先安装openssl和相关的库，命令如下：
+	\begin{lstlisting}
+	sudo apt-get install openssl
+	sudo apt-get install libssl-dev
+	\end{lstlisting}
+	
+	接下来，就可以直接开始编译kernel，命令如下：
+	\begin{lstlisting}
+	make vmlinux
+	\end{lstlisting}
+
+	第二步是编译bzImage。命令如下：
+	\begin{lstlisting}
+	make bzImage
+	\end{lstlisting}
+
+	第三步是编译内核的模块。命令如下：
+	\begin{lstlisting}
+	make modules
+	\end{lstlisting}
+
+\subsubsection{安装KVM}
+	KVM的安装包括两个步骤：
+	\begin{itemize}
+		\item module的安装。
+		\item kernel与initramfs的安装。
+	\end{itemize}
+
+	首先安装module，命令如下：
+	\begin{lstlisting}
+	sudo make modules_install
+	\end{lstlisting}
+
+	然后安装kernel和initramfs，命令如下：
+	\begin{lstlisting}
+	sudo make install
+	\end{lstlisting}
+
+	最后重启系统，命令如下：
+	\begin{lstlisting}
+	reboot
+	\end{lstlisting}
+
+\subsubsection{加载kvm和kvm\_intel模块}
+	使用如下命令即可加载kvm和kvm\_intel模块：
+	\begin{lstlisting}
+	modprobe kvm
+	modprobe kvm_intel
+	\end{lstlisting}
+
+	执行lsmod指令，会列出所有已载入系统的模块。然后使用grep，可以查看是否存在kvm和kvm\_intel模块，命令如下所示：
+	\begin{lstlisting}
+	lsmod | grep kvm
+	\end{lstlisting}
+
+	如果terminal输出有kvm和kvm\_intel有关的信息，就说明kvm和kvm\_intel模块加载成功了。
+
+\subsection{安装qemu-kvm}
+
+\subsubsection{下载qemu-kvm源代码}
+	使用如下命令即可下载qemu-kvm源代码：
+	\begin{lstlisting}
+	git clone https://git.kernel.org/pub/scm/virt/kvm/qemu-kvm.git
+	\end{lstlisting}
+
+\subsubsection{配置qemu-kvm}
+	使用如下命令即可配置qemu-kvm：
+	\begin{lstlisting}
+	./configure
+	\end{lstlisting}
+
+	这里介绍一下./configure命令：
+	\begin{lstlisting}[numberstyle = \color{white}]
+	./configure会根据当前系统环境和指定参数生成makefile文件，为下一步的编译做准备。
+	可以通过在configure后加上参数来对安装进行控制。
+	比如: ./configure –prefix=/usr 
+	意思是将该软件安装在/usr下面，执行文件就会安装在/usr/bin
+	\end{lstlisting}
+
+	随后，为了不让编译器把警告当作错误处理，应该在Makefile中任意一行添加如下代码：
+	\begin{lstlisting}
+	QEMU_CFLAGS += -w
+	\end{lstlisting}
+
+\subsubsection{编译qemu-kvm}
+	使用如下命令即可编译qemu-kvm：
+	\begin{lstlisting}
+	make
+	\end{lstlisting}
+
+\subsubsection{安装qemu-kvm}
+	使用如下命令即可安装qemu-kvm:
+	\begin{lstlisting}
+	sudo make install | tee make-install.log
+	\end{lstlisting}
+
+	这里介绍一下tee命令：
+	\begin{lstlisting}[numberstyle = \color{white}]
+	功能说明：读取标准输入的数据，并将其内容输出成文件。
+	语法：tee [-ai][--help][--version][文件]
+	参数：
+		-a 附加到既有文件的后面，而非覆盖它。
+		-i 忽略中断信号。
+		--help 在线帮助。
+		--version 显示版本信息。
+	\end{lstlisting}
+
+\subsection{安装客户机}
+\subsubsection{创建镜像文件}
+	安装客户机之前，我们需要创建一个镜像文件来存储客户机中的系统和文件。
+	镜像文件将作为客户机的硬盘，将客户机的操作系统安装在其中。\par
+	
+	首先，使用如下命令行创建一个8GB大小的镜像文件ubuntu1604.img：
+	\begin{lstlisting}
+	dd if=/dev/zero of=ubuntu1604.img bs=1M count=8192
+	\end{lstlisting}
+
+	这里介绍一下dd命令：
+	\begin{lstlisting}[numberstyle = \color{white}]
+	功能说明：把指定的输入文件拷贝到指定的输出文件中。
+	语法：dd [选项]
+	参数：
+		if=输入文件
+		of=输出文件
+		bs=bytes 同时设置读/写缓冲区的字节数
+		count=blocks 只拷贝输入的blocks块
+	\end{lstlisting}
+
+\subsubsection{安装客户机}
+	使用如下命令安装客户机：
+	\begin{lstlisting}
+	qemu-system-x86_64 -m 2048 -smp 4 -boot order=cd -hda ubuntu1604.img -cdrom ubuntu-16.04.iso  -vnc 127.0.0.1:2
+	\end{lstlisting}
+
+	这里介绍一下qemu-system-x86\_64的参数，如下所示：
+	\begin{lstlisting}
+	-m 2048是给客户机分配2048MB内存
+	-smp 4是给客户机分配4个CPU
+	-boot order=cd是指定系统的启动顺序为光驱、硬盘
+	-hda ubuntu1604.img是分配给客户机的IDE硬盘
+	-cdrom ubuntu-16.04.iso是分配给客户机的光驱
+	 -vnc 127.0.0.1:2使用vnc方式显示客户机，端口为127.0.0.1:2
+	\end{lstlisting}
+
+\subsubsection{查看客户机}
+	因为这里使用vnc方式显示客户机，所以我们需要先安装vncserver和vncviewer，命令如下：
+	\begin{lstlisting}
+	sudo apt-get install vncserver
+	sudo apt-get install vncviewer
+	\end{lstlisting}
+
+	然后使用vncviewer查看客户机，命令如下：
+	\begin{lstlisting}
+	vncviewer 127.0.0.1:2
+	\end{lstlisting}
+
+\subsection{启动KVM客户机}
+	安装好系统之后，就可以使用镜像文件来启动并登陆到自己安装的系统之中。
+	使用如下命令即可启动一个KVM的客户机：
+	\begin{lstlisting}
+	qemu-system-x86_64 -m 2048 -smp 4 -hda ubuntu1604.img -vnc 127.0.0.1:2
+	\end{lstlisting}
+
+	使用如下命令可以查看KVM客户机：
+	\begin{lstlisting}
+	vncviewer 127.0.0.1:2
+	\end{lstlisting}
+
+\end{document}
