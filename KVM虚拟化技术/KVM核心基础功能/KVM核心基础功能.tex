@@ -1,0 +1,427 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=C,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{kvm核心基础功能 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{CPU配置}
+\subsection{-smp参数项}
+	qemu-system-x86\_64命令行中，"-smp"参数可以用来配置客户机的SMP系统，具体参数如下：
+	\begin{lstlisting}[numberstyle = \color{white}]
+	qemu-system-x86_64 -smp n[,maxcpus=cpus][,cores=cores][,threads=threads][,sockets=sockets]
+	\end{lstlisting}
+
+	各个选项介绍如下：
+	\interval
+	\begin{longtable}{p{1.5cm}p{10cm}}
+	\hline
+	n & 用于设置客户机中使用的逻辑PCU数量 \\
+	\hline
+	maxcpus & 用于设置客户机中最大可能被使用的CPU数量 \\
+	\hline
+	cores & 用于设置每个CPU socket上的core数量 \\
+	\hline
+	threads & 用于设置每个CPU core上的线程数 \\
+	\hline
+	sockets & 用于设置客户机中看到的总的CPU socket数量 \\
+	\hline
+	\end{longtable}
+	\interval
+
+	例子如下：
+	\begin{lstlisting}
+	qemu-system-x86_64 -smp 4,maxcpus=8,sockets=2,cores=2,threads=2 ubuntu1604 -vnc 127.0.0.1:2
+	\end{lstlisting}
+
+\subsection{查看cpu配置}
+\subsubsection{在客户机中查看cpu信息}
+	使用如下命令可以输出cpu当前的信息：
+	\begin{lstlisting}
+	cat /proc/cpuinfo
+	\end{lstlisting}
+
+	这里介绍一下cat命令：
+	\interval
+	\begin{longtable}{lp{12cm}}
+	\hline
+	三大功能 & 1.一次显示整个文件: cat filename \\
+		   & 2.从键盘创建一个文件: cat > filename \\
+		   & 3.将几个文件合并为一个文件: cat file1 file2 > file \\
+	\hline
+	参数  & -n或--number: 由1开始对所有输出的行数编号 \\
+		 & -b或--number-nonblank: 和-n相似，只不过对于空白行不编号 \\
+		 & -s或--squeeze-blank: 当遇到有连续两行以上的空白行，就代换为一行的空白行 \\
+	\hline  
+	\end{longtable}
+	\interval
+
+\subsubsection{使用qemu监控客户机cpu信息}
+	使用qemu-system-x86\_64命令时，加上"-monitor stdio"，即可使用monitor command监控客户机使用情况，比如在联网情况下输入如下命令：
+	\begin{lstlisting}
+	qemu-system-x86_64 ubuntu1604.img -vnc 127.0.0.1:2 -monitor stdio
+	\end{lstlisting}
+
+	此时，就开始monitor command来监控客户机。可以在qemu monitor中使用如下命令查询cpu状态：
+	\begin{lstlisting}
+	info cpus
+	\end{lstlisting}
+
+\subsection{-cpu参数项}
+	qemu-system-x86\_64命令行中，"-cpu"参数可以用来查看qemu所支持cpu模型，或者指定客户机的CPU模型。
+	具体使用如下：
+	\begin{lstlisting}
+	// 查看qemu所支持的cpu模型
+	qemu-system-x86_64 -cpu ?
+	// 指定客户机中的cpu模型
+	qemu-system-x86_64 -cpu cpu_model 
+	\end{lstlisting}
+
+	qemu支持的cpu模型如下所示：
+	\fic{1.png}
+
+	如果不加"cpu"参数启动客户机时，采用"qemu64"作为默认的cpu模型。
+
+\subsection{vCPU的绑定}
+	vCPU就是客户机的虚拟cpu，vCPU相当于宿主机中一个普通的qemu线程。可以使用taskset工具将vCPU线程绑定到特定的cpu上执行。\par
+	在实际应用中，如果想要为客户提供客户机使用，并且要求不受宿主机中其他客户机的影响，就需要将vCPU绑定到特定的cpu上。步骤如下：
+	\begin{itemize}
+		\item[1.] 启动宿主机时隔离出特定的CPU专门供一个客户机使用。
+		\item[2.] 启动客户机，将其vCPU绑定到宿主机特定的CPU上。
+	\end{itemize}
+
+\subsubsection{隔离宿主机CPU}
+	在grub文件中Linux内核启动的命令行加上"isolcpus"参数，就可以实现CPU的隔离。这里介绍一下"isolcpus"参数项：
+	\tablestart
+	功能 & 将相应的CPU从调度算法中隔离出来\\
+	\hline
+	参数选项 & isolcpus= cpu\_number[,cpu\_number,...] \\
+	\tableend
+
+	向grub文件中添加"isolcpus"参数的命令如下所示：
+	\begin{lstlisting}
+	sudo vi /boot/grub/grub.cfg
+	/menuentry
+	\end{lstlisting}
+	
+	然后在插入模式下，在initrd参数前一行写入：
+	\begin{lstlisting}
+	isolcpus = cpu\_number1[,cpu\_number2,...]
+	\end{lstlisting}
+
+	如下图所示：
+	\fic{2.png}
+
+	重启电脑以后就将相应的cpu隔离出调度算法了。\par
+
+	使用如下命令可以查看cpu上执行的进程和线程总数，用于检查CPU是否成功被隔离。
+
+	\begin{lstlisting}
+	ps -eLo psr | grep cpu\_number | wc -l
+	\end{lstlisting}
+
+	下面分别介绍命令中的ps和wc：
+	\tablestart
+	ps & 用于显示当前系统的进程信息的状态\\
+	\hline
+	参数项 & -e:用于显示所有进程 \\
+		& -L:用于显示所有线程 \\
+		& -o:用于以特定的格式输出信息,psr指定输出分配给进程运行的处理器编号 \\
+	\tableend
+
+	\tablestart
+	wc & 该命令统计给定文件中的字节数、字数、行数 \\
+	\hline
+	参数项 & -c:统计字节数 \\
+		  & -l:统计行数 \\
+		  & -w:统计字数 \\
+	\tableend
+
+	假如成功隔离了cpu2，就会看到在cpu上执行的进程和线程数非常少。
+	
+\subsubsection{绑定客户机vCPU}
+	使用taskset命令就可以将vCPU绑定到特定的CPU上。taskset命令的使用如下所示：
+	\begin{lstlisting}
+	taskset -p mask pid
+	\end{lstlisting}
+
+	这里介绍一下taskset命令：
+	\tablestart
+	taskset & 将进程绑定到特定的CPU上 \\
+	\hline
+	参数项 & -p:将已经创建的进程绑定到CPU上 \\
+		 & mask:用于指定CPU的掩码，mask第几位为1就代表第几号CPU \\
+		 & pid:进程号，用于指定进程 \\
+	\tableend
+
+	比如，如果想把进程号为3963的进程绑定到cpu2和cpu3上，就使用如下命令：
+	\begin{lstlisting}
+	taskset -p 0x6 3963
+	\end{lstlisting}
+
+	0x6二进制位1100，代表cpu2和cpu3。而3963指定了进程号为3963的进程。\par
+	如此一来，如果想把vCPU绑定到宿主机的cpu上，只要知道vCPU的进程号就行了。可以在qemu monitor中使用如下命令查询vCPU的进程号：
+	\begin{lstlisting}
+	info cpus
+	\end{lstlisting}
+
+	如下所示：
+	\fic{3.png}
+
+	可以看到，图中vCPU的进程号分别是5118、5119、5120和5121。
+
+\clearpage
+
+\section{内存配置}
+\subsection{-m参数项}
+\begin{longtable}{p{2cm}p{8cm}}
+\hline
+-m megs & 设置客户机的内存位megsMB大小 \\
+	    & 默认单位为MB，加上"M"或"G"可以指定单位 \\
+		& 不设置-m参数，客户机内存默认为128MB \\
+\hline
+\end{longtable}
+\subsection{查看内存信息}
+	linux下有两个命令可以用于查看内存信息。\par
+	第一个是free -m，如下图所示：
+	\fic{5.png}
+
+	第二个是dmesg。不过因为dmesg存放着内核开机信息，信息量比较多，需要用grep命令来筛选，如下图所示：
+	\fic{4.png}
+
+\subsection{EPT扩展页表}
+	EPT扩展页表是Intel的第二代硬件虚拟化技术，是针对内存管理单元的虚拟化扩展。\par
+	在Linux系统中，可以通过如下命令确定系统是否支持EPT功能：
+	\begin{lstlisting}
+	grep ept /proc/cpuinfo
+	\end{lstlisting}
+
+	可以通过如下命令确定KVM是否打开了EPT功能：
+	\begin{lstlisting}
+	cat /sys/module/kvm_intel/parameters/ept
+	\end{lstlisting}
+
+	在加载kvm\_intel模块时，可以通过设置ept的值来打开EPT。
+	\begin{lstlisting}
+	modprobe kvm_intel ept=0 // ept代表关闭EPT功能
+	\end{lstlisting}
+
+	如果kvm\_intel模块已经处于加载状态，则需要先写在这个模块，在重新加载时加入所需的参数设置。如下所示：
+	\begin{lstlisting}
+	rmmod kvm_intel
+	modprobe kvm_intel ept=1
+	\end{lstlisting}
+
+\subsection{-mem-path参数项}
+	qemu-kvm提供了"-mem-path"参数项用于将huge page的特性应用到客户机上。\par
+	huge page是大小超过4KB的内存页面，它可以让地址转换信息减少，节约页表所占用的内存数量，在整体上提升系统的性能。\par
+	可以使用如下命令查看系统中huge page的信息，如下所示：
+	\begin{lstlisting}
+	cat /proc/meminfo | grep HugePages
+	\end{lstlisting}
+
+	可以通过以下几步让客户机使用huge page：
+	\begin{itemize}
+		\item[(1)] 在宿主机中挂载hugetlbfs文件系统，命令如下所示：
+		\begin{lstlisting}
+	sudo mount -t hugetlbfs hugetlbfs /dev/hugepages
+		\end{lstlisting}
+
+		这里介绍一下mount命令：
+		\interval
+		\begin{longtable}{p{2cm}p{8cm}}
+		\hline
+		标准格式 & mount -t type device dir \\
+		\hline
+		功能 & 让内核将在device上的文件系统挂载到目录dir下，文件系统类型是type \\
+		\hline
+		参数项 & -t:指定文件系统的类型 \\
+		\hline
+		\end{longtable}
+		\interval
+		
+		所以之前命令就是将hugetlbfs类型的文件系统挂载到/dev/hugepages上。
+
+		\item[(2)] 设置hugepage的数量，命令如下所示：
+		\begin{lstlisting}
+	sudo sysctl vm.nr_hugepages=num
+		\end{lstlisting}
+
+		\item[(3)] 启动客户机时使用"-mem-path"参数让客户机使用hugepage的内存，如下所示：
+		\begin{lstlisting}
+	qemu-system-x86_64 ubuntu1604.img -mem-path /dev/hugepages
+		\end{lstlisting}
+	\end{itemize}
+
+	上述过程的实际操作如下图所示：
+	\fic{6.png}
+
+\clearpage
+
+\section{存储配置}
+\subsection{与存储相关的参数项}
+\subsection{-driver参数项}
+\subsection{-boot参数项}
+\subsection{qemu-img命令}
+\subsection{qemu支持的镜像文件格式}
+\subsection{客户机存储方式}
+
+\clearpage
+
+\section{网络配置}
+\subsection{使用网桥模式}
+\subsection{使用NAT模式}
+\subsection{使用用户模式}
+\subsection{其他网络选项}
+
+\clearpage
+
+\section{显示配置}
+\subsection{使用SDL}
+\subsection{使用VNC}
+\subsection{使用非图形模式}
+\subsection{其他显示选项}
+
+
+
+\end{document}
