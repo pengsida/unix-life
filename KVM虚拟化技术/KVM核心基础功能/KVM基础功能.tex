@@ -326,7 +326,7 @@
 	第一个是free -m，如下图所示：
 	\fic{5.png}
 
-	第二个是dmesg。不过因为dmesg存放着内核开机信息，信息量比较多，需要用grep命令来筛选，如下图所示：
+	第二个是dmesg。不过因为dmesg存放着内核信息，信息量比较多，需要用grep命令来筛选，如下图所示：
 	\fic{4.png}
 
 \subsection{EPT扩展页表}
@@ -600,19 +600,150 @@
 	ifconfig
 	\end{lstlisting}
 
-	
+	也可以在qemu monitor中查看网络的信息，命令如下：
+	\begin{lstlisting}
+	info network
+	\end{lstlisting}
 
 \subsection{使用网桥模式}
+	网桥模式可以让客户机和宿主机共享一个物理网络设备连接网络。
+	这样一来，客户机就有自己独立IP地址，可以直接链接与宿主机一模一样的网络。
+	客户机可以访问外部网络，外部网络也可以直接访问客户机。\\
+
+	经过以下几个步骤的配置就可以使用网桥模式：
+	\begin{itemize}
+		\item[1.] 获得brctl和tunctl命令行工具，安装命令如下所示：
+		\begin{lstlisting}
+		sudo apt-get install bridge-utils
+		sudo apt-get install uml-utilities
+		\end{lstlisting}
+
+		\item[2.] 在ubuntu中安装tun module。这个过程需要重新编译内核，自行解决吧。
+		\item[3.] 建立一个bridge，并将其绑定到一个可以正常工作的网络接口上，命令如下所示：
+		\begin{lstlisting}
+		brctl addbr br0 // 建立br0这个bridge
+		brctl addif br0 eth0 // 将br0与eth0绑定起来
+		brctl stp br0 on // 将br0设置为启用STP协议
+		\end{lstlisting}
+
+		需要注意的是，不是每台电脑的网络接口都叫eth0。我自己的电脑就不是，可以通过ifconfig查看自己的网络接口，如下图所示：
+		\sizedfic{0.9}{10.png}
+
+		\item[4.] 使用如下命令即可启用bridge模式的网络：
+		\begin{lstlisting}
+		qemu-system-x86_64 ubuntu1604.img -net nic -net tap,ifname=tap1,script=/etc/qemu-ifup,downscript=no, -vnc=127.0.0.1:2
+		\end{lstlisting}
+
+		\item[5.] 此时在虚拟机中查看虚拟网络设备，会发现多出一个叫做tap1的TAP虚拟网络设备。命令如下所示：
+		\begin{lstlisting}
+		ls /sys/devices/virtual/net/
+		\end{lstlisting}
+		
+	\end{itemize}
+
+	qemu-kvm中使用“-net tap”设置TAP设备，对它的介绍如下所示：
+	\interval
+	\begin{longtable}{p{3.5cm}p{10cm}}
+	\hline
+	标准格式如下: & \\
+	\multicolumn{2}{l}{-net tap[,vlan=n][,name=str][,fd=h][,ifname=name][,script=file][,downscript=dfile][,helper=helper]}\\
+	\multicolumn{2}{l}{[,sndbuf=nbytes][,vnet\_hdr=on/off][,vhost=on/off][,vhostfd=h][,vhostforce=on/off]} \\
+	\hline
+	功能 & 将宿主机的TAP网络接口连接到n号VLAN中，并在启动客户机时，使用file脚本配置网络，在关闭客户机时，使用dfile脚本取消网络配置。\\
+	\hline
+	参数选项介绍如下： & \\
+	\hline
+	tap & 表示使用TAP设备。 \\
+	\hline
+	vlan=n & 设置该设备VLAN编号，默认值为0。\\
+	\hline
+	name=name & 设置TAP设备的名称。\\
+	\hline
+	fd=h & 连接到现在已经打开着的TAP接口的文件描述符，一般不要设置该选项。\\
+	\hline
+	ifname=name & 设置在宿主机中添加的TAP虚拟设备的名称。\\
+	\hline
+	script=file & 指定启动客户机时自动执行的网络配置脚本。\\
+	\hline
+	downscript=dfile & 指定在关闭客户机时自动执行的网络配置脚本。\\
+	\hline
+	helper=helper & 指定启动客户机时在宿主机中运行的辅助程序。\\
+	\hline
+	sndbuf=nbytes & 限制TAP设备的发送缓冲区的大小为n字节。 \\
+	\hline
+	\end{longtable}
+
 \subsection{使用NAT模式}
+	NAT属于广域网接入技术的一种，它将内网地址转化为外网的合法IP地址。NAT将 来自内网IP数据包的包头中的源IP地址转换为一个外网的IP地址。\par
+	通过以下几个步骤可以以NAT方式配置客户机的网络：
+	\begin{itemize}
+		\item[1.] 安装nf\_nat和iptable\_nat模块。这个需要编译内核，自行解决。
+		\item[2.] 安装必要的软件包，相关命令如下所示：
+		\begin{lstlisting}
+		sudo apt-get install bridge-utils
+		sudo apt-get install iptables
+		sudo apt-get install dnsmasq
+		\end{lstlisting}
+
+		\item[3.] 编写一个为客户机建立NAT用的/etc/qemu-ifup-NAT脚本以及关闭网络用的/etc/qemu-ifdown-NAT脚本。这个需要计算机网络的知识，请自行学习。
+		\item[4.] 使用如下命令行启动客户机：
+		\begin{lstlisting}
+		qemu-system-x86_64 ubuntu1604.img -net nic -net tap,script=/etc/qemu-ifup-NAT,downscript=/etc/qemu-ifdown-NAT
+		\end{lstlisting}
+
+		\item[5.] 添加iptables规则进行端口映射，让外网主机也能访问客户机。在iptables的规则进行端口映射，使外部主机对宿主机IP的一个端口的请求转发到客户机中的某一个端口，
+		命令如下所示：
+		\begin{lstlisting}
+		iptables -t nat -A PREROUTING -p tcp -d 192.168.82.0 --dport 80 -j DNAT --to 192.168.122.140:80
+		iptables -t nat -L
+		\end{lstlisting}
+
+		这行命令实现了，在外部网络上测试连接宿主机的80端口，就会被映射到客户机中的80端口。
+
+	\end{itemize}
+
 \subsection{使用用户模式}
-\subsection{其他网络选项}
+	如果没有提供“-net”参数时，qemu-kvm默认使用“-net nic -net user”参数，提供了一种用户模式的网络模拟。\par
+	下面介绍与用户模式有关的命令行参数：
+	\interval
+	\begin{longtable}{p{3.5cm}p{10cm}}
+	\hline
+	标准格式： & \\
+	\multicolumn{2}{l}{-net user[,option][,option][,...]} \\
+	\hline
+	参数选项介绍如下： & \\
+	\hline
+	vlan=n & 将用户模式网络栈连接到编号为n的VLAN中 \\
+	\hline
+	name=name & 设置网卡的名字 \\
+	\hline
+	net=addr & 设置客户机的IP地址 \\
+	\hline
+	host=addr & 指定宿主机的IP地址 \\
+	\hline
+	restrict=y/n & 设置客户机是否被隔离 \\
+	\hline
+	hostname=name & 设置在宿主机DHCP服务器中保存的客户机主机名 \\
+	\hline
+	dhcpstart=addr & 设置能够分配给客户机的第一个IP \\
+	\hline
+	dns=addr & 指定虚拟DNS的地址 \\
+	\hline
+	tftp=dir & 激活QEMU内嵌的TFTP服务器 \\
+	\hline
+	\multicolumn{2}{l}{hostfwd=[tcp|udp]:[hostaddr]:hostport -[guestaddr]:guestaddr} \\
+	\multicolumn{2}{l}{将访问宿主机的hostport端口的TCP/UDP连接重定向到客户机的guestport端口上} \\
+	\hline
+	\multicolumn{2}{l}{guestfwd=[tcp]:server:port-dev} \\
+	\multicolumn{2}{l}{将访问客户机IP地址为server的port端口的连接转发到宿主机的dev这个字符设备上} \\
+	\hline
+	bootfile=file & 让file文件成为客户机可以使用的BOOTP启动镜像文件 \\
+	\hline
+	\end{longtable}
 
-\clearpage
+\subsection{本部分学习内容总结}
+	网络配置这部分涉及到了比较多的网络知识。但是由于我还没有学习过计算机网络，所以很多内容都是囫囵吞枣。
+	希望自己以后学习了计算机网络，能对这部分内容有更深的理解。
 
-\section{显示配置}
-\subsection{使用SDL}
-\subsection{使用VNC}
-\subsection{使用非图形模式}
-\subsection{其他显示选项}
 
 \end{document}

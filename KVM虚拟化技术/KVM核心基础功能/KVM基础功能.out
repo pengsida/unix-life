@@ -20,12 +20,8 @@
 \BOOKMARK [2][-]{subsection.3.5}{qemu-img工具}{section.3}% 20
 \BOOKMARK [1][-]{section.4}{网络配置}{}% 21
 \BOOKMARK [2][-]{subsection.4.1}{-net参数项}{section.4}% 22
-\BOOKMARK [2][-]{subsection.4.2}{使用网桥模式}{section.4}% 23
-\BOOKMARK [2][-]{subsection.4.3}{使用NAT模式}{section.4}% 24
-\BOOKMARK [2][-]{subsection.4.4}{使用用户模式}{section.4}% 25
-\BOOKMARK [2][-]{subsection.4.5}{其他网络选项}{section.4}% 26
-\BOOKMARK [1][-]{section.5}{显示配置}{}% 27
-\BOOKMARK [2][-]{subsection.5.1}{使用SDL}{section.5}% 28
-\BOOKMARK [2][-]{subsection.5.2}{使用VNC}{section.5}% 29
-\BOOKMARK [2][-]{subsection.5.3}{使用非图形模式}{section.5}% 30
-\BOOKMARK [2][-]{subsection.5.4}{其他显示选项}{section.5}% 31
+\BOOKMARK [2][-]{subsection.4.2}{查看网卡的信息}{section.4}% 23
+\BOOKMARK [2][-]{subsection.4.3}{使用网桥模式}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.4}{使用NAT模式}{section.4}% 25
+\BOOKMARK [2][-]{subsection.4.5}{使用用户模式}{section.4}% 26
+\BOOKMARK [2][-]{subsection.4.6}{本部分学习内容总结}{section.4}% 27
