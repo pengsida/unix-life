@@ -1,0 +1,419 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=C,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{kvm核心基础功能 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{半虚拟化驱动}
+\subsection{QEMU模拟I/O设备的基本原理}
+	模拟I/O设备的过程如下：
+	\begin{itemize}
+		\item[1.] 客户机中的设备驱动程序发起I/O操作请求，KVM模块中的I/O操作捕获代码会拦截这次I/O请求
+		\item[2.] I/O操作捕获代码对I/O请求的信息处理后，将其放到I/O共享页，并通知用户控件的QEMU程序
+		\item[3.] QEMU模拟程序获得I/O操作的具体信息后，交由硬件模拟代码来模拟出本次的I/O操作
+		\item[4.] 硬件模拟代码的模拟操作完成后，把结果放回到I/O共享页，并通知KVM模块的I/O操作捕获代码
+		\item[5.] 由KVM模块中的I/O操作捕获代码读取I/O共享页中的操作结果，并把结果返回到客户机中
+	\end{itemize}
+
+\subsection{virtio的介绍}
+	KVM实现半虚拟化驱动的方式是采用virtio这个Linux上的设备驱动的那个标准框架。\par
+	virtio由四层组成，为前端驱动层、virtio层、transport层和后端处理层。
+	前端驱动层是客户机中的驱动程序模块，后端处理层是QEMU中的后端处理程序。而virtio层和transport层用于支持客户机和QEMU之间的通信。\par
+
+\subsubsection{virtio\_balloon的介绍}
+	首先介绍一下ballooning技术。ballooning技术可以在客户机运行时动态地调整它所占用的宿主机的内存资源，而不需要关闭客户机。
+	这个技术实现了，当宿主机内存紧张时，可以请求客户机的部分内存，从而客户机就会释放其空闲内存。
+	如果此时客户机空闲内存不足，可能还会回收部分使用中的内存。\par
+
+	KVM中ballooning的工作过程如下：
+	\begin{itemize}
+		\item[1.] KVM发送请求到客户机操作系统，让其归还部分内存给宿主机。
+		\item[2.] 客户机操作系统中的virtio\_balloon驱动接收到KVM的请求，然后使客户机中的内存气球膨胀，气球中的内存不能被客户机访问。
+		\item[3.] 客户机操作系统将气球中的内存还给KVM，KVM可以把气球中的内存分配到任何需要的地方。
+	\end{itemize}
+
+	使用如下命令即可使用ballooning技术：
+	\begin{lstlisting}
+	-balloon virtio
+	// 如，qemu-system-x86_64 ubuntu1604.img -m 2048 -balloon virtio
+	\end{lstlisting}
+
+	可以在qemu monitor中查看和设置客户机内存的大小，命令如下：
+	\begin{lstlisting}
+	info balloon // 查看客户机内存占用量
+	balloon num // 设置客户机内存占用量为numMB
+	\end{lstlisting}
+
+	通过如下命令，可以在客户机中看到balloon技术的使用，如下图所示：
+	\fic{2.png}
+
+\subsubsection{virtio\_net的介绍}
+	选择KVM网络设备时，使用virtio\_net半虚拟化驱动可以提高网络吞吐量和降低网络延迟。\par
+	通过以下命令即可将客户机的网卡设备指定为virtio类型：
+	\begin{lstlisting}
+	-net nic,model=virtio
+	// 如，qemu-system-x86_64 ubuntu1604.img -m 2048 -net nic,model=virtio
+	\end{lstlisting}
+
+	以下命令可以将virtio\_net的后端处理任务放到内核空间中执行，从而提高效率。如下所示：
+	\begin{lstlisting}
+	-net tap,vhost=on
+	// 如，qemu-system-x86_64 ubuntu1604.img -m 2048 -net nic,model=virtio -net tap,vhost=on
+	\end{lstlisting}
+
+\subsubsection{virtio\_blk的介绍}
+	使用virtio\_blk半虚拟化驱动可以提高访问块设备I/O的方法。\par
+	使用如下命令可以启用virtio\_blk驱动：
+	\begin{lstlisting}
+	file=filename,if=virtio
+	// 如，qemu-system-x86_64 -m 2048 -net nic file=ubuntu1604.img,if=virtio
+	\end{lstlisting}
+
+\subsubsection{kvm\_clock的介绍}
+	使用kvm\_clock半虚拟化时钟，可以为客户机提供精确的system time和wall time，从而避免客户机时间不准确的问题。\par
+	使用qemu命令启动客户机时，已经将kvm\_clock默认作为客户机的时钟来源。可以通过如下命令查看客户机中与时钟相关的信息，如下图所示：
+	\fic{1.png}
+
+\section{PCI设备直接分配}
+	PCI设备直接分配允许将宿主机中的物理PCI设备直接分配给客户机完全使用。
+	Inte定义的PCI设备直接分配技术规范称为VT-d。\par
+	当KVM将宿主机的PCI设备附加到客户机时，客户机对该设备的I/O交互操作和实际的物理设备操作完全一样，不需要KVM的参与。
+
+\subsection{VT-d环境配置}
+	VT-d环境配置包括以下几个方面：
+	\begin{itemize}
+		\item[1.] 硬件支持和BIOS设置。需要在BIOS中将VT-d功能设置为“Enabled”状态。
+		\item[2.] 宿主机内核的配置。在配置内核时，需要配置如下几个VT-d相关的配置选项：
+		\begin{lstlisting}
+		CONFIG_IOMMU_SUPPORT=y
+		CONFIG_DMAR_TABLE=y
+		CONFIG_INTEL_IOMMU=y
+		CONFIG_INTEL_IOMMU_DEFAULT_ON=y
+		CONFIG_IRQ_REMAP=y
+		CONFIG_PCI_STUB=m
+		\end{lstlisting}
+
+		可以通过以下两个命令查看宿主机是否支持VT-d：
+		\begin{lstlisting}
+	dmesg | grep DMAR -i
+	dmesg | grep IOMMU -i
+		\end{lstlisting}
+
+		\item[3.] 绑定设备到pci\_stub驱动，从而对需要分配给客户机的设备进行隐藏，使得宿主机和其他客户机无法使用该设备。命令如下所示：
+		\begin{lstlisting}
+	modprobe pci_stub // 加载pci_stub驱动
+	// 通过下一行命令得到设备的domain:bus:slot.function vendor_ID:device_ID
+	lspci -Dn -s BDF
+	// 绑定设备到pci_stub驱动
+	echo -n "vendor_ID device_ID" > /sys/bus/pci/drivers/pci-stub/new_id
+	echo "domain:bus:slot.function" > /sys/bus/pci/drivers/domain:bus:slot.function/driver/unblind
+	echo "domain:bus:slot.function" > /sys/bus/pci/drivers/pci_stub/blind
+		\end{lstlisting}
+
+		\item[4.] 使用qemu命令分配设备给客户机，命令如下所示：
+		\begin{lstlisting}
+	-device pci-assign,host=BDF
+	// 如，qemu-system-x86_64 ubuntu1604.img -device pci-assign,host=08:00.0
+		\end{lstlisting}
+
+		\item[5.] 当客户机不需要使用该设备后，让宿主机重新使用该设备命令如下：
+		\begin{lstlisting}
+	echo -n "vendor_ID device_ID" > /sys/bus/pci/drivers/domain:bus:slot.function/driver/new_id
+	echo "domain:bus:slot.function" > /sys/bus/pci/drivers/pci_stub/unblind
+	echo "domain:bus:slot.function" > /sys/bus/pci/drivers/domain:bus:slot.function/driver/blind
+		\end{lstlisting}
+	\end{itemize}
+
+	在绑定设备到pci\_stub驱动和使用qemu命令分配设备给客户机两个步骤，主要需要知道设备的BDF。可以通过lspci查看电脑所有设备的BDF，
+	每行设备信息前面的bus:slot.function就是设备的BDF。如下图所示：
+	\sizedfic{0.75}{3.png}
+
+\subsection{SR-IOV技术}
+	SR-IOV技术实现了多个虚拟机能够共享同一个物理设备的资源，并且达到设备直接分配的性能。SR-IOV有两个功能，如下所示：
+	\begin{itemize}
+		\item[1.] 物理功能(PF)，放在宿主机中配置和管理虚拟功能，它本身也可以作为一个普通的PCI-e设备使用。
+		\item[2.] 虚拟功能(VF)，轻量级PCI-e功能。虚拟功能通过物理功能配置后，可以分配到客户机中作为独立功能使用。
+	\end{itemize}
+
+	可以通过如下命令查看设备是否具备SR-IOV的能力：
+	\begin{lstlisting}
+	lspci -v -s BDF
+	\end{lstlisting}
+
+	在宿主机中，当加载支持SR-IOV技术的PCI设备的驱动时，可以加上相应的参数来指定启用多少个VF。相关命令如下所示：
+	\begin{lstlisting}
+	modprobe driver max_vfs=num
+	\end{lstlisting}
+
+	在已知设备domain:bus:slot.function的情况下，可以通过以下命令查看该设备的VF：
+	\begin{lstlisting}
+	ls -l /sys/bus/pci/devices/domain:bus:slot.function/virtfn*
+	\end{lstlisting}
+
+\clearpage
+
+\section{热拔插}
+	热拔插指的是可以在电脑运行时插上或拔除硬件。在KVM虚拟化环境中，在不关闭客户机的情况下，也可以对客户机的设备进行热拔插。
+
+\subsection{PCI设备的热拔插}
+	PCI设备的热拔插需要以下几个方面的支持：
+	\begin{itemize}
+		\item[1.] 硬件支持。现在的BIOS和PCI总线都支持热拔插。
+		\item[2.] 客户机操作系统支持，内核配置文件中需要有以下配置：
+		\begin{lstlisting}
+		CONFIG_HOTPLUG=y
+		CONFIG_HOTPLUG_PCI_PCIE=y
+		CONFIG_HOTPLUG_PCI=y
+		CONFIG_HOTPLUG_PCI_FAKE=m
+		CONFIG_HOTPLUG_PCI_ACPI=y
+		CONFIG_HOTPLUG_PCI_ACPI_IBM=m
+		\end{lstlisting}
+	\end{itemize}
+
+	可以在qemu monitor中完成热拔插功能，比如要将BDF为02:00.0的PCI设备动态添加到客户机中，在monitor中的命令如下：
+	\begin{lstlisting}
+	device_add pci-assign,host=02:00.0,id=mydevice
+	\end{lstlisting}
+
+	也可以将设备从客户机中动态移除，在monitor中的命令如下：
+	\begin{lstlisting}
+	device_del mydevice
+	\end{lstlisting}
+
+	需要注意的是，如果要把宿主机中的PCI设备给客户机作为热拔插使用，需要绑定设备到pci\_stub驱动，从而对需要分配给客户机的设备进行隐藏，使得宿主机和其他客户机无法使用该设备。
+
+\clearpage
+
+\section{动态迁移}
+\subsection{虚拟化环境中的迁移}
+	在虚拟化环境中的迁移分为静态迁移和动态迁移。\par
+	静态迁移有两种的实现方式：
+	\begin{itemize}
+		\item 一种实现方式是，关闭客户机后，将其硬盘镜像复制到另一台宿主机上然后恢复启动起来。
+		\item 另一种实现方式是，两台宿主机共享存储系统，只需要在暂停客户机后，复制其内存镜像到另一台宿主机中恢复启动。
+	\end{itemize}
+
+	可以通过以下两个步骤实现静态迁移：
+	\begin{itemize}
+		\item[1.] 在源宿主机上某客户机的qemu monitor中使用“savevm my\_tag”命令来保存一个完整的客户机镜像快照。
+		\item[2.] 在源宿主机中关闭或暂停该客户机。
+		\item[3.] 将该客户机的镜像文件复制到另外一台宿主机中，在其qemu monitor中用“loadvm my\_tag”命令来加载保存快照时的客户机快照。
+	\end{itemize}
+
+	动态迁移指的是在保证客户机上应用服务正常运行的同时，让客户机在不同的宿主机之间进行迁移。
+	一个成功的动态迁移，需要保证客户机的内存、硬盘存储、网络连接在迁移到目的主机后依然保存不变，而且迁移过程的服务暂停时间较短。
+
+\subsection{动态迁移的应用场景}
+	\begin{itemize}
+		\item[1.] 负载均衡。当一台物理服务器的负载较高时，可以将其上运行的客户机动态迁移到负载较低的宿主机服务器中。
+		\item[2.] 解除硬件依赖。当系统管理员需要在宿主机上升级、添加或移除某些硬件设备时，可以将该宿主机上运行的客户机动态迁移到其他宿主机上。
+		\item[3.] 节约能源。可以将宿主机上的客户机动态迁移到几台服务器上，而某些宿主机上的客户机完全迁移走后，就可以将其关闭电源，从而省电。
+		\item[4.] 实现客户机地理位置上的远程迁移。
+	\end{itemize}
+
+\subsection{KVM动态迁移原理}
+\subsubsection{基于共享存储系统的动态迁移的原理}
+	当源宿主机和目的宿主机共享存储系统时，只需要通过网络发送客户机的vCPU执行状态、内存中的内容和虚拟设备的状态到目的主机上。
+	具体迁移过程如下所示：
+	\begin{itemize}
+		\item[1.] 在客户机在源客户机运行的同时，将客户机的内存页传输到目的主机上。
+		\item[2.] KVM会监控并记录下迁移过程中所有已经被传输的内存页的任何修改。
+		\item[3.] 当内存数据量传输完成时，KVM会关闭源宿主机上的客户机，然后将剩余的数据量传输到目的主机上去。
+		\item[4.] 当所有内存内容传输到目的宿主机后，就可以在目的宿主机上恢复客户机的运行状态。
+	\end{itemize}
+
+	需要注意的是，如果目的主机上缺少一些配置，那么客户机就无法正常运行。
+	比如，在原宿主机上有给客户机配置好网桥类型的网络，但是目的主机没有网桥配置，那么迁移后的客户机就会网络不通。\par
+	还有一种情况就是，如果内存中数据被修改的速度大于KVM能够传输的内存速度时，动态迁移就无法完成。
+
+\subsubsection{动态迁移的注意事项}
+	\begin{itemize}
+		\item 共享存储在源宿主机和目的宿主机上的挂载位置必须完全一致。
+		\item 为了提高动态迁移的成功率，尽量在同类型CPU的主机上面进行动态迁移。
+		\item 64位的客户机只能在64位宿主机之间迁移，而32位客户机可以在32位宿主机和64位宿主机之间迁移。
+		\item 动态迁移的源宿主机和目的宿主机对NX位的设置必须相同。
+		\item 在目的宿主机上不能有与被迁移客户机同名的客户机存在。
+		\item 目的宿主机和源宿主机的软件配置应该尽可能相同。
+	\end{itemize}
+
+\subsubsection{实现基于共享存储系统的动态迁移}
+	动态迁移的实现如下所示：
+	\begin{itemize}
+		\item[1.] 在源宿主机挂载NFS上的客户机镜像，并启动客户机。命令如下所示：
+		\begin{lstlisting}
+	// 挂载客户机镜像
+	mount my-nfs:/rw-images/ /mnt/
+	// 启动客户机
+	qemu-system-x86_64 /mnt/ubuntu1604.img -smp 2 -m 2048 -net nic -net tap
+		\end{lstlisting}
+
+		\item[2.] 在目的宿主机上挂载NFS上的客户机镜像，并启动一个客户机用于接受动态迁移过来的内存内容。需要注意的是共享存储在源宿主机和目的宿主机上的挂载位置必须完全一致。
+		命令如下所示：
+		\begin{lstlisting}
+	// 挂载客户机镜像
+	mount vt-nfs:/rw-images/ /mnt/
+	// 启动客户机
+	qemu-system-x86_64 /mnt/ubuntu1604.img -smp 2 -m 2048 -net nic -net tap -incoming tcp:0:6666
+		\end{lstlisting}
+
+		参数“-incoming tcp:0:6666”表示在6666端口建立一个TCP Socket连接，用于接受来自源主机的动态迁移的内容，其中“0”表示允许来自任何主机的连接。
+
+		\item[3.] 在源宿主机的客户机的qemu monitor中使用如下命令进入动态迁移的流程：
+		\begin{lstlisting}
+	migrate tcp:vt-snb9:6666
+		\end{lstlisting}
+
+		“vt-snb9”是目的宿主机的主机名，tcp协议和6666端口号需要与目的宿主机上qemu-kvm命令行的“-incoming”参数中的值保持一致。
+	\end{itemize}
+
+\subsubsection{实现使用相同后端镜像文件的动态迁移}
+
+\section{嵌套虚拟化}
+\section{KSM技术}
+\section{KVM安全}
+\section{QEMU监控器}
+\section{qemu-kvm命令行参数}
+\section{迁移到KVM虚拟化环境} 
+
+\end{document}
