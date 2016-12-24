@@ -137,7 +137,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{kvm核心基础功能 \qquad}
+\chead{kvm高级功能 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -408,12 +408,467 @@
 	\end{itemize}
 
 \subsubsection{实现使用相同后端镜像文件的动态迁移}
+	过程如下所示：
+	\begin{itemize}
+		\item[1.] 在源宿主机上，根据一个后端镜像文件，创建一个qcow2格式的镜像文件，并启动客户机。相应的命令如下所示：
+		\begin{lstlisting}
+	// 创建一个qcow2格式的镜像文件
+	qemu-img create -f qcow2 -o backing_file=ubuntu1604.img,size=20G ubuntu1604.qcow2
+	// 启动客户机
+	qemu-system-x86_64 ubuntu1604.qcow2 -smp 2 -m 2048 -net nic -net tap
+		\end{lstlisting}
+
+		\item[2.] 在目的宿主机上，也建立相同的qcow2格式的客户机镜像，并用“-incoming”参数使得客户机处于迁移监听状态。相应的命令如下所示：
+		\begin{lstlisting}
+	// 创建一个qcow2格式的镜像文件
+	qemu-img create -f qcow2 -o backing_file=ubuntu1604.img,size=20G ubuntu1604.qcow2
+	// 启动客户机
+	qemu-system-x86_64 ubuntu1604.qcow2 -smp 2 -m 2048 -net nic -net tap -incoming tcp:0:6666
+		\end{lstlisting}
+
+		\item[3.] 在源宿主机上的客户机的qemu monitor中，运行如下命令进行动态迁移：
+		\begin{lstlisting}
+	migrate -i tcp:vt-snb9:6666
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{实现直接复制客户机磁盘镜像的动态迁移}
+	过程如下所示：
+	\begin{itemize}
+		\item[1.] 在源宿主机上启动客户机。相应的命令如下所示：
+		\begin{lstlisting}
+	// 启动客户机
+	qemu-system-x86_64 ubuntu1604.img -smp 2 -m 2048 -net nic -net tap
+		\end{lstlisting}
+
+		\item[2.] 在目的宿主机上用“-incoming”参数使得客户机处于迁移监听状态。相应的命令如下所示：
+		\begin{lstlisting}
+	// 启动客户机
+	qemu-system-x86_64 ubuntu1604.img -smp 2 -m 2048 -net nic -net tap -incoming tcp:0:6666
+		\end{lstlisting}
+
+		\item[3.] 在源宿主机上的客户机的qemu monitor中，运行如下命令进行动态迁移：
+		\begin{lstlisting}
+	// -b代表传输块设备
+	migrate -b tcp:vt-snb9:6666
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{动态迁移的相关命令}
+	下面完整介绍一下前几个小节使用的migrate命令：
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline
+	\multicolumn{2}{l}{标准格式：migrate [-d][-b][-i] uri} \\
+	\hline
+	参数选项： & \\
+	\hline
+	uri & 统一资源标识符，“协议:主机名:端口号” \\
+	\hline
+	-d & 表示不用等待迁移完成就让qemu monitor处于可输入命令的状态 \\
+	\hline
+	-b & 表示传输整个磁盘镜像 \\
+	\hline
+	-i & 表示在有相同的后端镜像的情况下增量传输qcow2类型的磁盘镜像 \\
+	\hline
+	\end{longtable}
+
+	\clearpage
+
+	其他命令：
+	\interval
+	\begin{longtable}{p{7cm}}
+	\hline
+	migrate\_cancel \\
+	在动态迁移进行过程中取消迁移 \\
+	\hline
+	migrate\_set\_speed value \\
+	设置动态迁移中的最大传输速度 \\
+	\hline
+	migrate\_set\_downtime value \\
+	设置允许的最大停机时间 \\
+	\hline
+	\end{longtable}
+
+\clearpage
 
 \section{嵌套虚拟化}
+\subsection{嵌套虚拟化的介绍}
+	嵌套虚拟化是指在虚拟化的客户机中运行一个KVM，从而在虚拟化运行一个客户机。\par
+	对于KVM这样的必须依靠硬件虚拟化扩展的方案，必须在客户机中模拟硬件虚拟化特性的支持，并在KVM的操作指令进行模拟。
+
+\subsection{KVM嵌套KVM}
+	KVM嵌套KVM，就是在KVM上面运行的第一级客户机中，再加载kvm和kvm\_intel模块，然后在第一级客户机中用qemu-kvm启动带有kvm加速的第二级客户机。\par
+
+	KVM嵌套KVM的配置有如下几个步骤：
+	\begin{itemize}
+		\item[1.] 在宿主机中，加载kvm-intel模块时，需要添加“nested=1”的选项，从而打开嵌套虚拟化的特性。如下所示：
+		\begin{lstlisting}
+	modprobe kvm_intel nested=1
+		\end{lstlisting}
+
+		\item[2.] 在启动第一级客户机时，应该在qemu-kvm命令中加上“-cpu host”或者“-cpu cpu\_model,+vmx”选项，从而将CPU的硬件虚拟化扩展特性暴露给第一级客户机。
+		相关的命令如下所示：
+		\begin{lstlisting}
+	qemu-system-x86_64 ubuntu1604.img -m 4096 -smp 2 -net nic -net tap -cpu host
+	// 或者用下面的命令
+	qemu-system-x86_64 ubuntu1604.img -m 4096 -smp 2 -net nic -net tap -cpu cpu\_model,+vmx
+		\end{lstlisting}
+
+		“-cpu host”参数可以将宿主机的CPU暴露给第一级客户机，而“-cpu cpu\_model,+vmx”参数以某个CPU模型为基础，然后加上Intel VMX特性。
+
+		\item[3.] 在第一级客户机中加载kvm和kvm\_intel模块，然后启动第二级客户机，命令如下：
+		\begin{lstlisting}
+	modprobe kvm
+	modprobe kvm_intel
+	qemu-system-x86_64 ubuntu1604.img -m 1024 -smp 2
+		\end{lstlisting}
+	\end{itemize}
+
+	因为KVM为第一级客户机提供了有硬件辅助虚拟化特性的透明的硬件环境，所以在第一级客户机中启动第二级客户机的操作，和宿主机启动第一级客户机的操作完全一样。
+
 \section{KSM技术}
-\section{KVM安全}
+\subsection{KSM技术的介绍}
+	KSM时“Kernel SamePage Merging”的缩写，中文叫做“内核同页合并”。
+	KSM让内核扫描正在运行中的程序并比较它们的内存，如果它们的内存页是完全相同的，就将多个相同的内存合并为一个单一的内存页，并将其标识为“写时复制”。
+	如果有进程试图去修改被标识为“写时复制”的合并的内存页时，就为该进程复制出一个新的内存页供其使用。\par
+	如果同一宿主机上的多个客户机运行的是相同的操作系统，那么客户机之间的相同内存页数量会比较多，于是KSM的作用就比较大。
+	在KVM虚拟化环境中，KSM可以从以下两个方面提高内存的速度和使用效率：
+	\begin{itemize}
+		\item[1.] 相同的内存页合并后，减少了客户机的内存使用量。
+		\item[2.] KSM通过减少每个客户机实际占用的内存数量，就可以让多个客户机分配的内存数量之和大于物理上的内存数量。
+		这样的话，在物理内存量不变的情况下，可以在一个宿主机中创建更多的客户机，提高了物理资源的利用效率。
+	\end{itemize}
+
+\subsection{查看系统中的KSM技术}
+	内核的KSM守护进程是ksmd，配置ksmd的文件在“/sys/kernel/mm/ksm/”目录下，可以通过以下命令查看该目录下的几个文件：
+	\begin{lstlisting}
+	ls -l /sys/kernel/mm/ksm/*
+	\end{lstlisting}
+
+	结果如下图所示：
+	\sizedfic{0.9}{4.png}
+
+	下面介绍一下这些文件的作用：
+	\begin{itemize}
+		\item full\_scans: 记录着已经对所有可合并的内存区域扫描过的次数。
+		\item pages\_shared: 记录着正在使用中的共享内存页的数量。
+		\item pages\_sharing: 记录着有多少数量的内存页正在使用被合并的共享页，不包括合并的内存页本身。
+		\item page\_unshared: 记录着守护进程去检查并试图合并，却发现了并没有重复内容而不能被合并的内存页数量。
+		\item pages\_volatitle: 记录了因为其内容很容易变化而不被合并的内存页。
+		\item pages\_to\_scan: 记录着在ksmd进程休眠之前会去扫描的内存页数量。
+		\item sleep\_millisecs: 记录着ksmd进程休眠的时间。
+		\item run: 记录着控制ksmd进程是否运行的参数。
+	\end{itemize}
+
+	可以通过对pages\_to\_scan、sleep\_millisecs和run这三个文件写入自定义的值来控制ksmd的运行。如下所示：
+	\begin{lstlisting}
+	// 调整每次扫描的内存页数量
+	echo num >/sys/kernel/mm/ksm/pages_to_scan
+	// 设置ksmd休眠的时间
+	echo num >/sys/kernel/mm/ksm/sleep_millisecs
+	// 激活ksmd的运行
+	echo 1 >/sys/kernel/mm/ksm/run
+	\end{lstlisting}
+
+\clearpage
+
+\section{KVM其他特性简介}
+\subsection{1GB大页}
+	1GB大页通过hugetlbfs文件系统来利用硬件提供的大页支持。下面是在KVM环境中使用1GB大页的具体操作步骤：
+	\begin{itemize}
+		\item[1.] 检查硬件和内核配置对1GB大页的支持，相关命令如下所示：
+		\begin{lstlisting}
+	cat /proc/cpuinfo | grep pdpe1gb
+		\end{lstlisting}
+
+		如果没有这个支持，需要在内核编译时配置，config文件需要有以下两项配置：
+		\begin{lstlisting}
+	CONFIG_HUGETLBFS=y
+	CONFIG_HUGETLB_PAGE=y
+		\end{lstlisting}
+
+		\item[2.] 在宿主机的内核启动参数重配置1GB，配置文件中添加如下参数：
+		\begin{lstlisting}
+	hugepagesz=size hugepages=num default_hugepagesz=default_size
+	// hugepagesz表示HugeTLB内存页的大小
+	// hugepages表示启动时大页分配的数量
+	// default_hugepagesz表示在挂在hugetlb文件系统时，没有设置大页的大小时默认使用的大页的大小
+	// hugepagesz和hugepages选项可以成对地多次使用，可以让系统在启动时同时保留多个大小不同的大页
+		\end{lstlisting}
+
+		如下图所示：
+		\fic{5.png}
+
+		\item[3.] 挂在hugetlbfs文件系统，命令行如下：
+		\begin{lstlisting}
+	mount -t hugetlbfs hugetlbfs /dev/hugepages
+		\end{lstlisting}
+
+		如果使用了两种大小的大页，可以在挂在hugetlbfs文件系统的时候，通过“pagesize”选项来制定挂载hugetlbfs的大页的大小，相关命令如下所示：
+		\begin{lstlisting}
+	mount -t hugetlbfs hugetlbfs /dev/hugepages -o pagesize=size	
+		\end{lstlisting}
+
+		\item[4.] 通过“-mem-path”参数为客户机提供大页的支持，命令如下所示：
+		\begin{lstlisting}
+	qemu-system-x86_64 ubuntu1604.img -mem-path /dev/hugepages/
+		\end{lstlisting}
+	\end{itemize}
+
+	需要注意的是，如果要使用大页，需要一开始就预留大页的内存。大页的内存不能被交换到交换分区，也不能通过ballooning方式使用大页内存。
+
+\subsection{透明大页}
+	透明大页的好处有以下三点：
+	\begin{itemize}
+		\item[1.] 应用程序不需要任何修改即可享受透明大页带来的好处。
+		\item[2.] 透明大页可以被交换到交换空间，此时透明大页会被打碎为常规的4KB大小的内存页。
+		\item[3.] 使用透明大页时，如果因为内存碎片导致大页内存分配失败，系统可以优雅地使用常规的4KB页替换。
+	\end{itemize}
+
+	使用透明大页的方式如下：
+	\begin{itemize}
+		\item 在编译Linux内核时，配置好透明大页的支持，如下所示：
+		\begin{lstlisting}
+	CONFIG_TRANSPARENT_HUGEPAGE=y
+	// 表示默认对所有应用程序的内存分配都尽可能地使用透明大页
+	CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS=y
+		\end{lstlisting}
+
+		除此之外，还可以通过修改内核启动参数来调整透明大页的使用频率。相关参数如下所示：
+		\begin{lstlisting}
+	transparent_hugepage=[always|madvise|never]
+		\end{lstlisting}
+
+		还可以通过以下命令来配置透明大页的使用频率：
+		\begin{lstlisting}
+	echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{暴露宿主机CPU特性}
+	在启动客户机时，可以用过“+”号来添加一个或多个CPU特性到一个基础的CPU模型上，如下所示：
+	\begin{lstlisting}
+	-cpu qemu64,+vmx
+	\end{lstlisting}
+
+	可以通过如下命令查看宿主机CPU的特性：
+	\begin{lstlisting}
+	cat /proc/cpuinfo
+	\end{lstlisting}
+
+	terminal输出信息中的flags就是宿主机CPU的特性。\par
+
+	qemu-kvm还提供了“-cpu host”参数来尽可能多地暴露宿主机CPU特性给客户机，从而在客户机中可以看到和使用宿主机CPU的各种特性。
+	不过“-cpu host”参数可能会阻止客户机的动态迁移，所以需要根据场景使用。
+
+\clearpage
+
 \section{QEMU监控器}
+	QEMU监控器是qemu与用户交互的控制台。以下是monitor中一些常用的命令：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	help [cmd] & 显示命令的帮助信息。 \\
+	\hline
+	info [subcommand] & 显示subcommand描述的系统状态。如果subcommand为空，就显示当前所有的info命令组合及其介绍。 \\
+	\hline
+	commit & 将变化部分提交到后端镜像文件中。 \\
+	\hline
+	stop & 用于停止qemu模拟器 \\
+	\hline
+	cont & 恢复qemu模拟器继续工作 \\
+	\hline
+	change & 改变一个设备的配置 \\
+	\hline
+	balloon & 改变分配给客户机的内存大小 \\
+	\hline
+	device\_add & 动态添加设备 \\
+	\hline
+	device\_del & 动态移除设备 \\
+	\hline
+	usb\_add & 添加一个USB设备 \\
+	\hline
+	usb\_del & 移除一个USB设备 \\
+	\hline
+	savevm、loadvm devlvm & 创建、加载和删除客户机的快照 \\
+	\hline
+	migrate  & 动态迁移和取消动态迁移 \\
+	migrate\_cancel & \\
+	\hline
+	cpu index & 指定系统默认的CPU \\
+	\hline
+	log & 将制定的项目保存到/tmp/qemu.log中 \\
+	\hline
+	logfile filename & 将log文件输出到filename文件中 \\
+	\hline
+	sendkey keys & 像客户机发送keys按键，产生如同在非虚拟环境中那样的按键效果 \\
+	\hline
+	system\_powerdown & 关闭客户机 \\
+	\hline
+	system\_reset & 让客户机重置，相当于直接拔掉电源，然后插上电源，按开机键开机 \\
+	\hline
+	system\_wakeup & 将客户机从暂停中唤醒 \\
+	\hline
+	x /fmt addr & 转存出从addr开始的虚拟内存地址，fmt指定了转存出来的内存信息的格式 \\
+	\hline
+	xp /fmt addr & 转存出从addr开始的物理内存地址，fmt指定了转存出来的内存信息的格式 \\
+	\hline
+	print fmt expr & 按fmt格式打印expr表达式的值 \\
+	\hline
+	\end{longtable}
+
+	更多的命令可以通过help来查看。
+
+\clearpage
+
 \section{qemu-kvm命令行参数}
+\subsection{与配置客户机相关的参数}
+	以下是qemu-kvm命令行中一些常用的参数：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	-help & 查看qemu-kvm命令行中参数以及命令的帮助信息 \\
+	\hline
+	-cpu参数 & 指定CPU模型，“-cpu ?”可以查询当前qemu-kvm支持哪些CPU模型 \\
+	\hline
+	-smp参数 & 设置客户机的逻辑CPU \\
+	\hline
+	-m参数 & 设置客户机内存大小 \\
+	\hline
+	-mem-path & 为客户机分配内存，主要是分配大页内存 \\
+	\hline
+	-balloon & 开启内存气球 \\
+	\hline
+	-hda -hdb -cdrom & 设置客户机的IDE磁盘和光盘设备 \\
+	\hline
+	-drive & 详细地配置一个驱动器 \\
+	\hline
+	-boot & 设置客户机启动时的各种选项 \\
+	\hline
+	-net nic & 为客户机创建一个网卡，并可以详细配置该网卡 \\
+	\hline
+	-net user & 让客户机使用不需要管理员权限的用户模式网络 \\
+	\hline
+	-net tap & 使用宿主机的TAP网络接口来帮助客户机建立网络 \\
+	\hline
+	-net dump & 转存出网络中的数据流量 \\
+	\hline
+	-net none & 不配置任何的网络设备 \\
+	\hline
+	-sdl & 使用SDL方式显示客户机 \\
+	\hline
+	-vnc & 使用VNC方式显示客户机 \\
+	\hline
+	-vga & 设置客户机中的VGA显卡类型 \\
+	\hline
+	-nographic & 关闭qemu的图形界面输出 \\
+	\hline
+	-device & 添加一个设备驱动器 \\
+	\hline
+	-incoming & 让qemu-kvm进程进入到迁移监听模式，而不是真正以命令行中的镜像文件运行客户机 \\
+	\hline
+	-daemonize & 让qemu-kvm作为守护进程在后台运行，这样qemu-kvm就不会占用着当前的terminal \\
+	\hline
+	-usb & 开启客户机中的USB总线 \\
+	\hline
+	-version & 显示qemu-kvm的版本信息 \\
+	\hline
+	-k & 设置键盘布局的语言 \\
+	\hline
+	-soundhw & 开启声卡硬件的支持 \\
+	\hline
+	-display & 设置显示方式 \\
+	\hline
+	-name & 设置客户机名称 \\
+	\hline
+	-uuid & 设置系统的UUID \\
+	\hline
+	-rtc & 设置RTC开始时间和时钟类型 \\
+	\hline
+	-chardev & 配置字符型设备 \\
+	\hline
+	-bios & 指定客户机的BIOS文件 \\
+	\hline
+	-loadvm & 加载快照状态 \\
+	\hline
+	-pidfile & 保存进程ID到文件中 \\
+	\hline
+	-nodefaults & 不创建默认的设备 \\
+	\hline
+	-readconfig & 从文件中读取客户机设备的配置 \\
+	\hline
+	-writeconfig & 将客户机中设备的配置写到文件中 \\
+	\hline
+	-nodefconfig & 使qemu-kvm不加载默认的配置文件 \\
+	\hline
+	-no-user-config & 使qemu-kvm不加载用户定义的配置文件 \\
+	\hline
+	\end{longtable}
+
+\subsection{与调试相关的参数}
+	qemu-kvm中也有一些与调试相关的参数，如下所示：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	-singlestep & 以单步执行的模式运行qemu模拟器 \\
+	\hline
+	-S & 在启动时并不启动CPU，需要在monitor中运行“c”命令才能继续运行 \\
+	\hline
+	-d & 将qemu的日志保存在/tmp/qemu.log中，以便调试时查看日志 \\
+	\hline
+	-D logfile & 将qemu的日志保存在logfile中，以便调试时查看日志 \\
+	\hline
+	\end{longtable}
+
+\clearpage
+
 \section{迁移到KVM虚拟化环境} 
+\subsection{从一种虚拟化迁移到另一种虚拟化}
+	virt-v2v工具可用于将虚拟客户机从一些hypervisor迁移到KVM环境中。使用如下命令可以安装virt-v2v：
+	\begin{lstlisting}
+	sudo apt-get install virt-manager
+	sudo apt install libguestfs-tools
+	\end{lstlisting}
+
+	下面通过一个例子介绍virt-v2v的使用方法。现在要将Xen上的HVM客户机迁移到KVM上，源宿主机的IP地址是192.168.127.163。步骤如下所示：
+	\begin{itemize}
+		\item[1.] 在源宿主机系统中启动libvirtd服务，并且关闭所要迁移的客户机，该客户机名为xen-hvm1。启动libvirtd服务的命令如下：
+		\begin{lstlisting}
+		service libvirtd start
+		\end{lstlisting}
+
+		\item[2.] 在KVM宿主机中启动libvirtd服务，然后使用virt-v2v工具进行从Xen到KVM的迁移。相关命令如下：
+		\begin{lstlisting}
+		service libvirtd start
+		virt-v2v -ic xen+ssh://root@192.168.127.163 -o default -b br0 xen-hvm1
+		\end{lstlisting}
+
+		从Xen上迁移过来的客户机，其镜像文件默认在/var/lib/libvirt/images/目录下，其XML配置文件默认在/etc/libvirt/qemu/目录下。
+
+		\item[3.] 根据客户机的配置文件直接开启客户机，命令如下：
+		\begin{lstlisting}
+		virsh create /etc/libvirt/qemu/xen-hvm1.xml
+		\end{lstlisting}
+	\end{itemize}
+
+	这里介绍一下virt-v2v工具：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	\multicolumn{2}{l}{从Xen客户机迁移到KVM的命令如下：} \\
+	\multicolumn{2}{l}{virt-v2v -ic xen+ssh://root@xen0.demo.com -os pool -b brname vm-name} \\
+	\hline
+	\multicolumn{2}{l}{其中的参数介绍如下：} \\
+	\hline
+	-ic URI & 表示连接远程Xen宿主机中libvirt的URI \\
+	\hline
+	-os pool & 表示迁移过来后，用于存放镜像文件的本地目录 \\
+	\hline
+	-b brname & 表示本地网桥的名称，用于建立与客户机的网络连接。如果本地使用虚拟网络，则使用-n nerwork参数来指定虚拟网络 \\
+	\hline
+	vm-name & 表示在Xen的源宿主机中将要被迁移的客户机的名称 \\
+	\hline
+	\end{longtable}
 
 \end{document}

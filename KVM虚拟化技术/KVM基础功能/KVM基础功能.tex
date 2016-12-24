@@ -137,7 +137,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{kvm核心基础功能 \qquad}
+\chead{kvm基础功能 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -241,7 +241,7 @@
 	向grub文件中添加"isolcpus"参数的命令如下所示：
 	\begin{lstlisting}
 	sudo vi /boot/grub/grub.cfg
-	/menuentry
+	/menuentry 'Ubuntu'
 	\end{lstlisting}
 	
 	然后在插入模式下，在initrd参数前一行写入：
