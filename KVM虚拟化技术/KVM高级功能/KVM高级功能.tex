@@ -871,4 +871,69 @@
 	\hline
 	\end{longtable}
 
+\subsection{从VMware迁移到KVM}
+\subsubsection{借助virt-v2v工具实现迁移}
+	从VMware迁移到KVM的方法，与前一节中从Xen迁移到KVM的完全类似。
+	下面通过一个例子介绍迁移过程。现在要将VMware ESX上的一个客户机迁移到KVM上，命令行如下：
+	\begin{lstlisting}
+	virt-v2v -ic esx+ssh://esx.demo.com/ -os pool -b brname vm-name
+	\end{lstlisting}
+
+	当连接到VMware的ESX服务器时，一般需要认证和授权，此时virt-v2v读取\$HOME/.netrc文件中的机器名、用户名和密码用于认证。\$HOME/.netrc文件中信息的格式如下所示：
+	\begin{lstlisting}
+	machine esx.demo.com login root password 123456
+	\end{lstlisting}
+
+\subsubsection{通过复制客户机镜像实现迁移}
+	这个方法很直接：先关闭VMware客户机，然后直接将VMware的客户机镜像复制到KVM的客户机镜像存储系统上，接着通过qemu-kvm命令行工具启动该镜像文件即可。
+	命令如下所示：
+	\begin{lstlisting}
+	qemu-system-x86_64 -m 1024 win7.vmdk
+	\end{lstlisting}
+
+	也可以将vmdk的镜像文件转化为qcow2格式，然后用qemu-kvm命令行启动。相关命令如下所示：
+	\begin{lstlisting}
+	qemu-img convert win7.vmdk -O qcow2 win7.qcow2
+	qemu-system-x86_64 -m 1024 win7.qcow2
+	\end{lstlisting}
+
+\subsection{从VirtualBox迁移到KVM}
+	从VirtualBox迁移到KVM完全类似于从VMware迁移到KVM。\par
+	借助virt2-v2v的方法如下所示：
+	\begin{lstlisting}
+	virt-v2v -ic vbox+ssh://root@vbox.demo.com -os pool -b brname vm-name
+	\end{lstlisting}
+
+	也可以直接将VirtualBox中的客户机镜像文件复制到KVM宿主机中使用，qemu-kvm可以直接将.vdi格式的镜像文件作为客户机镜像直接启动：
+	\begin{lstlisting}
+	qemu-system-x86_64 -m 1024 ubuntu.vdi
+	\end{lstlisting}
+
+	也可以将.vdi的镜像文件转化为qcow2格式，然后用qemu-kvm命令行启动。相关命令如下所示：
+	\begin{lstlisting}
+	qemu-img convert ubuntu.vdi -O qcow2 ubuntu.qcow2
+	qemu-system-x86_64 -m 1024 ubuntu.qcow2
+	\end{lstlisting}
+
+\subsection{从物理机迁移到KVM虚拟化环境}
+	使用virt-p2v工具的方法将物理机迁移到KVM虚拟化环境中需要经过以下几个步骤：
+	\begin{itemize}
+		\item[1.] 在KVM宿主机上安装virt-v2v、libvirt等工具。
+		\item[2.] 修改宿主机/etc/virt-v2v.conf配置文件，如下所示：\par
+		首先打开/etc/virt-v2v.conf文件，命令如下：
+		\begin{lstlisting}
+	sudo vi /etc/virt-v2v.conf
+		\end{lstlisting}
+
+		然后将其配置为如下内容：
+		\fic{6.png}
+
+		\item[3.] 制作virt-p2v可以启动的设备。将virt-p2vISO镜像文件烧录到U盘中，作为物理机的启动设备。
+		\item[4.] 在待迁移的物理机上，选择第3步中制作的设备来启动系统。
+		\item[5.] 在virt-p2v客户端启动后，根据提示，填写第二步中所写的服务端的IP、登陆用户等信息。
+		在连接到服务器端后，可以进一步填写转移后的虚拟客户机的配置，最后点击“convert”按钮，
+		virt-p2v客户端会讲物理机中的磁盘信息通过网络传输到服务器端，待传输完成后，选择关闭该物理机即可。
+		\item[6.] 在KVM宿主机上通过qemu-kvm命令行启动第5步转移过来的客户机即可。
+	\end{itemize}
+
 \end{document}

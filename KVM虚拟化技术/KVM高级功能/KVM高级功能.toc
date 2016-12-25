@@ -36,3 +36,8 @@
 \contentsline {subsection}{\numberline {9.2}与调试相关的参数}{22}{subsection.9.2}
 \contentsline {section}{\numberline {10}迁移到KVM虚拟化环境}{23}{section.10}
 \contentsline {subsection}{\numberline {10.1}从一种虚拟化迁移到另一种虚拟化}{23}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}从VMware迁移到KVM}{24}{subsection.10.2}
+\contentsline {subsubsection}{\numberline {10.2.1}借助virt-v2v工具实现迁移}{24}{subsubsection.10.2.1}
+\contentsline {subsubsection}{\numberline {10.2.2}通过复制客户机镜像实现迁移}{24}{subsubsection.10.2.2}
+\contentsline {subsection}{\numberline {10.3}从VirtualBox迁移到KVM}{24}{subsection.10.3}
+\contentsline {subsection}{\numberline {10.4}从物理机迁移到KVM虚拟化环境}{25}{subsection.10.4}

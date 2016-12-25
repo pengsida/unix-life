@@ -1,0 +1,254 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=C,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{kvm管理工具 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{libvirt}
+\subsection{libvirt的介绍}
+	libvirt是用于管理平台虚拟化技术的应用程序接口、守护进程和管理工具，它不仅提供了对虚拟化客户机的管理，也提供了对虚拟化网络和存储的管理。\par
+	在libvirt中有几个重要的概念，如下所示：
+	\begin{itemize}
+		\item Node又叫做节点，是一个物理机器，上面可能运行着多个虚拟客户机。Hypervisor和Domain都运行在节点之上。
+		\item Hypervisor又叫做虚拟机监控器，比如KVM、Xen、VMware、Hyper-V等，是虚拟化中的一个底层软件层，它可以虚拟化一个节点让其运行多个虚拟客户机。
+		\item Domain又叫做域，是在Hypervisor上运行的一个客户机操作系统实例。
+	\end{itemize}
+
+	libvirt被用于管理节点上的各个域，其中的管理功能包括以下四个部分：
+	\begin{itemize}
+		\item[1.] 域的管理。包括对域的生命周期的管理以及管理对多种设备类型的热拔插操作。
+		\item[2.] 远程节点的管理。libvirt支持多种网络远程传输类型。只要物理节点上运行了libvirtd这个守护进程，远程的管理程序就可以连接到该节点进行管理操作。
+		\item[3.] 存储的管理。任何运行了libvirtd守护进程的主机，都可以通过libvirt来管理不同类型的存储。
+		\item[4.] 网络的管理。任何运行了libvirtd守护进程的主机，都可以通过libvirt来管理物理的和逻辑的网络接口。
+	\end{itemize}
+
+	libvirt由三部分组成：
+	\begin{itemize}
+		\item 应用程序编程接口库，为其他虚拟机管理工具提供虚拟机管理的程序库支持。
+		\item libvirtd守护进程，负责执行对节点上的域的管理工作。
+		\item virsh，是libvirt项目中默认的对虚拟机管理的一个命令行工具。
+	\end{itemize}
+
+	\clearpage
+
+\subsection{libvirt的安装}
+	安装libvirt的步骤如下：
+	\begin{itemize}
+		\item[1.] 首先检查是否安装过libvirt，命令如下所示：
+		\begin{lstlisting}
+	which libvirtd
+		\end{lstlisting}
+
+		如果有安装过libvirt，就应该先清除之前装过的libvirt，命令如下所示：
+		\begin{lstlisting}
+	// 仅在ubuntu16.04下试验过
+	sudo apt remove libvirt-bin
+		\end{lstlisting}
+
+		\item[2.] 下载libvirt的源代码，命令如下所示：
+		\begin{lstlisting}
+	// 下载日期为2016.12.25，此时最新版本为2.5.0
+	wget http://libvirt.org/sources/libvirt-2.5.0.tar.xz
+		\end{lstlisting}
+
+		\item[3.] 配置libvirt前，需要安装一些工具。相关命令如下所示：
+		\begin{lstlisting}
+	sudo apt-get install libpciaccess-dev
+	sudo apt-get install libxml++2.6-2v5
+	sudo apt-get install libxml++2.6-dev
+	sudo apt-get install libyajl-dev
+	sudo apt-get install libdevmapper-dev
+	sudo apt-get install libnl-3-dev
+	sudo apt-get install libnl-route-3-dev
+		\end{lstlisting}
+
+		\item[4.] 配置libvirt，命令如下所示：
+		\begin{lstlisting}
+	./configure
+		\end{lstlisting}
+
+		\item[5.] 编译libvirt，命令如下所示：
+		\begin{lstlisting}
+	make -j 4
+		\end{lstlisting}
+
+		\item[6.] 安装libvirt，命令如下所示：
+		\begin{lstlisting}
+	sudo make install
+		\end{lstlisting}
+
+		\item[7.] 配置动态链接，命令如下所示：
+		\begin{lstlisting}
+	sudo vi /etc/ld.so.conf.d/libc.conf
+		\end{lstlisting}
+
+		将文件内容写为下图中的内容：
+		\sizedfic{0.5}{1.png}
+
+		然后再输入如下命令：
+		\begin{lstlisting}
+	sudo ldconfig
+		\end{lstlisting}
+
+		\item[8.] 检查是否安装成功，命令如下所示：
+		\begin{lstlisting}
+	which libvirtd
+	libvirted --version
+	virsh
+		\end{lstlisting}
+
+		如果安装成功，将得到如下图的结果：
+		\fic{2.png}
+	\end{itemize}
+
+\section{virsh}
+\section{virt-manager}
+\section{其他管理工具}
+\subsection{virt-viewer}
+\subsection{virt-install}
+\subsection{virt-top}
+\section{OpenStack云计算平台}
+
+
+\end{document}
