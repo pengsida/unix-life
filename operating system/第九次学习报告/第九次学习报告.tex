@@ -137,13 +137,361 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{kvm高级功能 \qquad}
+\chead{第九次学习报告 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
 \tableofcontents
 
 \clearpage
+
+\section{存储配置}
+\subsection{与存储相关的参数项}
+	qemu-system-x86\_64命令行中，主要有如下的参数来配置客户机的存储：
+	\interval
+	\begin{longtable}{p{2.3cm}p{10cm}}
+	\hline
+	-hda file & 将file镜像文件作为客户机中的第一个IDE设备。 \\
+			  & 也可以将宿主机中的一个硬盘作为-hda的file参数来使用。\\
+			  & 如果文件名包含","，那么书写file时需要使用两个逗号，如“-hda my,,file” \\
+	\hline
+	-hdb file & 将file镜像文件作为客户机中的第二个IDE设备。 \\
+	\hline
+	-hdc file & 将file镜像文件作为客户机中的第三个IDE设备。 \\
+	\hline
+	-hdd file & 将file镜像文件作为客户机中的第四个IDE设备。 \\
+	\hline
+	-fda file & 将file镜像文件作为客户机中的第一个软盘设备。 \\
+	\hline
+	-fdb file & 将file镜像文件作为客户机中的第二个软盘设备。 \\
+	\hline
+	-cdrom file & 将file镜像文件作为客户机中的光盘CD-ROM。 \\
+	\hline
+	-mtdblock file & 将file镜像文件作为客户机自带的一个Flash存储器。 \\
+	\hline
+	-sd file & 将file镜像文件作为客户机中的SD卡。 \\
+	\hline
+	-pflash file & 将file镜像文件作为客户机中的并行Flash存储器。 \\
+	\hline
+	\end{longtable}
+	
+\subsection{-drive参数项}
+	qemu-system-x86\_64使用“-drive”参数来定义一个存储驱动器。对“-drive”参数项的介绍如下：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	标准格式 & -drive option[,option[,option[,...]]] \\
+	\hline
+	以下是参数选项 & \\
+	\hline
+	file=file & 使用file文件作为镜像文件加载到客户机的驱动器中。 \\
+	\hline
+	if=interface & 指定驱动器使用的接口类型。\\
+	\hline
+	bus=bus & 设置驱动器在客户机中的总线编号。\\
+	\hline
+	unit=unit & 设置驱动器在客户机中的单元编号。 \\
+	\hline
+	index=index & 设置在同一种接口的驱动器中的索引编号。 \\
+	\hline
+	media=media & 设置驱动器中媒介的类型。 \\
+	\hline
+	snapshot=on/off & 设置是否启用“-snapshot”选项。 \\
+					  & 当snapshot启用时，qemu不会把磁盘数据的更改写回到镜像文件中。\\
+					  & 可以在QEMU monitor中使用“commit”命令强制将磁盘数据的更改保存到镜像文件中。\\
+	\hline
+	cache=cache & 设置宿主机对块设备数据访问中的cache情况。\\
+		        & 参数有“none”、“writeback”和“writethrough”。\\
+				& “writethrough”，默认值，该模式下调用write写入数据的同时将数据写入磁盘缓存和后端块设备。\\
+				& “writeback”，该模式下调用write写入数据时只将数据写入到数据缓存中，只有在数据被换出缓存时才将修改的数据写到后段块设备中。\\
+				& “none”，关闭缓存。\\
+	\hline
+	aio=aio & 选择异步IO的方式。\\
+		    & 参数有“threads”和“native”。\\
+			& “threads”，让一个线程池去处理异步IO。\\
+			& “native”，只适用于“cache=none”的情况，使用linux原生的AIO。\\
+	\hline
+	format=format & 指定使用的磁盘格式。\\
+	\hline
+	serial=serial & 指定分配给设备的序列号。\\
+	\hline
+	addr=addr & 分配给驱动器控制器的PCI地址。\\
+			  & 只适用于“if=virtio”的情况。\\
+	\hline
+	id=name & 设置该驱动器的ID。\\
+	\hline
+	readonly=on/off & 设置该驱动器是否只读。\\
+	\hline
+	\end{longtable}
+	\interval
+\subsection{-boot参数项}
+	qemu-system-x86\_64使用“-boot”参数来指定各种存储设备在客户机中的启动顺序。对“-boot”参数项的介绍如下：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	标准格式如下：& \\
+	\multicolumn{2}{c}{-boot [order=drives][,once=drives][,menu=on/off][,splash=splashfile][,splash-time=sp-time]} \\
+	\hline
+	以下是参数选项 & \\
+	\hline
+	order=drives & 设置存储设备启动顺序 \\
+			     & “drives”有如下参数：\\
+			     & “a”表示第一个软驱; “b”表示第二个软驱 \\
+				& “c”表示第一个硬盘; “d”表示CD-ROM光驱 \\
+				& “n”表示从网络启动 \\
+				& 比如“order=cd”表示先启动硬盘，在启动光驱 \\ 
+	\hline
+	once=drives & 设置第一次启动的启动顺序,在系统重启后该设置无效 \\
+	\hline
+	menu=on/off & 设置交互式的启动菜单选项(需要客户机BIOS支持) \\
+	\hline
+	splash=splashfile & 只适用于“menu=on”的情况。将名为splashfile的图片作为logo传递给BIOS显示 \\
+	\hline
+	splash-time=sp-time & 只适用于“menu=on”的情况。sp-time是BIOS显示logo的时间，单位是ms \\
+	\hline
+	\end{longtable}
+
+\subsection{查看存储设备的信息}
+	在linux下，"fdisk -l"命令可以列出电脑的磁盘分区情况，如下图所示：
+	\fic{10.png}
+
+\subsection{qemu-img工具}
+	qemu-img工具是QEMU的磁盘管理工具，它的命令行基本用法如下所示：
+	\begin{lstlisting}
+	qemu-img command [command options]
+	\end{lstlisting}
+
+	它支持的命令如下所示：
+	\begin{itemize}
+		\item[1.] check [-f fmt] filename \\
+		对磁盘镜像文件进行一致性检查，查找镜像文件中的错误。\\
+		参数-f fmt用于指定文件的格式，如果没有该参数项，qemu-img将自动检测文件格式。\\
+		qemu-img支持如下所示的文件格式：
+		\sizedfic{0.8}{9.png}
+
+		\clearpage
+
+		\item[2.] create [-f fmt] [-o options] filename [size] \\
+		创建一个格式为fmt，大小为size，文件名为filename的镜像文件。\\
+		参数-o options用于对文件的各种功能进行设置。使用“-o ?”可以查询某种格式文件支持哪些选项，如下所示：
+		\sizedfic{0.9}{8.png}
+		\item[3.] commit [-f fmt] filename \\
+		将filename文件中的更改提交到后端支持镜像文件中。后端支持镜像文件可以在创建磁盘镜像文件时指定，命令如下：
+		\begin{lstlisting}
+		qemu-img -f qcow2 -o backing_file=ubuntu1604.img ubuntu1604.qcow2
+		\end{lstlisting}
+
+		\item[4.] convert [-c][-f fmt][-O output\_fmt][-o options]filename[filename2[...]]output\_filename \\
+		 将fmt格式的filename镜像文件根据options选项转换为output\_fmt格式的output\_filename镜像文件。\\
+		 参数-c表示对输出的镜像文件进行压缩。\\
+		 参数-o options用于指定各种选项，和create命令中的“-o options”参数一样。
+		 
+		\item[5.] info [-f fmt] filename \\
+		展示filename镜像文件的信息。
+		
+		\item[6.] snapshot [-l|-a snapshot|-c snapshot|-d snapshot]filename\\
+		参数“-l”用于列出镜像文件中所有的快照。\\
+		参数“-a snapshot”用于让镜像文件使用某个快照。\\
+		参数“-c snapshot”用于创建一个快照。\\
+		参数“-d snapshot”用于删除一个快照。
+
+		\item[7.] rebase [-f fmt][-t cache][-p][-u]-b backing\_file[-F backing\_file]filename \\
+		改变镜像文件的后端镜像文件，只有qcow2和qed格式支持rebase命令。\\
+		参数“-b backing\_file”用于指定文件作为镜像文件的后端镜像文件。\\
+		参数“-F backing\_fmt”用于指定后端镜像文件的格式。
+
+		\item[8.] resize filename [+|-]size \\
+		改变镜像文件的大小，“+”和“-”分别表示增加和减少镜像文件的大小。
+	\end{itemize}
+
+\clearpage
+
+\section{网络配置}
+\subsection{-net参数项}
+	qemu-kvm命令行中“-net”参数项的格式如下所示：
+	\interval
+	\begin{longtable}{p{3cm}p{10cm}}
+	\hline
+	标准格式: & \\
+	\multicolumn{2}{c}{-net nic[,vlan=n][,macaddr=mac][,model=type][,name=name][,addr=addr][,vectors=v]} \\
+	\hline
+	参数选项介绍如下: & \\
+	\hline
+	-net nic & 必要的参数，表明这是一个网卡的配置。 \\
+	\hline
+	vlan=n & 表示将网卡放入到编号为n的VLAN，默认为0。 \\
+	\hline
+	macaddr=mac & 设置网卡的MAC地址，默认根据宿主机中网卡的地址来分配。 \\
+	\hline
+	model=type & 设置模拟的网卡的类型，默认为rtl8139 \\
+	\hline
+	name=name & 设置网卡的名称 \\
+	\hline
+	addr=addr & 设置网卡在客户机中的PCI设备地址为addr \\
+	\hline
+	vectors=v & 设置该网卡设备的MSI-X向量的数量为n \\
+	\hline
+	\end{longtable}
+	\interval
+
+	如果需要向一个客户机提供多个网卡，可以多次使用“-net”参数。
+
+\subsection{查看网卡的信息}
+	linux下有以下几个命令可以查看网卡的信息：
+	\begin{lstlisting}
+	// 查看与以太网有关的PCI设备
+	lspci | grep Eth
+	// 查看网卡信息
+	ethtool -i DEVNAME
+	// 查看网络设备的信息
+	ifconfig
+	\end{lstlisting}
+
+	也可以在qemu monitor中查看网络的信息，命令如下：
+	\begin{lstlisting}
+	info network
+	\end{lstlisting}
+
+\subsection{使用网桥模式}
+	网桥模式可以让客户机和宿主机共享一个物理网络设备连接网络。
+	这样一来，客户机就有自己独立IP地址，可以直接链接与宿主机一模一样的网络。
+	客户机可以访问外部网络，外部网络也可以直接访问客户机。\\
+
+	经过以下几个步骤的配置就可以使用网桥模式：
+	\begin{itemize}
+		\item[1.] 获得brctl和tunctl命令行工具，安装命令如下所示：
+		\begin{lstlisting}
+		sudo apt-get install bridge-utils
+		sudo apt-get install uml-utilities
+		\end{lstlisting}
+
+		\item[2.] 在ubuntu中安装tun module。这个过程需要重新编译内核，自行解决吧。
+		\item[3.] 建立一个bridge，并将其绑定到一个可以正常工作的网络接口上，命令如下所示：
+		\begin{lstlisting}
+		brctl addbr br0 // 建立br0这个bridge
+		brctl addif br0 eth0 // 将br0与eth0绑定起来
+		brctl stp br0 on // 将br0设置为启用STP协议
+		\end{lstlisting}
+
+		需要注意的是，不是每台电脑的网络接口都叫eth0。我自己的电脑就不是，可以通过ifconfig查看自己的网络接口，如下图所示：
+		\sizedfic{0.9}{10.png}
+
+		\item[4.] 使用如下命令即可启用bridge模式的网络：
+		\begin{lstlisting}
+		qemu-system-x86_64 ubuntu1604.img -net nic -net tap,ifname=tap1,script=/etc/qemu-ifup,downscript=no, -vnc=127.0.0.1:2
+		\end{lstlisting}
+
+		\item[5.] 此时在虚拟机中查看虚拟网络设备，会发现多出一个叫做tap1的TAP虚拟网络设备。命令如下所示：
+		\begin{lstlisting}
+		ls /sys/devices/virtual/net/
+		\end{lstlisting}
+		
+	\end{itemize}
+
+	qemu-kvm中使用“-net tap”设置TAP设备，对它的介绍如下所示：
+	\interval
+	\begin{longtable}{p{3.5cm}p{10cm}}
+	\hline
+	标准格式如下: & \\
+	\multicolumn{2}{l}{-net tap[,vlan=n][,name=str][,fd=h][,ifname=name][,script=file][,downscript=dfile][,helper=helper]}\\
+	\multicolumn{2}{l}{[,sndbuf=nbytes][,vnet\_hdr=on/off][,vhost=on/off][,vhostfd=h][,vhostforce=on/off]} \\
+	\hline
+	功能 & 将宿主机的TAP网络接口连接到n号VLAN中，并在启动客户机时，使用file脚本配置网络，在关闭客户机时，使用dfile脚本取消网络配置。\\
+	\hline
+	参数选项介绍如下： & \\
+	\hline
+	tap & 表示使用TAP设备。 \\
+	\hline
+	vlan=n & 设置该设备VLAN编号，默认值为0。\\
+	\hline
+	name=name & 设置TAP设备的名称。\\
+	\hline
+	fd=h & 连接到现在已经打开着的TAP接口的文件描述符，一般不要设置该选项。\\
+	\hline
+	ifname=name & 设置在宿主机中添加的TAP虚拟设备的名称。\\
+	\hline
+	script=file & 指定启动客户机时自动执行的网络配置脚本。\\
+	\hline
+	downscript=dfile & 指定在关闭客户机时自动执行的网络配置脚本。\\
+	\hline
+	helper=helper & 指定启动客户机时在宿主机中运行的辅助程序。\\
+	\hline
+	sndbuf=nbytes & 限制TAP设备的发送缓冲区的大小为n字节。 \\
+	\hline
+	\end{longtable}
+
+\subsection{使用NAT模式}
+	NAT属于广域网接入技术的一种，它将内网地址转化为外网的合法IP地址。NAT将 来自内网IP数据包的包头中的源IP地址转换为一个外网的IP地址。\par
+	通过以下几个步骤可以以NAT方式配置客户机的网络：
+	\begin{itemize}
+		\item[1.] 安装nf\_nat和iptable\_nat模块。这个需要编译内核，自行解决。
+		\item[2.] 安装必要的软件包，相关命令如下所示：
+		\begin{lstlisting}
+		sudo apt-get install bridge-utils
+		sudo apt-get install iptables
+		sudo apt-get install dnsmasq
+		\end{lstlisting}
+
+		\item[3.] 编写一个为客户机建立NAT用的/etc/qemu-ifup-NAT脚本以及关闭网络用的/etc/qemu-ifdown-NAT脚本。这个需要计算机网络的知识，请自行学习。
+		\item[4.] 使用如下命令行启动客户机：
+		\begin{lstlisting}
+		qemu-system-x86_64 ubuntu1604.img -net nic -net tap,script=/etc/qemu-ifup-NAT,downscript=/etc/qemu-ifdown-NAT
+		\end{lstlisting}
+
+		\item[5.] 添加iptables规则进行端口映射，让外网主机也能访问客户机。在iptables的规则进行端口映射，使外部主机对宿主机IP的一个端口的请求转发到客户机中的某一个端口，
+		命令如下所示：
+		\begin{lstlisting}
+		iptables -t nat -A PREROUTING -p tcp -d 192.168.82.0 --dport 80 -j DNAT --to 192.168.122.140:80
+		iptables -t nat -L
+		\end{lstlisting}
+
+		这行命令实现了，在外部网络上测试连接宿主机的80端口，就会被映射到客户机中的80端口。
+
+	\end{itemize}
+
+\subsection{使用用户模式}
+	如果没有提供“-net”参数时，qemu-kvm默认使用“-net nic -net user”参数，提供了一种用户模式的网络模拟。\par
+	下面介绍与用户模式有关的命令行参数：
+	\interval
+	\begin{longtable}{p{3.5cm}p{10cm}}
+	\hline
+	标准格式： & \\
+	\multicolumn{2}{l}{-net user[,option][,option][,...]} \\
+	\hline
+	参数选项介绍如下： & \\
+	\hline
+	vlan=n & 将用户模式网络栈连接到编号为n的VLAN中 \\
+	\hline
+	name=name & 设置网卡的名字 \\
+	\hline
+	net=addr & 设置客户机的IP地址 \\
+	\hline
+	host=addr & 指定宿主机的IP地址 \\
+	\hline
+	restrict=y/n & 设置客户机是否被隔离 \\
+	\hline
+	hostname=name & 设置在宿主机DHCP服务器中保存的客户机主机名 \\
+	\hline
+	dhcpstart=addr & 设置能够分配给客户机的第一个IP \\
+	\hline
+	dns=addr & 指定虚拟DNS的地址 \\
+	\hline
+	tftp=dir & 激活QEMU内嵌的TFTP服务器 \\
+	\hline
+	\multicolumn{2}{l}{hostfwd=[tcp|udp]:[hostaddr]:hostport -[guestaddr]:guestaddr} \\
+	\multicolumn{2}{l}{将访问宿主机的hostport端口的TCP/UDP连接重定向到客户机的guestport端口上} \\
+	\hline
+	\multicolumn{2}{l}{guestfwd=[tcp]:server:port-dev} \\
+	\multicolumn{2}{l}{将访问客户机IP地址为server的port端口的连接转发到宿主机的dev这个字符设备上} \\
+	\hline
+	bootfile=file & 让file文件成为客户机可以使用的BOOTP启动镜像文件 \\
+	\hline
+	\end{longtable}
+
+\subsection{本部分学习内容总结}
+	网络配置这部分涉及到了比较多的网络知识。但是由于我还没有学习过计算机网络，所以很多内容都是囫囵吞枣。
+	希望自己以后学习了计算机网络，能对这部分内容有更深的理解。
+
 
 \section{半虚拟化驱动}
 \subsection{QEMU模拟I/O设备的基本原理}

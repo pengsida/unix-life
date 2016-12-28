@@ -242,12 +242,892 @@
 		\fic{2.png}
 	\end{itemize}
 
+\subsection{libvirt和libvirtd的配置}
+\subsubsection{libvirt的配置文件}
+	libvirt的相关配置文件都在/etc/libvirt/目录下，如下图所示：
+	\fic{3.png}
+
+	下面介绍其中几个重要的配置文件和目录：
+	\begin{itemize}
+		\item[1.] /etc/libvirt/libvirt.conf。这个文件用于配置一些常用的libvirt连接的别名，文件内容可以如下所示：
+		\begin{lstlisting}
+	uri_aliases = [
+		"remote = qemu+ssh://root@192.168.93.201/system",
+	]
+		\end{lstlisting}
+
+		文件中，将“remote”这个别名用于指代“qemu+ssh://root@192.168.93.201/system”这个libvirt连接。
+
+		\item[2.] /etc/libvirt/libvirtd.conf。这个文件是libvirt的守护进程libvirtd的配置文件。
+		文件中使用“配置项 = 值”这样的配对格式来配置libvirtd。\par
+		例如，下面的几个配置项表示关闭TLS安全认证的连接、打开TCP连接、设置TCP监听的端口、TCP连接不使用认证授权方式以及设置UNIX domain socket的保存目录。如下所示：
+		\begin{lstlisting}
+	listen_tls = 0
+	listen_tcp = 1
+	tcp_port = "16666"
+	auth_tcp = "none"
+	unix_socket_dir = "/var/run/libvirt"
+		\end{lstlisting}
+
+		需要注意的是，这个文件被修改后，需要让libvirtd重新加载配置文件才会生效。
+		如果想要让TCP、TLS等连接生效，需要在启动libvirtd时加上“--listen”参数，命令如下所示：
+		\begin{lstlisting}
+	libvirtd --listen
+		\end{lstlisting}
+
+		\item[3.] /etc/libvirt/qemu.conf。这个文件是QEMU驱动的配置文件。
+		\item[4.] /etc/libvirt/qemu/目录。在这个目录下存放着使用QEMU驱动的域的配置文件。
+	\end{itemize}
+
+\subsubsection{libvirtd的配置}
+	下面介绍以下几个 libvirtd命令行的参数：
+	\interval
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	-d & 表示让libvirtd作为守护进程在后台运行。 \\
+	\hline
+	-f FILE & 指定libvirtd的配置文件为FILE。默认值为/etc/libvirt/libvirtd.conf\\
+	\hline
+	-l & 开启配置文件中配置的TCP/IP连接。 \\
+	\hline
+	-p FILE & 将libvirtd进程的PID写入到FILE文件中。默认值为/var/run/libvirt.pid \\ 
+	\hline
+	-t SECONDS & 设置对libvirtd连接的超时时间为SECONDS秒。 \\
+	\hline
+	-v & libvirtd运行时输出详细的输出信息。 \\
+	\hline
+	--version & 显示libvirtd程序的版本信息。 \\
+	\hline
+	\end{longtable}
+
+\subsection{libvirt域的XML配置文件}
+\subsubsection{CPU的配置}
+	XML配置文件中使用vcpu标签表示客户机中vCPU的个数，使用features标签表示为客户机打开或关闭CPU或其他硬件的特性。
+	具体例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain>
+		<!-- 设置客户机中vCPU的个数为2 -->
+		<vcpu placement='static'>2</vcpu>
+		<!-- 打开客户机的ACPI、APIC和PAE特性 -->
+		<features>
+			<acpi/>
+			<apic/>
+			<pae/>
+		</features>
+	</domain>
+	\end{lstlisting}
+
+	libvirt还提供了cputune标签来对CPU分配进行更多调节，具体例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain>
+		<cputune>
+			<vcpupin vcpu="0" cpuset="1"/>
+			<vcpupin vcpu="1" cpuset="2,3"/>
+			<vcpupin vcpu="2" cpuset="4"/>
+			<vcpupin vcpu="3" cpuset="5"/>
+			<emulatorpin cpuset="1-3">
+			<iothreadpin iothread="1" cpuset="5,6"/>
+			<iothreadpin iothread="2" cpuset="7,8"/>
+			<shares>2048</shares>
+			<period>1000000</period>
+			<quota>-1<quota>
+			<emulator_period>1000000</emulator_period>
+			<emulator_quota>-1</emulator_quota>
+			<iothread_period>1000000</iothread_period>
+			<iothread_quota>-1<iothread_quota>
+			<vcpushed vcpus='0-4,^3' scheduler='fifo' priority='1'/>
+			<iothreadsched iothreads='2' scheduler='batch'/>
+		</cputune>
+	</domain>
+	\end{lstlisting}
+
+	在此介绍以上例子中的标签：
+	\interval
+	\begin{longtable}{p{2.5cm}p{11cm}}
+	\hline
+	cputune & 在这个标签中可以设置cpu的参数 \\
+	\hline
+	vcpupin & 该标签表示了vCPU应该放置到宿主机哪个CPU上 \\
+	\hline
+	emulatorpin & 该标签表示了qemu emulator应该绑定到哪个宿主机CPU上 \\
+	\hline
+	iothreadpin & 该标签表示了IOThreads应该绑定到哪个宿主机CPU上 \\
+	\hline
+	shares & 该标签表示了客户机占用CPU时间的加权配额 \\
+	\hline
+	period & 该标签表示了vCPU的执行周期，在这个时间段内，vCPU不允许执行超过quota的时间。这个值的范围是[1000, 1000000] \\
+	\hline
+	quota & 该标签表示了vCPU的最大允许执行时间。如果quota为负，说明vCPU可以执行无限长的时间。\\
+	\hline
+	emulator\_period & 该标签表示了emulator的执行周期。在这个时间段内，emulator不能执行超过emulator\_quota的时间。 \\
+	\hline
+	emulator\_quota & 该标签表示了emulator的最大允许执行时间。如果emulator\_quota为负，说明emulator可以执行无限长的时间。\\
+	\hline
+	iothread\_period & 该标签表示了IOThreads的执行周期。在这个时间段内，IOThreads不能执行超过iothread\_quota的时间。 \\
+	\hline
+	iothread\_quota & 该标签表示了IOThreads的最大允许执行时间。如果iothread\_quota为负，说明IOThreads可以执行无限长的时间。\\
+	\hline
+	vcpushed & 该标签表示了vcpu调度算法的类型 \\
+	\hline
+	iothreadsched & 该标签表示了IOThread调度算法的类型 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{内存的配置}
+	内存配置的例子如下所示：
+	\begin{lstlisting}
+	<domain>
+		<maxMemory slots='16'></maxMemory>
+		<memory unit='KiB'>524288</memory>
+		<currentMemory unit='KiB'>524288</currentMemory>
+	</domain>
+	\end{lstlisting}
+
+	在此介绍以上例子中的标签：
+	\interval
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	memory & 该标签表示客户机启动时最大可使用的内存 \\
+	\hline
+	maxMemory & 该标签表示客户机运行时最大可使用的内存 \\
+	\hline
+	currentMemory & 该标签表示客户机实际被分配的内存 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{客户机启动的配置}
+	首先看配置的例子：
+	\begin{lstlisting}[language = XML]
+	<os>
+		<type>hvm</type>
+		<loader readonly='yes' secure='no' type='rom'>/usr/lib/xen/boot/hvmloader</loader>
+		<nvram template='/usr/share/OVMF/OVMF_VARS.fd'>/var/lib/libvirt/nvram/guest_VARS.fd</nvram>
+		<boot dev='hd'/> <boot dev='cdrom'/>
+		<bootmenu enable='yes' timeout='3000'/>
+		<smbios mode='sysinfo'/>
+		<bios useserial='yes' rebootTimeout='0'/>
+	</os>
+	\end{lstlisting}
+
+	在此介绍以上例子中中的标签：
+	\interval
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	type & 在虚拟机中启动的操作系统类型 \\
+	\hline
+	loader & 该标签指定了固件用于协助启动客户机 \\
+	\hline
+	nvram & 该标签指定了一个文件，用于存放客户机中不可修改的变量 \\
+	\hline
+	boot & 该标签指定了下一个要启动的设备 \\
+	\hline
+	smbios & 该标签指定了客户机SMBIOS信息可见的方式，有‘emulate’、‘host’、‘sysinfo’三种方式 \\
+	\hline
+	bootmenu & 该标签决定了是否在客户机启动时有启动菜单 \\
+	\hline
+	bios & useserial属性决定了用户能否在串口看到BIOS信息，rebootTimeout属性决定了启动过程中客户机多久后重新启动 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{网络的配置}
+	libvirt中支持以下四种网络配置方式：
+	\begin{itemize}
+		\item[1.] 桥接方式的网络配置
+		\item[2.] NAT方式的虚拟网络配置
+		\item[3.] 用户模式网络的配置
+		\item[4.] 网卡设备直接分配
+	\end{itemize}
+
+	使用桥接方式的网络的配置如下所示：
+	\begin{lstlisting}[language = XML]
+	<devices>
+		<interface type='bridge'>
+			<mac address='52:54:00:e9:e0:3b'/>
+			<source bridge='br0'>
+			<model type='virtio'>
+			<address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+		</interface>
+	</devices>
+	\end{lstlisting}
+
+	在此介绍以上例子中使用的标签：
+	\interval
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	interface & 属性type='bridge'表示使用桥接方式使客户机获得网络 \\
+	\hline
+	max & 属性address用于配置客户机网卡的MAC地址 \\
+	\hline
+	source & 属性bridge='br0'表示使用宿主机中的br0来建立网桥 \\
+	\hline
+	model & 属性type='virtio'表示在客户机中使用virtio-net驱动的网卡设备 \\
+	\hline
+	address & 属性pci用于配置该网卡在客户机中的PCI设备编号为0000:00:03.0 \\
+	\hline
+	\end{longtable}
+
+	使用NAT进行虚拟网络的配置的例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<devices>
+		<interface type='network'>
+			<mac address='52:54:00:32:7d:f6'/>
+			<source network='default'/>
+			<address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+		</interface>
+	</devices>
+	\end{lstlisting}
+
+	这里<interface type='network'>和<source network='default'/>表示使用NAT的方式。使用NAT必须保证宿主机中运行着DHCP和DNS服务器。\par
+
+	使用用户模式的网络配置如下所示：
+	\begin{lstlisting}[language = XML]
+	<devices>
+		<interface type='user'>
+			<mac address="00:11:22:33:44:55"/>
+		</interface>
+	</devices>
+	\end{lstlisting}
+
+	这里<interface type='user'>表示该客户机的网络接口是用户模式网络，是完全有qemu-kvm软件模拟的一个网络协议栈。\par
+
+	使用网卡设备直接分配的网络配置的例子如下：
+	\begin{lstlisting}[language = XML]
+	<devices>
+		<interface type='hostdev'>
+			<source>
+				<address type='pci' domain='0x0000' bus='0x08' slot='0x10' function='0x0'/>
+			</source>
+			<mac address='52:54:00:6d:90:02'/>
+		</interface>
+	</devices>
+	\end{lstlisting}
+
+	这里<interface type='hostdev'>指定将网卡设备直接分配给客户机使用。以下代码直接将宿主机中的PCI 0000:08:00.0设备直接分配给客户机使用：
+	\begin{lstlisting}
+	<source>
+		<address type='pci' domain='0x0000' bus='0x08' slot='0x10' function='0x0'/>
+	</source>
+	\end{lstlisting}
+
+\subsubsection{存储的配置}
+	首先来看一个关于客户机磁盘的配置例子：
+	\begin{lstlisting}[language = XML]
+	<devices>
+		<disk type='file' device='disk'>
+			<driver name='qemu' type='raw' cache='none'/>
+			<source file='/var/lib/libvirt/images/ubuntu1604.img'/>
+			<target dev='vda' bus='virtio'/>
+			<address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+		</disk>
+	</devices>
+	\end{lstlisting}
+
+	在此介绍上面例子中的标签：
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline
+	disk & 客户机磁盘配置的主标签，属性type表示磁盘使用哪种类型作为磁盘的来源，属性device表示让客户机如何使用该磁盘设备 \\
+	\hline
+	driver & 用于定义Hypervisor如何为该磁盘提供驱动，属性name制定了宿主机中使用的后端驱动名称，属性type指定了镜像文件的格式，属性cache表示在宿主机中打开该磁盘时使用的缓存方式 \\
+	\hline
+	source & 属性file指定了磁盘的来源 \\
+	\hline
+	target & 表示将磁盘暴露给客户时的总线类型和设备名称，属性dev制定了客户机中该磁盘设备的逻辑设备名称，属性bus指定了该磁盘设备被模拟挂载的总线类型 \\
+	\hline
+	address & 表示该磁盘设备在客户机中的PCI地址
+	\end{longtable}
+
+\subsubsection{其他配置简介}
+	使用domain标签配置域，如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain type='kvm'>
+		<!-- ... -->
+	</domain>
+	\end{lstlisting}
+
+	domain标签中有两个属性：
+	\interval
+	\begin{longtable}{p{1.5cm}p{10cm}}
+	\hline
+	type & 用于表示Hypervisor的类型，可选值有xen、kvm、qemu、lxc、kqemu和vmware \\
+	\hline
+	id & 用于标识在libvirt中运行的客户机，如果不设置id属性，libvirt会按顺序分配一个最小可用的ID \\
+	\hline
+	\end{longtable}
+
+	还可以配置域的元数据，例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain type='xen' id='3'>
+		<name>fv0</name>
+		<uuid>4dea22b31d52d8f32516782e98ab3fa0</uuid>
+		<title>A short description - title - of the domain</title>
+		<description>Some human readable description</description>
+		<metadata>
+			<app1:foo xmlns:app1="http://app1.org/app1/">..</app1:foo>
+			<app2:bar xmlns:app2="http://app1.org/app2/">..</app2:bar>
+		</metadata>
+	</domain>
+	\end{lstlisting}
+
+	以上例子的标签介绍如下：
+	\interval
+	\begin{longtable}{p{1.5cm}p{10cm}}
+	\hline
+	name & 为客户机提供了名字 \\
+	\hline
+	uuid & 为客户机提供了uuid \\
+	\hline
+	title & 为域提供了简短的描述，不可以包换换行符 \\
+	\hline
+	description & 为客户机提供了描述 \\
+	\hline
+	metadata & 可以被应用程序用来存放自定义的元数据 \\
+	\hline
+	\end{longtable}
+
+	可以使用emulator标签指定QEMU模拟器的绝对路径，如下所示：
+	\begin{lstlisting}[language = XML]
+	<device>
+		<emulator>/usr/libexec/qemu-kvm</emulator>
+	</devices>
+	\end{lstlisting}
+
+	可以使用controller标签来配置PCI控制器，相关例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain>
+		<controller type='usb' index='0'>
+			<address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
+		</controller>
+		<controller type='usb' index='0'>
+			<address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
+		</controller>
+	</domain>
+	\end{lstlisting}
+
+	在这个例子里指定了一个USB控制器和一个IDE控制器。
+
+\clearpage
+
 \section{virsh}
-\section{virt-manager}
-\section{其他管理工具}
-\subsection{virt-viewer}
-\subsection{virt-install}
-\subsection{virt-top}
+	virsh是完全在命令行文本模式下运行的用户态工具，用于管理虚拟化环境中的客户机和Hypervisor。
+
+\subsection{virsh常用命令}
+	在linux系统中可以通过“man virsh”命令查看virsh的帮助文档。以下介绍一些virsh的常用命令。
+
+\subsubsection{域管理的命令}
+	下面是域管理中常用的virsh命令：
+	\begin{longtable}{p{6cm}p{7cm}}
+	\hline
+	list & 获取当前节点上所有域的列表 \\
+	\hline
+	domstate<ID or NAME or UUID> & 获取一个域的运行状态 \\
+	\hline
+	dominfo<ID> & 获取一个域的基本信息 \\
+	\hline
+	domid<NAME or UUID> & 根据域的名称或UUID返回域的ID值 \\
+	\hline
+	domname<ID or UUID> & 根据域的ID或UUID返回域的名称 \\
+	\hline
+	dommemstat<ID> & 获取一个域的内存使用情况的统计信息 \\
+	\hline
+	setmem<ID><mem-size> & 设置一个域的内存大小 \\
+	\hline
+	vcpuinfo<ID> & 获取一个域的vCPU的基本信息 \\
+	\hline
+	vcpupin<ID><vCPU><pCPU> & 将一个域的vCPU绑定到某一个物理CPU上运行 \\
+	\hline
+	setvcpus<ID><vCPU-num> & 设置一个域的vCPU个数 \\
+	\hline
+	vncdisplay<ID> & 获取一个域的VNC连接IP地址和端口 \\
+	\hline
+	create<dom.xml> & 根据域的XML配置文件创建一个域 \\
+	\hline
+	suspend<ID> & 暂停一个域 \\
+	\hline
+	resume<ID> & 唤醒一个域 \\
+	\hline
+	shutdown<ID> & 让一个域执行关机操作 \\
+	\hline
+	reboot<ID> & 让一个域重启 \\
+	\hline
+	reset<ID> & 强制重启一个域，相当于按电源“reset”按钮 \\
+	\hline
+	destroy<ID> & 立即删除一个域 \\
+	\hline
+	save<ID><file.img> & 保存一个运行中的域的状态到一个文件中 \\
+	\hline
+	restore<ID><file.img> & 从一个被保存的文件中恢复一个域的运行 \\
+	\hline
+	migrate<ID><dest\_url> & 将一个域迁移到另外一个目的地址 \\
+	\hline
+	dumpxml<ID> & 以XML格式转存出一个域的信息到标准输出中 \\
+	\hline
+	attach-device<ID><device.xml> & 向一个域添加XML文件中的设备 \\
+	\hline
+	detach-device<ID><device.xml> & 将XML文件中的设备从一个域中移除 \\
+	\hline
+	console<ID> & 连接到一个域的控制台 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{宿主机和Hypervisor的管理命令}
+	下面是宿主机和Hypervisor管理中常用的virsh命令：
+	\begin{longtable}{p{6cm}p{7cm}}
+	\hline
+	version & 显示libvirt和Hypervisor的版本信息 \\
+	\hline
+	sysinfo & 以XML格式打印宿主机系统的信息 \\
+	\hline
+	nodeinfo & 显示该节点的基本信息 \\
+	\hline
+	uri & 显示当前连接的URI \\
+	\hline
+	hostname & 显示当前节点的主机名 \\
+	\hline
+	capabilities & 显示该节点宿主机和客户机的架构和特性 \\
+	\hline
+	freecell & 显示当前MUMA单元的可用空闲内存 \\
+	\hline
+	nodememstats<cell> & 显示该节点的内存单元使用情况的统计 \\
+	\hline
+	connect<URI> & 连接到URI指示的Hypervisor \\
+	\hline
+	nodecpustats<cpu-num> & 显示该节点的某个CPU使用情况 \\
+	\hline
+	qemu-attach<pid> & 根据PID添加一个QEMU进程libvirt中 \\
+	\hline
+	qemu-monitor-command  & 向域的QEMU monitor发送一个命令 \\
+	domain [--hmp] command & \\
+	\hline
+	\end{longtable}
+
+\subsubsection{网络的管理命令}
+	下面是网络管理中常用的virsh命令：
+	\begin{longtable}{p{6cm}p{7cm}}
+	\hline
+	iface-list & 显示出物理主机的网络接口列表 \\
+	\hline
+	iface-mac<if-name> & 根据网络接口名称查询其对应的MAC地址 \\
+	\hline
+	iface-name<MAC> & 根据MAC地址查询其对应的网络接口名称 \\
+	\hline
+	iface-edit<if-name-or-uuid> & 编辑一个物理主机的网络接口的XML配置文件 \\
+	\hline
+	iface-dumpxml<if-name-or-uuid> & 以XML格式转存出一个网络接口的状态信息 \\
+	\hline
+	iface-destroy<if-name-or-uuid> & 关闭宿主机上一个物理网络接口 \\
+	\hline
+	net-list & 列出libvirt管理的虚拟网络 \\
+	\hline
+	net-info<net-name-or-uuid> & 根据名称查询一个虚拟网络的基本信息 \\
+	\hline
+	net-uuid<net-name> & 根据名称查询一个虚拟网络的UUID \\
+	\hline
+	net-name<net-UUID> & 根据UUID查询一个虚拟网络的名称 \\
+	\hline
+	net-create<net.xml> & 根据一个网络XML配置文件创建一个虚拟网络 \\
+	\hline
+	net-edit<net-name-or-uuid> & 编辑一个虚拟网络的XML配置文件 \\
+	\hline
+	net-dumpxml<net-name-or-uuid> & 转存出一个虚拟网络的XML格式的配置信息 \\
+	\hline
+	net-destroy<net-name-or-uuid> & 销毁一个虚拟网络 \\
+	\hline 
+	\end{longtable}
+
+\subsubsection{存储池和存储卷的管理命令}
+	下面是存储池和存储卷管理中常用的virsh命令：
+	\begin{longtable}{p{6cm}p{7cm}}
+	\hline
+	pool-list & 显示出libvirt管理的存储池 \\
+	\hline
+	pool-info<pool-name> & 根据一个存储池名称查询其基本信息 \\
+	\hline
+	pool-uuid<pool-name> & 根据存储池名称查询其UUID \\
+	\hline
+	pool-create<pool.xml> & 根据XML配置文件来创建一个存储池 \\
+	\hline
+	pool-edit<pool-name-or-uuid> & 编辑一个存储池的XML配置文件 \\
+	\hline
+	pool-destroy<pool-name-or-uuid> & 关闭一个存储池 \\
+	\hline
+	pool-delete<pool-name-or-uuid> & 删除一个存储池 \\
+	\hline
+	vol-list<pool-name-or-uuid> & 查询一个存储池中存储卷的列表 \\
+	\hline
+	vol-name<vol-key-or-path> & 查询一个存储卷的名称 \\
+	\hline
+	vol-path --pool <pool><vol-name-or-key> & 查询一个存储卷的路径 \\
+	\hline
+	vol-create<vol.xml> & 根据XML配置文件来创建一个存储卷 \\
+	\hline
+	vol-clone<vol-name-path><name> & 克隆一个存储卷 \\
+	\hline
+	vol-delete<vol-name-or-key-or-path> & 删除一个存储卷 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{其他常用命令}
+	以下是virsh其他方面的常用命令：
+	\begin{longtable}{p{5cm}p{7cm}}
+	\hline
+	help & 显示出virsh的命令帮助文档 \\
+	\hline
+	pwd & 打印出当前的工作目录 \\
+	\hline
+	cd<your-dir> & 改变当前工作目录 \\
+	\hline
+	quit & 退出virsh \\
+	\hline
+	exit & 退出virsh \\
+	\hline
+	\end{longtable}
+
+\clearpage
+
+\section{创建一个虚拟机}
+\subsection{制作虚拟机镜像}
+	命令如下所示：
+	\begin{lstlisting}[language = bash]
+	qemu-img create -f qcow2 Ubuntu.qcow2 10G
+	\end{lstlisting}
+
+\subsection{编写客户机配置文件}
+	根据第一节中的内容，可以编写libvirt域的配置文件，例子如下所示：
+	\begin{lstlisting}[language = XML]
+	<domain type='kvm'>
+		<name>Ubuntu</name>
+		<memory>1048576</memory>
+		<currentMemory>1048576</currentMemory>
+		<vcpu>4<vcpu>
+		<os>
+			<type arch='x86_64' machine='pc'>hvm</type>
+			<boot dev='cdrom'>
+		</os>
+		<features>
+			<acpi/>
+			<apic/>
+			<pae/>
+		</features>
+		<clock offset='localtime'>
+		<on_poweroff>destroy</on_poweroff>
+		<on_reboot>restart</on_reboot>
+		<on_crash>destroy</on_crash>
+		<devices>
+			<emulator>/usr/local/bin/qemu-system-x86_64</emulator>
+			<disk type='file' device='disk'>
+				<driver name='qemu' type='qcow2'/>
+				<source file='/home/pengsida/下载/Ubuntu.qcow2'/>
+				<target dev='hda' bus='ide'/>
+			</disk>
+			<disk type='file' device='cdrom'>
+				<source file='/home/pengsida/下载/ubuntu.iso'/>
+				<target dev='hdb' bus='ide'/>
+			</disk>
+			<input type='mouse' bus='ps2'/>
+			<graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0' keymap='en-us'/>
+		</devices>
+	</domain>
+	\end{lstlisting}
+
+\subsection{创建虚拟机}
+	首先需要保证libvirtd守护进程是启动的，否则会报错。启动libvirtd守护进程的命令如下：
+	\begin{lstlisting}[language = bash]
+	libvirtd
+	\end{lstlisting}
+
+	然后使用如下命令创建一个虚拟机：
+	\begin{lstlisting}[language = bash]
+	# demo.xml是刚才创建的XML配置文件的文件名
+	sudo virsh create demo.xml
+	\end{lstlisting}
+
+	使用以下命令可以通过vncviewer查看虚拟机：
+	\begin{lstlisting}[language = bash]
+	# Ubuntu是刚刚创建的域的名字
+	sudo virsh vncdisplay Ubuntu
+	\end{lstlisting}
+
+	如下图所示：
+	\sizedfic{0.5}{4.png}
+
+	注意到terminal输出“:1”，可以根据这个参数查看虚拟机，命令如下所示：
+	\begin{lstlisting}[language = bash]
+	vncviewer :1
+	\end{lstlisting}
+
+	安装成功后，可以看到如下界面：
+	\fic{5.png}
+	
+\clearpage
+
+\section{建立到Hypervisor的连接}
+	要使用libvirt API进行虚拟化管理，就必须先建立到Hypervisor的连接。\par
+	在使用virsh工具时，可以使用“-c”参数来指定建立到某个URI上的连接，相关命令如下所示：
+	\begin{lstlisting}[language = bash]
+	sudo virsh -c URI
+	# 如，virsh -c qemu:///system
+	# 又如，virsh -c qemu+ssh://root@192.168.158.31/system
+	\end{lstlisting}
+
+\subsection{使用本地URI连接Hypervisor}
+	使用本地URI可以连接本系统范围内的Hypervisor，本地URI的一般格式如下：
+	\begin{lstlisting}
+	driver[+transport]:///[path][?extral-param]
+	\end{lstlisting}
+
+	对其中的元素解释如下：
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	driver & 连接Hypervisor的驱动名称 \\
+	\hline
+	transport & 选择该连接所使用的传输方式 \\
+	\hline
+	path & 连接到服务器端上的某个路径 \\
+	\hline
+	?extral-param & 用于添加一些额外的参数 \\
+	\hline
+	\end{longtable}
+
+	本地连接KVM的URI的例子如下：
+	\begin{lstlisting}[language = bash]
+	# 连接到本地的session实例，该连接仅能管理当前用户虚拟化资源
+	qemu:///session
+
+	# 以Unix domain socket的方式连接到本地的session实例，该连接仅能管理当前用户的虚拟化资源
+	qemu+unix:///session
+
+	# 连接到本地的system实例，该连接可以管理当前节点的所有虚拟化资源
+	qemu:///system
+
+	# 以Unix domain socket的方式连接到本地的system实例，该连接可以管理当前节点的所有虚拟化资源
+	qemu:///system
+	\end{lstlisting}
+
+\subsection{使用远程URI连接Hypervisor}
+	使用远程URI可以连接到网络上的Hypervisor，远程URI的例子如下：
+	\begin{lstlisting}[language = bash]
+	driver[+transport]://[user@][host][:port]/[path][?extral-param]
+	\end{lstlisting}
+
+	对其中的元素解释如下：
+	\begin{longtable}{p{2.5cm}p{10cm}}
+	\hline
+	driver & 连接Hypervisor的驱动名称 \\
+	\hline
+	transport & 选择该连接所使用的传输方式，取值可以是ssh、tcp和libssh2 \\
+	\hline
+	user & 远程主机使用的用户名 \\
+	\hline
+	host & 远程主机的主机名或IP地址 \\
+	\hline
+	port & 连接远程主机的端口 \\
+	\hline
+	path & 连接到服务器端上的某个路径 \\
+	\hline
+	?extral-param & 用于添加一些额外的参数 \\
+	\hline
+	\end{longtable}
+
+	远程连接KVM的URI的例子如下：
+	\begin{lstlisting}[language = bash]
+	# 通过ssh通道连接到远程节点的system实例，以最大权限管理远程节点上的虚拟化资源
+	qemu+ssh://root@example.com/system
+
+	# 通过ssh通道连接到远程节点的使用user用户的session实例，仅能对user用户的虚拟化资源进行管理
+	qemu+ssh://user@example.com/session
+
+	# 通过加密的TLS连接到远程节点的system实例，以最大权限管理远程节点上的虚拟化资源
+	qemu://example.com/system
+
+	# 通过加密的TCP连接到远程节点的system实例，以最大权限管理远程节点上的虚拟化资源
+	qemu+tcp://example.com/system
+	\end{lstlisting}
+
+\subsection{连接到Hypervisor的例子}
+	需要注意的是，如果要连接到某个节点上的Hypervisor，需要保证那个节点上的libvirtd守护进程正在执行，否则会报错。\par
+	连接到当地Hypervisor的例子如下图所示：
+	\sizedfic{0.7}{6.png}
+
+
+\clearpage
+
+\section{libvirt API}
+\subsection{libvirt API的简介}
+	libvirt API可以分为8个部分，接下来在每小节列出常用的API函数。
+\subsubsection{连接Hypervisor的API}
+		连接Hypervisor相关的API。有以下函数：
+		\begin{longtable}{p{3.8cm}p{10.5cm}}
+		\hline
+		virConnectOpen & 建立一个连接，返回值是一个virConnectPtr对象，该对象代表到Hypervisor的一个连接 \\
+		\hline
+		virConnectOpenReadOnly & 建立一个只读的连接 \\
+		\hline
+		virConnectGetCapabilities & 返回对Hypervisor和驱动的功能的描述的XML格式的字符串 \\
+		\hline
+		virConnectListDomains & 返回一列域标识符，它们代表该Hypervisor上的活动域 \\
+		\hline 
+		\end{longtable}
+
+		% \clearpage
+
+\subsubsection{域管理的API}
+
+		域管理的API。有如下函数：
+		\begin{longtable}{p{15cm}}
+		\hline
+		根据域的id值到conn这个连接上去查找相应的域: virDomainPtrvirDomainLookupByID \\
+		\hline
+		根据域的名字去查找相应的域: virDomainLookupByName \\
+		\hline
+		根据域的UUID去查找相应的域: virDomainLookupByUUID  \\
+		\hline
+		查询域的信息: virDomainGetHostname virDomainGetInfo virDomainGetVcpus virDomainGetVcpusFlags virDomainGetCPUStats \\
+		\hline
+		控制域的生命周期: virDomainCreate virDomainSuspend virDomainResume virDomainDestroy virDomainMigrate \\
+		\hline 
+		\end{longtable}
+
+\subsubsection{节点管理的API}
+		节点管理的API。有如下函数：
+		\begin{longtable}{p{13cm}}
+		\hline
+		virNodeGetInfo: 获取节点的物理硬件信息 \\
+		\hline
+		virNodeGetCPUStats: 获取节点上各个CPU的使用统计信息 \\
+		\hline
+		virNodeGetFreeMemory: 获取节点上可用的空闲内存大小 \\
+		\hline
+		virNodeSetMemoryParameters: 设置节点上的内存调度的参数 \\
+		\hline
+		virNodeSuspendForDuration: 让节点暂停运行一段时间 \\
+		\hline
+		\end{longtable}
+
+\subsubsection{网络管理的API}
+		网络管理的API。有如下函数：
+		\begin{longtable}{p{13cm}}
+		\hline
+		virNetworkGetName: 获取网络的名称 \\
+		\hline
+		virNetworkGetBridgeName: 获取该网络中网桥的名称 \\
+		\hline
+		virNetworkGetUUID: 获取网络的UUID标识 \\
+		\hline
+		virNetworkGetXMLDesc: 获取网络的以XML格式的描述信息 \\
+		\hline
+		virNetworkIsActive: 查询网络是否正在使用 \\
+		\hline
+		virNetworkCreateXML: 根据提供的XML格式的字符串创建一个网络 \\
+		\hline
+		virNetworkDestroy: 销毁一个网络 \\
+		\hline
+		virNetworkFree: 回收一个网络 \\
+		\hline
+		virNetworkUpdate: 根据XML格式的网络配置来更新一个已存在的网络 \\
+		\hline
+		virInterfaceCreate: 创建一个网络接口 \\
+		\hline
+		virInterfaceFree: 释放一个网络接口 \\
+		\hline
+		virInterfaceDestroy: 销毁一个网络接口 \\
+		\hline
+		virInterfaceGetName: 获取网络接口的名称 \\
+		\hline
+		virInterfaceIsActive: 查询网络接口是否正在运行 \\
+		\hline
+		\end{longtable}
+
+\subsubsection{存储卷管理的API}
+
+		存储卷管理的API。有如下函数：
+		\begin{longtable}{p{13cm}}
+		\hline
+		virStorageVolLookupByKey: 根据全局唯一的键值来获得一个存储卷的对象 \\
+		\hline
+		virStorageVolLookupByName: 根据名称来获得一个存储卷的对象 \\
+		\hline
+		virStorageVolLookupByPath: 根据节点上的路径来获取一个存储卷的对象 \\
+		\hline
+		virStorageVolGetInfo: 查询某个存储卷的使用情况 \\
+		\hline
+		virStorageVolGetPath: 获取存储卷的路径 \\
+		\hline
+		virStorageVolGetConnect: 查询存储卷的连接 \\
+		\hline
+		virStorageVolCreateXML: 根据XML配置文件来创建一个存储卷 \\
+		\hline
+		virStorageVolFree: 释放存储卷的句柄 \\
+		\hline
+		virStorageVolDelete: 删除一个存储卷 \\
+		\hline
+		virStorageVolResize: 调整存储卷的大小 \\
+		\hline
+		\end{longtable}
+
+\subsubsection{存储池管理的API}
+		存储池管理的API。有如下函数：
+		\begin{longtable}{p{13cm}}
+		\hline
+		virStoragePoolLookupByName: 根据存储池的名称来获取一个存储池对象 \\
+		\hline
+		virStoragePoolLookupByVolume: 根据一个存储卷返回其对应的存储池对象 \\
+		\hline
+		virStoragePoolCreateXML: 根据XML配置文件来创建一个存储池 \\
+		\hline
+		virStoragePoolDefineXML: 根据XML配置文件静态地定义个存储池 \\
+		\hline
+		virStoragePoolCreate: 激活一个存储池 \\
+		\hline
+		virStoragePoolGetInfo: 获取存储池的信息 \\
+		\hline
+		virStoragePoolGetName: 获取存储池的名称 \\
+		\hline
+		virStoragePoolGetUUID: 获取存储池的UUID标识 \\
+		\hline
+		virStoragePoolIsActive: 查询存储池是否处于使用状态 \\
+		\hline
+		virStoragePoolFree: 释放存储池相关的内存 \\
+		\hline
+		virStoragePoolDestroy: 用于销毁一个存储池 \\
+		\hline
+		virStoragePoolDelete: 物理删除一个存储池资源 \\
+		\hline
+		\end{longtable}
+
+\subsection{使用libvirt API的例子}
+	下面用一个简单的例子介绍如何使用libvirt API，例子如下：
+	\begin{lstlisting}
+	#include<stdio.h>
+	#include<stdlib.h>
+	#include<libvirt/libvirt.h>
+
+	int main(int argc, char* argv[])
+	{
+		virConnectPtr conn;
+		conn = virConnectPtr("qemu:///system");
+		if(conn == NULL)
+		{
+			fprintf(stderr, "Failed to open connection to qemu:///system");
+			return 1;
+		}
+		else
+			printf("Open connection successulfully");
+		virConnectClose(conn);
+		return 0;
+	}
+	\end{lstlisting}
+
+	其实这个例子不是重点，这里想重点说明的是，编译这个程序的时候，需要在后面加上“-lvirt”参数，如下所示：
+	\begin{lstlisting}[language = bash]
+	# temp.c是刚刚那个例子的文件名字
+	cc temp.c -lvirt
+	\end{lstlisting}
+
+	编译通过以后，就可以像普通程序一样使用执行文件了。
+
+\clearpage
+
 \section{OpenStack云计算平台}
 
 
