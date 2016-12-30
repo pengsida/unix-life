@@ -35,4 +35,4 @@
 \contentsline {subsubsection}{\numberline {5.1.5}存储卷管理的API}{21}{subsubsection.5.1.5}
 \contentsline {subsubsection}{\numberline {5.1.6}存储池管理的API}{21}{subsubsection.5.1.6}
 \contentsline {subsection}{\numberline {5.2}使用libvirt API的例子}{22}{subsection.5.2}
-\contentsline {section}{\numberline {6}OpenStack的安装}{23}{section.6}
+\contentsline {section}{\numberline {6}自动化安装OpenStack}{23}{section.6}

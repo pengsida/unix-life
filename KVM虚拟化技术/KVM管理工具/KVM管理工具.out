@@ -35,4 +35,4 @@
 \BOOKMARK [3][-]{subsubsection.5.1.5}{存储卷管理的API}{subsection.5.1}% 35
 \BOOKMARK [3][-]{subsubsection.5.1.6}{存储池管理的API}{subsection.5.1}% 36
 \BOOKMARK [2][-]{subsection.5.2}{使用libvirt API的例子}{section.5}% 37
-\BOOKMARK [1][-]{section.6}{OpenStack的安装}{}% 38
+\BOOKMARK [1][-]{section.6}{自动化安装OpenStack}{}% 38

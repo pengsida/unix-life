@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  29 DEC 2016 16:34
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  30 DEC 2016 18:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**KVM管理工具.tex
-(./KVM管理工具.tex
+**"mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.tex"
+(./mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
@@ -1619,8 +1619,8 @@ Package: fp-eval 1995/04/03
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 \g__fontspec_family_Consolas_int=\count319
 .................................................
@@ -1794,8 +1794,8 @@ Package: xeCJK-listings 2016/05/14 v3.4.0 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=2.5cm,right=2.5cm].
 
-(./KVM管理工具.aux)
-\openout1 = `KVM管理工具.aux'.
+(./mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.aux)
+\openout1 = `"mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
@@ -1813,7 +1813,8 @@ LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 142.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 142.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 142.
@@ -1948,52 +1949,31 @@ LaTeX Info: Redefining \ref on input line 142.
 LaTeX Info: Redefining \pageref on input line 142.
 LaTeX Info: Redefining \nameref on input line 142.
 
-(./KVM管理工具.out) (./KVM管理工具.out)
+(./mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.out)
+(./mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.out)
 \@outlinefile=\write3
-\openout3 = `KVM管理工具.out'.
+\openout3 = `"mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.out"'.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 142.
+File: 1.png Graphic file (type QTm)
 
-*************************************************
-* fontspec warning: "script-not-exist"
-* 
-* Font 'STSongti-SC-Regular' does not contain script 'CJK'.
-*************************************************
-\g__fontspec_family_STSongti-SC-Regular_int=\count327
-.................................................
-. fontspec info: "no-font-shape"
-. 
-. Could not resolve font STSongti-SC-Regular/I (it probably doesn't exist).
-.................................................
-.................................................
-. fontspec info: "defining-font"
-. 
-. Font family 'STSongti-SC-Regular(0)' created for font 'STSongti-SC-Regular'
-. with options [Script={CJK}].
-. 
-. This font family consists of the following NFSS series/shapes:
-. - 'normal' (m/n) with NFSS spec.: <->"STSongti-SC-Regular/OT:"
-. - 'small caps'  (m/sc) with NFSS spec.: - 'bold' (bx/n) with NFSS spec.:
-. <->"STSongti-SC-Regular/B/OT:"
-. - 'bold small caps'  (bx/sc) with NFSS spec.: - 'bold italic' (bx/it) with
-. NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
-. - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
-.................................................
-(./KVM管理工具.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+<use  "1.png" >
+LaTeX Font Info:    Try loading font information for U+msa on input line 160.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 2.
-
+LaTeX Font Info:    Try loading font information for U+msb on input line 160.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+File: 2.png Graphic file (type QTm)
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 21.
+<use  "2.png" >
+
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 176.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2007,315 +1987,12 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 )
 [1
 
-])
-\tf@toc=\write4
-\openout4 = `KVM管理工具.toc'.
-
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[2]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[3
 
 ]
-
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 185.
-
-File: 1.png Graphic file (type QTm)
-<use  "1.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[4
-
-]
-File: 2.png Graphic file (type QTm)
- <use  "2.png" >
 File: 3.png Graphic file (type QTm)
  <use  "3.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[5]
-Underfull \vbox (badness 10000) detected at line 301
- []
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-)
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[6]
-Overfull \hbox (1.23541pt too wide) in paragraph at lines 362--362
-[]|\EU1/TimesNewRoman(0)/m/n/10.95 emulator_period| 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 374
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[7]
-Underfull \vbox (badness 10000) detected at line 396
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[8]
-Underfull \vbox (badness 10000) detected at line 430
- []
-
-
-Underfull \vbox (badness 10000) detected at line 467
- []
-
-
-Overfull \vbox (19.71724pt too high) has occurred while \output is active []
-
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[9]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[10]
-Underfull \vbox (badness 10000) detected at line 538
- []
-
-
-Underfull \vbox (badness 10000) detected at line 556
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11]
-Overfull \hbox (5.97565pt too wide) in paragraph at lines 582--582
-[]|\EU1/TimesNewRoman(0)/m/n/10.95 description| 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 586
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[12]
-Underfull \vbox (badness 10000) detected at line 660
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[13
-
-]
-Underfull \vbox (badness 10000) detected at line 702
- []
-
-
-Underfull \vbox (badness 10000) detected at line 736
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[14]
-Underfull \hbox (badness 2753) in paragraph at lines 760--760
-[]|\EU1/TimesNewRoman(0)/m/n/10.95 vol-path –pool <pool><vol-name-or-
- []
-
-
-Underfull \vbox (badness 10000) detected at line 768
- []
-
-
-Underfull \vbox (badness 10000) detected at line 784
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15] (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[16
-
-]
 File: 4.png Graphic file (type QTm)
- <use  "4.png" >
-File: 5.png Graphic file (type QTm)
- <use  "5.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[17]
-Underfull \vbox (badness 10000) detected at line 890
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[18
-
-]
-Underfull \vbox (badness 10000) detected at line 930
- []
-
-File: 6.png Graphic file (type QTm)
-<use  "6.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[19]
-Overfull \hbox (8.65091pt too wide) in paragraph at lines 964--964
-[]|\EU1/TimesNewRoman(0)/m/n/10.95 virConnectOpenReadOnly| 
- []
-
-
-Overfull \hbox (8.65091pt too wide) in paragraph at lines 966--966
-[]|\EU1/TimesNewRoman(0)/m/n/10.95 virConnectGetCapabilities| 
- []
-
-
-Overfull \hbox (12.6208pt too wide) in alignment at lines 960--970
- [] [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 970
- []
-
-
-Underfull \hbox (badness 2318) in paragraph at lines 985--986
-[]|\EU1/华文中宋(0)/m/n/10.95 查 询 域 的 信 息\EU1/TimesNewRoman(0)/m/n/10.95 : virDomai
-nGetHostname virDomainGetInfo virDomainGetVcpus virDo-
- []
-
-
-Overfull \hbox (20.53766pt too wide) in alignment at lines 977--989
- [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 989
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1005
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[20
-
-]
-Underfull \vbox (badness 10000) detected at line 1039
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1066
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1096
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[21]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[22]
-File: 7.png Graphic file (type QTm)
- <use  "7.png" > 
+ <use  "4.png" > 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2323,27 +2000,28 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[23
+[2
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1163.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1163.
- (./KVM管理工具.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1163.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1163.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 196.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 196.
+ (./mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 196.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 196.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1163.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 196.
  ) 
 Here is how much of TeX's memory you used:
- 31606 strings out of 493591
- 573095 string characters out of 6143546
- 751256 words of memory out of 5000000
- 34579 multiletter control sequences out of 15000+600000
- 10924 words of font info for 88 fonts, out of 8000000 for 9000
+ 30931 strings out of 493591
+ 561741 string characters out of 6143546
+ 684182 words of memory out of 5000000
+ 33938 multiletter control sequences out of 15000+600000
+ 9283 words of font info for 71 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,12n,87p,10364b,1810s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,11n,72p,10416b,1181s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on KVM管理工具.pdf (23 pages).
+Output written on mysql-Host'localhost'-is-not-allowed-to-this-MySQL-server.pdf
+ (2 pages).
