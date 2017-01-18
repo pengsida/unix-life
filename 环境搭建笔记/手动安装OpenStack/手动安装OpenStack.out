@@ -1,0 +1,12 @@
+\BOOKMARK [1][-]{section.1}{手动安装OpenStack}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{配置系统环境}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{配置主机网络}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{安装NoSQL数据库}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{启用消息队列}{subsection.1.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.1.4}{安装Memcached}{subsection.1.1}% 6
+\BOOKMARK [1][-]{section.2}{安装Identity服务}{}% 7
+\BOOKMARK [2][-]{subsection.2.1}{Identity服务的介绍}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.2}{安装和配置Identity服务}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.1}{创建keystone数据库}{subsection.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{安装keystone}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.4}{配置Apache HTTP Server}{section.2}% 12

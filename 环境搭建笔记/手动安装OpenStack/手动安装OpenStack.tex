@@ -150,10 +150,31 @@
 
 \subsection{配置系统环境}
 \subsubsection{配置主机网络}
-	安装软件包chrony：
-	\begin{lstlisting}[language = bash]
+	\begin{itemize}
+		\item[1.] 安装软件包chrony：
+		\begin{lstlisting}[language = bash]
 	sudo apt-get install chrony
-	\end{lstlisting}
+		\end{lstlisting}
+
+		\item[2.] 编辑/etc/chrony/chrony.conf文件，将其中的server值进行修改，命令如下：
+		\begin{lstlisting}
+	server NTP_SERVER iburst
+		\end{lstlisting}
+
+		需要注意的是，每次修改chrony.conf这个文件后，都需要重启chrony服务，命令如下：
+		\begin{lstlisting}
+	service chrony restart
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{安装OpenStack包}
+	\begin{itemize}
+		\item[1.] 启用OpenStack仓库，命令如下：
+		\begin{lstlisting}
+	apt install software-properties-common
+	add-apt-repository cloud-archive:newton
+		\end{lstlisting}
+	\end{itemize}
 
 \subsubsection{安装NoSQL数据库}
 	控制节点上运行着NoSQL数据库。通过如下命令安装MongoDB包：
@@ -185,7 +206,7 @@
 	\end{itemize}
 
 \subsection{安装和配置Identity服务}
-\subsubsection{必备条件}
+\subsubsection{创建keystone数据库}
 	在配置OpenStack的Identity服务之前，必须创建一个数据库和数据库的管理员token。步骤如下：
 	\begin{itemize}
 		\item[1.] 以root身份连接到数据库服务器，命令如下所示：
@@ -201,6 +222,93 @@
 		\item[2.] 通过如下命令创建keystone的数据库：
 		\begin{lstlisting}
 	CREATE DATABASE keystone;
+		\end{lstlisting}
+
+		\item[3.] 然后对“keystone”数据库授予恰当的权限，命令如下所示：
+		\begin{lstlisting}
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456'; # 123456是密码
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456'; # 123456是密码
+		\end{lstlisting}
+
+		随后退出mysql。
+
+		\item[4.] 生成一个随机值在初始的配置中作为管理员的令牌，如下图所示：
+		\fic{1.png}
+	\end{itemize}
+
+\subsection{安装keystone}
+	\begin{itemize}
+	% 	\item[1.] 禁止开机启动keystone服务，命令如下所示：
+	% 	\begin{lstlisting}
+	% sudo bash -c "echo manual > /etc/init/keystone.override"
+	% 	\end{lstlisting}
+		\item[1.] 在这里使用带有mod\_wsgi的Apache HTTP Server，用于在端口5000和端口35357上提供Identity服务。同时使用keystone配置Apache的配置。安装这些包的命令如下所示：
+		\begin{lstlisting}
+	sudo apt-get install keystone apache2 libapache2-mod-wsgi
+		\end{lstlisting}
+
+		\item[2.] 配置/etc/keystone/keystone.conf文件。首先需要设置数据库的访问，在[database]这节中添加如下代码：
+		\begin{lstlisting}
+	[database]
+	...
+	connection = mysql+pymysql://keystone:123456@controller/keystone # 123456是数据库的密码
+		\end{lstlisting}
+
+		然后设置Fernet token的提供者，在[token]这节中添加如下代码：
+		\begin{lstlisting}
+	[token]
+	...
+	provider = fernet
+		\end{lstlisting}
+
+		\item[3.] 生成用于Identity服务的数据库，命令如下所示：
+		\begin{lstlisting}
+	sudo bash -c "keystone-manage db_sync" keystone
+		\end{lstlisting}
+
+		\item[4.] 初始化Fernet keys仓库，命令如下：
+		\begin{lstlisting}
+	sudo keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+	sudo keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+		\end{lstlisting}
+
+		\item[5.] 启动Identity服务，命令如下：
+		\begin{lstlisting}
+	# 123456是密码
+	keystone-manage bootstrap --bootstrap-password 123456 \
+	--bootstrap-admin-url http://controller:35357/v3/ \
+	--bootstrap-internal-url http://controller:35357/v3/ \
+	--bootstrap-public-url http://controller:5000/v3/ \
+	--bootstrap-region-id RegionOne
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{配置Apache HTTP Server}
+	\begin{itemize}
+		\item[1.] 配置/etc/apache2/apache2.conf，设置ServerName选项，用来引用controller节点。在文件中的任意一行添加如下代码：
+		\begin{lstlisting}
+	ServerName controller
+		\end{lstlisting}
+
+		\item[2.] 重启Apache服务，命令如下：
+		\begin{lstlisting}
+	sudo service apache2 restart
+		\end{lstlisting}
+
+		\item[3.] 删除默认的SQLite数据库，命令如下：
+		\begin{lstlisting}
+	sudo rm -f /var/lib/keystone/keystone.db
+		\end{lstlisting}
+
+		\item[4.] 配置管理账号，命令如下：
+		\begin{lstlisting}
+	export OS_USERNAME=admin
+	export OS_PASSWORD=123456 # 123456是2.3.5小节设置的密码
+	export OS_PROJECT_NAME=admin
+	export OS_USER_DOMAIN_NAME=default
+	export OS_PROJECT_DOMAIN_NAME=default
+	export OS_AUTH_URL=http://controller:35357/v3
+	export OS_IDENTITY_API_VERSION=3
 		\end{lstlisting}
 	\end{itemize}
 	
