@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{基本语法}{}% 1
+\BOOKMARK [1][-]{section.2}{文件搜寻}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{VPATH变量}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{vpath关键词}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{伪目标}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{基本规则}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{伪目标的依赖文件}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{伪目标作为依赖文件}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{多目标}{}% 9
+\BOOKMARK [1][-]{section.5}{静态模式}{}% 10
+\BOOKMARK [1][-]{section.6}{自动生成依赖关系}{}% 11

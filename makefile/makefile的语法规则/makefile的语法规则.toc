@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}基本语法}{2}{section.1}
+\contentsline {section}{\numberline {2}文件搜寻}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}VPATH变量}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}vpath关键词}{2}{subsection.2.2}
+\contentsline {section}{\numberline {3}伪目标}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}基本规则}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}伪目标的依赖文件}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}伪目标作为依赖文件}{4}{subsection.3.3}
+\contentsline {section}{\numberline {4}多目标}{4}{section.4}
+\contentsline {section}{\numberline {5}静态模式}{5}{section.5}
+\contentsline {section}{\numberline {6}自动生成依赖关系}{5}{section.6}
