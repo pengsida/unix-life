@@ -126,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{makefile中的命令 \qquad}
+\chead{makefile中的变量 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -134,70 +134,65 @@
 
 \clearpage
 
-\section{显示命令}
-	makefile的基本格式如下所示：
-	\begin{lstlisting}
-	targets: prerequisites
-		command
-	\end{lstlisting}
-
-	每条命令必须以tab键开头，make会按顺序一条一条地执行命令。\par
-
-	当make执行命令时，会在命令执行前将命令行输出到屏幕上。
-	对于命令的显示，有如下三种显示方式：
-	\begin{itemize}
-		\item[1.] 将“@”字符加在命令行前，那么这条命令就不会被make显示出来。
-		\item[2.] 将make带参数“-n”或“--just-print”，可以只显示命令，但不执行命令。
-		\item[3.] 将make带参数“-s”或“--slient”用于全面禁止命令的显示。
-	\end{itemize}
-
-\section{命令执行}
-	当一个目标需要被更新时，make会一条一条地执行其后的命令。\par
-	需要注意的是，如果要让上一条命令的结果应用在下一条命令，需要使用分号分隔这两条命令，而不是把这两条命令写在两行上。
+\section{变量的基础}
+	变量在声明时被赋予初值，而在使用时，需要在变量名前加上“\$”符号，并且用小括号“()”把变量包括起来。
 	例子如下：
 	\begin{lstlisting}
-	exec:
-		cd /home/pengsida
-		pwd
-
-	exec:
-		cd /home/pengsida; pwd
+	objects = program.o foo.o utils.o
+	program: $(objects)
+	cc -o program $(objects)
 	\end{lstlisting}
 
-	以上两个例子的输出结果不同。
-
-\section{命令出错}
-	每执行一条指令，make都会检测每条命令的返回码。
-	如果命令的返回码非零，则说明命令出错，make将终止所有命令的执行。\par
-
-	有时候，命令出错不代表就是错误的。比如使用mkdir创建一个目录。
-	如果目录本身存在，那么mkdir将报错。
-	可是我们本来就想要一个目录，不管新旧与否，所以我们就不希望mkdir出错而终止make的运行。\par
-
-	有两种方法可以忽略命令的出错，如下所示：
-	\begin{itemize}
-		\item[1.] 在命令行前面加一个减号“-”，如下所示：
-		\begin{lstlisting}
-	clean:
-		-rm -f *.o
-		\end{lstlisting}
-
-		\item[2.] 给make带上“-i”或者“--ignore-errors”参数，这样就会忽略所有命令的错误。
-	\end{itemize}
-
-\section{定义命令包}
-	makefile中可以使用“define”和“endef”将命令序列定义为一个变量，例子如下：
+\section{变量的高级用法}
+\subsection{变量值的替换}
+	通过格式“\$(var:a=b)”可以将变量“var”中所有以“a”字符串结尾的“a”替换为“b”字符串。
+	例子如下：
 	\begin{lstlisting}
-	define run-yacc
-		yacc $(firstword $^)
-		mv y.tab.c $@
-	endef
+	foo := a.o b.o c.o
+	bar := $(foo:.o=.c)
+	# 此时$(bar)的值为“a.c b.c c.c”
 	\end{lstlisting}
 
-	上述例子中，“run-yacc”是命令包的名字，使用的方法如下：
+\subsection{将变量的值再当成变量}
+	例子如下：
 	\begin{lstlisting}
-	foo.c: foo.y
-		$(run-yacc)
+	x = y
+	y = z
+	a := $($(x))
 	\end{lstlisting}
-	
+
+	此时，\$(a)的值为z。
+
+\section{override指示符}
+	如果变量是通过make的命令行参数设置的，那么makefile中对这个变量的赋值将会被忽略。
+	不过如果使用“override”指示符，就可以强行设置这类参数的值，语法如下：
+	\begin{lstlisting}
+	override <variable> := <value>
+	\end{lstlisting}
+
+\section{目标变量}
+	makefile中可以为某个目标设置局部变量，它只在这条规则以及连带规则有效，这就是目标变量。\par
+	语法格式为：
+	\begin{lstlisting}
+	<target ...>: <variable-assignment>
+	\end{lstlisting}
+
+	例子如下：
+	\begin{lstlisting}
+	prog: CFLAGS = -g
+	prog: prog.o foo.o bar.o
+	$(CC)$(CFLAGS) prog.o foo.o bar.o
+
+	prog.o: prog.c
+	$(CC)$(CFLAGS) prog.c
+
+	foo.o: foo.c
+	$(CC)$(CFLAGS) foo.c
+
+	bar.o: bar.c
+	$(CC)$(CFLAGS) bar.c
+	\end{lstlisting}
+
+	在这个例子中，“CFLAGS”的值是“-g”。
+
 \end{document}

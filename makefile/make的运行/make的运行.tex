@@ -126,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{makefile的介绍 \qquad}
+\chead{make的运行 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -134,46 +134,58 @@
 
 \clearpage
 
-\section{makefile的组成}
-	makefile由以下5部分构成：
+\section{make的退出码}
+	make有3个退出码，如下所示：
 	\begin{itemize}
-		\item 显式规则。显式规则用于说明要生成的文件、文件的依赖文件和生成的命令。
-		\item 隐含规则。当我们比较简略地书写makefile时，可以自动推导其中的功能。
-		\item 变量的定义。类似于C语言的宏，在makefile被执行时，其中的变量会被扩展到相应的引用位置上。
-		\item 文件指示。文件指示包括引用其他makefile文件、指定makefile中的有效部分和定义多行的命令。
-		\item 注释。使用“\#”进行代码的注释。
+		\item 0，表示make成功执行。
+		\item 1，表示make在执行中出现了错误。
+		\item 2，如果使用了make的“-q”选项，并且使得makefile中的一些目标不需要更新，就返回2。
 	\end{itemize}
 
-\section{引用其他的makefile}
-	在makefile中使用include关键字可以引用其他的makefile文件，语法如下:
+\section{指定makefile}
+	通过给make带上参数“-f”，就可以给make命令指定一个特殊名字的makefile。例子如下：
 	\begin{lstlisting}
-	include <filename>
+	# 让make执行psd.mk这个文件
+	make -f psd.mk
 	\end{lstlisting}
 
-	需要注意的是，include关键字前面可以有空格，但是不可以有tab键。\par
+\section{make的目标}
+	在默认情况下，make的最终目标是makefile中的第一个目标，而其他目标都是由这个目标连带出来的。\par
 
-	include查找引用文件的方式如下：
+	如果在make后面带上目标，make就会专门执行这个目标，如“make clean”。
+	环境变量“MAKECMDGOALS”会存放make所指定的终极目标的列表，如果在命令行上，make没有指定目标，那么这个变量就会是空值。例子如下：
+	\begin{lstlisting}
+	sources = foo.c bar.c
+	ifneq($(MAKECMDGOALS),clean)
+	include $(sources:.c=.d)
+	endif
+	\end{lstlisting}
+
+	在上述例子中，如果输入的命令是“make clean”，makefile就不会包含“foo.d”和“bar.d”。\par
+
+	makefile中有一些伪目标，有特定的名称和功能。虽然这不是语法规定，但算是约定俗成的，如下所示：
 	\begin{itemize}
-		\item[1.] 当filename有指定绝对路径或是相对路径时，将直接寻找路径处的file。
-		\item[2.] 当filename没有指定绝对路径或是相对路径时，将首先在当前目录下寻找file。
-				  如果当前目录下没找到，make还将到由“--include-dir”参数所指定的目录下去寻找。
-				  如果仍然没找到，或者未指定“--include-dir”参数，将在“<prefix>/include”目录(一般为：/usr/local/bin或/usr/include)下去查找。
-		\item[3.] 如果以上两种方式都没找到引用的makefile，make就会报错。如果想让make不理会那些无法读取的文件继续执行，可以在include前加一个“-”，命令如下：
-		\begin{lstlisting}
-	-include <filename>
-		\end{lstlisting}
+		\item all。一般用于编译所有目标。
+		\item clean。用于删除所有被make创建的文件。
+		\item install。安装已编译好的程序，也就是把目标执行文件拷贝到指定的文件夹中。
+		\item print。用于找出改变过的源文件。
+		\item tar。把源程序打包备份。
+		\item dist。用于创建一个压缩文件。
+		\item TAGS。用于更新所有的目标，以备完整地重编译使用。
+		\item check和test。用于测试makefile的流程。
 	\end{itemize}
 
-\section{make的工作方式}
-	make工作分为7个步骤，如下所示：
+\section{检查规则}
+	下面介绍make中一些用于检查makefile命令正确性的参数，如下所示：
 	\begin{itemize}
-		\item[1.] 读入所有的makefile。
-		\item[2.] 读入被include的其他makefile。
-		\item[3.] 初始化文件中的变量。
-		\item[4.] 推导隐晦规则，并分析所有规则。
-		\item[5.] 为所有的目标文件创建依赖关系链。
-		\item[6.] 根据依赖关系，决定哪些目标要重新生成。
-		\item[7.] 执行生成命令。
+		\item -n，不执行命令，只是打印命令。相同功能的参数项还有“--dry-run”、“--recon”。
+		\item -t，将目标文件的生成时间更新为当前时间，但实际上没有更改目标文件。
+		\item -q，如果目标不存在，就会输出一条出错信息，否则什么也不输出。
+		\item -W <file>，运行并输出依赖于这个文件的命令。当与“-n”参数一同使用时，只会单纯输出依赖于这个文件的命令。
 	\end{itemize}
 
+\section{make的参数}
+	make的参数可以通过“make --help”查看，如下图所示：
+	\sizedfic{0.85}{1.png}
+  
 \end{document}

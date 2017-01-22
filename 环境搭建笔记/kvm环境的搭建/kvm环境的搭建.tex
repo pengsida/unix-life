@@ -290,6 +290,11 @@ grep [pattern] [file] 用于在file中查找符合pattern的文本，并打印�
 	\end{lstlisting}
 
 \subsubsection{配置qemu-kvm}
+	首先安装glib，命令如下：
+	\begin{lstlisting}
+	sudo apt-get install libglib2.0-dev
+	\end{lstlisting}
+
 	使用如下命令即可配置qemu-kvm：
 	\begin{lstlisting}
 	./configure
@@ -310,6 +315,29 @@ grep [pattern] [file] 用于在file中查找符合pattern的文本，并打印�
 
 \subsubsection{编译qemu-kvm}
 	使用如下命令即可编译qemu-kvm：
+	\begin{lstlisting}
+	make
+	\end{lstlisting}
+
+	编译的时候可能遇到如下错误：
+	\begin{lstlisting}
+	./qemu-options.texi:1526: unknown command `list'
+  	./qemu-options.texi:1526: table requires an argument: the formatter for @item
+  	./qemu-options.texi:1526: warning: @table has text but no @item
+	\end{lstlisting}
+
+	这个需要先对源代码打补丁，首先下载补丁，地址如下：
+	\begin{lstlisting}
+	http://patchwork.ozlabs.org/patch/222212/raw/
+	\end{lstlisting}
+
+	将补丁文件移动到qemu-kvm源代码根目录，然后使用如下命令：
+	\begin{lstlisting}
+	# fix.patch是补丁的文件名
+	patch -p1 < fix.patch
+	\end{lstlisting}
+
+	然后再次编译，命令如下：
 	\begin{lstlisting}
 	make
 	\end{lstlisting}

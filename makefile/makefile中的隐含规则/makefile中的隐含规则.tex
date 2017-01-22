@@ -126,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{makefile的介绍 \qquad}
+\chead{makefile中的隐含规则 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -134,46 +134,98 @@
 
 \clearpage
 
-\section{makefile的组成}
-	makefile由以下5部分构成：
-	\begin{itemize}
-		\item 显式规则。显式规则用于说明要生成的文件、文件的依赖文件和生成的命令。
-		\item 隐含规则。当我们比较简略地书写makefile时，可以自动推导其中的功能。
-		\item 变量的定义。类似于C语言的宏，在makefile被执行时，其中的变量会被扩展到相应的引用位置上。
-		\item 文件指示。文件指示包括引用其他makefile文件、指定makefile中的有效部分和定义多行的命令。
-		\item 注释。使用“\#”进行代码的注释。
-	\end{itemize}
-
-\section{引用其他的makefile}
-	在makefile中使用include关键字可以引用其他的makefile文件，语法如下:
+\section{使用隐含规则}
+	隐含规则是make事先约定好的一些东西。如果我们没有写出某个目标的生成规则，make将自动推导产生这个目标的规则，此时，我们就相当于使用了隐含规则。例子如下：
 	\begin{lstlisting}
-	include <filename>
+	# 未使用隐含规则
+	foo: foo.o bar.o
+		cc -o foo foo.o bar.o $(CFLAGS) $(LDFLAGS)
+	foo.o: foo.c
+		cc -c foo.c $(CFLAGS)
+	bar.o: bar.c
+		cc -c bar.c $(CFLAGS)
+
+	# 使用隐含规则
+	foo: foo.o bar.o
+		cc -o foo foo.o bar.o $(CFLAGS) $(LDFLAGS)
 	\end{lstlisting}
 
-	需要注意的是，include关键字前面可以有空格，但是不可以有tab键。\par
-
-	include查找引用文件的方式如下：
+\section{常用的隐含规则}
+	一些常用的隐含规则如下所示：
 	\begin{itemize}
-		\item[1.] 当filename有指定绝对路径或是相对路径时，将直接寻找路径处的file。
-		\item[2.] 当filename没有指定绝对路径或是相对路径时，将首先在当前目录下寻找file。
-				  如果当前目录下没找到，make还将到由“--include-dir”参数所指定的目录下去寻找。
-				  如果仍然没找到，或者未指定“--include-dir”参数，将在“<prefix>/include”目录(一般为：/usr/local/bin或/usr/include)下去查找。
-		\item[3.] 如果以上两种方式都没找到引用的makefile，make就会报错。如果想让make不理会那些无法读取的文件继续执行，可以在include前加一个“-”，命令如下：
+		\item 编译C程序的隐含规则，<n>.o的依赖目标默认为<n>.c，命令如下：
 		\begin{lstlisting}
-	-include <filename>
+	$(CC) -c $(CPPFLAGS) $(CFLAGS)
+		\end{lstlisting}
+
+		\item 编译C++程序的隐含规则，<n>.o的依赖目标默认为<n>.cc，命令如下：
+		\begin{lstlisting}
+	$(CXX) -c $(CPPFLAGS) $(CFLAGS)
+		\end{lstlisting}
+
+		\item 编译汇编的隐含规则，<n>.o的依赖目标默认为<n>.s，默认编译器为as，命令如下：
+		\begin{lstlisting}
+	$(AS) $(ASFLAGS)
+		\end{lstlisting}
+
+		\item 汇编预处理的隐含规则，<n>.s的依赖目标默认为<n>.S，默认编译器为cpp，命令如下：
+		\begin{lstlisting}
+	$(AS) $(ASFLAGS)
+		\end{lstlisting}
+
+		\item 链接object文件的隐含规则，<n>的依赖目标默认为<n>.o，命令如下：
+		\begin{lstlisting}
+	$(CC) $(LDFLAGS) <n>.o $(LOADLIBES) $(LDLIBS)
 		\end{lstlisting}
 	\end{itemize}
 
-\section{make的工作方式}
-	make工作分为7个步骤，如下所示：
+\section{隐含规则使用的变量}
+	隐含规则中的变量一般有两种，一种是与命令相关的，一种是与参数相关的。下面介绍一些常用的变量。\par
+
+	与命令相关的变量如下：
 	\begin{itemize}
-		\item[1.] 读入所有的makefile。
-		\item[2.] 读入被include的其他makefile。
-		\item[3.] 初始化文件中的变量。
-		\item[4.] 推导隐晦规则，并分析所有规则。
-		\item[5.] 为所有的目标文件创建依赖关系链。
-		\item[6.] 根据依赖关系，决定哪些目标要重新生成。
-		\item[7.] 执行生成命令。
+		\item AS，默认值为as。
+		\item CC，默认值为cc。
+		\item CXX，默认值为g++。
+		\item CPP，默认值为C程序的预处理器。
+		\item RM，默认值为rm。
 	\end{itemize}
 
+	与参数相关的变量如下：
+	\begin{itemize}
+		\item CFLAGS，C语言编译器参数。
+		\item CXXFLAGS，C++语言编译器参数。
+		\item CPPFLAGS，C预处理器参数。
+	\end{itemize}
+
+\section{模式规则}
+\subsection{模式规则的介绍}
+	在模式规则中，目标和依赖目标都必须有“\%”，目标中的“\%”值决定了依赖目标中“\%”的值。例子如下：
+	\begin{lstlisting}
+	%.o: %.c; <command>
+	\end{lstlisting}
+
+	上述例子中，如果要生成的目标是“a.o b.o”，那么“\%c”就是“a.c b.c”。
+
+\subsection{自动化变量}
+	所有的自动化变量如下所示：
+	\begin{itemize}
+		\item \$@。表示规则中的目标文件集。
+		\item \$\%。如果目标是函数库文件，那么该值是规则中的目标成员名，否则该值为空。
+		\item \$<。表示依赖目标中的第一个目标，如果依赖目标由\%定义，那么该值是一系列的文件集，并且是一个一个取出来的。
+		\item \$?。表示所有比目标新的依赖目标的集合。
+		\item \$\^。表示所有依赖目标的集合，不允许存在重复的依赖目标。
+		\item \$+。表示所有依赖目标的集合，允许存在重复的依赖目标。
+		\item \$*。表示目标模式中“\%”及其之前的部分。如果目标中没有模式的定义，只要是目标文件的后缀make可以识别，那么\$*就是除了后缀的那一部分，否则\$*就是空值。
+	\end{itemize}
+
+\subsection{模式匹配的注意点}
+	当一个模式匹配包含有斜杠的文件时，那么在进行模式匹配时，目录部分会首先移开，然后进行匹配，成功后，再把目录加回去。例子如下：
+	\begin{lstlisting}
+	# 有模式“e%t”，依赖目标的模式是“c%r”
+	# 目标文件是“src/eat”
+	# 那么依赖目标文件是“src/car”
+	\end{lstlisting}
+
+  
 \end{document}
