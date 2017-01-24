@@ -77,9 +77,9 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=C,
+	language=[x86masm]Assembler,
 	numbers=left,
-	numberstyle=\tiny\color{white},
+	numberstyle=\tiny\color{black},
 	showspaces=false,
 	showstringspaces=false,
 	basicstyle=\scriptsize,
@@ -89,8 +89,8 @@
 	frame=lines,
 	% escapeinside=``,
 	extendedchars=true, 
-	xleftmargin=0em,
-	xrightmargin=0em, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
 	backgroundcolor=\color{cred},
 	aboveskip=1em,
 	breaklines=true,
@@ -120,15 +120,6 @@
 
 \newcommand{\interval}{\vspace{0.5em}}
 
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
-
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -137,86 +128,69 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{libvirt的安装 \qquad}
+\chead{为vim安装filetype插件 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-% \tableofcontents
+\tableofcontents
 
 \clearpage
 
+\section{为vim安装filetype插件}
+	配置环境为ubuntu16.04，日期为2017.1.23。\par
 
-\section{libvirt的安装}
-	首先声明，这个仅在ubuntu16.04下配置过，配置日期为2016.12.25。\par
-	安装libvirt的步骤如下：
+	首先创建放置插件的目录，命令如下：
+	\begin{lstlisting}
+	mkdir ~/.vim
+	mkdir ~/.vim/ftplugin
+	\end{lstlisting}
+
+	然后打开文件/etc/vim/vimrc文件，命令如下所示：
+	\begin{lstlisting}[language = bash]
+	sudo vi /etc/vim/vimrc
+	\end{lstlisting}
+
+	在文件尾添加如下命令：
+	\begin{lstlisting}
+	filetype plugin on
+	\end{lstlisting}
+
+	随后只要将filetype.vim移到这个目录下就可以了，命令如下：
+	\begin{lstlisting}
+	mv filetype.vim ~/.vim/ftplugin/filetype.vim
+	\end{lstlisting}
+
+\section{安装xml.vim}
+	首先下载插件，地址如下：
+	\begin{lstlisting}
+	http://www.vim.org/scripts/script.php?script_id=1397
+	\end{lstlisting}
+
+	然后把这个插件移动到~/.vim/ftplugin文件夹下即可，命令如下：
+	\begin{lstlisting}
+	mv xml.vim ~/.vim/ftplugin/xml.vim
+	\end{lstlisting}
+
+	如果想要让html、docbk、xsl、xhtml文件有同样的效果，只要在~/.vim/ftplugin文件夹下复制xml.vim即可，命令如下：
+	\begin{lstlisting}
+	cp xml.vim html.vim
+	cp xml.vim docbk.vim
+	cp xml.vim xsl.vim
+	cp xml.vim xhtml.vim
+	\end{lstlisting}
+
+	重启vim以后即可开始使用这个插件。如果想要查看这个插件都有什么功能，可以在normal模式下输入如下命令：
+	\begin{lstlisting}
+	:h xml-plugin
+	\end{lstlisting}
+
+	这个插件有三个常用的功能，如下所示：
 	\begin{itemize}
-		\item[1.] 首先检查是否安装过libvirt，命令如下所示：
-		\begin{lstlisting}
-	which libvirtd
-		\end{lstlisting}
-
-		如果有安装过libvirt，就应该先清除之前装过的libvirt，命令如下所示：
-		\begin{lstlisting}
-	// 仅在ubuntu16.04下试验过
-	sudo apt remove libvirt-bin
-		\end{lstlisting}
-
-		\item[2.] 下载libvirt的源代码，命令如下所示：
-		\begin{lstlisting}
-	// 下载日期为2016.12.25，此时最新版本为2.5.0
-	wget http://libvirt.org/sources/libvirt-2.5.0.tar.xz
-		\end{lstlisting}
-
-		\item[3.] 配置libvirt前，需要安装一些工具。相关命令如下所示：
-		\begin{lstlisting}
-	sudo apt-get install libpciaccess-dev
-	sudo apt-get install libxml++2.6-2v5
-	sudo apt-get install libxml++2.6-dev
-	sudo apt-get install libyajl-dev
-	sudo apt-get install libdevmapper-dev
-	sudo apt-get install libnl-3-dev
-	sudo apt-get install libnl-route-3-dev
-		\end{lstlisting}
-
-		\item[4.] 配置libvirt，命令如下所示：
-		\begin{lstlisting}
-	./configure
-		\end{lstlisting}
-
-		\item[5.] 编译libvirt，命令如下所示：
-		\begin{lstlisting}
-	make -j 4
-		\end{lstlisting}
-
-		\item[6.] 安装libvirt，命令如下所示：
-		\begin{lstlisting}
-	sudo make install
-		\end{lstlisting}
-
-		\item[7.] 配置动态链接，命令如下所示：
-		\begin{lstlisting}
-	sudo vi /etc/ld.so.conf.d/libc.conf
-		\end{lstlisting}
-
-		将文件内容写为下图中的内容：
-		\sizedfic{0.5}{1.png}
-
-		然后再输入如下命令：
-		\begin{lstlisting}
-	sudo ldconfig
-		\end{lstlisting}
-
-		\item[8.] 检查是否安装成功，命令如下所示：
-		\begin{lstlisting}
-	which libvirtd
-	libvirtd --version
-	virsh
-		\end{lstlisting}
-
-		如果安装成功，将得到如下图的结果：
+		\item[1.] 自动生成标签对。比如在插入模式输入“domain;;”，就会生成domain的标签对，如下图所示：
+		\fic{1.png}
+		\item[2.] 更改标签对名字。将光标移动到标签名字上，然后在normal模式输入“$\backslash$c”，就可以改动标签名，如下图所示：
 		\fic{2.png}
+		\item[3.] 在标签对之间跳动。将光标移动到标签名字上，然后在normal模式输入“\%”，就可以完成标签对之间的跳动了。
 	\end{itemize}
-
-
 
 \end{document}

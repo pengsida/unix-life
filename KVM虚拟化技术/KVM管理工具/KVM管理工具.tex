@@ -802,14 +802,14 @@
 		<vcpu>4<vcpu>
 		<os>
 			<type arch='x86_64' machine='pc'>hvm</type>
-			<boot dev='cdrom'>
+			<boot dev='cdrom'/>
 		</os>
 		<features>
 			<acpi/>
 			<apic/>
 			<pae/>
 		</features>
-		<clock offset='localtime'>
+		<clock offset='localtime'/>
 		<on_poweroff>destroy</on_poweroff>
 		<on_reboot>restart</on_reboot>
 		<on_crash>destroy</on_crash>
@@ -836,6 +836,15 @@
 	libvirtd
 	\end{lstlisting}
 
+	然后还需要启动virtlogd服务，命令如下：
+	\begin{lstlisting}
+	sudo systemctl start virtlogd
+	# 如果遇到Unit virlogd.service is masked，就输入如下命令：
+	# sudo systemctl unmask virtlogd.service
+	# 如果遇到Unit virlogd.socket is masked，就输入如下命令：
+	# sudo systemctl unmask virtlogd.socket
+	\end{lstlisting}
+
 	然后使用如下命令创建一个虚拟机：
 	\begin{lstlisting}[language = bash]
 	# demo.xml是刚才创建的XML配置文件的文件名
@@ -857,7 +866,7 @@
 	\end{lstlisting}
 
 	安装成功后，可以看到如下界面：
-	\fic{5.png}
+	\sizedfic{0.5}{5.png}
 	
 \clearpage
 

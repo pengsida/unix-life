@@ -1,0 +1,17 @@
+\contentsline {section}{\numberline {1}环境变量的介绍}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}全局环境变量}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}本地环境变量}{2}{subsection.1.2}
+\contentsline {section}{\numberline {2}设置环境变量}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}设置本地环境变量}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}设置全局环境变量}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}移除环境变量}{3}{section.3}
+\contentsline {section}{\numberline {4}默认的shell变量}{4}{section.4}
+\contentsline {section}{\numberline {5}设置PATH变量}{6}{section.5}
+\contentsline {section}{\numberline {6}更改系统环境变量}{6}{section.6}
+\contentsline {subsection}{\numberline {6.1}登陆系统后的交互式shell}{6}{subsection.6.1}
+\contentsline {subsubsection}{\numberline {6.1.1}/etc/profile文件}{6}{subsubsection.6.1.1}
+\contentsline {subsubsection}{\numberline {6.1.2}\$HOME启动文件}{7}{subsubsection.6.1.2}
+\contentsline {subsection}{\numberline {6.2}未登陆时的交互式shell}{7}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}非交互式shell}{7}{subsection.6.3}
+\contentsline {section}{\numberline {7}变量数组}{7}{section.7}
+\contentsline {section}{\numberline {8}使用命令别名}{8}{section.8}

@@ -1962,43 +1962,19 @@ Package lastpage Info: Please have a look at the pageslts package at
 * 
 * Font 'STSongti-SC-Regular' does not contain script 'CJK'.
 *************************************************
-\g__fontspec_family_STSongti-SC-Regular_int=\count327
-.................................................
-. fontspec info: "no-font-shape"
-. 
-. Could not resolve font STSongti-SC-Regular/I (it probably doesn't exist).
-.................................................
-.................................................
-. fontspec info: "defining-font"
-. 
-. Font family 'STSongti-SC-Regular(0)' created for font 'STSongti-SC-Regular'
-. with options [Script={CJK}].
-. 
-. This font family consists of the following NFSS series/shapes:
-. - 'normal' (m/n) with NFSS spec.: <->"STSongti-SC-Regular/OT:"
-. - 'small caps'  (m/sc) with NFSS spec.: - 'bold' (bx/n) with NFSS spec.:
-. <->"STSongti-SC-Regular/B/OT:"
-. - 'bold small caps'  (bx/sc) with NFSS spec.: - 'bold italic' (bx/it) with
-. NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
-. - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
-.................................................
-(./makefile中的隐含规则.toc
+\g__fontspec_family_STSongti-SC-Regular_int=\coun/华文中宋(0)/m/n' instead on input line 140.
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 5.
+LaTeX Font Info:    Try loading font information for U+msa on input line 142.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 5.
+LaTeX Font Info:    Try loading font information for U+msb on input line 142.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
-\tf@toc=\write4
-\openout4 = `makefile中的隐含规则.toc'.
+)
 
+LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 185.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2006,19 +1982,51 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
-
-)
 [1
+
 
 ]
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 140.
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 202.
+
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 217.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.217 ^^I^^I\item \$^
+                     。表示所有依赖目标的集合，不允许存在�...
+
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.217 ^^I^^I\item \$^
+                     。表示所有依赖目标的集合，不允许存在�...
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 30929 strings out of 493591
+ 562024 string characters out of 6143546
+ 709137 words of memory out of 5000000
+ 33944 multiletter control sequences out of 15000+600000
+ 9331 words of font info for 77 fonts, out of 8000000 for 9000
+ 1347 hyphenation exceptions out of 8191
+ 48i,13n,72p,10371b,1283s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on makefile中的隐含规则.pdf (2 pages).
+80000s
+Output written on makefile中的隐含规则.pdf (2 pages).
+ Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
