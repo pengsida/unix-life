@@ -1,0 +1,473 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{基本脚本编译 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{创建脚本文件}
+	脚本文件中，文件的第一行必须指明所使用的shell，格式如下所示；
+	\begin{lstlisting}
+	#!/bin/bash
+	\end{lstlisting}
+
+\subsection{第一个脚本文件}
+	下面是一个简单的脚本文件：
+	\begin{lstlisting}
+	#!/bin/shell
+	data
+	who
+	\end{lstlisting}
+
+	可以将两条命令放在同一行，不过这需要将它们用分号隔开，如下所示：
+	\begin{lstlisting}
+	#!/bin/shell
+	data; who
+	\end{lstlisting}
+
+\subsection{脚本文件的权限}
+	通过ls命令可以查看linux系统上的文件、目录和设备的文件权限，如下图所示：
+	\fic{1.png}
+
+	图中输出清单中的第一个字段就是描述文件和目录的权限的代码，共有10个字符。\par
+	字段中的第一个字符定义了对象的类型，分别有以下的字符：
+	\begin{longtable}{p{2cm}p{4cm}}
+	\hline
+	- & 表示文件 \\
+	\hline
+	d & 表示目录 \\
+	\hline
+	l & 表示链接 \\
+	\hline
+	c & 表示字符设备 \\
+	\hline
+	b & 表示块设备 \\
+	\hline
+	n & 表示网络设备 \\
+	\hline
+	\end{longtable}
+
+	字段之后的9个字符分为3组，每组有3个字符，这三组字符从左到右分别为对象的所有者、拥有对象的用户组和系统上的其他任何人设置了权限。
+	每组中有4个可能的字符：
+	\begin{longtable}{p{2cm}p{4cm}}
+	\hline
+	r & 表示对象读权限 \\
+	\hline
+	w & 表示对象写权限 \\
+	\hline
+	x & 表示对象执行权限 \\
+	\hline
+	- & 表示对象没有该位置上的权限 \\
+	\hline
+	\end{longtable}
+
+	linux文件权限代码如下图所示：
+	\fic{2.png}
+
+\subsubsection{修改脚本文件权限}
+	可以通过umask和touch设置文件的权限。umask可以设置完整权限要减去的值，比如一个文件“temp.txt”的完整权限是666，输入命令“umask 022”，再输入命令“touch temp.txt”，
+	那么这个文件的权限就变成了644。\par
+	需要注意的是，如果之前已经输入命令“umask 022”，那么新创建的文件的权限都是644。还需要补充的是，文件的完整权限是666，而目录的完整权限是777。\par
+
+	还可以使用chmod命令来修改文件和目录的权限，chmod命令的格式如下：
+	\begin{lstlisting}
+	chmod [options] <mode> <file>
+	# options提供了一些额外的特性来扩展chmod命令的行为
+	# mode是八进制文件权限
+	\end{lstlisting}
+
+	chmod只需要根据需要为文件制定标准的3位八进制代码，如下所示：
+	\begin{lstlisting}
+	chmod 760 temp.txt
+	\end{lstlisting}
+
+	除此之外，chmod还可以通过符号模式来制定权限的格式，命令格式如下：
+	\begin{lstlisting}
+	chmod [options] <ugoa><+-=><rwxXstugo> <file>
+	\end{lstlisting}
+
+	符号模式中的第一组字符定义了新权限使用的对象，可能的字符如下所示：
+	\begin{longtable}{p{1.5cm}p{3cm}}
+	\hline
+	u & 表示用户 \\
+	\hline
+	g & 表示用户组 \\
+	\hline
+	o & 表示其他任何人 \\
+	\hline
+	a & 表示上述所有 \\
+	\hline
+	\end{longtable}
+
+	符号模式中的第二组字符可能的字符如下所示：
+	\begin{longtable}{p{1.5cm}p{6cm}}
+	\hline
+	+ & 表示在已有权限中添加权限 \\
+	\hline
+	- & 表示从已有权限中减去权限 \\
+	\hline
+	= & 表示为权限赋值 \\
+	\hline
+	\end{longtable}
+
+	符号模式中的第三组字符可能的字符如下所示：
+	\begin{longtable}{p{1.5cm}p{6cm}}
+	\hline
+	x & 用于指定执行权限，仅当对象为目录时有效 \\
+	\hline
+	s & 用于设置正在执行的UID或GID \\
+	\hline
+	t & 用于保存程序文本 \\
+	\hline
+	u & 用于将权限设置为所有者的权限 \\
+	\hline
+	g & 用于将权限设置为用户组的权限 \\
+	\hline
+	o & 用于将权限设置为其他人的权限 \\
+	\hline
+	\end{longtable}
+
+\subsubsection{设置脚本文件为可执行文件}
+	可以使用chmod来赋予脚本文件可执行的权限，如下所示：
+	\begin{lstlisting}
+	# test是脚本文件
+	chmod u+x test
+	\end{lstlisting}
+
+	然后就可以运行这个脚本文件了，命令如下所示：
+	\begin{lstlisting}
+	# 在当前目录下
+	./test
+	\end{lstlisting}
+
+\section{显示消息}
+	可以使用echo来显示字符串，可以使用双引号或单引号来标记文本字符串，命令如下所示：
+	\begin{lstlisting}
+	echo "This is a test to see if you are paying attention"
+	echo 'Rich says "scripting is easy"'
+	\end{lstlisting}
+
+	可以通过带“-n”参数项来使得输出的字符串最后没有带换行符，命令如下所示：
+	\begin{lstlisting}
+	echo -n "This is a test to see if you are paying attention"
+	\end{lstlisting}
+
+\section{使用变量}
+	shell的变量和linux的环境变量一样。在shell脚本中可以使用系统变量，也可以自己定义用户变量。在脚本文件中使用变量的例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	# 需要注意，变量、等号和变量值之间不允许有空格
+	days=10
+	guest="Katie"
+	echo "$guest checked in $days days ago"
+	days=5
+	guest="Jessica"
+	echo "$guest checked in $days days ago"
+	# 使用系统变量
+	echo "HOME: $HOME"
+	\end{lstlisting}
+
+	如果想要显示"\$"符号，只需要在它前面加上反义符号就行了。
+
+\subsection{反引号}
+	反引号“`”可以将shell命令的输出赋值给变量，使用方式是将整个命令行命令用反引号包围起来，如下所示：
+	\begin{lstlisting}
+	# 这样就能将date命令的输出赋给testing变量
+	testing=`date`
+	# 显示testing变量的值
+	echo "The data and time are: " $testing
+	\end{lstlisting}
+
+\section{重定向输入输出}
+	重定向既可以用于输入也可以用于输出，可以重定向一个文件到命令输入，也可以重定向命令输出到另一个位置。
+
+\subsection{输出重定向}
+	输出重定向就是将一条命令的输出发送到一个文件中，使用方式如下所示：
+	\begin{lstlisting}
+	command > outputfile
+	\end{lstlisting}
+
+	需要注意的是，如果文件已经存在，那么它里面的内容会被重写。如果不想重写此文件的内容，而是想将命令的输出附加到现有文件中，需要使用两个大于号，使用方式如下所示：
+	\begin{lstlisting}
+	command >> outputfile
+	\end{lstlisting}
+
+\subsection{输入重定向}
+	输入重定向就是将一个文件的内容重定向到一个命令中，使用方式如下所示：
+	\begin{lstlisting}
+	command < inputfile
+	\end{lstlisting}
+
+	以下是使用输入重定向的例子：
+	\begin{lstlisting}
+	wc < temp.txt
+	# wc命令可以对数据中的文本计数，然后输出文本的行数、文本的单词数和文本的字节数
+	\end{lstlisting}
+
+	还可以在命令行中为输入重定向指定数据，这种方法叫做内置输入重定向。通过使用两个小于号可以使用内置输入重定向，
+	除此之外，还需要指定一个文本标记来说明输入数据的开始和结尾，如下所示：
+	\begin{lstlisting}
+	# 一般使用EOF作为marker
+	command << marker
+	data
+	marker
+	\end{lstlisting}
+
+\section{管道}
+	管道就是将一个命令的输出发送至另一个命令的输入，它的符号是“|”，格式如下所示：
+	\begin{lstlisting}
+	# 将command1的输出发送至command2的输入
+	command1 | command2
+	\end{lstlisting}
+
+\section{数学计算}
+\subsection{expr命令}
+	expr的命令操作符如下图所示：
+	\fic{3.png}
+
+	expr的使用如下：
+	\begin{lstlisting}
+	expr ARG1 + ARG2
+	\end{lstlisting}
+
+	在脚本中使用expr命令如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	var1=10
+	var2=10
+	var3=`expr $var1 + $var2`
+	echo "The result is $var3"
+	\end{lstlisting}
+
+\subsection{使用方括号}
+	使用数学式时，还可以用美元符号和方括号将数学等式括起来，如下所示：
+	\begin{lstlisting}
+	$[operation]
+	\end{lstlisting}
+
+	在脚本中使用例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+	var1=100
+	var2=50
+	var3=$[$var1 * $var2]
+	echo "The final result is $var3"
+	\end{lstlisting}
+
+	需要注意的是，上面的数学运算都是整数运算。
+
+\subsection{进行浮点运算}
+	可以使用bash计算器进行浮点运算，bash计算器可以识别：
+	\begin{itemize}
+		\item 数字
+		\item 变量
+		\item 注释
+		\item 表达式
+		\item 编程语句
+		\item 函数
+	\end{itemize}
+	
+	可以使用bc命令从shell提示符访问bash计算器，如下所示：
+	\begin{lstlisting}
+	# 输入bc命令就直接跳进了计算器
+	bc
+	\end{lstlisting}
+
+	还可以在脚本中使用bc，基本格式如下所示：
+	\begin{lstlisting}
+	variable=`echo "options; expression" | bc`
+	\end{lstlisting}
+
+	其中options用于设置变量，如果要设置多个变量，需要使用分号将它们分隔开，expression定义了使用bc计算的数学表达式，例子如下所示：
+	\begin{lstlisting}
+	# scale指定了变量为4为小数
+	var1=`echo "scale=4; 3.44/5" | bc`
+	\end{lstlisting}
+
+	还可以使用多行数学表达式，格式如下所示：
+	\begin{lstlisting}
+	variable=`bc << EOF
+	options
+	statements
+	expressions
+	EOF
+	`
+	\end{lstlisting}
+
+	在脚本中使用bash计算器的例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	var1=1046
+	var2=43.67
+	var3=33.2
+	var4=71
+	var5=`bc << EOF
+	scale = 4
+	a1 = ($var1 * $var2)
+	b1 ($var3 * $var4)
+	a1 + b1
+	EOF
+	`
+	\end{lstlisting}
+
+	需要注意的是，bash计算器中的变量只在bash计算器内有效，不能用在shell脚本中。
+
+\section{退出脚本}
+	可以通过查看\$?这个特殊变量来查看最后一条命令执行结束的退出状态，命令如下所示：
+	\begin{lstlisting}
+	echo $?
+	\end{lstlisting}
+
+	linux中退出状态代码如下图所示：
+	\fic{5.png}
+
+	可以通过exit命令来指定shell脚本的退出状态，如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	var1=10
+	var2=20
+	var3=$[$var1+var2]
+	exit 5
+	\end{lstlisting}
+
+\end{document}

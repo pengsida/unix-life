@@ -1,0 +1,514 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{处理用户输入 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{命令行参数}
+	向shell脚本传递数据的最基本方式就是使用命令行参数。
+	bash shell将命令行参数赋值给一些特殊变量，这些变量称为位置参数。
+	位置参数通过标准数字表示，其中\$0为程序名称，\$1为第一个参数，\$2为第二个参数，以此类推，直到\$9为第九个参数。\par
+
+	使用命令行参数的例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	factorial=1
+	for (( number=1; number <= $1; number++ ))
+	do
+		factorial=$[ $factorial * $number ]
+	done
+	\end{lstlisting}
+
+	要使用这个程序，只要在命令行输入：
+	\begin{lstlisting}
+	# test是文件名，5是程序的参数
+	./test 5
+	\end{lstlisting}
+
+	有时候可以利用程序名称，从而编写不同名称有不同功能的脚本，例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	# basename是一个命令，可以只返回程序的名称，不带路径
+	name=`basename $0`
+	if [ $name = "addem" ]
+	then
+		total=$[ $1 + $2 ]
+	elif [ $name = "multem" ]
+	then
+		total=$[ $1 * $2 ]
+	fi
+	\end{lstlisting}
+
+	然后只要将程序名称改为不同的名字，就有不一样的功能了，如下所示：
+	\begin{lstlisting}
+	# test是原脚本名称
+	cp test addem
+	cp test multem
+	# 执行程序
+	./addem 2 5
+	./multem 2 5
+	\end{lstlisting}
+
+	需要注意的是，在使用参数之前，需要先使用-n参数来检查命令行参数是否存在数据，例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+	# 带双引号是考虑到了第一个参数有空格的情况
+	if [ -n "$1" ]
+	then
+		echo "Hello $1, glad to meet you"
+	else
+		echo "Sorry, you didn't identify yourself"
+	fi
+	\end{lstlisting}
+
+\subsection{特殊的参数变量}
+\section{特殊的参数变量\$\#}
+	特殊变量\$\#中存储着执行脚本时的命令行参数个数，所以我们就可以利用它在使用参数前测试现有的参数个数，例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	if [ $# -ne 2 ]
+	then
+		echo "Error"
+	else
+		total=$[ $1 + $2 ]
+		echo "The total is $total"
+	fi
+	\end{lstlisting}
+
+	通过这个变量还可以直接获取最后一个参数的值，不过此时必须用感叹号替代美元符号，格式如下：
+	\begin{lstlisting}
+	$(!#)
+	\end{lstlisting}
+
+\subsection{特殊的参数变量\$*和\$@}
+	\$*和\$@这两个变量都包含了所有的命令行参数，\$*将所有命令行参数当作一个单词处理，而\$@把命令行参数当作多个单词处理，所以只有\$@可以被for命令遍历，例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	count=1
+	for param in "$*"
+	do
+		echo "\$* Parameter #$count = $param"
+		count=$[ $count + 1 ]
+	done
+
+	count=1
+	for param in "$@"
+	do
+		echo "\$@ Parameter #$count: $param"
+		count=$[ $count + 1 ]
+	done
+	\end{lstlisting}
+
+\section{shift移位命令}
+	shift命令可以改变命令行参数的相对位置，将每个参数变量左移一位，\$3的值移给\$2，\$2移给\$1，原先\$1的值被丢弃。
+	需要注意的是，\$0的值保持不变。\par
+	这样子就可以先对第一个参数进行操作，然后对参数进行一次左移，再对第一个参数进行操作，如下例所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	count=1
+	while [ -n $1 ]
+	do
+		echo "Parameter #$count = $1"
+		count=$[ $count + 1]
+		shift
+	done
+	\end{lstlisting}
+
+	shift命令还可以带参数，指定左移几位，格式如下：
+	\begin{lstlisting}
+	shift n
+	\end{lstlisting}
+
+\section{处理参数项}
+	shell程序的输入有时候是带参数项的，如下所示：
+	\begin{lstlisting}
+	./testing -a -b test1 -c
+	\end{lstlisting}
+
+	例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	while [ -n "$1" ]
+	do
+		case "$1" in
+		-a)
+			echo "Found the -a option";;
+		-b)
+			param=$2
+			echo "Found the -b option, with parameter value $param"
+			shift;;
+		-c)
+			echo "Found the -c option";;
+		--)
+			shift
+			break;;
+		*)
+			echo "$1 is not an option";;
+		esac
+		shift
+	done
+	\end{lstlisting}
+
+\subsection{getopt命令}
+	getopt命令可以接受任意形式的命令行选项和参数列表，并将这些选项和参数转换为适当的格式。\par
+	getopt命令的格式如下所示：
+	\begin{lstlisting}
+	getopt [options] <optstring> <parameters>
+	# optstring定义了命令行中的有效选项字母，并且定义了哪些选项字母需要参数值
+	# optstring由选项字母组成，需要参数值的选项字母后面需要放置一个冒号
+	# optstring的例子：ab:cd
+	\end{lstlisting}
+
+	getopt的使用例子如下：
+	\begin{lstlisting}
+	getopt ab:cd -a -b test1 -cd test2 test3
+	# 返回：-a -b test1 -c -d -- test2 test3
+	\end{lstlisting}
+
+	当paramter中的选项不在optstring中时，getopt会产生错误消息，通过“-q”参数项可以忽略这个错误消息，例子如下：
+	\begin{lstlisting}
+	getopt -q ab:cd -a -b test1 -cde test2 test3
+	\end{lstlisting}
+
+	通过set命令带“--”参数项可以将命令行参数项替换为set命令的输入值，set命令和getopt的配合使用如下所示：
+	\begin{lstlisting}
+	set -- `getopt -q ab:cd "$@"`
+	\end{lstlisting}
+
+	具体例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	set -- `getopt -q ab:c "$@"`
+	while [ -n "$1" ]
+	do
+		case "$1" in
+		-a)
+			echo "Found the -a option";;
+		-b)
+			param="$2"
+			echo "Found the -b option with the parameter $param"
+			shift;;
+		-c)
+			echo "Found the -c option";;
+		--)
+			shift
+			break;;
+		*)
+			echo "$1 is not an option";;
+		esac
+		shift
+	done
+	\end{lstlisting}
+
+\subsection{getopts命令}
+	getopts命令的格式和getopt类似，如下所示：
+	\begin{lstlisting}
+	getopts optstring variable
+	\end{lstlisting}
+
+	getopts按顺序处理命令行参数，并给variable赋值。如果要禁止输出错误消息，需要在optstring前加上冒号“:”。\par
+	环境变量OPTARG包含需要参数值的选项要使用的值，环境变量OPTIND包含getopts停止处理时在参数列表中的位置。\par
+	使用OPTARG的例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	while getopts :ab:c opt
+	do
+		case "$opt" in
+		# getopts会把破折号-去掉，所以case选项中不需要破折号
+		a)
+			echo "Found the -a option";;
+		b) 
+			echo "Found the -b option, with value $OPTARG";;
+		c)
+			echo "Found the -c option";;
+		*)
+			# 未知的参数项将变为问好?
+			echo "Unknown option: $opt";;
+		esac
+	done
+	\end{lstlisting}
+
+	可以利用OPTIND来跳过命令行参数的参数项，直接获得参数，例子如下所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	while getopts :ab:cd opt
+	do
+		case "$opt" in
+		a)
+			echo "Found the -a option";;
+		b)
+			echo "Found the -b option, with value $OPTARG";;
+		c)
+			echo "Found the -c option";;
+		d)
+			echo "Found the -d option";;
+		*)
+			echo "Unknown option: $opt";;
+		esac
+	done
+	# 利用shift和OPTIND来跳过命令行参数中的参数项
+	shift $[ $OPTIND - 1 ]
+
+	count=1
+	for param in "$@"
+	do
+		echo "Parameter $count: $param"
+		count=$[ $count + 1 ]
+	done
+	\end{lstlisting}
+
+\section{标准化选项}
+	linux世界中有一些字母选项具有某种标准含义，如果在shell脚本中使用这些选项，会使脚本变得更加便于使用。
+	这些命令行选项如下所示：
+	\fic{1.png}
+
+\section{获取用户输入}
+\subsection{read命令}
+	read命令可以将用户输入放入一个标准变量中，格式如下：
+	\begin{lstlisting}
+	read variable
+	\end{lstlisting}
+
+	例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	echo -n "Enter your name: "
+	read name
+	echo "Hello $name, welcome to my program."
+	\end{lstlisting}
+
+\subsubsection{read命令的各个选项}
+
+	read命令带“-p”选项时，可以直接在read命令中指定一个提示，如下例所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	read -p "Please enter your age: " age
+	days=$[ $age * 365 ]
+	echo "That makes you over $days days old!"
+	\end{lstlisting}
+
+	如果不指定变量，read命令会把用户输入放到环境变量REPLY中，如下例所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	read -p "Enter a number: "
+	factorial=1
+	for ((  count=1; count <= $REPLY; count++ ))
+	do
+		factorial=$[ $factorial * $count ]
+	done
+	echo "The factorial of $REPLY is $factorial"
+	\end{lstlisting}
+
+	使用read命令时，为了防止脚本停下一直等待用户输入数据，可以带上“-t”选项，指定read命令等待输入的秒数。
+	当计时器计时数满时，read命令返回一个非零退出状态，例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	if read -t 5 -p "Please enter your name: " name
+	then
+		echo "Hello $name, welcome to my script"
+	else
+		# 换行
+		echo
+		echo "Sorry, too slow!"
+	fi
+	\end{lstlisting}
+
+	read命令还可以带上“-n”选项，当用户输入字符达到预定数目时，自动退出，并将输入的数据赋值给变量，如下例所示：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	read -n1 -p "Do you want to continue [Y/N]? " answer
+	case $answer in
+	Y | y)
+		echo
+		echo "fine, continue on";;
+	N | n)
+		echo
+		echo "OK, goodbye"
+		exit;;
+	esac
+	\end{lstlisting}
+
+	需要注意的是，当read命令自动退出时，不会自动换行。\par
+
+	read命令带上“-s”选项时，不会让用户输入显示在终端上，例子如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	read -s -p "Enter your password: " pass
+	echo
+	echo "Is your password really $pass"
+	\end{lstlisting}
+
+\subsubsection{使用read命令读取文件}
+	read命令还可以读取文件，每一次read命令都会读取文件中的一行文本。
+	当文件中没有可读的行时，read命令将以非零退出状态退出。read命令一般和cat、管道相配合使用，cat输出文件内容，再交给read命令读取，格式如下：
+	\begin{lstlisting}
+	cat file | while read line
+	do
+		commands
+	done
+	\end{lstlisting}
+	
+	read命令的使用如下例所示：
+	\begin{lstlisting}
+	#!/bin/bash
+	count=1
+	cat test | while read line
+	do
+		echo "Line $count: $line"
+		count=$[ $count + 1 ]
+	done
+	\end{lstlisting}
+
+\end{document}
