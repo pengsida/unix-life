@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  23 JAN 2017 14:32
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  1 FEB 2017 10:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2208,8 +2208,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [16
 
 ]
-File: 4.png Graphic file (type QTm)
- <use  "4.png" >
 File: 5.png Graphic file (type QTm)
  <use  "5.png" >
 
@@ -2338,10 +2336,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1172.
  ) 
 Here is how much of TeX's memory you used:
- 31664 strings out of 493591
- 574347 string characters out of 6143546
+ 31665 strings out of 493591
+ 574370 string characters out of 6143546
  751256 words of memory out of 5000000
- 34637 multiletter control sequences out of 15000+600000
+ 34639 multiletter control sequences out of 15000+600000
  10924 words of font info for 88 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
  48i,12n,87p,10364b,1810s stack positions out of 5000i,500n,10000p,200000b,80000s

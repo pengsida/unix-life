@@ -1,0 +1,4 @@
+\BOOKMARK [1][-]{section.1}{在代码段中使用数据}{}% 1
+\BOOKMARK [1][-]{section.2}{在代码段中使用栈}{}% 2
+\BOOKMARK [1][-]{section.3}{将数据、代码、栈放入不同的段}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{使用多个段的经验总结}{section.3}% 4

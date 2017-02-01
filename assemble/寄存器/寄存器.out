@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{通用寄存器}{}% 1
+\BOOKMARK [1][-]{section.2}{8086CPU给出物理地址的方法}{}% 2
+\BOOKMARK [1][-]{section.3}{段寄存器}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{CS和IP}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{修改CS和IP的值}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{代码段}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{DS和[address]}{}% 7
+\BOOKMARK [1][-]{section.5}{mov、add、sub指令}{}% 8
+\BOOKMARK [1][-]{section.6}{数据段}{}% 9
+\BOOKMARK [1][-]{section.7}{CPU提供的栈机制}{}% 10
+\BOOKMARK [2][-]{subsection.7.1}{SS和SP寄存器}{section.7}% 11
+\BOOKMARK [2][-]{subsection.7.2}{push、pop指令}{section.7}% 12
+\BOOKMARK [2][-]{subsection.7.3}{栈段}{section.7}% 13

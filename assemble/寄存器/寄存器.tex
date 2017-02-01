@@ -1,0 +1,285 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{寄存器 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{通用寄存器}
+	8086CPU中有AX、BX、CX和DX四个寄存器，用于存放一般性的数据。\par
+
+	通过mov指令可以修改AX、BX、CX和DX的值，例子如下：
+	\begin{lstlisting}
+	mov ax,123
+	mov bx,123
+	mov cx,123
+	mov dx,123
+	\end{lstlisting}
+
+\section{8086CPU给出物理地址的方法}
+	8086CPU有20位地址总线，可是8086CPU是16位结构，
+	所以地址加法器采用物理地址=段地址x16+偏移地址的方法将段地址和偏移地址合成物理地址。\par
+
+	需要注意的是，虽然“段地址”这个名称中包含段，但是内存没有分段，只是CPU用分段的方式来管理内存。
+
+\section{段寄存器}
+	8086CPU中有CS、DS、SS和ES四个寄存器，用于存放段地址。\par
+
+	不同于通用寄存器，8086CPU不支持将数据直接送入段寄存器。可以将数据先送入通用寄存器，然后再将通用寄存器的内容送入段寄存器。
+	也可以将内存单元中的数据送入段寄存器。
+
+\subsection{CS和IP}
+	CS是代码段寄存器，IP为指令指针寄存器。当CS中的内容为M，IP中的内容为N，8086CPU将从内存M$\times$16+N开始执行指令。\par
+
+	8086CPU读取指令的步骤如下：
+	\begin{itemize}
+		\item[1.] 从CS:IP指向的内存单元读取指令，读取的指令进入指令缓冲器。
+		\item[2.] IP=IP+所读取指令的长度，从而指向下一条指令。
+		\item[3.] 执行指令，转到步骤1，重复这个过程。
+	\end{itemize}
+
+\subsection{修改CS和IP的值}
+	mov指令不能用于修改CS、IP的值，只有转移指令可以修改CS、IP的内容，比如说jmp指令。\par
+
+	如果想同时修改CS、IP的内容，可以用指令“jmp 段地址:偏移地址”完成，如下例所示：
+	\begin{lstlisting}
+	; 执行后，CS=2AE3H，IP=0003H，CPU从2AE33H处读取指令
+	jmp 2AE3:3
+	\end{lstlisting}
+
+	如果只想修改IP的内容，可以用指令“jmp 某一合法寄存器”，如下例所示：
+	\begin{lstlisting}
+	; jmp指令用寄存器中的值修改IP，CS的内容不变
+	jmp ax
+	jmp bx
+	\end{lstlisting}
+
+\subsection{代码段}
+	在编程时，可以根据需要将一组内存单元定义为一个段。代码段就是用于存放代码的一组内存单元。\par
+
+	需要知道的是，虽然我们编程时安排了代码段，但CPU不会由于这种安排自动地执行代码段中的指令，CPU只认可CS:IP指向的内存单元中的内容为指令。
+	所以要让CPU执行我们放在代码段中的指令，必须讲CS:IP指向所定义的代码段中的第一条指令的首地址。
+
+\section{DS和[address]}
+	DS寄存器用于访问数据的段地址，而[address]中的address是偏移地址，例子如下：
+	\begin{lstlisting}
+	; 将1000:0处的数据读入al中
+	mov bx,1000H
+	mov ds,bx
+	mov al,[0]
+	\end{lstlisting}
+
+	mov指令支持将一个内存单元中的内容送入一个寄存器中，指令格式为：
+	\begin{lstlisting}
+	mov 寄存器名,内存单元地址
+	\end{lstlisting}
+
+	其中内存单元地址就是用ds和“[...]”表示，ds表示内存单元的段地址，[...]表示内存单元的偏移地址。
+
+\section{mov、add、sub指令}
+	mov指令有如下几种形式：
+	\begin{lstlisting}
+	mov 寄存器, 数据
+	mov 寄存器, 寄存器
+	mov 寄存器, 内存单元
+	mov 内存单元, 寄存器
+	mov 段寄存器, 寄存器
+	mov 寄存器, 段寄存器
+	mov 段寄存器, 内存单元
+	mov 内存单元, 段寄存器
+	\end{lstlisting}
+
+	add指令有如下几种形式：
+	\begin{lstlisting}
+	add 寄存器, 数据
+	add 寄存器, 寄存器
+	add 寄存器, 内存单元
+	add 内存单元, 寄存器
+	\end{lstlisting}
+
+	sub指令有如下几种形式：
+	\begin{lstlisting}
+	sub 寄存器, 数据
+	sub 寄存器, 寄存器
+	sub 寄存器, 内存单元
+	sub 内存单元, 寄存器
+	\end{lstlisting}
+
+\section{数据段}
+	数据段就是用于存储数据的一组内存单元。在访问数据段中的数据时，只要用ds存放数据段的段地址，然后根据需要，用相关指令访问数据段中的具体单元。
+
+\section{CPU提供的栈机制}
+	8086CPU提供入栈和出栈指令，也就是push和pop。\par
+
+\subsection{SS和SP寄存器}
+
+	8086CPU提供了段寄存器SS和寄存器SP，SS用于存放栈顶的段地址，SP用于存放偏移地址，SS:SP指向栈顶元素。\par
+
+	8086CPU对push指令的执行如下图所示：
+	\fic{1.png}
+
+	可以看到，入栈时，栈顶从高地址向低地址增长，不过段基址是低地址，而SP初始值是栈的长度。\par
+
+	需要注意的是，8086CPU不能保证我们对栈的操作不会越界，我们在编程的时候需要自己防止栈顶越界的问题。
+
+\subsection{push、pop指令}
+	push的形式如下：
+	\begin{lstlisting}
+	push 寄存器
+	push 段寄存器
+	push 内存单元
+	\end{lstlisting}
+
+	pop的形式如下：
+	\begin{lstlisting}
+	pop 寄存器
+	pop 段寄存器
+	pop 内存单元
+	\end{lstlisting}
+
+\subsection{栈段}
+	我们可以将一组内存空间当作栈来使用，以栈的方式进行访问，那么这段空间就可以称为一个栈。\par
+
+	可以用SS存放栈段的基地址，将SP的初始值设为栈段的长度，就可以将SS:SP指向我们定义的栈段。
+
+\end{document}

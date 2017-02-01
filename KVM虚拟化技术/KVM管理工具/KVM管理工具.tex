@@ -848,19 +848,19 @@
 	然后使用如下命令创建一个虚拟机：
 	\begin{lstlisting}[language = bash]
 	# demo.xml是刚才创建的XML配置文件的文件名
-	sudo virsh create demo.xml
+	virsh define demo.xml
+	virsh
+	# ubuntu是创建的虚拟机的名字
+	start ubuntu
 	\end{lstlisting}
 
 	使用以下命令可以通过vncviewer查看虚拟机：
 	\begin{lstlisting}[language = bash]
-	# Ubuntu是刚刚创建的域的名字
-	sudo virsh vncdisplay Ubuntu
+	# ubuntu是刚刚创建的域的名字
+	vncdisplay Ubuntu
 	\end{lstlisting}
 
-	如下图所示：
-	\sizedfic{0.5}{4.png}
-
-	注意到terminal输出“:1”，可以根据这个参数查看虚拟机，命令如下所示：
+	如果terminal输出“:1”，可以根据这个参数查看虚拟机，命令如下所示：
 	\begin{lstlisting}[language = bash]
 	vncviewer :1
 	\end{lstlisting}

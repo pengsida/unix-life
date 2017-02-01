@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {1}在代码段中使用数据}{2}{section.1}
+\contentsline {section}{\numberline {2}在代码段中使用栈}{2}{section.2}
+\contentsline {section}{\numberline {3}将数据、代码、栈放入不同的段}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}使用多个段的经验总结}{4}{subsection.3.1}

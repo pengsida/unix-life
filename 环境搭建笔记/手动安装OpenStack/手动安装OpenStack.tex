@@ -146,9 +146,28 @@
 \clearpage
 
 \section{手动安装OpenStack}
-	首先声明，这个仅在ubuntu16.04下配置过，配置日期为2016.12.29。\par
+	首先声明，这个仅在ubuntu16.04下配置过，配置日期为2017.2.1。\par
 
 \subsection{配置系统环境}
+\subsubsection{配置域名解析}
+	将主机名设置为controller，并编辑/etc/hosts文件，包含如下内容：
+	\begin{lstlisting}
+	# controller
+	10.0.0.11       controller
+
+	# compute1
+	10.0.0.31       compute1
+
+	# block1
+	10.0.0.41       block1
+
+	# object1
+	10.0.0.51       object1
+
+	# object2
+	10.0.0.52       object2
+	\end{lstlisting}
+
 \subsubsection{安装chrony}
 	为了在各个节点之间同步服务，我们需要安装chrony，用于实现网络时间同步协议。
 	\begin{itemize}
@@ -275,108 +294,78 @@
 	\end{itemize}
 
 \subsection{配置认证服务}
-
-
-\subsubsection{安装NoSQL数据库}
-	控制节点上运行着NoSQL数据库。通过如下命令安装MongoDB包：
-	\begin{lstlisting}[language = bash]
-	sudo apt-get install mongodb-server mongodb-clients python-pymongo
-	\end{lstlisting}
-
-\subsubsection{启用消息队列}
-	控制节点上启动着消息队列服务，用于操作各服务的状态信息。
-	通过以下命令安装RabbitMQ包：
-	\begin{lstlisting}[language = bash]
-	sudo apt-get install rabbitmq-server
-	\end{lstlisting}
-
-\subsubsection{安装Memcached}
-	控制节点上运行着缓存服务memecached，用于支持认证服务认证缓存。
-	通过以下命令安装Memcached：
-	\begin{lstlisting}[language = bash]
-	sudo apt-get install memcached python-memcache
-	\end{lstlisting}
-
-\section{安装Identity服务}
-\subsection{Identity服务的介绍}
-	Identity服务包括三个组件：
+\subsubsection{创建一个数据库}
+	在配置OpenStack认证服务之前，需要先创建一个数据库和管理员认证令牌，步骤如下所示：
 	\begin{itemize}
-		\item[1.] Server。一个中心化的Server通过RESTful接口提供了认证和授权服务。
-		\item[2.] Drivers。Drivers包含于中心化Server中，用于访问OpenStack外部仓库的身份信息。
-		\item[3.] Modules。Middleware modules运行于使用Identity服务的OpenStack组件的地址空间中。它们会拦截服务请求，并提取这些请求中的用户身份证明，然后发送到中心Server中用于认证。
-	\end{itemize}
-
-\subsection{安装和配置Identity服务}
-\subsubsection{创建keystone数据库}
-	在配置OpenStack的Identity服务之前，必须创建一个数据库和数据库的管理员token。步骤如下：
-	\begin{itemize}
-		\item[1.] 以root身份连接到数据库服务器，命令如下所示：
+		\item[1.] 首先以root用户的身份登陆数据库服务器，命令如下：
 		\begin{lstlisting}
-	# 安装mysql
-	sudo apt install mysql-client-core-5.7
-	# 安装mysql server
-	sudo apt-get install mysql-server
-	# 连接到数据库服务器
-	mysql -u -root -p
+	mysql -u root -p
 		\end{lstlisting}
 
-		\item[2.] 通过如下命令创建keystone的数据库：
+		\item[2.] 更换数据库，命令如下：
+		\begin{lstlisting}
+	use mysql;
+		\end{lstlisting}
+
+		\item[3.] 创建keystone数据库，命令如下：
 		\begin{lstlisting}
 	CREATE DATABASE keystone;
 		\end{lstlisting}
 
-		\item[3.] 然后对“keystone”数据库授予恰当的权限，命令如下所示：
+		\item[4.] 设置keystone数据库的权限以及对keystone的访问密码，命令如下：
 		\begin{lstlisting}
-	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456'; # 123456是密码
-	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456'; # 123456是密码
+	# 123456是keystone数据库的访问密码
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456';
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456';
 		\end{lstlisting}
 
-		随后退出mysql。
-
-		\item[4.] 生成一个随机值在初始的配置中作为管理员的令牌，如下图所示：
-		\fic{1.png}
+		\item[5.] 刷新数据库，并重启数据库，命令如下：
+		\begin{lstlisting}
+	FLUSH PRIVILEGES;
+	quit;
+	sudo service mysql restart
+		\end{lstlisting}
 	\end{itemize}
 
-\subsection{安装keystone}
+\subsubsection{安装keystone}
+	安装keystone的步骤如下所示：
 	\begin{itemize}
-	% 	\item[1.] 禁止开机启动keystone服务，命令如下所示：
-	% 	\begin{lstlisting}
-	% sudo bash -c "echo manual > /etc/init/keystone.override"
-	% 	\end{lstlisting}
-		\item[1.] 在这里使用带有mod\_wsgi的Apache HTTP Server，用于在端口5000和端口35357上提供Identity服务。同时使用keystone配置Apache的配置。安装这些包的命令如下所示：
+		\item[1.] 安装keystone的包，命令如下：
 		\begin{lstlisting}
-	sudo apt-get install keystone apache2 libapache2-mod-wsgi
+	sudo apt install keystone
 		\end{lstlisting}
 
-		\item[2.] 配置/etc/keystone/keystone.conf文件。首先需要设置数据库的访问，在[database]这节中添加如下代码：
+		\item[2.] 编辑/etc/keystone/keystone.conf文件，在[database]一节添加如下内容：
 		\begin{lstlisting}
 	[database]
-	...
-	connection = mysql+pymysql://keystone:123456@controller/keystone # 123456是数据库的密码
+	# ...
+	# 123456是之前所设置的数据库的密码
+	connection=mysql+pymysql://keystone:123456@controller/keystone
 		\end{lstlisting}
 
-		然后设置Fernet token的提供者，在[token]这节中添加如下代码：
+		在[token]一节添加如下内容：
 		\begin{lstlisting}
 	[token]
-	...
-	provider = fernet
+	# ...
+	provider=fernet
 		\end{lstlisting}
 
-		\item[3.] 生成用于Identity服务的数据库，命令如下所示：
+		\item[3.] 初始化认证服务的数据库，命令如下：
 		\begin{lstlisting}
-	sudo bash -c "keystone-manage db_sync" keystone
+	su
+	su -s /bin/sh -c "keystone-manage db_sync" keystone
 		\end{lstlisting}
 
-		\item[4.] 初始化Fernet keys仓库，命令如下：
+		\item[4.] 初始化Fernet key的仓库，命令如下：
 		\begin{lstlisting}
 	sudo keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 	sudo keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 		\end{lstlisting}
 
-		\item[5.] 启动Identity服务，命令如下：
+		\item[5.] 启动认证服务，命令如下：
 		\begin{lstlisting}
-	# 123456是密码
-	keystone-manage bootstrap --bootstrap-password 123456 \
+	# 123456是认证服务的密码
+	sudo keystone-manage bootstrap --bootstrap-password 123456 \
 	--bootstrap-admin-url http://controller:35357/v3/ \
 	--bootstrap-internal-url http://controller:35357/v3/ \
 	--bootstrap-public-url http://controller:5000/v3/ \
@@ -384,33 +373,51 @@
 		\end{lstlisting}
 	\end{itemize}
 
-\subsection{配置Apache HTTP Server}
+\subsubsection{配置Apache HTTP服务器}
+	配置Apache HTTP服务器的步骤如下所示：
 	\begin{itemize}
-		\item[1.] 配置/etc/apache2/apache2.conf，设置ServerName选项，用来引用controller节点。在文件中的任意一行添加如下代码：
+		\item[1.] 编辑/etc/apache2/apache2.conf文件，将ServerName选项设置为控制节点，添加的代码如下：
 		\begin{lstlisting}
 	ServerName controller
 		\end{lstlisting}
 
-		\item[2.] 重启Apache服务，命令如下：
+		\item[2.] 重启Apache服务，并移除默认的SQLite数据库，命令如下：
 		\begin{lstlisting}
 	sudo service apache2 restart
-		\end{lstlisting}
-
-		\item[3.] 删除默认的SQLite数据库，命令如下：
-		\begin{lstlisting}
 	sudo rm -f /var/lib/keystone/keystone.db
 		\end{lstlisting}
 
-		\item[4.] 配置管理账号，命令如下：
+		\item[3.] 设置管理账户，命令如下：
 		\begin{lstlisting}
 	export OS_USERNAME=admin
-	export OS_PASSWORD=123456 # 123456是2.3.5小节设置的密码
+	# 123456是启动认证服务时设置的密码
+	export OS_PASSWORD=123456
 	export OS_PROJECT_NAME=admin
-	export OS_USER_DOMAIN_NAME=default
-	export OS_PROJECT_DOMAIN_NAME=default
+	export OS_USER_DOMAIN_NAME=Default
+	export OS_PROJECT_DOMAIN_NAME=Default
 	export OS_AUTH_URL=http://controller:35357/v3
 	export OS_IDENTITY_API_VERSION=3
 		\end{lstlisting}
 	\end{itemize}
+
+\subsubsection{创建一个domain、projects、users和roles}
+	首先创建一个service project，命令如下：
+	\begin{lstlisting}
+	openstack project create --domain default --description "Service Project" service
+	\end{lstlisting}
+
+	常规的任务应该使用一个非特权project和user，所以还需要创建一个demo project和一个demo user，命令如下：
+	\begin{lstlisting}
+	# 创建一个demo project
+	openstack project create --domain default --description "Demo Project" demo
+	# 创建一个demo user
+	openstack user create --domain default --password-prompt demo
+	\end{lstlisting}
+
+	随后创建一个user role，并把这个user role加到这个demo project和demo user中，命令如下：
+	\begin{lstlisting}
+	openstack role create user
+	openstack role add --project demo --user demo user
+	\end{lstlisting}
 	
 \end{document}
