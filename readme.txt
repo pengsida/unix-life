@@ -1,1 +1,1 @@
-makefile shell assemble
+openstack operating_system
