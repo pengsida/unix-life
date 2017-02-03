@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  1 FEB 2017 10:19
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  2 FEB 2017 11:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2024,22 +2024,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 423.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 423.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 428.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 428.
  (./手动安装OpenStack.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 423.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 423.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 428.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 428.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 423.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 428.
  ) 
 Here is how much of TeX's memory you used:
- 31101 strings out of 493591
- 566185 string characters out of 6143546
- 720136 words of memory out of 5000000
- 34106 multiletter control sequences out of 15000+600000
+ 31102 strings out of 493591
+ 566206 string characters out of 6143546
+ 715136 words of memory out of 5000000
+ 34107 multiletter control sequences out of 15000+600000
  9347 words of font info for 79 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
  48i,12n,72p,10370b,1790s stack positions out of 5000i,500n,10000p,200000b,80000s

@@ -1,0 +1,260 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{call和ret指令 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{ret和retf}
+	ret指令用栈中的数据，修改IP的内容，从而实现近转移。\par
+
+	retf指令用栈中的数据，修改CS和IP的内容，从而实现远转移。\par
+
+	CPU执行ret指令时进行以下两个步骤：
+	\begin{lstlisting}
+	(IP)=((ss)*16+(sp))
+	(sp)=(sp)+2
+	\end{lstlisting}
+
+	所以ret指令相当于pop IP。\par
+
+	CPU执行retf指令时进行以下四个步骤：
+	\begin{lstlisting}
+	(IP)=((ss)*16+(sp))
+	(sp)=(sp)+2
+	(CS)=((ss)*16+(sp))
+	(sp)=(sp)+2
+	\end{lstlisting}
+
+	所以retf指令相当于pop IP；pop CS。
+
+\section{call指令}
+	CPU执行call指令时进行以下两个步骤：
+	\begin{lstlisting}
+	将当前的IP或CS和IP压入栈中
+	转移
+	\end{lstlisting}
+
+\subsection{根据位移进行转移的call指令}
+	“call 标号”的功能为：
+	\begin{lstlisting}
+	(sp)=(sp)-2
+	((ss)*16+(sp))=(IP)
+	(IP)=(IP)+16位位移
+	\end{lstlisting}
+
+	其中16位位移=“标号”处的地址-call指令后的第一个字节的地址。\par
+
+	CPU执行“call 标号”时，相当于执行：
+	\begin{lstlisting}
+	push IP
+	jmp near ptr 标号
+	\end{lstlisting}
+
+\subsection{转移的目的地址在指令中的call指令}
+	“call far ptr 标号”实现的是段间转移，相当于进行如下操作：
+	\begin{lstlisting}
+	push CS
+	push IP
+	jmp far ptr 标号
+	\end{lstlisting}
+
+\subsection{转移的目的地址在寄存器中的call指令}
+	“call 16位寄存器”相当于进行如下操作：
+	\begin{lstlisting}
+	push IP
+	jmp 16位寄存器
+	\end{lstlisting}
+
+\subsection{转移的目的地址在内存中的call指令}
+	“call word ptr 内存单元地址”相当于进行如下操作：
+	\begin{lstlisting}
+	push IP
+	jmp word ptr 内存单元地址
+	\end{lstlisting}
+
+	“call dword ptr 内存单元地址”相当于进行如下操作：
+	\begin{lstlisting}
+	push CS
+	push IP
+	jmp dword ptr 内存单元地址
+	\end{lstlisting}
+
+\section{call和ret指令的配合使用}
+	call和ret可以实现子程序的机制，子程序的框架如下：
+	\begin{lstlisting}
+	assume cs:code
+	code segment
+	main:
+		; ...
+		call sub1
+		; ...
+		mov ax, 4c00h
+		int 21h
+	sub1:
+		; ...
+		call sub2
+		; ...
+		ret
+	sub2:
+		; ...
+		ret
+	code ends
+	end main
+	\end{lstlisting}
+
+\section{mul指令}
+	mul指令是乘法指令，乘法指令的介绍如下：
+	\begin{itemize}
+		\item 两个相乘的数：如果两个相乘的数都是8位，那么一个默认放在AH中，另一个放在8位寄存器或内存字节单元中。
+			如果两个都是16位，那么一个默认放在AX中，另一个放在16位寄存器或内存字单元中。
+		\item 结果：如果是8位乘法，结果默认放在AX中。如果是16位乘法，结果的高位默认放在DX中，低位放在AX中。
+	\end{itemize}
+	
+	mul指令的格式如下：
+	\begin{lstlisting}
+	mul reg
+	mul 内存单元
+	\end{lstlisting}
+
+\end{document}

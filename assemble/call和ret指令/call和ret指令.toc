@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}ret和retf}{2}{section.1}
+\contentsline {section}{\numberline {2}call指令}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}根据位移进行转移的call指令}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}转移的目的地址在指令中的call指令}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}转移的目的地址在寄存器中的call指令}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}转移的目的地址在内存中的call指令}{3}{subsection.2.4}
+\contentsline {section}{\numberline {3}call和ret指令的配合使用}{3}{section.3}
+\contentsline {section}{\numberline {4}mul指令}{4}{section.4}

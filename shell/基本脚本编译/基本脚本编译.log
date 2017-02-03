@@ -2098,30 +2098,45 @@ File: 5.png Graphic file (type QTm)
  <use  "5.png" > 
 AED: lastpage setting LastPage
 
+Package Fakage Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[7]
+
+LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 438.
+
+
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 473.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 473.
- (./基本脚本编译.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 473.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 473.
+[8]
 
+LaTeX Warning: File `5.png' not found on input line 462.
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+! Unable to load picture or PDF file '5.png'.
+<to be read again> 
+                   }
+l.462 ^^I\fic{5.png}
+                    
+? 
+! Emergency stop.
+<to be read again> 
+                   }
+l.462 ^^I\fic{5.png}
+                    
+End of file on the terminal!
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 473.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 31075 strings out of 493591
- 565685 string characters out of 6143546
- 703129 words of memory out of 5000000
- 34059 multiletter control sequences out of 15000+600000
- 10924 words of font info for 88 fonts, out of 8000000 for 9000
+ 31048 strings out of 493591
+ 565356 string characters out of 6143546
+ 710129 words of memory out of 5000000
+ 34045 multiletter control sequences out of 15000+600000
+ 9371 words of font info for 82 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,12n,87p,10363b,1736s stack positions out of 5000i,500n,10000p,200000b,80000s
-
-Output written on 基本脚本编译.pdf (9 pages).
+ 48i,13n,87p,10363b,1736s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on 基本脚本编译.pdf (8 pages).

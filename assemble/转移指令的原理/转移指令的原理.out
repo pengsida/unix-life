@@ -1,0 +1,8 @@
+\BOOKMARK [1][-]{section.1}{操作符offset}{}% 1
+\BOOKMARK [1][-]{section.2}{jmp指令}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{根据位移进行转移的jmp指令}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{转移的目的地址在指令中的jmp指令}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{转移的目的地址在寄存器的jmp指令}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{转移的目的地址在内存中的jmp指令}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{jcxz指令}{}% 7
+\BOOKMARK [1][-]{section.4}{loop指令}{}% 8

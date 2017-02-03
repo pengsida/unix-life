@@ -1,0 +1,254 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{标志寄存器 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{标志寄存器}
+	标志寄存器存储的信息通常被称为程序状态字。8086CPU的flag寄存器如下图所示：
+	\fic{1.png}
+
+	需要知道的是，一般只有运算指令会影响标志寄存器，而传送指令pop、push、mov等对标志寄存器就没有影响。
+
+\subsection{ZF标志}
+	ZF标志是零标志位。如果指令执行后结果为0，那么ZF=1；如果结果不为0，那么ZF=0。如下例所示：
+	\begin{lstlisting}
+	mov ax, 1
+	sub ax, 1
+	\end{lstlisting}
+
+\subsection{PF标志}
+	PF标志是奇偶标志位。如果指令执行后结果的所有二进制中1的个数为偶数，那么PF=1；如果个数为奇数，那么PF=0。如下例所示：
+	\begin{lstlisting}
+	mov al, 1
+	add al, 10
+	; al为00001011B，PF=0
+	\end{lstlisting}
+
+\subsection{SF标志}
+	SF标志为符号标志位。如果指令执行后结果为负，那么SF=1；如果结果为非负，那么SF=0。
+	如果我们将数据当作有符号数来运算的时候，就可以通过SF标志来得知结果的正负。
+	如下例所示：
+	\begin{lstlisting}
+	mov al, 100000001B
+	add al, 1
+	; al结果为100000010B，SF=1
+	\end{lstlisting}
+
+\subsection{CF标志}
+	CF标志是进位标志位。在进行无符号数运算的时候，它用于记录运算结果的最高有效位向更高位的进位，或从更高位的借位值。如下例所示：
+	\begin{lstlisting}
+	mov al, 98H
+	add al, al ; CF=1
+	mov al, al ; CF=0
+
+	mov al, 97H
+	sub al, 98H ; CF=1
+	sub al, al  ; CF=0
+	\end{lstlisting}
+
+\subsection{OF标志}
+	OF标志是溢出标志位。在进行有符号数运算的时候，如果结果超过机器所能表示的范围称为溢出，此时OF=1，如果没有发生溢出，OF=0。
+
+\section{部分运算指令}
+\subsection{adc指令}
+	adc指令是带进位加法指令，指令格式为：“adc 操作对象1, 操作对象2”，它的功能是：操作对象1=操作对象1+操作对象2+CF。
+
+\subsection{sbb指令}
+	sbb指令是带借位减法指令，指令格式为：“sbb 操作对象1, 操作对象2”，它的功能是：操作对象1=操作对象1-操作对象2-CF。
+
+\subsection{cmp指令}
+	cmp指令是比较指令，指令格式为：“cmp 操作对象1, 操作对象2”，cmp的功能相当于减法指令，只是不保存结果，然后根据计算结果对标志寄存器进行设置。
+
+\subsubsection{检测比较结果的条件转移指令}
+	cmp指令对两个操作数进行比较后，一些条件转移指令根据标志寄存器的相关标志位进行转移。如下例：
+	\begin{lstlisting}
+	cmp ah, bh
+	je s
+	add ah, bh
+s:	add ah, ah
+	\end{lstlisting}
+
+	根据比较结果进行转移的条件转移指令如下图所示：
+	\fic{2.png}
+
+\subsection{DF标志}
+	DF标志是方向标志位。当DF=0时，串处理指令操作后si，di递增。当DF=1时，串处理指令操作后si，di递减。
+
+\subsubsection{串传送指令}
+	串操作指令有movsb，相应的功能如下：
+	\begin{lstlisting}
+	((es)*16+(di))=((ds)*16+(si))
+	如果DF=0，(si)=(si)+1，(di)=(di)+1
+	如果DF=1，(si)=(si)-1，(di)=(di)-1
+	\end{lstlisting}
+
+	串操作指令也可以传送一个字，指令为movsw，相应的功能为：
+	\begin{lstlisting}
+	((es)*16+(di))=((ds)*16+(si))
+	((es)*16+(di)+1)=((ds)*16+(si)+1)
+	如果DF=0，(si)=(si)+2，(di)=(di)+2
+	如果DF=1，(si)=(si)-2，(di)=(di)-2
+	\end{lstlisting}
+
+\subsubsection{rep指令}
+	rep指令一般和movsb、movsw配合使用，格式如下：
+	\begin{lstlisting}
+	rep movsb
+	rep movsw
+	\end{lstlisting}
+
+	rep指令根据cx的值重复执行后面的串传送指令，“rep movsw”相当于：
+	\begin{lstlisting}
+	s: movsw
+	   loop s
+	\end{lstlisting}
+
+\subsubsection{cld指令和std指令}
+	cld指令的功能是将DF标志置0，std指令的功能是将DF标志置1。
+
+\subsection{pushf和popf}
+	pushf的功能是将标志寄存器的值压栈，而popf是从栈中弹出数据，送入标志寄存器中。
+
+\end{document}

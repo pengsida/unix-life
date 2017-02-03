@@ -202,6 +202,11 @@
 		\end{lstlisting}
 
 		需要注意的是，如果更新了内核，需要重启电脑来使用新内核。
+
+		\item[3.] 安装openstack客户端，命令如下：
+		\begin{lstlisting}
+	sudo apt install python-openstackclient
+		\end{lstlisting}
 	\end{itemize}
 
 \subsubsection{安装SQL数据库}
@@ -213,7 +218,7 @@
 	sudo apt install mariadb-server python-pymysql
 		\end{lstlisting}
 
-		\item[2.] 创建/etc/mysql/mariadb.conf.d/99-openstack.cnf文件，并在文件中添加如下内容：
+		\item[2.] 创建/etc/mysql/conf.d/99-openstack.cnf文件，并在文件中添加如下内容：
 		\begin{lstlisting}
 	# 创建[mysqld]这一部分
 	[mysqld]
@@ -224,12 +229,12 @@
 	innodb_file_per_table
 	max_connections = 4096
 	collation-server = utf8_general_ci
-	chracter-set-server = utf8
+	character-set-server = utf8
 		\end{lstlisting}
 
 		\item[3.] 重启数据库服务，命令如下：
 		\begin{lstlisting}
-	service mysql restart
+	sudo service mysql restart
 		\end{lstlisting}
 
 		\item[4.] 修改数据库root用户密码，命令如下：
@@ -284,7 +289,7 @@
 	sudo apt install memcached python-memcache
 		\end{lstlisting}
 
-		\item[2.] 修改/etc/memcached.conf文件，将“-l 127.0.0.1”改为“-l 10.0.0.11”，
+		\item[2.] 修改/etc/memcached.conf文件，将“-l 10.0.0.11”改为“-l 127.0.0.1”，
 		使得其他节点可以通过管理网络来访问其他节点。
 
 		\item[3.] 重启Memcached服务，命令如下：

@@ -1,0 +1,8 @@
+\BOOKMARK [1][-]{section.1}{ret和retf}{}% 1
+\BOOKMARK [1][-]{section.2}{call指令}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{根据位移进行转移的call指令}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{转移的目的地址在指令中的call指令}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{转移的目的地址在寄存器中的call指令}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{转移的目的地址在内存中的call指令}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{call和ret指令的配合使用}{}% 7
+\BOOKMARK [1][-]{section.4}{mul指令}{}% 8

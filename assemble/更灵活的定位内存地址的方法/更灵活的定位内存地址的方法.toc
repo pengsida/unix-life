@@ -1,0 +1,7 @@
+\contentsline {section}{\numberline {1}以字符形式给出的数据}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}例程}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}分析例程}{2}{subsection.1.2}
+\contentsline {section}{\numberline {2}[bx+idata]}{2}{section.2}
+\contentsline {section}{\numberline {3}SI和DI}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}[bx+si]和[bx+di]}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}[bx+si+idata]和[bx+di+idata]}{3}{subsection.3.2}
