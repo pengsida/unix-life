@@ -1,0 +1,432 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{控制节点的安装 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+\clearpage
+
+\section{手动安装OpenStack}
+
+\subsection{配置系统环境}
+\subsubsection{配置网络接口}
+	在/etc/network/interfaces中添加如下内容：
+	\begin{lstlisting}
+	auto ens4
+	iface ens4 inet manual
+	up ip link set dev $IFACE up
+	down up link set dev $IFACE down
+	\end{lstlisting}	
+
+	然后重启系统，命令如下：
+	\begin{lstlisting}
+	reboot
+	\end{lstlisting}
+
+\subsubsection{配置域名解析}
+	将主机名设置为controller，并编辑/etc/hosts文件，包含如下内容：
+	\begin{lstlisting}
+	127.0.0.1	localhost controller
+	# 网卡ens3的iP地址
+	10.0.0.11       controller
+	\end{lstlisting}
+
+	需要注意的是，一定要把以“127.0.1.1”开头的行删除。
+
+\subsubsection{安装chrony}
+	为了在各个节点之间同步服务，我们需要安装chrony，用于实现网络时间同步协议。
+	\begin{itemize}
+		\item[1.] 安装软件包chrony：
+		\begin{lstlisting}[language = bash]
+	sudo apt-get install chrony
+		\end{lstlisting}
+
+		\item[2.] 编辑/etc/chrony/chrony.conf文件，将其中的server值进行修改，命令如下：
+		\begin{lstlisting}
+	# NTP_SERVER是节点的主机名或IP地址
+	server NTP_SERVER iburst
+		\end{lstlisting}
+
+		需要注意的是，每次修改chrony.conf这个文件后，都需要重启chrony服务，命令如下：
+		\begin{lstlisting}
+	sudo service chrony restart
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{OpenStack包}
+	\begin{itemize}
+		\item[1.] 启用OpenStack仓库，命令如下：
+		\begin{lstlisting}
+	sudo apt install software-properties-common
+	sudo add-apt-repository cloud-archive:newton
+		\end{lstlisting}
+
+		\item[2.] 在主机上升级包，命令如下：
+		\begin{lstlisting}
+	sudo apt update && sudo apt dist-upgrade
+		\end{lstlisting}
+
+		需要注意的是，如果更新了内核，需要重启电脑来使用新内核。
+
+		\item[3.] 安装openstack客户端，命令如下：
+		\begin{lstlisting}
+	sudo apt install python-openstackclient
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{安装SQL数据库}
+	大多数OpenStack服务使用SQL数据库存储信息，数据库一般在控制节点上运行。
+	安装步骤如下所示：
+	\begin{itemize}
+		\item[1.] 安装软件包，命令如下：
+		\begin{lstlisting}
+	sudo apt install mariadb-server python-pymysql
+		\end{lstlisting}
+
+		\item[2.] 创建/etc/mysql/mariadb.conf.d/99-openstack.cnf文件，并在文件中添加如下内容：
+		\begin{lstlisting}
+	# 创建[mysqld]这一部分
+	[mysqld]
+	# 将bind-address的值设为控制节点的管理网络的IP地址
+	bind-address = 10.0.0.11
+
+	default-storage-engine = innodb
+	innodb_file_per_table
+	max_connections = 4096
+	collation-server = utf8_general_ci
+	character-set-server = utf8
+		\end{lstlisting}
+
+		\item[3.] 重启数据库服务，命令如下：
+		\begin{lstlisting}
+	sudo service mysql restart
+		\end{lstlisting}
+
+	% 	\item[4.] 修改数据库root用户密码，命令如下：
+	% 	\begin{lstlisting}
+	% # 首先登陆mysql
+	% sudo mysql -u root
+	% # 更改数据库
+	% use mysql;
+	% # 然后修改密码，‘123456’是root用户的新密码
+	% GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '123456' WITH GRANT OPTION;
+	% flush privileges;
+	% quit;
+	% # 重启mysql服务
+	% sudo service mysql restart
+	% 	\end{lstlisting}
+
+		\item[4.] 运行mysql\_secure\_installation脚本来设置root用户的密码，并设置一些选项来保护数据库服务，命令如下所示：
+		\begin{lstlisting}
+	sudo mysql_secure_installation
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{配置消息队列服务}
+	OpenStack使用消息队列服务来协调各服务之间的运行，并且通报各服务之间的状态信息。
+	消息队列服务一般在控制节点上运行。
+	安装RabbitMQ消息队列服务的步骤如下所示：
+	\begin{itemize}
+		\item[1.] 安装rabbitmq软件包，命令如下：
+		\begin{lstlisting}
+	sudo apt install rabbitmq-server
+		\end{lstlisting}
+
+		\item[2.] 添加openstack用户，命令如下：
+		\begin{lstlisting}
+	# 123456是密码
+	sudo rabbitmqctl add_user openstack 123456
+		\end{lstlisting}
+
+		\item[3.] 允许对openstack用户进行配置、读和写的操作，命令如下：
+		\begin{lstlisting}
+	sudo rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{安装Memcached}
+	认证服务的验证机制使用Memcached工具来缓存密保令牌。
+	Memcached服务一般在控制节点上运行。
+	安装Memcached的步骤如下所示：
+	\begin{itemize}
+		\item[1.] 安装Memcached软件包，命令如下：
+		\begin{lstlisting}
+	sudo apt install memcached python-memcache
+		\end{lstlisting}
+
+		\item[2.] 修改/etc/memcached.conf文件，将“-l 10.0.0.11”改为“-l 127.0.0.1”，
+		使得其他节点可以通过管理网络来访问其他节点。
+
+		\item[3.] 重启Memcached服务，命令如下：
+		\begin{lstlisting}
+	sudo service memcached restart
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{配置认证服务}
+\subsubsection{创建一个数据库}
+	在配置OpenStack认证服务之前，需要先创建一个数据库和管理员认证令牌，步骤如下所示：
+	\begin{itemize}
+		\item[1.] 首先以root用户的身份登陆数据库服务器，命令如下：
+		\begin{lstlisting}
+	mysql -u root -p
+		\end{lstlisting}
+
+		\item[2.] 更换数据库，命令如下：
+		\begin{lstlisting}
+	use mysql;
+		\end{lstlisting}
+
+		\item[3.] 创建keystone数据库，命令如下：
+		\begin{lstlisting}
+	CREATE DATABASE keystone;
+		\end{lstlisting}
+
+		\item[4.] 设置keystone数据库的权限以及对keystone的访问密码，命令如下：
+		\begin{lstlisting}
+	# 123456是keystone数据库的访问密码
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456';
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456';
+		\end{lstlisting}
+
+		\item[5.] 刷新数据库，并重启数据库，命令如下：
+		\begin{lstlisting}
+	FLUSH PRIVILEGES;
+	quit;
+	sudo service mysql restart
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{安装keystone}
+	安装keystone的步骤如下所示：
+	\begin{itemize}
+		\item[1.] 安装keystone的包，命令如下：
+		\begin{lstlisting}
+	sudo apt install keystone
+		\end{lstlisting}
+
+		\item[2.] 编辑/etc/keystone/keystone.conf文件，在[database]一节添加如下内容：
+		\begin{lstlisting}
+	[database]
+	# ...
+	# 123456是之前所设置的数据库的密码
+	connection=mysql+pymysql://keystone:123456@controller/keystone
+		\end{lstlisting}
+
+		在[token]一节添加如下内容：
+		\begin{lstlisting}
+	[token]
+	# ...
+	provider=fernet
+		\end{lstlisting}
+
+		\item[3.] 初始化认证服务的数据库，命令如下：
+		\begin{lstlisting}
+	su
+	su -s /bin/sh -c "keystone-manage db_sync" keystone
+		\end{lstlisting}
+
+		\item[4.] 初始化Fernet key的仓库，命令如下：
+		\begin{lstlisting}
+	sudo keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+	sudo keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+		\end{lstlisting}
+
+		\item[5.] 启动认证服务，命令如下：
+		\begin{lstlisting}
+	# 123456是认证服务的密码
+	sudo keystone-manage bootstrap --bootstrap-password 123456 \
+	--bootstrap-admin-url http://controller:35357/v3/ \
+	--bootstrap-internal-url http://controller:35357/v3/ \
+	--bootstrap-public-url http://controller:5000/v3/ \
+	--bootstrap-region-id RegionOne
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{配置Apache HTTP服务器}
+	配置Apache HTTP服务器的步骤如下所示：
+	\begin{itemize}
+		\item[1.] 编辑/etc/apache2/apache2.conf文件，将ServerName选项设置为控制节点，添加的代码如下：
+		\begin{lstlisting}
+	ServerName controller
+		\end{lstlisting}
+
+		\item[2.] 重启Apache服务，并移除默认的SQLite数据库，命令如下：
+		\begin{lstlisting}
+	sudo service apache2 restart
+	sudo rm -f /var/lib/keystone/keystone.db
+		\end{lstlisting}
+
+		\item[3.] 设置管理账户，命令如下：
+		\begin{lstlisting}
+	export OS_USERNAME=admin
+	# 123456是启动认证服务时设置的密码
+	export OS_PASSWORD=123456
+	export OS_PROJECT_NAME=admin
+	export OS_USER_DOMAIN_NAME=Default
+	export OS_PROJECT_DOMAIN_NAME=Default
+	export OS_AUTH_URL=http://controller:35357/v3
+	export OS_IDENTITY_API_VERSION=3
+		\end{lstlisting}
+	\end{itemize}
+
+\subsubsection{创建一个domain、projects、users和roles}
+	首先创建一个service project，命令如下：
+	\begin{lstlisting}
+	openstack project create --domain default --description "Service Project" service
+	\end{lstlisting}
+
+	常规的任务应该使用一个非特权project和user，所以还需要创建一个demo project和一个demo user，命令如下：
+	\begin{lstlisting}
+	# 创建一个demo project
+	openstack project create --domain default --description "Demo Project" demo
+	# 创建一个demo user
+	openstack user create --domain default --password-prompt demo
+	\end{lstlisting}
+
+	随后创建一个user role，并把这个user role加到这个demo project和demo user中，命令如下：
+	\begin{lstlisting}
+	openstack role create user
+	openstack role add --project demo --user demo user
+	\end{lstlisting}
+	
+\end{document}

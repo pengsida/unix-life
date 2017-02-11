@@ -77,9 +77,9 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=C,
+	language=[x86masm]Assembler,
 	numbers=left,
-	numberstyle=\tiny\color{white},
+	numberstyle=\tiny\color{black},
 	showspaces=false,
 	showstringspaces=false,
 	basicstyle=\scriptsize,
@@ -89,8 +89,8 @@
 	frame=lines,
 	% escapeinside=``,
 	extendedchars=true, 
-	xleftmargin=0em,
-	xrightmargin=0em, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
 	backgroundcolor=\color{cred},
 	aboveskip=1em,
 	breaklines=true,
@@ -120,15 +120,6 @@
 
 \newcommand{\interval}{\vspace{0.5em}}
 
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
-
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -137,7 +128,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{libvirt的安装 \qquad}
+\chead{vim中实现括号和引号自动补全 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -145,102 +136,50 @@
 
 \clearpage
 
+\section{vim中实现括号和引号自动补全}
 
-\section{libvirt的安装}
-	首先声明，这个仅在ubuntu16.04下配置过，配置日期为2016.12.25。\par
-	安装libvirt的步骤如下：
-	\begin{itemize}
-		\item[1.] 首先检查是否安装过libvirt，命令如下所示：
-		\begin{lstlisting}
-	which libvirtd
-		\end{lstlisting}
+	将以下内容加入/etc/vim/vimrc中将实现“、(、[、{的自动补全，还可以实现html、xml中<的自动补全。
+	\begin{lstlisting}
+	inoremap ( ()<Esc>i
+	inoremap [ []<Esc>i
+	inoremap { {<CR>}<Esc>O
+	autocmd Syntax html,xml,vim inoremap < <><Esc>i
+	inoremap ) <c-r>=ClosePair(')')<CR>
+	inoremap ] <c-r>=ClosePair(']')<CR>
+	inoremap } <c-r>=CloseBracket()<CR>
+	inoremap " <c-r>=QuoteDelim('"')<CR>
+	inoremap ' <c-r>=QuoteDelim("'")<CR>
 
-		如果有安装过libvirt，就应该先清除之前装过的libvirt，命令如下所示：
-		\begin{lstlisting}
-	// 仅在ubuntu16.04下试验过
-	sudo apt remove libvirt-bin
-		\end{lstlisting}
+	function ClosePair(char)
+	if getline('.')[col('.') - 1] == a:char
+	return "\<Right>"
+	else
+	return a:char
+	endif
+	endf
 
-		\item[2.] 下载libvirt的源代码，命令如下所示：
-		\begin{lstlisting}
-	// 下载日期为2016.12.25，此时最新版本为2.5.0
-	wget http://libvirt.org/sources/libvirt-2.5.0.tar.xz
-		\end{lstlisting}
+	function CloseBracket()
+	if match(getline(line('.') + 1), '\s*}') < 0
+	return "\<CR>}"
+	else
+	return "\<Esc>j0f}a"
+	endif
+	endf
 
-		\item[3.] 配置libvirt前，需要安装一些工具。相关命令如下所示：
-		\begin{lstlisting}
-	sudo apt-get install libpciaccess-dev
-	sudo apt-get install libxml++2.6-2v5
-	sudo apt-get install libxml++2.6-dev
-	sudo apt-get install libyajl-dev
-	sudo apt-get install libdevmapper-dev
-	sudo apt-get install libnl-3-dev
-	sudo apt-get install libnl-route-3-dev
-		\end{lstlisting}
-
-		\item[4.] 配置libvirt，命令如下所示：
-		\begin{lstlisting}
-	./configure
-		\end{lstlisting}
-
-		\item[5.] 编译libvirt，命令如下所示：
-		\begin{lstlisting}
-	make -j 4
-		\end{lstlisting}
-
-		\item[6.] 安装libvirt，命令如下所示：
-		\begin{lstlisting}
-	sudo make install
-		\end{lstlisting}
-
-		\item[7.] 配置动态链接，命令如下所示：
-		\begin{lstlisting}
-	sudo vi /etc/ld.so.conf.d/libc.conf
-		\end{lstlisting}
-
-		将文件内容写为下图中的内容：
-		\sizedfic{0.5}{1.png}
-
-		然后再输入如下命令：
-		\begin{lstlisting}
-	sudo ldconfig
-		\end{lstlisting}
-
-		\item[8.] 检查是否安装成功，命令如下所示：
-		\begin{lstlisting}
-	which libvirtd
-	libvirtd --version
-	virsh
-		\end{lstlisting}
-
-		如果安装成功，将得到如下图的结果：
-		\fic{2.png}
-	\end{itemize}
-
-	接下来还需要安装几个包来使用libvirt的虚拟网络，步骤如下：
-	\begin{itemize}
-		\item[1.] 安装bridge-utils、ebtables、firewalld和dnsmasq，命令如下：
-		\begin{lstlisting}
-	sudo apt install bridge-utils
-	sudo apt install ebtables
-	sudo apt install firewalld
-	sudo apt install dnsmasq
-		\end{lstlisting}
-
-		\item[2.] 启动firewalld服务，并重启libvirt，命令如下：
-		\begin{lstlisting}
-	sudo systemctl start firewalld
-	sudo systemctl enable firewalld
-	sudo systemctl restart libvirtd
-		\end{lstlisting}
-
-		\item[3.] 查看虚拟网络是否可以使用，命令如下：
-		\begin{lstlisting}
-	sudo libvirtd
-	sudo virsh net-list
-		\end{lstlisting}
-
-		如果有看到default网络，就说明libvirt虚拟网络可以使用。
-	\end{itemize}
+	function QuoteDelim(char)
+	let line = getline('.')
+	let col = col('.')
+	if line[col - 2] == "\\"
+	"Inserting a quoted quotation mark into the string
+	return a:char
+	elseif line[col - 1] == a:char
+	"Escaping out of the string
+	return "\<Right>"
+	else
+	"Starting a string
+	return a:char.a:char."\<Esc>i"
+	endif
+	endf
+	\end{lstlisting}
 
 \end{document}

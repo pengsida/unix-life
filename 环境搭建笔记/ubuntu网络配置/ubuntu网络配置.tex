@@ -1,0 +1,417 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{ubuntu网络配置 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{以太网接口}
+	ubuntu系统使用ethX来认证以太网接口，其中X代表一个数值。
+	第一个以太网接口为eth0，第二个以太网接口为eth1，依此类推。
+
+\subsection{查询以太网接口}
+	可以使用如下命令查询系统的以太网接口：
+	\begin{lstlisting}
+	ifconfig -a | grep eth
+	\end{lstlisting}
+
+	还可以使用如下命令查询系统中的所有以太网接口：
+	\begin{lstlisting}
+	lshw -class network
+	\end{lstlisting}
+
+\subsection{更改以太网接口名}
+	以太网接口名在/etc/udev/rules.d/70-persistent-net.rules中配置，如果想要给以太网接口另取名字的话，
+	可以先找到对应的mac地址的以太网接口，然后将如下值改为自己想要的名字：
+	\begin{lstlisting}
+	# ethX是原值，可以将它改为自己想要的名字
+	NAME=ethX
+	\end{lstlisting}
+
+	修改之后，重启系统即可。
+
+\subsection{设置以太网接口}
+	以太网卡的设置包括：自动协商、端口速度、双工模式和Wake-on-LAN方式。
+	可以使用ethtool工具设置以太网卡，安装命令如下：
+	\begin{lstlisting}
+	sudo apt install ethtool
+	\end{lstlisting}
+
+	通过以下命令可以查看以太网卡的设置：
+	\begin{lstlisting}
+	ethtool eth0
+	\end{lstlisting}
+
+	ethtool设置以太网卡的命令格式如下：
+	\begin{lstlisting}
+	# DEVNAME是网卡名
+	ethtool [options] -s DEVNAME
+	\end{lstlisting}
+
+	ethtool的options可以通过“ethtool -h”查看。\par
+
+	需要注意的是，ethtool对以太网卡的设置是暂时的，当系统重启后将恢复原样。
+	如果想永久性地设置以太网卡，需要编辑/etc/network/interfaces文件。如下例所示：
+	\begin{lstlisting}
+	# /etc/network/interfaces
+	auto eth0
+	# 网卡可以不是静态
+	iface eth0 inet static
+	# 使用ethtool设置网卡，速度为1000Mb/s，全双工模式
+	pre-up /sbin/ethtool -s eth0 speed 1000 duplex full
+	\end{lstlisting}
+
+\section{IP地址}
+	这一节将介绍如何配置ubuntu的IP地址和默认网关，从而让系统可以在局域网和互联网在通信。
+
+\subsection{暂时的IP地址分配}
+	我们可以使用“ip”、“ifconfig”和“route”等命令来对网络进行暂时地配置。
+	需要知道的是，这些配置不是永久性的，当系统重启后将恢复原样。\par
+
+\subsubsection{使用ifconfig设置IP地址}
+
+	如下例，用“ifconfig”命令暂时性地设置eth0的IP地址和子网掩码：
+	\begin{lstlisting}
+	sudo ifconfig eth0 10.0.0.100 netmask 255.255.255.0
+	\end{lstlisting}
+
+	使用“ifconfig”设置网络的命令如下：
+	\begin{lstlisting}
+	ifconfig <interfaces> [options]
+	\end{lstlisting}
+
+	上述命令的options可以通过“ifconfig -h”命令查看。\par
+
+	还可以通过“ifconfig”来查看网卡的网络设置，如下例所示：
+	\begin{lstlisting}
+	ifconfig eth0
+	\end{lstlisting}
+
+\subsubsection{使用route设置默认网关}
+	可以使用“route”命令为网卡接口添加默认网关，如下例所示：
+	\begin{lstlisting}
+	# 将eth0的默认网关设置为10.0.0.1
+	sudo route add default gw 10.0.0.1 eth0
+	\end{lstlisting}
+
+	可以通过如下命令查看内核的IP路由表：
+	\begin{lstlisting}
+	route -n
+	\end{lstlisting}
+
+\subsubsection{暂时设置dns}
+	可以通过编辑/etc/resolv.conf这个文件来暂时设置网络的域名服务器，如下例所示：
+	\begin{lstlisting}
+	nameserver 8.8.8.8
+	nameserver 8.8.4.4
+	\end{lstlisting}
+
+	这个修改是暂时的，当系统重启后将恢复原状。
+
+\subsubsection{恢复原状}
+	如果想清除对一个网卡做出的配置，可以使用如下命令：
+	\begin{lstlisting}
+	# DEVNAME是网卡的名字
+	ip addr flush DEVNAME
+	\end{lstlisting}
+
+	需要注意的是，上述命令并不会还原对域名服务器的改动。如果要还原DNS，需要重启系统或者修改/etc/resolv.conf这个文件。
+
+\subsection{动态IP地址分配}
+	通过编辑/etc/network/interfaces，可以将网卡ethX设置为动态IP地址分配：
+	\begin{lstlisting}
+	# /etc/network/interfaces
+	auto ethX
+	iface ethX inet dhcp
+	\end{lstlisting}
+
+	随后还需要通过“ifup”命令启动一个以太网接口，同时开始该网卡的DHCP进程，命令如下：
+	\begin{lstlisting}
+	sudo ifup ethX
+	\end{lstlisting}
+
+	如果想手动关闭一个以太网接口，可以使用“ifdown”命令，这条命令同时会启动DHCP释放进程关闭动态IP地址分配，命令格式如下：
+	\begin{lstlisting}
+	sudo ifdown ethX
+	\end{lstlisting}
+
+\subsection{静态IP地址分配}
+	如果想让一个以太网接口使用静态IP地址分配，可以在/etc/network/interfaces添加如下内容，以eth0为例：
+	\begin{lstlisting}
+	# /etc/network/interfaces
+	auto eth0
+	iface eth0 inet static
+	\end{lstlisting}
+
+	同时还需要设置IP地址、子网掩码和网关，依然以eth0为例：
+	\begin{lstlisting}
+	# /etc/network/interfaces
+	auto eth0
+	iface eth0 inet static
+	address 10.0.0.100
+	netmask 255.255.255.0
+	gateway 10.0.0.1
+	\end{lstlisting}
+
+	随后还需要手动启动eth0这个以太网接口，命令如下：
+	\begin{lstlisting}
+	sudo ifup eth0
+	\end{lstlisting}
+
+	如果想关闭eth0这个接口，可以使用如下命令：
+	\begin{lstlisting}
+	sudo ifdown eth0
+	\end{lstlisting}
+
+\subsection{回环接口lo}
+	回环接口在ubuntu中称为lo，它的默认IP地址为127.0.0.1，可以通过“ifconfig”查看它的详细信息，命令如下所示：
+	\begin{lstlisting}
+	ifconfig lo
+	\end{lstlisting}
+
+	在/etc/network/interfaces文件中对lo有如下默认设置：
+	\begin{lstlisting}
+	# /etc/network/interfaces
+	auto lo
+	iface lo inet loopback
+	\end{lstlisting}
+
+	需要注意的是，如果没有明确目的，不要修改这个设置。
+
+\section{名称解析}
+	名称解析就是将IP地址映射为主机名的过程，从而使得资源在网络上更好辨别。
+	接下来的部分将介绍使用DNS和静态主机名记录配置ubuntu系统，从而正确地进行名字解析。
+
+\subsection{DNS客户端配置}
+	一般来说，/etc/resolv.conf这个文件的内容是固定不变的。
+	现在的电脑会频繁地切换网络，而resolvconf框架被用来跟踪这些变化并更新resolver的配置。
+	resolvconf框架作为一个中介，用于关联提供nameserver信息的程序和需要nameserver信息的应用。
+	resolvconf框架通过一组与网络接口配置有关的hook脚本来填充信息。
+	对于用户最明显的区别是，任何对/etc/resolv.conf文件的手动修改都会被还原，因为只是resolvconf框架被触发，这个文件都会被覆写。
+	而对于reolvconf框架而言，它使用DHCP客户端的hook和/etc/network/interfaces来修改/etc/resolv.conf。\par
+
+	我们可以通过修改/etc/network/interfaces文件来配置resolver，添加的内容如下例所示：
+	\begin{lstlisting}
+	iface eth0 inet static
+		address 192.168.3.3
+		netmask 255.255.255.0
+		gateway 192.168.3.1
+		dns-search example.com
+		dns-nameservers 192.168.3.45 192.168.8.10
+	\end{lstlisting}
+
+	其中，IP地址、子网掩码和网关需要正确配置，而以“dns-”为前缀的选项是可选的，用于配置resolv.conf的其他配置选项。\par
+
+	需要知道的是，“dns-search”选项中的域名可以包含多个，如下例所示：
+	\begin{lstlisting}
+	iface eth0 inet static
+		address 192.168.3.3
+		netmask 255.255.255.0
+		gateway 192.168.3.1
+		dns-search example.com sales.example.com dev.example.com
+		dns-nameservers 192.168.3.45 192.168.8.10
+	\end{lstlisting}
+
+\subsection{静态主机名}
+	静态主机名就是主机名与IP地址的相互映射，这些映射关系在/etc/hosts文件中记录。
+	在hosts文件中记录的条目优先于DNS，也就是说，如果需要解析的主机名在hosts文件中被记录，系统将不会再去查询DNS的映射关系。
+	当主机名较少且不需要访问Internet时，优先选择配置/etc/hosts文件。\par
+
+	如下是/etc/hosts文件的内容示例：
+	\begin{lstlisting}
+	127.0.0.1	localhost
+	127.0.0.1	ubuntu-server
+	10.0.0.11	server1 server1.example.com vpn
+	10.0.0.12	server2 server2.example.com mail
+	10.0.0.13	server3 server3.example.com www
+	10.0.0.14	server4 server4.example.com file
+	\end{lstlisting}
+
+\subsection{配置name service switch}
+	/etc/nsswitch.conf文件中配置着系统选择将主机名解析为IP地址的方法的顺序，默认配置如下所示：
+	\begin{lstlisting}
+	hosts:	files mdns4_minimal [NOTFOUND=return] dns mdns4
+	\end{lstlisting}
+
+	其中files代表/etc/hosts文件，mdns4\_minimal代表Multicast DNS，[NOTFOUND=return]代表解析到此结束，dns代表传统的单播DNS查询，mdns4代表Multicast DNS查询。
+	如果想让dns作为第二优先级，可以将/etc/nsswitch.conf文件修改为如下所示：
+	\begin{lstlisting}
+	hosts:	files dns [NOTFOUND=return] mdns4_minimal mdns4
+	\end{lstlisting}
+
+\section{桥接}
+	桥接多个接口比较复杂，但是在一些方案中很有用。
+	一个方案是在多个网络接口之间建立网桥，然后使用一个防火墙来滤除两个网段之间的连接。
+	另一个方案是利用网桥让虚拟机可以访问外部网络。\par
+	接下来就介绍如何让一个虚拟机通过网桥访问外部网络：
+	\begin{itemize}
+		\item[1.] 首先在宿主机上安装bridge-utils包，命令如下：
+	\begin{lstlisting}
+	sudo apt install bridge-utils
+	\end{lstlisting}
+
+		\item[2.] 然后编辑宿主机上的/etc/network/interfaces文件，添加网桥的内容如下：
+		\begin{lstlisting}
+	# ...
+	auto br0
+	iface br0 inet static
+		# address和netmask的值需要是一个合适的值
+		address 192.168.0.10
+		network 192.168.0.0
+		netmask 255.255.255.0
+		broadcast 192.168.0.255
+		gateway 192.168.0.1
+		bridge_ports eth0
+		bridge_fd 9
+		bridge_hello 2
+		bridge_maxage 12
+		bridge_stp off
+		\end{lstlisting}
+
+		\item[3.] 建立网桥，命令如下：
+		\begin{lstlisting}
+	sudo ifup br0
+		\end{lstlisting}
+	\end{itemize}
+
+\end{document}

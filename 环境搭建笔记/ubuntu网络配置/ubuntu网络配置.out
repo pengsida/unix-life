@@ -1,0 +1,18 @@
+\BOOKMARK [1][-]{section.1}{以太网接口}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{查询以太网接口}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{更改以太网接口名}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{设置以太网接口}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{IP地址}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{暂时的IP地址分配}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.1}{使用ifconfig设置IP地址}{subsection.2.1}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.2}{使用route设置默认网关}{subsection.2.1}% 8
+\BOOKMARK [3][-]{subsubsection.2.1.3}{暂时设置dns}{subsection.2.1}% 9
+\BOOKMARK [3][-]{subsubsection.2.1.4}{恢复原状}{subsection.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.2}{动态IP地址分配}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.3}{静态IP地址分配}{section.2}% 12
+\BOOKMARK [2][-]{subsection.2.4}{回环接口lo}{section.2}% 13
+\BOOKMARK [1][-]{section.3}{名称解析}{}% 14
+\BOOKMARK [2][-]{subsection.3.1}{DNS客户端配置}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.2}{静态主机名}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.3}{配置name service switch}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{桥接}{}% 18

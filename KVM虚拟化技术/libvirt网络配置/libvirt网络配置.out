@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{介绍相关的元素和属性}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{一般性的元数据}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{控制网络连接的元素}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{设置vlan标签}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{静态路由}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.5}{IP地址}{section.1}% 6
+\BOOKMARK [1][-]{section.2}{网络配置举例}{}% 7
+\BOOKMARK [2][-]{subsection.2.1}{基于NAT的网络}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.2}{基于route的网路}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.3}{配置被隔离的网络}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.4}{使用宿主机的网桥}{section.2}% 11

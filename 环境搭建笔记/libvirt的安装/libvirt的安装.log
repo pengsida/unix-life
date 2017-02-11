@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  23 JAN 2017 14:16
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  10 FEB 2017 17:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1986,7 +1986,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 ]
 File: 2.png Graphic file (type QTm)
- <use  "2.png" > 
+ <use  "2.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1994,25 +2001,25 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 222.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 222.
+[3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 246.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 246.
  (./libvirt的安装.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 222.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 222.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 246.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 246.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 222.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 246.
  ) 
 Here is how much of TeX's memory you used:
- 30943 strings out of 493591
- 560923 string characters out of 6143546
+ 30975 strings out of 493591
+ 561788 string characters out of 6143546
  703226 words of memory out of 5000000
- 33950 multiletter control sequences out of 15000+600000
+ 33982 multiletter control sequences out of 15000+600000
  9299 words of font info for 73 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
  48i,11n,72p,10367b,1256s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on libvirt的安装.pdf (2 pages).
+Output written on libvirt的安装.pdf (3 pages).

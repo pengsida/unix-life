@@ -1,0 +1,455 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=xml,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{libvirt网络配置 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{介绍相关的元素和属性}
+	对于网络的配置，根元素是“network”，如下所示：
+	\begin{lstlisting}
+	<network>
+		...
+	</network>
+	\end{lstlisting}
+
+\subsection{一般性的元数据}
+	首先看下面的例子：
+	\begin{lstlisting}
+	<network ipv6='yes' trustGuestRxFilters='no'>
+		<name>default</name>
+		<uuid>3e3fce45-4f53-4fa7-bb32-11f34168b82b</uuid>
+		<metadata>
+			<app1:foo xmlns:app1="http://app1.org/app1/">...</app1:foo>
+			<app2:bar xmlns:app2="http://app2.org/app2/">...</app2:bar>
+		</metadata>
+	</network>
+	\end{lstlisting}
+
+	下面是对例子中各元素和属性的介绍：
+	\begin{itemize}
+		\item network，是网络配置的根元素。
+		\begin{itemize}
+			\item ipv6，是network的属性。当ipv6=“yes”时，虚拟机有IPv6的网关地址。
+			\item trustGuestRxFilters，当trustGuestRxFilters="yes"时，宿主机将检测并信任虚拟机中接口mac地址的变化，并且接受过滤器。
+		\end{itemize}
+		\item name，虚拟网络的名称，只能是英文。
+		\item uuid，虚拟网络的unique identifier。
+	\end{itemize}
+
+\subsection{控制网络连接的元素}
+	首先看下面的例子：
+	\begin{lstlisting}
+	<network>
+		<bridge name="virbr0" stp="on" delay="5" macTableManager="libvirt"/>
+		<mtu size="9000"/>
+		<domain name="example.com" localOnly="no"/>
+		<forward mode="nat" dev="eth0"/>
+	</network>
+	\end{lstlisting}
+
+	下面是对例子中各元素和属性的介绍：
+	\begin{itemize}
+		\item bridge元素
+		\begin{itemize}
+			\item name，建立虚拟网络的网桥的名称，建议以“virbr”开头。
+			\item stp，用于决定Spaning Tree Protocol是否开启。
+			\item delay，用于设置网桥forward的延迟秒数。
+			\item macTableManager，当macTableManager=“kernel”时，内核将自动管理网络的mac地址表。
+				  当macTableManager=“libvirt”时，libvirt将管理网络的mac地址表，相对而言性能更好。
+		\end{itemize}
+
+		\item mtu元素，用于决定Maximum Transmission Unit，默认值为1500。
+		\item domain元素
+		\begin{itemize}
+			\item name，DHCP服务器的DNS domain的名称。只在nat和route模式中使用。
+			\item localOnly，当localOnly=“yes”时，虚拟机中DNS请求只会被它自己的DNS服务器解析，而不会被宿主机的DNS服务器解析。
+		\end{itemize}
+
+		\item forward元素，如果没有这个元素，说明这个虚拟机是独立于其他网络的。
+		\begin{itemize}
+			\item mode，决定了forward的方式，mode=“nat”时，虚拟机对外部网络的连接都会经过宿主机，宿主机会将虚拟机的IP地址变为自己的IP地址。
+					在这种模式下，即使宿主机只能拥有一个IP地址，也可以让多个虚拟机连接Internet。可以通过<nat>这个子元素来设置虚拟机的网络，
+					通过<address>设置虚拟机的IP地址，通过<port>来设置虚拟机的端口，
+					如下所示：
+					\begin{lstlisting}
+	<forward mode='nat'>
+		<nat>
+			<address start='1.2.3.4' end='1.2.3.10'/>
+			<port start='500' end='1000'/>
+		</nat>
+	</forward>
+					\end{lstlisting}
+
+					当mode=“route”时，虚拟机将通过宿主机的IP routing stack连接到网络。
+					如果dev有赋值，比如dev=“eth0”，那么虚拟机的网络请求将仅转发到eth0网卡上。\par
+
+					当mode=“open”时，libvirt将不会加入任何防火墙规则，所以也不能设置dev属性。\par
+
+					当mode=“bridge”时，虚拟机直接通过网桥连接到外部网络，libvirt不会管理这个网桥接口。\par
+
+					当mode=“private”时，每个物理网络接口只能被一个虚拟机使用，不能多个虚拟机同时使用。\par
+
+					当mode=“passthrough”时，虚拟机要使用的物理接口将从<forward>元素的<interface>子元素中列出的物理接口中选择。
+					每个物理网络接口一次只能由单个客户机使用，并且只会分配未使用的网络接口。
+					如果当一个域的接口连接时没有可用的物理接口，将导致此次连接失败并同时记录错误。如下所示：
+					\begin{lstlisting}
+	<forward mode='passthrough'>
+		<interface dev='eth10'/>
+		<interface dev='eth11'/>
+		<interface dev='eth12'/>
+		<interface dev='eth13'/>
+		<interface dev='eth14'/>
+	</forward>
+					\end{lstlisting}
+
+					此外，还可以通过<pf>子元素调用与多个虚拟接口相关联的相应物理接口来指定和单个物理功能相关联的所有虚拟接口。如下所示：
+					\begin{lstlisting}
+	<forward mode='passthrough'>
+		<pf dev='eth0'/>
+	</forward>
+					\end{lstlisting}
+
+					当mode=“hostdev”时，该网络模式利用了网络设备的PCI passthrough方式。
+					在首先可选地为设备的mac地址和vlan标签赋值后，从接口池中选择网络设备并将其直接分配给虚拟机。
+					其中接口池由<address>元素指定，它的属性包括<type>、<domain>、<bus>、<slot>和<function>。如下所示：
+					\begin{lstlisting}
+	<forward mode='hostdev' managed='yes'>
+		<driver name='vfio'/>
+		<address type='pci' domain='0' bus='4' slot='0' function='1'/>
+		<address type='pci' domain='0' bus='4' slot='0' function='2'/>
+		<address type='pci' domain='0' bus='4' slot='0' function='3'/>
+		<address type='pci' domain='0' bus='4' slot='0' function='4'/>
+	</forward>
+					\end{lstlisting}
+
+					需要注意的是，属性<type>的值一定要是“pci”。\par
+
+					可选的，这个接口池也可以由<pf>子元素定义，用于调用与多个虚拟接口相关联的相应物理接口。如下所示：
+					\begin{lstlisting}
+	<forward mode='hostdev' managed='yes'>
+		<pf dev='eth0'/>
+	</forward>
+					\end{lstlisting}
+		\end{itemize}
+	\end{itemize}
+
+\subsection{设置vlan标签}
+	首先看下面的例子：
+	\begin{lstlisting}
+	<network>
+		<name>ovs-net</name>
+		<forward mode='bridge'/>
+		<bridge name='ovsbr0'/>
+		<virtualport type='openvswitch'>
+			<parameters interfaceid='09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f'/>
+		</virtualport>
+		<vlan trunk='yes'>
+			<tag id='42' nativeMode='untagged'/>
+			<tag id='47'/>
+		</vlan>
+		<portgroup name='dontpanic'>
+			<vlan>
+				<tag id='42'/>
+			</vlan>
+		</portgroup>
+	</network>
+	\end{lstlisting}
+
+	从上例可以看出，一个<vlan>元素中可以设置多个标签。
+
+\subsection{静态路由}
+	静态路由用于向宿主机提供路由信息，该路由信息不能直接到达宿主机，但是可以到达虚拟机，然后再从虚拟机到达宿主机。\par
+
+	首先看一个例子：
+	\begin{lstlisting}
+	<network ipv6='yes'>
+		<name>nogw</name>
+		<uuid>7a3b7497-1ec7-8aef-6d5c-38dff9109e93</uuid>
+		<bridge name="virbr2" stp="on" delay="0"/>
+		<mac address='00:16:3E:5D:C7:9E'/>
+	</network>
+	\end{lstlisting}
+
+	上述例子中虚拟网络接口没有IPv4和IPv6的地址。这样的网络可以用于向宿主机提供网络，而这个网络只能通过虚拟机访问。
+	一个既可以访问guest-only网络又可以访问与宿主机相连的网络的虚拟机可以作为一个网关。
+	向“主机可见”的网络添加静态路由来提供路由信息，可以使得IP包能够从宿主机发送到隐藏网络上的客户机。\par
+
+	看下面一个例子：
+	\begin{lstlisting}
+	<ip address="192.168.122.1" netmask="255.255.255.0">
+		<dhcp>
+			<range start="192.168.122.128" end="192.168.122.254"/>
+		</dhcp>
+	</ip>
+	<route address="192.168.222.0" prefix="24" gateway="192.168.122.2"/>
+	<ip family="ipv6" address="2001:db8:ca2:2::1" prefix="64"/>
+	<route family="ipv6" address="2001:db8:ca2:3::" prefix="64" gateway="2001:db8:ca2:2::2"/>
+	<route family="ipv6" address="2001:db9:4:1::" prefix="64" gateway="2001:db8:ca2:2::3" metric='2'/>
+	\end{lstlisting}
+
+	上面是定义网络的一个片段，显示了静态路由规范和网络地址的IPv4和IPv6定义。
+	第三个静态路由规范中的“metric”属性用于定义静态路由规范的优先级，数值越低优先级越高，默认值为1。
+
+\subsection{IP地址}
+	对于IP地址的配置，仅适于被孤立的网络或者模式为“route”或“nat”的网络。\par
+
+	首先看一个例子：
+	\begin{lstlisting}
+	<mac address='00:16:3E:5D:C7:9E'/>
+	<domain name="example.com"/>
+	<dns>
+		<txt name="example" value="example value"/>
+		<forwarder addr="8.8.8.8"/>
+		<forwarder domain='example.com' addr="8.8.4.4"/>
+		<forwarder domain='www.example.com'/>
+		<srv service='name' protocol='tcp' domain='test-domain-name' target='.' port='1024' priority='10' weight='10'/>
+		<host ip='192.168.122.2'>
+			<hostname>myhost</hostname>
+			<hostname>myhostalias</hostname>
+		</host>
+	</dns>
+	<ip address="192.168.122.1" netmask="255.255.255.0" localPtr="yes">
+		<dhcp>
+			<range start="192.168.122.100" end="192.168.122.254"/>
+			<host mac="00:16:3e:77:e2:ed" name="foo.example.com" ip="192.168.122.10"/>
+			<host mac="00:16:3e:3e:a9:1a" name="bar.example.com" ip="192.168.122.11"/>
+		</dhcp>
+	</ip>
+	<ip family="ipv6" address="2001:db8:ca2:2:1" prefix="64" localPtr="yes"/>
+	<route family="ipv6" address="2001:db9:ca1:1::" prefix="64" gateway="2001:db8:ca2:2::2"/>
+	\end{lstlisting}
+
+	下面是对例子中各元素和属性的介绍：
+	\begin{itemize}
+		\item mac元素，其中address属性用于定义网卡的mac地址。如果不设置的话libvirt会自动产生随机的mac地址。
+		\item dns元素，用于设置虚拟网络的DNS服务器。它的属性enable=“no”时，虚拟网络将不会有DNS服务器。
+			  它的属性forwardPlainNames=“no”时，不符合规格的域名将不会被宿主机解析，只会在虚拟机中解析。
+		\item forwarder，dns的子元素，可以有0或多个。它有domain和addr两个属性，用于定义DNS服务器。
+		\item txt，dns的子元素，可以有0或多个。它有name和value两个属性，name是被查询的名字，value是被解析后返回的值。
+		\item host，dns的子元素，属性ip用于定义IP地址，子元素hostname用于定义IP地址对应的名称。
+		\item srv，dns的子元素，其中name和protocol必须赋值，而target、port、priority、weight和domain可选。
+		\item ip，用于定义address、netmask。localPtr=“yes”时，DNS服务器被配置为不从由address和netmask/prefix属性配置的网络转发任何针对IP地址的反向DNS请求。
+		\item tftp，ip的子元素，它的root属性必须被赋值，用于指定TFTP服务的根目录。tftp元素不支持IPv6地址。
+		\item dhcp，ip的子元素，用于设置虚拟网络的DHCP服务。range子元素用于设置IP池的范围，host子元素可以有0到多个。
+	\end{itemize}
+
+\section{网络配置举例}
+\subsection{基于NAT的网络}
+	配置如下所示：
+	\begin{lstlisting}
+	<network>
+		<name>default</name>
+		<bridge name="virbr0"/>
+		<forwarder mode="nat"/>
+		<ip address="192.168.122.1" netmask="255.255.255.0">
+			<dhcp>
+				<range start="192.168.122.2" end="192.168.122.254"/>
+			</dhcp>
+		</ip>
+		<ip family="ipv6" address="2001:db8:ca2:2::1" prefix="64"/>
+	</network>
+	\end{lstlisting}
+
+	加上对IPv6的配置，如下所示：
+	\begin{lstlisting}
+	<network>
+		<name>default6</name>
+		<bridge name="virbr0"/>
+		<forward mode="nat"/>
+		<ip address="192.168.122.1" netmask="255.255.255.0">
+			<dhcp>
+				<range start="192.168.122.2" end="192.168.122.254"/>
+			</dhcp>
+		</ip>
+		<ip family="ipv6" address="2001:db8:ca2:2::1" prefix="64">
+			<dhcp>
+				<range start="2001:db8:ca2:2:1::10" end="2001:db8:ca2:2:1::ff"/>
+			</dhcp>
+		</ip>
+	</network>
+	\end{lstlisting}
+
+\subsection{基于route的网路}
+	基于route的网络将流量从虚拟网络路由到LAN。该网络要求IP地址范围在主机网络上的路由器的路由表中预先配置。
+	以下例子还指定虚拟机流量仅由eth1主机网络设备出去：
+	\begin{lstlisting}
+	<network>
+		<name>local</name>
+		<bridge name="virbr1"/>
+		<forward mode="route" dev="eth1"/>
+		<ip address="192.168.122.1" netmask="255.255.255.0">
+			<dhcp>
+				<range start="192.168.122.2" end="192.168.122.254"/>
+			</dhcp>
+		</ip>
+		<ip family="ipv6" address="2001:db8:ca2:2::1" prefix="64"/>
+	</network>
+	\end{lstlisting}
+
+\subsection{配置被隔离的网络}
+	这种网络使得虚拟机不能访问LAN上的其他机器，但是可以相互访问，也可以访问宿主机。如下所示：
+	\begin{lstlisting}
+	<network>
+		<name>private</name>
+		<bridge name="virbr2"/>
+		<ip address="192.168.152.1" netmask="255.255.255.0">
+			<dhcp>
+				<range start="192.168.152.2" end="192.168.152.254"/>
+			</dhcp>
+		</ip>
+		<ip family="ipv6" address="2001:db8:ca2:3::1" prefix="64"/>
+	</network>
+	\end{lstlisting}
+
+\subsection{使用宿主机的网桥}
+	宿主机中存在网桥“br0”，就可以配置虚拟机网络来使用“br0”。配置如下所示：
+	\begin{lstlisting}
+	<network>
+		<name>host-bridge</name>
+		<forward mode="bridge"/>
+		<bridge name="br0"/>
+	</network>
+	\end{lstlisting}
+
+\end{document}
