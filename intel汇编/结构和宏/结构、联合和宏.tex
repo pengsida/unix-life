@@ -118,17 +118,6 @@
 
 \newcommand{\codefile}[1]{\lstinputlisting{#1}}
 
-\newcommand{\interval}{\vspace{0.5em}}
-
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
-
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -137,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{8086汇编指令集 \qquad}
+\chead{结构、联合和宏 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -145,163 +134,165 @@
 
 \clearpage
 
-\section{8086汇编指令集}
-\subsection{aaa}
-\subsection{adc}
-\subsection{add}
-\subsection{and}
-	add指令有如下几种形式：
+\section{结构}
+\subsection{定义结构}
+	结构使用STRUCT和ENDS伪指令定义，格式如下：
 	\begin{lstlisting}
-	add 寄存器, 数据
-	add 寄存器, 寄存器
-	add 寄存器, 内存单元
-	add 内存单元, 寄存器
+	名字 STRUCT
+		域的声明
+	名字 ENDS
+	\end{lstlisting}	
+
+	如果结构的域有初始值，在定义结构变量时这些初始值就成了结构变量域的默认值。
+	结构中可使用多种类型的初始值，有字符串、整数、数组。初始化数组时，可以使用DUP操作符初始化数组元素。还可以使用“?”，用于代表域未定义。
+	以下是一个例子：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "00000000"
+		LastName BYTE 30 DUP(0)
+		FirstName BYTE ?
+		SalaryHistory DWORD 0, 0, 0, 0
+	Employee ENDS
 	\end{lstlisting}
 
-\subsection{call}
-\subsection{clc}
-\subsection{cld}
-	cld指令的功能是将DF标志置0。\par
+\subsubsection{结构中域的对齐}
+	通过ALIGN伪指令设置一个域或变量的地址对齐方式，格式如下：
+	\begin{lstlisting}
+	ALIGN datatype
+	\end{lstlisting}
 
-	DF标志是方向标志位。当DF=0时，串处理指令操作后si，di递增。当DF=1时，串处理指令操作后si，di递减。
+	如果想让myVar对齐在双字地址边界上，如下操作：
+	\begin{lstlisting}
+	ALIGN DWORD
+	myvar DWORD ?
+	\end{lstlisting}
 
-\subsection{cli}
-\subsection{cmc}
-\subsection{cmp}
-	cmp指令是比较指令，指令格式为：“cmp 操作对象1, 操作对象2”，cmp的功能相当于减法指令，只是不保存结果，然后根据计算结果对标志寄存器进行设置。
+	以下是数据类型的地址对齐方式：
+	\fic{1.png}
+
+	在结构中使用ALIGN伪指令使得成员years对齐在字边界上、成员SalaryHistory对齐在双字边界上，如下所示：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "00000000"
+		LastName BYTE 30 DUP(0)
+		ALIGN WORD
+		Years WORD 0
+		ALIGN DWORD
+		SalaryHistory DWORD 0,0,0,0
+	Employee ENDS
+	\end{lstlisting}
+
+\subsection{声明结构变量}
+	声明结构变量的格式如下：
+	\begin{lstlisting}
+	; identifier是标志符名
+	; structureType是已经定义的结构
+	identifier structureType <initializer-list>
+	\end{lstlisting}
+
+	初始值列表中的值按照从左到右的顺序对结构的相应成员依次赋值，可以插入逗号作为占位符跳过对结构中某些域的初始化，
+	如下所示：
+	\begin{lstlisting}
+	point1 COORD <5,10>
+	person3 Employee <,"dJones">
+	\end{lstlisting}
+
+	对于结构中数组类型的域，可以使用DUP操作符初始化某些或全部数组元素。如果初始化值比域短，那么剩余位置将用0填充。例子如下：
+	\begin{lstlisting}
+	person4 Employee <,,,2 DUP(20000)>
+	\end{lstlisting}
+
+	对于结构中字符串类型的域，如果初始化值比域短，那么剩余位置以空格填充，字符串的末尾不会自动插入空字符。
+
+\subsection{结构中域成员的引用}
+	汇编中对结构成员的引用和C语言类似，例子如下：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "000000000"
+		LastName BYTE 30 DUP(0)
+		ALIGN WORD
+		Years WORD 0
+		ALIGN DWORD
+		SalaryHistory DWORD 0, 0, 0, 0
+	Employee ENDS
+
+	.data
+	worker Employee <>
+
+	.code
+	mov dx, worker.Years
+	mov worker.SalaryHistory, 20000
+	mov [woker.SalaryHistory+4], 30000
+	\end{lstlisting}
+
+\subsection{间接寻址结构数据}
+	使用间接操作数饮用结构时要求使用PTR结构符，如下所示：
+	\begin{lstlisting}
+	mov esi, OFFSET worker
+	mov ax, (Employee PTR [esi]).Years
+	\end{lstlisting}
+
+\subsection{变址寻址结构数据}
+	可以使用变址操作数访问结构数组。假设department是一个包含5歌Employee对象的数组，可以使用下面语句访问其索引位置1处的Employee对象的Years域：
+	\begin{lstlisting}
+	.data
+	department Employee 5 DUP(<>)
+
+	.code
+	mov esi, TYPE Employee
+	mov department[esi].Years, 4
+	\end{lstlisting}
+
+\section{联合}
+	结构的每个域都有一个相对于结构第一个字节的偏移值，而联合中的所有域都是从同一偏移地址开始的，所以联合的大小等于其中最长的域的长度。
+	联合使用UNION和ENDS伪指令声明。
+	当联合不是某个结构的成员时，定义格式如下所示：
+	\begin{lstlisting}
+	unionname UNION
+		union-fields
+	unionname ENDS
+	\end{lstlisting}
+
+	当联合嵌套在结构中时，则格式如下：
+	\begin{lstlisting}
+	structname STRUCT
+		; ...
+		UNION unionname
+			union-fields
+		ENDS
+	structname ENDS
+	\end{lstlisting}
+
+	联合中所有域只能有一个初始化值，如下所示：
+	\begin{lstlisting}
+	Integer UNION
+		D DWORD 1
+		W WORD 5
+		B BYTE 8
+	Integer ENDS
+
+	.data
+	myInt Integer<>
+	\end{lstlisting}
+
+	myInt.D、myInt.W和myInt.B都等于1，而忽略了W和B的初始值。\par
+
+	除了所有域只能有一个初始化值这一点之外，联合的语法和结构的语法完全相同。\par
+
+	联合因为可以使用不同大小的操作数，所以在某些场合下具有灵活性，如下所示：
+	\begin{lstlisting}
+	.data
+	val3 Integer <>
+
+	.code
+	mov val3.B, al
+	mov val3.W, ax
+	mov val3.D, eax
+	\end{lstlisting}
+
+	使用联合时同一时刻只能使用联合中的一种数据类型，以免造成数据的冲突。
+
+\section{宏}
 	
-\subsection{cmps}
-\subsection{dec}
-\subsection{div}
-	div指令是除法指令，对它的介绍如下：
-	\begin{itemize}
-		\item[1.] 除数：有8位和16位两种，在一个寄存器或内存单元中。
-		\item[2.] 被除数：如果除数为8位，那么被除数为16位，默认放在AX中。如果除数为16位，那么被除数为32位，默认在DX和AX中存放，DX存放高16位，AX存放低16位。
-		\item[3.] 结果：如果除数为8位，那么AL存储商，AH存储余数。如果除数为16位，那么AX存储商，DX存储余数。
-		\item[4.] div指令的格式如下：
-		\begin{lstlisting}
-	div reg
-	div 内存单元
-		\end{lstlisting}
-
-		可以看出，div指令的操作对象不可以是段寄存器sreg，只能是寄存器reg。
-	\end{itemize}
-
-\subsection{dup}
-	dup是一个操作符，和db、dw、dd这些指令配合使用。dup的使用格式如下：
-	\begin{itemize}
-		\item db 重复的次数 dup (重复的字节型数据)
-		\item dw 重复的次数 dup (重复的字型数据)
-		\item dd 重复的次数 dup (重复的双字型数据)
-	\end{itemize}
-
-	dup的使用如下例所示：
-	\begin{lstlisting}
-	db 3 dup (0)
-	db 3 dup (0, 1, 2)
-	db 3 dup ('abc', 'ABC')
-	\end{lstlisting}
-
-\subsection{esc}
-\subsection{hlt}
-\subsection{idiv}
-\subsection{imul}
-\subsection{inc}
-\subsection{int}
-\subsection{iret}
-\subsection{ja}
-\subsection{jb}
-\subsection{jcxz}
-\subsection{je}
-\subsection{jmp}
-\subsection{jna}
-\subsection{jnb}
-\subsection{jne}
-\subsection{lock}
-\subsection{lods}
-	串传送指令lods，功能为：
-	\begin{lstlisting}
-	(ax)=((ds)*16+(si))
-	\end{lstlisting}
-
-\subsection{lodsb}
-	串传送指令lodsb，功能为：
-	\begin{lstlisting}
-	(al)=((ds)*16+(si))
-	(si)=(si)+1 如果DF=0
-	(si)=(si)-1 如果DF=1
-	\end{lstlisting}
-
-\subsection{loop}
-\subsection{mov}
-	mov指令有如下几种形式：
-	\begin{lstlisting}
-	mov 寄存器, 数据
-	mov 寄存器, 寄存器
-	mov 寄存器, 内存单元
-	mov 内存单元, 寄存器
-	mov 段寄存器, 寄存器
-	mov 寄存器, 段寄存器
-	mov 段寄存器, 内存单元
-	mov 内存单元, 段寄存器
-	\end{lstlisting}
-
-\subsection{movsb}
-\subsection{movsw}
-\subsection{mul}
-	mul指令是乘法指令，乘法指令的介绍如下：
-	\begin{itemize}
-		\item 两个相乘的数：如果两个相乘的数都是8位，那么一个默认放在AH中，另一个放在8位寄存器或内存字节单元中。
-			如果两个都是16位，那么一个默认放在AX中，另一个放在16位寄存器或内存字单元中。
-		\item 结果：如果是8位乘法，结果默认放在AX中。如果是16位乘法，结果的高位默认放在DX中，低位放在AX中。
-	\end{itemize}
-	
-	mul指令的格式如下：
-	\begin{lstlisting}
-	mul reg
-	mul 内存单元
-	\end{lstlisting}
-	
-\subsection{nop}
-\subsection{not}
-\subsection{or}
-\subsection{push}
-\subsection{pop}
-\subsection{pushf}
-\subsection{rcl}
-\subsection{rcr}
-\subsection{rep}
-\subsection{repe}
-\subsection{repne}
-\subsection{ret}
-\subsection{retf}
-\subsection{rol}
-\subsection{ror}
-\subsection{sal}
-\subsection{sar}
-\subsection{sbb}
-\subsection{scas}
-\subsection{shl}
-\subsection{shr}
-\subsection{stc}
-\subsection{std}
-	std指令的功能是将DF标志置1。\par
-	DF标志是方向标志位。当DF=0时，串处理指令操作后si，di递增。当DF=1时，串处理指令操作后si，di递减。
-
-\subsection{sti}
-\subsection{stos}
-\subsection{sub}
-	sub指令有如下几种形式：
-	\begin{lstlisting}
-	sub 寄存器, 数据
-	sub 寄存器, 寄存器
-	sub 寄存器, 内存单元
-	sub 内存单元, 寄存器
-	\end{lstlisting}
-	
-\subsection{test}
-\subsection{wait}
-\subsection{xchg}
-\subsection{xor}
 
 \end{document}

@@ -126,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{内核雏形 \qquad}
+\chead{伪指令集 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -134,213 +134,115 @@
 
 \clearpage
 
-\section{从Loader到内核}
-	Loader要做的两项工作为：
-	\begin{itemize}
-		\item[1.] 加载内核到内存。
-		\item[2.] 跳入保护模式。
-	\end{itemize}
+\section{伪指令集}
 
-\subsection{加载内核到内存}
-	想要将内核加载到内存需要以下步骤：
-	\begin{itemize}
-		\item[1.] 寻找内核所在位置。
-		\item[2.] 将内核读入内存。
-	\end{itemize}
-
-	这两个步骤与加载Loader入内存的步骤类似，具体细节在《加载Loader入内存》的文档中有讲清楚，这里就不再展开。\par
-
-	以下是将内核加载到内存的实现代码：
+\subsection{ALIGN}
+	通过ALIGN伪指令设置一个域或变量的地址对齐方式，格式如下：
 	\begin{lstlisting}
-	org 0100h
-	; 堆栈基址
-	BaseOfStack equ 0100h
-	; 内核被加载到的位置
-	BaseOfKernelFile equ 0800h
-	OffsetOfKernelFile equ 0h
-
-		jmp LABEL_START
-		nop
-
-	; FAT12磁盘的头
-	BS_OEMName DB 'ForrestY'
-
-	BPB_BytePerSec DW 512 	; 每扇区字节数
-	BPB_SecPerClus DB 1   	; 每簇多少扇区 
-	BPB_RsvdSecCnt DW 1		; Boot记录占用多少扇区
-	BPB_NumFATs DB 2		; 共有多少个FAT表
-	BPB_RootEntCnt DW 224	; 根目录文件数最大值
-	BPB_TotSec16 DW 2880	; 逻辑扇区总数
-	BPB_Media DB 0xF0		; 媒体描述符
-	BPB_FATSz16	DW 9		; 每FAT扇区数
-	BPB_SecPerTrk DW 18		; 每磁道扇区数
-	BPB_NumHeads DW 2		; 磁头数
-	BPB_HiddSec DD 0 		; 隐藏扇区数
-	BPB_TotSec32 DD 0		; 如果wTotalSectorCount是0，由这个值记录扇区数
-
-	BS_DrvNum DB 0			; 中断13的驱动器号
-	BS_Reserved1 DB 0		; 未使用
-	BS_BootSig DB 29h		; 扩展引导标记
-	BS_VolID DD 0			; 卷序列号
-	BS_VolLab DB 'OrangeS0.02' ; 卷标，必须11字节
-	BS_FileSysType DB 'FAT12   ' ; 文件系统类型，必须8字节
-
-	FATSz equ 9
-	RootDirSectors equ 14
-	SectorNoOfRootDirectory equ 19
-	SectorNoOfFAT1 equ 1
-	DeltaSectorNo equ 17
-
-	LABEL_START:
-		mov ax, cs
-		mov ds, ax
-		mov es, ax
-		mov ss, ax
-		mov sp, BaseOfStack
-
-		mov dh, 0
-		call DispStr
-
-		mov word [wSectorNo], SectorNoOfRootDirectory
-		xor ah, ah
-		xor dl, dl
-		int 13h
-
-	LABEL_SEARCH_IN_ROOT_DIR_BEGIN:
-		cmp word [wRootDirSizeForLoop], 0
-		jz LABEL_NO_KERNELBIN
-		dec word [wRootDirSizeForLoop]
-		mov ax, BaseOfKernelFile
-		mov es, ax
-		mov bx, OffsetOfKernelFile
-		mov ax, [wSectorNo]
-		mov cl, 1
-
-		mov si, KernelFileName
-		mov di, OffsetOfKernelFile
-		cld
-		mov dx, 10h
-
-	LABEL_SEARCH_FOR_KERNELBIN:
-		cmp dx, 0
-		jz LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR
-		dec dx
-		mov cx, 11
-
-	LABEL_CMP_FILENAME:
-		cmp cx, 0
-		jz LABEL_FILENAME_FOUND
-		dec cx
-		lodsb
-		cmp al, byte [es:di]
-		jz LABEL_GO_ON
-		jmp LABEL_DIFFERENT
-
-	LABEL_GO_ON:
-		inc di
-		jmp LABEL_CMP_FILENAME
-
-	LABEL_DIFFERENT:
-		and di, 0FFE0h
-		add di, 20h
-		mov si, KernelFileName
-		jmp LABEL_SEARCH_FOR_KERNELBIN
-
-	LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:
-		add word [wSectorNo], 1
-		jmp LABEL_SEARCH_IN_ROOT_DIR_BEGIN
-
-	LABEL_NO_KERNELBIN:
-		mov dh, 2
-		call DispStr
-
-	%ifdef _LOADER_DEBUG_
-		mov ax, 4c00h
-		int 21h
-	%else
-		jmp $
-	%endif
-
-	LABEL_FILENAME_FOUND:
-		mov ax, RootDirSectors
-		and di, 0FFF0h
-
-		; 记录kernel.bin的大小
-		push eax
-		mov eax, [es:di+01Ch]
-		mov dword [dwKernelSize], eax
-		pop eax
-
-		add di, 01Ah
-		mov cs, word [es:di] 			; cs保存着簇号
-		push cx
-		add cx, ax
-		add cx, DeltaSectorNo			; cs保存着Kernel.bin的扇区号
-		mov ax, BaseOfKernelFile
-		mov es, ax
-		mov bx, OffsetOfKernelFile
-		mov ax, cx
-
-	LABEL_GOON_LOADING_FILE:
-		; 打印“.”
-		push ax
-		push bx
-		mov ah, 0Eh
-		mov al, '.'
-		mov bl, 0Fh
-		int 10h
-		pop bx
-		pop ax
-
-		mov cl, 1
-		call ReadSector
-		pop ax
-		call GetFATEntry
-		cmp ax, 0FFFh
-		jz LABEL_FILE_LOADED
-		push ax
-		mov dx, RootDirSectors
-		add ax, dx
-		add ax, DeltaSectorNo
-		add bx, [BPB_BytePerSec]
-		jmp LABEL_GOON_LOADING_FILE
-
-	LABEL_FILE_LOADED:
-		call KillMotor
-		
-		mov dh, 1
-		call DispStr
-
-		jmp $
-
-	MessageLength equ 9
-	LoadMessage	db "Loading  "
-	Message1	db "Ready    "
-	Message2	db "No Kernel"
-
-	DispStr:
-		mov ax, MessageLength
-		mul dh
-		add ax, 
-
-	KillMotor:
-		push dx
-		mov dx, 03F2h
-		mov al, 0
-		out dx, al
-		pop dx
-		ret
+	ALIGN datatype
 	\end{lstlisting}
 
-\section{跳入保护模式}
-	在将内核加载进入内存之后，我们将跳入保护模式。\par
-
-	首先我们将创建GDT表，其中存放三个段描述符，
-	分别是0～4GB的可执行段、0～4GB的可读写段和指向显存开始地址的段。\par
-
-	定义代码如下所示：
+	如果想让myVar对齐在双字地址边界上，如下操作：
 	\begin{lstlisting}
-	
+	ALIGN DWORD
+	myvar DWORD ?
+	\end{lstlisting}
+
+	以下是数据类型的地址对齐方式：
+	\fic{1.png}
+
+\subsection{LENGTHOF}
+	LENGTHOF操作符返回数组元素的数目，例子如下：
+	\begin{lstlisting}
+	.data
+	array WORD 30 DUP(0)
+
+	.code
+	mov ax, LENGTHOF array
+	\end{lstlisting}
+
+\subsection{OFFSET}
+	使用OFFSET操作符可以获取结构变量中域的偏移地址，例子如下：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "000000000"
+		LastName BYTE 30 DUP(0)
+		ALIGN WORD
+		Years WORD 0
+		ALIGN DWORD
+		SalaryHistory DWORD 0, 0, 0, 0
+	Employee ENDS
+
+	mov edx, OFFSET worker.LastName	
+	\end{lstlisting}
+
+\subsection{SIZEOF}
+	SIZEOF操作符返回LENGTHOF和TYPE的乘积，例子如下：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "000000000"
+		LastName BYTE 30 DUP(0)
+		ALIGN WORD
+		Years WORD 0
+		ALIGN DWORD
+		SalaryHistory DWORD 0, 0, 0, 0
+	Employee ENDS
+
+	.data
+	worker Employee <>
+	workers Employee 30 DUP(<>)
+
+	.code
+	mov ax, SIZEOF worker
+	mov ax, SIZEOF workers
+	\end{lstlisting}
+
+\subsection{TYPE}
+	TYPE操作符返回标志符的存储类型占用的字节数，例子如下：
+	\begin{lstlisting}
+	Employee STRUCT
+		IdNum BYTE "000000000"
+		LastName BYTE 30 DUP(0)
+		ALIGN WORD
+		Years WORD 0
+		ALIGN DWORD
+		SalaryHistory DWORD 0, 0, 0, 0
+	Employee ENDS
+
+	.data
+	worker Employee <>
+
+	.code
+	mov ax, TYPE Employee
+	mov ax, TYPE worker
+	\end{lstlisting}
+
+\subsection{定义结构体的伪指令}
+	结构使用STRUCT和ENDS伪指令定义，格式如下：
+	\begin{lstlisting}
+	名字 STRUCT
+		域的声明
+	名字 ENDS
+	\end{lstlisting}
+
+\subsection{定义联合的伪指令}
+	结构的每个域都有一个相对于结构第一个字节的偏移值，而联合中的所有域都是从同一偏移地址开始的，所以联合的大小等于其中最长的域的长度。
+	联合使用UNION和ENDS伪指令声明。
+	当联合不是某个结构的成员时，定义格式如下所示：
+	\begin{lstlisting}
+	unionname UNION
+		union-fields
+	unionname ENDS
+	\end{lstlisting}
+
+	当联合嵌套在结构中时，则格式如下：
+	\begin{lstlisting}
+	structname STRUCT
+		; ...
+		UNION unionname
+			union-fields
+		ENDS
+	structname ENDS
 	\end{lstlisting}
 
 \end{document}

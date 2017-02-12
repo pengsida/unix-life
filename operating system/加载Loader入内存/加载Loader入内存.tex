@@ -134,6 +134,314 @@
 
 \clearpage
 
+\section{加载Loader入内存}
+	如果要加载一个Loader入内存，就需要读软盘，所以首先了解一下软盘的结构。
 
+\subsection{FAT12格式}
+	1.44MB软盘上使用的是FAT12文件系统，软盘由引导扇区、FAT1、FAT2、根目录区和数据区组成。
+	如下图所示：
+	\fic{3.png}
+
+	我们想将Loader读入内存，首先要知道Loader在软盘中的位置。\par
+
+	Loader一般存放在数据区中，而数据区信息存放在FAT2后面的根目录区中。\par
+
+\subsubsection{根目录区条目}
+	根目录区开始的扇区号为19，由若干个目录条目组成。每一个条目占用32字节，结构如下图所示：
+	\fic{4.png}
+
+	由上图可以看出，每个条目定义了文件的名称、属性大小、日期以及此条目对应的数据区中的开始簇号。
+	因为一个簇号只包含一个扇区，所以条目记录着对应的扇区号。
+	需要注意的是，数据区的第一个簇的簇号是2。如果DIR\_FstClus为2，说明该文件的数据位于数据区的第一个簇。\par
+
+	随后还要算出根目录区所占的扇区数。一个扇区为512字节，一个条目为32字节，
+	只要先算出根目录区总字节数，再除以512字节，就能得到根目录区所占的扇区数。如果不能整除，需要将扇区数加1。\par
+
+	直到数据区开始扇区号，又知道文件在数据区中的开始簇号，就能得到总的扇区号。
+
+\subsubsection{FAT表}
+	文件有时候会大于512字节，所以会占用超过512字节，所以我们需要FAT表来找到所有的簇。\par
+
+	FAT表有两个，FAT2是FAT1表的备份。FAT1的开始扇区号是1，由FAT项组成。
+	每个FAT项占12位，包含一个字节和另一个字节的一半。\par
+
+	当根目录区中条目记录的是数据区中开始的第3个簇，那么就对应第3个FAT项。
+	如果这个FAT项值不为0xFFF而是0x008，那么说明文件还未结束，文件的下一部分内容在数据区的第8个簇中。
+	同时我们需要再找到第8个FAT项，依次查找下去，直到FAT项的值为0xFFF，则代表着文件结束。\par
+
+	需要注意的是，在实际编写代码的过程中，要考虑一个FAT项跨越两个扇区的情况。
+
+\subsection{读软盘函数}
+	如果要加载一个文件入内存，就需要读软盘，此时就需要用到BIOS中断int 13h，它的用法如下所示：
+	\fic{1.png}
+
+	从上图可以看到，int 13h需要用al指明要读的扇区数，ch指定磁道号，cl指定起始扇区号，
+	dh指定磁头号。然后用es:bx指定数据缓冲区。\par
+
+	对于1.44MB软盘而言，一共有两个磁头号(磁头号0和1)，每一面有80个磁道(0～79)，每个磁道有18个扇区(1～18)。
+	需要注意的是，软盘两面的磁道号是交错排序的，磁头号为0的磁道号为偶数，磁头号为1的磁道号为奇数。\par
+
+	根据上面的已知条件，当我们拥有Loader所在的扇区号时，就可以算出磁头号、磁道号和起始扇区号。
+	因为一个磁道有18个扇区，所以扇区号除以18就得到它所在的磁道号，同时余数就是起始扇区号。
+	需要注意的是，因为起始扇区号是从1开始的，所以还需要加1。
+	而得到的磁道号也需要处理，因为这个磁道号是软盘的磁道号，不是软盘某一面上的磁道号。
+	通过判断磁道号的奇偶就能得到磁头号，然后将总体的磁道号除以2，就能得到软盘某一面上的磁道号。
+	计算方法如下图所示：
+	\fic{2.png}
+
+	根据上述的描述，我们就可以写一个读取软盘的函数了。
+	函数使用堆栈暂时保存数据，所以还会建立一个堆栈。
+	函数使用ax传递要读取的扇区号，使用cl传递要读取的扇区数。
+	代码如下所示：
+	\begin{lstlisting}
+	BaseOfStack equ 07c00h ; 相当于0～07c00h都可以当作堆栈
+
+	BPB_SecPerTrk DB 18
+
+	; ...
+		; 初始化堆栈
+		mov ax, cs
+		mov ds, ax
+		mov es, ax
+		mov ss, ax
+		mov sp, BaseOfStack
+
+	ReadSector:
+		push bp
+		mov bp, sp
+		; 这里想用堆栈暂时保存要读取的扇区数
+		; 但是因为push和pop默认处理的是字单元
+		; 所以需要通过mov指令来另外处理
+		sub esp, 2
+		mov byte [bp-2], cl ; cl存放着要读取的扇区数
+		push bx				; 保存bx
+
+		mov bl, [BPB_SecPerTrk]
+		div bl				; ax存放着要读取的扇区号，bl为18，指令执行后ah存放余数，al存放商
+		inc ah				; 得到起始扇区号
+		mov cl, ah			; cl指定起始扇区号
+		mov dh, al			
+		and dh, 1			; 得到磁头号
+		shr al, 1			; 得到扇区号
+		mov ch, al
+
+		pop					; 恢复bx
+		mov dl, [BS_DrvNum]	; 指定驱动器号
+	.GoOnReading:
+		mov ah, 2
+		mov al, byte [bp-2]
+		int 13h
+		jc .GoOnReading
+
+		add esp, 2
+		pop bp
+
+		ret
+	\end{lstlisting}
+
+\subsection{寻找Loader}
+	寻找Loader只需要遍历根目录区中的所有扇区，然后将每一个扇区加载入内存。
+	然后从中寻找文件名为Loader.bin的条目，直到找到为止。
+	代码如下：
+	\begin{lstlisting}
+	BaseOfLoader equ 09000h
+	OffsetOfLoader equ 0100h
+	RootDirSectors equ 14				；根目录区占用的扇区数
+	SectorNoOfRootDirectory equ 19		; 根目录区的开始扇区号
+
+		; 首先复位软驱，通过int 13h中断实现
+		xor ah, ah
+		xor dl, dl
+		int 13h
+
+		mov word [wSectorNo], SectorNoOfRootDirectory
+	
+	LABEL_SEARCH_IN_ROOT_DIR_BEGIN:
+		cmp word [wRootDirSizeForLoop], 0 ; 判断根目录区是否已经读完
+		jz LABEL_NO_LOADERBIN
+		dec word [wRootDirSizeForLoop]
+		mov ax, BaseOfLoader
+		mov es, ax
+		mov bx, OffsetOfLoader 	; es:bx指向数据缓冲区
+		mov ax, [wSectorNo] 	; wSectorNo存放着扇区号
+		mov cl, 1				; cl存放着要读取的扇区数
+		call ReadSector
+
+		mov si, LoaderFileName
+		mov di, OffsetOfLoader
+		cld
+		mov dx, 10h
+	
+	LABEL_SEARCH_FOR_LOADERBIN:
+		cmp dx, 0
+		jz LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR
+		dec dx
+		mov cx, 11
+	
+	LABEL_CMP_FILENAME:
+		cmp cx, 0
+		jz LABEL_FILENAME_FOUND
+		dev cx
+		lodsb		; si加1
+		cmp al, byte [es:di]
+		jz LABEL_GO_ON
+		jmp LABEL_DIFFERENT
+	
+	LABEL_GO_ON:
+		inc di		; di加1
+		jmp LABEL_CMP_FILENAME
+	
+	LABEL_DIFFERENT:
+		; 跳到下一个目录条目
+		and di, 0FFE0h
+		and di, 20h
+		mov si, LoaderFileName
+		jmp LABEL_SEARCH_FOR_LOADERBIN
+	
+	LABEL_GOTO_NEXT_SECTOR_IN_ROOT_DIR:
+		add wor [wSectorNo], 1
+		jmp LABEL_SEARCH_IN_ROOT_DIR_BEGIN
+
+	LABEL_NO_LOADERBIN:
+		mov dh, 2
+		call DispStr
+	
+	%ifdef _BOOT_DEBUG
+		mov ax, 4c00h
+		int 21h
+	%else
+		jmp $
+	%endif
+
+	LABEL_FILENAME_FOUND:
+		jmp $
+
+	wRootDirSizeForLoop dw RootDirSectors
+	wSectorNo dw 0
+	LoaderFileName db "LOADER  BIN",0	; 最后加个0用于判断字符串是否结束
+	\end{lstlisting}
+
+	需要注意的是，我们上述代码还调用了DispStr函数。
+	这个函数是自己定义的，通过dh传递函数参数，用于选择显示哪条信息。
+	具体实现代码如下所示：
+	\begin{lstlisting}
+	MessageLength equ 9
+	BootMessage db "Booting  "
+	Message1	db "Ready.   "
+	Message2	db "NO LOADER"
+
+	DispStr:
+		mov ax, MessageLength
+		mul dh
+		add ax, BootMessage
+		mov bp, ax
+		mov ax, ds
+		mov es, ax
+		mov cx, MessageLength
+		mov ax, 01301h
+		mob bx, 0007h
+		mov dl, 0
+		int 10h
+		ret
+	\end{lstlisting}
+
+\subsection{计算FAT项的值}
+	在上一节中，我们找到了Loader在根目录区中的条目，然后就可以根据这个条目得到Loader在数据区中对应的开始簇号。
+	同时我们还可以根据这个簇号得到FAT表中的FAT项，从而找到Loader占用的其余所有扇区。\par
+
+	在将Loader装入内存的BaseOfLoader:OffsetOfLoader之前，我们先写一个函数，用于求FAT项的值。
+	函数使用ax传递扇区号，同时使用ax存放返回的FAT项的值。
+	实现代码如下：
+	\begin{lstlisting}
+	SectorNoOfFAT1 equ 1
+
+	GetFATEntry:
+		push es
+		push bx
+		push ax
+		mov ax, BaseOfLoader	; BaseOfLoader值为0900h
+		sub ax, 0100h			
+		mov es, ax				; 改变es后，数据缓冲区为0800h:bx，FAT项将存入此处
+		pop ax
+
+		mov byte [bOdd], 0
+		mov bx, 3
+		mul bx
+		mob bx, 2
+		div bx			; ax存放着FAT项的偏移字节，dx存放着余数
+		cmp dx, 0
+		jz LABEL_EVEN
+		mov byte [bOdd], 1
+
+	LABEL_EVEN:
+		xor dx, dx
+		mov bx, [BPB_SecPerSec]
+		div bx		; ax存放着FAT项在FAT1中的开始扇区号，dx存放着FAT项在扇区内的偏移
+		push dx
+		mov bx, 0	; bx为0，FAT项将被读入0800h:0处
+		add ax, SectorNoOfFAT1
+		mov cl, 2	; 一次读两个扇区，防止FAT跨扇区
+		call ReadSector
+
+		pop dx
+		add bx, dx	; bx存放着FAT项在扇区的偏移字节
+		mov ax, [es:bx]
+		cmp byte [bOdd], 1
+		jnz LABEL_EVEN_2
+		shr ax, 4
+	LABEL_EVEN_2:
+		and ax, 0FFFh
+
+	LABEL_GET_FAT_ENTRY_OK:
+		pop bx
+		pop es
+		ret
+
+	bOdd DB 0
+	\end{lstlisting}
+
+\subsection{加载Loader入内存}
+	有了前面的准备，我们现在就可以开始直接加载Loader进入内存了，实现代码如下：
+	\begin{lstlisting}
+	LABEL_FILENAME_FOUND:
+		mov ax, RootDirSectors
+		and di, 0FFE0h
+		add di, 01Ah
+		mov cx, word [es:di]	; cx存放着FAT项的序号
+		push cx
+		add cx, ax				; ax存放着RootDirSectors，也就是根目录区占用的扇区数
+		add cx, DeltaSectorNo	; cx存放着Loader的扇区号，DeltaSectorNo存放着19-2=17，19是根目录区开始扇区号，2是因为数据区开始簇号为2
+		mov ax, BaseOfLoader
+		mov es, ax
+		mov bx, OffsetOfLoader
+		mov ax, cx
+
+	LABEL_GOON_LOADING_FILE:
+		; 打印一个al存放的“.”
+		push ax
+		push bx
+		mov ah, 0Eh
+		mov al, '.'
+		mov bl, 0Fh
+		int 10h
+		pop bx
+		pop ax
+
+		mov cl, 1
+		call ReadSector
+		pop ax				; ax存放着FAT项的序号
+		call GetFATEntry
+		cmp ax, 0FFFh
+		jz LABEL_FILE_LOADED
+		push ax
+		mov dx, RootDirSectors
+		add ax, dx
+		add ax, DeltaSectorNo
+		add bx, [BPB_BytsPerSec]	; 数据缓冲区指向下一个512字节
+		jmp LABEL_GOON_LOADING_FILE
+
+	LABEL_FILE_LOADED:
+		jmp $
+	\end{lstlisting}
 
 \end{document}

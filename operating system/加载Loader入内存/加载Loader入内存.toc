@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}加载Loader入内存}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}FAT12格式}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}根目录区条目}{3}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}FAT表}{3}{subsubsection.1.1.2}
+\contentsline {subsection}{\numberline {1.2}读软盘函数}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}寻找Loader}{5}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}计算FAT项的值}{7}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}加载Loader入内存}{8}{subsection.1.5}
