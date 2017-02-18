@@ -333,14 +333,447 @@
 	\end{lstlisting}
 
 \section{跳入保护模式}
-	在将内核加载进入内存之后，我们将跳入保护模式。\par
+	在将内核加载进入内存之后，我们将跳入保护模式。
+
+\subsection{定义GDT表}
 
 	首先我们将创建GDT表，其中存放三个段描述符，
 	分别是0～4GB的可执行段、0～4GB的可读写段和指向显存开始地址的段。\par
 
 	定义代码如下所示：
 	\begin{lstlisting}
-	
+	%macro Descriptor 3
+		dw %2 & 0FFFFh
+		dw %1 & 0FFFFh
+		db (%1 >> 16) & 0FFh
+		dw ((%2 >> 8) & 0F00h) | (%3 & 0F0FFh)
+		db (%1 >> 24) & 0FFh
+	%endmacro
+
+	LABEL_GDT:	Descriptor 0, 0, 0
+	LABEL_DESC_FLAT_C:	Descriptor 0, 0fffffh, DA_CR | DA_32 | DA_LIMIT_4K
+	LABEL_DESC_FLAT_RW:	Descriptor 0, 0fffffh, DA_DRW | DA_32 | DA_LIMIT_4K
+	LABEL_DESC_VIDEO:	Descriptor 0B8000h, 0ffffh, DA_DRW | DA_DPL3
+
+	GdtLen equ $ - LABEL_GDT
+	GdtPtr dw GdtLen - 1
+		   dd BaseOfLoaderPhyAddr + LABEL_GDT ; BaseOfLoaderPhyAddr是Loader的实际物理地址，加上LABEL_GDT后，是GDT的实际物理地址
+
+	SelectorFlatC equ LABEL_DESC_FLAT_C - LABEL_GDT
+	SelectorFlatRW equ LABEL_DESC_FLAT_RW - LABEL_GDT
+	SelectorVideo equ LABEL_DESC_VIDEO - LABEL_GDT + SA_RPL3
 	\end{lstlisting}
+
+	需要知道的是，Loader的段基址是BaseOfLoader，所以Loader中标号的物理地址可以用“BaseOfLoader*10h+标号的偏移”算出。
+
+\subsection{进入保护模式}
+	进入保护模式的代码如下：
+	\begin{lstlisting}
+	[SECTION .s32]
+	ALIGN 32
+	[BITS 32]
+	LABEL_PM_START:
+		mov ax, SelectorVideo
+		mov gs, ax
+		mov ah, 0Fh
+		mov al, 'P'
+		mov (gs:((80*0+39)*2)), ax
+		jmp $
+
+	LABEL_FILE_LOADED:
+		call KillMotor
+
+		mov dh, 1
+		call DispStrRealMode
+
+		lgdt [GdtPtr]
+
+		cli
+
+		in al, 92h
+		or al, 00000010b
+		out 92h, al
+
+		mov eax, cr0
+		or eax, 1
+		mov cr0, eax
+
+		jmp dword SelectorFlatC:(BaseOfLoaderPhyAddr+LABEL_PM_START)
+	\end{lstlisting}
+
+\subsection{保护模式下的操作}
+	在保护模式下，我们可以做如下操作：
+	\begin{itemize}
+		\item[1.] 初始化各个寄存器的值。
+		\item[2.] 获得可使用内存的情况。
+		\item[3.] 打开分页机制。
+	\end{itemize}
+
+\subsubsection{初始化各个寄存器的值}
+	代码如下所示：
+	\begin{lstlisting}
+	StackSpace: times 1024 db 0
+	TopOfStack equ BaseOfLoaderPhyAddr + $
+
+	[SECTION .s32]
+	ALIGN 32
+	[BITS 32]
+	LABEL_PM_START:
+		mov ax, SelectorVideo
+		mov gs, ax
+
+		mov ax, SelectorFlatRW
+		mov ds, ax
+		mov cs, ax
+		mov es, ax
+		mov fs, ax
+		mov ss, ax
+		mov esp, TopOfStack
+	\end{lstlisting}
+
+\subsubsection{获得可使用内存}
+	在之前说过，使用BIOS中断“int 15h”可以获得内存信息。
+	代码如下所示：
+	\begin{lstlisting}
+		mov ebx, 0
+		mov di, _MemChkBuf
+	.MemChkLoop:
+		mov eax, 0R820h
+		mov eax, 20
+		mov edx, 053D4150h
+		int 15h
+		jc .MemChkFail
+		add di, 20
+		inc dword [_dwMCRNumber]
+		cmp ebx, 0
+		jne .MemChkLoop
+		jmp .MemChkOk
+	.MemChkFail:
+		mov dword [_dwMCRNumber], 0
+	.MemChkOk:
+		jmp $
+	\end{lstlisting}
+
+	为了让启动过程更多信息，我们还可以添加打印内存信息的函数，代码如下：
+	\begin{lstlisting}
+	DispMemInfo:
+		push esi
+		push edi
+		push ecx
+
+		mov esi, MemChkBuf
+		mov ecx, [_dwMCRNumber]
+	
+	.loop:
+		mov edx, 5
+		mov edi, ARDStruct
+	.1:
+		push dword [esi]
+		call DispInt
+		pop eax
+
+		stosd
+
+		add esi, 4
+		dec edx
+		cmp edx, 0
+		jnz .1
+		call DispReturn
+		cmp dword [dwType], 1
+		jne .2
+		mov eax, [dwBaseAddrLow]
+		add eax, [dwLengthLow]
+		cmp eax, [dwMemSize]
+		jb .2
+		mov [dwMemSize], eax
+
+	.2:
+		loop .loop
+
+		call DispReturn
+		push szRAMSize
+		call DispStr
+		add esp, 4
+
+		push dword [dwMemSize]
+		call DispInt
+		add esp, 4
+
+		pop ecx
+		pop edi
+		pop esi
+		ret
+
+	DispAL:
+		push ecx
+		push edx
+		push edi
+
+		mov edi, [dwDispPos]
+
+		mov ah, 0Fh
+		mov dl, al
+		shr al, 4
+		mov ecx, 2
+	.begin:
+		and al, 01111b
+		cmp al, 9
+		ja .1
+		add al, '0'
+		jmp .2
+	.1:
+		sub al, 0Ah
+		add al, 'A'
+	.2:
+		mov [gs:edi], ax
+		add edi, 2
+
+		mov al, dl
+		loop .begin
+
+		mov [dwDispPos], edi
+
+		pop edi
+		pop edx
+		pop ecx
+
+		ret
+
+	; 使用堆栈传递参数
+	DispInt:
+		mov eax, [esp + 4]
+		shr eax, 24
+		call DispAL
+
+		mov eax, [esp + 4]
+		shr eax, 16
+		call DispAL
+
+		mov eax, [esp + 4]
+		shr eax, 8
+		call DispAL
+
+		mov eax, [esp + 4]
+		call DispAL
+
+		mov ah, 07h
+		mov al, 'h'
+		push edi
+		mov edi, [dwDispPos]
+		mov [gs:edi], ax
+		add edi, 4
+		mov [dwDispPos], edi
+		pop edi
+
+		ret
+
+	; 使用堆栈传递参数
+	DispStr:
+		push ebp
+		mov ebp, esp
+		push ebx
+		push esi
+		push edi
+
+		mov esi, [esp + 8]
+		mov edi, [dwDispPos]
+		mov ah, 0Fh
+	.1:
+		lodsb
+		test al, al
+		jz .2
+		cmp al, 0Ah
+		jnz .3
+		push eax
+		mov eax, edi
+		mov bl, 160
+		div bl
+		and eax, 0FFh
+		inc eax
+		mov bl, 160
+		mul bl
+		mov edi, eax
+		pop eax
+		jmp .1
+	.3:
+		mov [gs:edi], ax
+		add edi, 2
+		jmp .1
+	.2:
+		mov [dwDispPos], edi
+
+		pop edi
+		pop esi
+		pop ebx
+		pop ebp
+
+		ret
+
+	DispReturn:
+		push szReturn
+		call DispStr
+		add esp, 4
+
+		ret
+
+	LABEL_DATA:
+	; 实模式下使用的符号
+	_szMemChkTitle: db "BaseAddrL BaseAddrH LengthLow LengthHigh   Type", 0Ah, 0
+	_szRAMSize: db "RAM size:", 0
+	_szReturn: db 0Ah, 0
+
+	_dwMCRNumber: dd 0
+	_dwDispPos: dd (80 * 6 + 0) * 2
+	_dwMemSize: dd 0
+	_ARDStruct:
+		_dwBaseAddrLow: dd 0
+		_dwBaseAddrHigh: dd 0
+		_dwLengthLow: dd 0
+		_dwLengthHigh: dd 0
+		_dwType: dd 0
+	_MemChkBuf: times 256 db 0
+
+	; 保护模式下使用的符号
+	szMemChkTitle equ BaseOfLoaderPhyAddr + _szMemChkTitle
+	szRAMSize equ BaseOfLoaderPhyAddr + _szRAMSize
+	szReturn equ BaseOfLoaderPhyAddr + _szReturn
+	dwDispPos equ BaseOfLoaderPhyAddr + _dwDispPos
+	dwMemSize equ BaseOfLoaderPhyAddr + _dwMemSize
+	dwMCRNumber equ BaseOfLoaderPhyAddr + _dwMCRNumber
+	ARDStruct equ BaseOfLoaderPhyAddr + _ARDStruct
+		dwBaseAddrLow equ BaseOfLoaderPhyAddr + _dwBaseAddrLow
+		dwBaseAddrHigh equ BaseOfLoaderPhyAddr + _dwBaseAddrHigh
+		dwLengthLow equ BaseOfLoaderPhyAddr + _dwLengthLow
+		dwLengthHigh equ BaseOfLoaderPhyAddr + _dwLengthHigh
+		dwType equ BaseOfLoaderPhyAddr + _dwType
+	MemChkBuf equ BaseOfLoaderPhyAddr + _MemChkBuf
+	\end{lstlisting}
+
+\subsubsection{打开分页机制}
+	启动分页的函数如下所示：
+	\begin{lstlisting}
+	PageDirBase equ 100000h
+	PageTblBase equ 101000h
+
+	SetupPaging:
+		xor edx, edx
+		mov edx, [dwMemSize]
+		mov ebx, 400000h
+		div ebx
+		mov ecx, eax
+		test edx, edx
+		jz .no_remainder
+		inc ecx
+	.no_remainder:
+		push ecx
+
+		mov ax, SelectorFlatRW
+		mov es, ax
+		mov edi, PageDirBase
+		xor eax, eax
+		mov eax, PageTblBase | PG_P | PG_USU | PG_RWW
+
+	.1:
+		stosd
+		add eax, 4096
+		loop .1
+
+		pop eax
+		mov ebx, 1024
+		mul ebx
+		mov ecx, eax
+		mov edi, PageTblBase
+		xor eax, eax
+		mov eax, PG_P | PG_USU | PG_RWW
+	.2:
+		stosd
+		add eax, 4096
+		loop .2
+
+		mov eax, PageDirBase
+		mov cr3, eax
+		mov eax, cr0
+		or eax, 80000000h
+		mov cr0, eax
+		jmp short .3
+	.3:
+		nop
+
+		ret
+	\end{lstlisting}
+
+\subsection{重新放置内核}
+	我们将根据ELF文件信息将内核转移到正确的位置，也就是根据ELF文件中的Program header，根据其信息进行内存复制。
+	
+\subsubsection{内存复制函数}
+	代码如下所示：
+	\begin{lstlisting}
+	; 使用堆栈进行参数的传递
+	MemCpy:
+		push ebp
+		mov ebp, esp
+
+		push esi
+		push edi
+		push ecx
+
+		mov edi, [ebp + 8]
+		mov esi, [ebp + 12]
+		mov ecx, [ebp + 16]
+	.1:
+		cmp ecx, 0
+		jz .2
+
+		mov al, [ds:esi]
+		inc esi
+
+		mov byte [es:edi], al
+		inc edi
+
+		dec ecx
+		jmp .1
+	.2:
+		mov eax, [ebp + 8]
+
+		pop ecx
+		pop edi
+		pop esi
+		mov esp, ebp
+		pop ebp
+
+		ret
+	\end{lstlisting}
+
+\subsubsection{转移内核}
+	转移内核的函数如下：
+	\begin{lstlisting}
+	InitKernel:
+		xor esi, esi
+		mov cx, word [BaseOfKernelFilePhyAddr + 2Ch]
+		movzx ecx, cx
+		mov esi, [BaseOfKernelFilePhyAddr + 1Ch]
+		add esi, BaseOfKernelFilePhyAddr
+	.Begin:
+		mov eax, [esi + 0]
+		cmp eax, 0
+		jz .NoAction
+		push dword [esi + 010h]
+		mov eax, [esi + 04h]
+		add eax, BaseOfKernelFilePhyAddr
+		push eax
+		push dword [esi + 08h]
+		call MemCpy
+		add esp, 12
+	.NoAction:
+		add esi, 020h
+		dec ecx
+		jnz .Begin
+
+		ret
+	\end{lstlisting}
+
+\section{扩充内核}
+\subsection{切换堆栈和GDT}
+\subsection{使用makefile}
 
 \end{document}

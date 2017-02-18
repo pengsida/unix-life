@@ -217,6 +217,12 @@
 \subsection{jna}
 \subsection{jnb}
 \subsection{jne}
+\subsection{lgdt}
+	lgdt指令用于将内存单元值加载到GDTR，语句如下：
+	\begin{lstlisting}
+	lgdt [address]
+	\end{lstlisting}
+
 \subsection{lock}
 \subsection{lods}
 	串传送指令lods，功能为：
@@ -290,6 +296,14 @@
 
 \subsection{sti}
 \subsection{stos}
+\subsection{stosd}
+	串传送指令stosd，功能为：
+	\begin{lstlisting}
+	((es)*16+(edi))=(eax)
+	(si)=(si)+1 如果DF=0
+	(si)=(si)-1 如果DF=1
+	\end{lstlisting}
+
 \subsection{sub}
 	sub指令有如下几种形式：
 	\begin{lstlisting}

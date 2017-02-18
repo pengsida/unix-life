@@ -1,0 +1,3 @@
+\contentsline {section}{\numberline {1}函数的参数}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}可变参数}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}关键字参数}{2}{subsection.1.2}

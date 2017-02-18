@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {1}生成器}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}创建生成器}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}第一种方法}{2}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}第二种方法}{2}{subsubsection.1.1.2}

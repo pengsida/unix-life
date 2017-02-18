@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=[x86masm]Assembler,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -126,184 +126,15 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{伪指令集 \qquad}
+\chead{迭代器 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-\tableofcontents
+% \tableofcontents
 
 \clearpage
 
-\section{伪指令集}
-
-\subsection{ALIGN}
-	通过ALIGN伪指令设置一个域或变量的地址对齐方式，格式如下：
-	\begin{lstlisting}
-	ALIGN datatype
-	\end{lstlisting}
-
-	如果想让myVar对齐在双字地址边界上，如下操作：
-	\begin{lstlisting}
-	ALIGN DWORD
-	myvar DWORD ?
-	\end{lstlisting}
-
-	以下是数据类型的地址对齐方式：
-	\fic{1.png}
-
-\subsection{ECHO}
-	ECHO伪指令可以在控制台上显示一条信息。下面的例子就可以显示“Expanding The mPutChar macro”的消息：
-	\begin{lstlisting}
-	mPutchar MACRO char:REQ
-		ECHO Expanding The mPutChar macro
-		push eax
-		mov al, char
-		call WriteChar
-		pop eax
-	ENDM
-	\end{lstlisting}
-
-\subsection{INCLUDE}
-	用于引用文件，格式如下：
-	\begin{lstlisting}
-	INCLUDE file.inc
-	\end{lstlisting}
-
-\subsection{LENGTHOF}
-	LENGTHOF操作符返回数组元素的数目，例子如下：
-	\begin{lstlisting}
-	.data
-	array WORD 30 DUP(0)
-
-	.code
-	mov ax, LENGTHOF array
-	\end{lstlisting}
-
-\subsection{LOCAL}
-	汇编器不允许标号重复定义。宏定义中通常会包含标号，如果调用了含标号的宏两次以上，就会产生错误。如下所示：
-	\begin{lstlisting}
-	makeString MACRO text
-		.data
-		string BYTE text, 0
-	ENDM
-
-	.code
-	makeString "Hello"
-	makeString "Goodbye"
-	\end{lstlisting}
-
-	在宏定义内使用LOCAL伪指令处理标号，那么每次宏展开时就能把标号的名字转换成一个唯一的标识符名。如下所示：
-	\begin{lstlisting}
-	makeString MACRO text
-		LOCAL string
-		.data
-		string BYTE text, 0
-	ENDM
-	\end{lstlisting}
-
-\subsection{OFFSET}
-	使用OFFSET操作符可以获取结构变量中域的偏移地址，例子如下：
-	\begin{lstlisting}
-	Employee STRUCT
-		IdNum BYTE "000000000"
-		LastName BYTE 30 DUP(0)
-		ALIGN WORD
-		Years WORD 0
-		ALIGN DWORD
-		SalaryHistory DWORD 0, 0, 0, 0
-	Employee ENDS
-
-	mov edx, OFFSET worker.LastName	
-	\end{lstlisting}
-
-\subsection{SIZEOF}
-	SIZEOF操作符返回LENGTHOF和TYPE的乘积，例子如下：
-	\begin{lstlisting}
-	Employee STRUCT
-		IdNum BYTE "000000000"
-		LastName BYTE 30 DUP(0)
-		ALIGN WORD
-		Years WORD 0
-		ALIGN DWORD
-		SalaryHistory DWORD 0, 0, 0, 0
-	Employee ENDS
-
-	.data
-	worker Employee <>
-	workers Employee 30 DUP(<>)
-
-	.code
-	mov ax, SIZEOF worker
-	mov ax, SIZEOF workers
-	\end{lstlisting}
-
-\subsection{TYPE}
-	TYPE操作符返回标志符的存储类型占用的字节数，例子如下：
-	\begin{lstlisting}
-	Employee STRUCT
-		IdNum BYTE "000000000"
-		LastName BYTE 30 DUP(0)
-		ALIGN WORD
-		Years WORD 0
-		ALIGN DWORD
-		SalaryHistory DWORD 0, 0, 0, 0
-	Employee ENDS
-
-	.data
-	worker Employee <>
-
-	.code
-	mov ax, TYPE Employee
-	mov ax, TYPE worker
-	\end{lstlisting}
-
-\subsection{定义结构体的伪指令}
-	结构使用STRUCT和ENDS伪指令定义，格式如下：
-	\begin{lstlisting}
-	名字 STRUCT
-		域的声明
-	名字 ENDS
-	\end{lstlisting}
-
-\subsection{定义联合的伪指令}
-	结构的每个域都有一个相对于结构第一个字节的偏移值，而联合中的所有域都是从同一偏移地址开始的，所以联合的大小等于其中最长的域的长度。
-	联合使用UNION和ENDS伪指令声明。
-	当联合不是某个结构的成员时，定义格式如下所示：
-	\begin{lstlisting}
-	unionname UNION
-		union-fields
-	unionname ENDS
-	\end{lstlisting}
-
-	当联合嵌套在结构中时，则格式如下：
-	\begin{lstlisting}
-	structname STRUCT
-		; ...
-		UNION unionname
-			union-fields
-		ENDS
-	structname ENDS
-	\end{lstlisting}
-
-\subsection{定义宏的伪指令}
-	可以使用MACRO和ENDM伪指令在源程序的任意位置定义宏，格式如下：
-	\begin{lstlisting}
-	macroname MACRO parameter-1, parameter-2...
-		statement-list
-	ENDM
-	\end{lstlisting}
-
-	MACRO和ENDM之间的语句只有在宏被调用的时候才会汇编。
-	宏的定义中可以有任意多的参数，参数之间以逗号分隔。\par
-
-	宏的参数没有类型，用于存放调用者传递给宏的文本参数，例子如下：
-	\begin{lstlisting}
-	mPutchar MACRO char
-		push eax
-		mov al, char
-		call WriteChar
-		pop eax
-	ENDM
-	\end{lstlisting}
+\section{迭代器}
+	在python中，可以被next()函数调用并返回下一个值的对象叫做迭代器，像生成器就是一个迭代器。
 
 \end{document}

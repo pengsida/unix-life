@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}函数式编程}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}高阶函数}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}变量可以指向函数}{2}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}函数名也是变量}{2}{subsubsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.3}传入函数}{2}{subsubsection.1.1.3}
+\contentsline {subsubsection}{\numberline {1.1.4}map函数}{3}{subsubsection.1.1.4}
+\contentsline {subsubsection}{\numberline {1.1.5}reduce函数}{3}{subsubsection.1.1.5}
+\contentsline {subsubsection}{\numberline {1.1.6}filter函数}{3}{subsubsection.1.1.6}
+\contentsline {subsubsection}{\numberline {1.1.7}sorted函数}{3}{subsubsection.1.1.7}
+\contentsline {subsubsection}{\numberline {1.1.8}将函数作为返回值}{4}{subsubsection.1.1.8}
+\contentsline {subsection}{\numberline {1.2}关键字lambda}{5}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}装饰器}{5}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}偏函数}{6}{subsection.1.4}
