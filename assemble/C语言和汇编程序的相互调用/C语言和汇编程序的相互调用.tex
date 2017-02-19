@@ -137,98 +137,25 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{使用pdb跟踪openstack代码 \qquad}
+\chead{C语言和汇编程序的相互调用 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-\tableofcontents
+% \tableofcontents
 
 \clearpage
 
-\section{使用pdb跟踪openstack代码}
-	这部分内容比较适合调试使用devstack进行安装的openstack。\par
+\section{C语言和汇编程序的相互调用}
+\subsection{C语言调用汇编函数}
+	intel80x86使用栈来支持函数调用操作，
+	栈用于传递函数参数、存储返回信息、临时保存寄存器原有值以及用来存储局部数据。\par
 
-\subsection{devstack screen使用技巧}
-	devstack环境中，openstack运行在一个screen中，每个service运行在一个窗口中，如下图所示：
-	\sizedfic{1}{1.png}
+	函数调用中使用的栈部分被称为栈帧结构，寄存器ebp作帧指针，esp作栈指针。
+	esp用于指向栈顶，而ebp用于访问函数中的数据。\par
 
-	可以看到图中底下一排窗口：
-	\sizedfic{1}{2.png}
+	栈帧结构如下图所示：
+	\fic{1.png}
 
-\subsubsection{screen -list}
-	这个命令可以查看devstack中有哪些screen，如下图所示：
-	\fic{3.png}
-
-\subsubsection{screen -d <screen-id>}
-	这个命令用于断开与screen的连接。
-	% \fic{4.png}
-
-\subsubsection{screen -r <screen-id>}
-	这个命令用于断开并重新进入screen。
-
-\subsubsection{screen -x <screen-id>}
-	这个命令相当于在新的终端中查看这个screen。
-
-\subsubsection{screen -h}
-	通过这个命令可以查看关于screen的更多信息。
-
-\subsubsection{进入screen以后的操作}
-	使用screen -x <screen-id>进入某个screen以后，界面如下：
-	\sizedfic{1}{1.png}
-
-	图中带*号的是当前窗口。\par
-
-	可以使用“ctrl+a+n”移动到下一个窗口，可以使用“ctrl+a+p”移动到上一个窗口。
-	可以使用“ctrl+a+"”进入选择窗口的模式。\par
-
-	选择窗口还有一个更快的方式，使用使用“ctrl+a+shift+"”，就可以进入如下界面：
-	\sizedfic{0.9}{5.png}
-
-	使用“ctrl+a+[”以后就可以滚动窗口了，使用“ctrl+]”重新固定窗口。\par
-
-\subsubsection{借助screen重启openstack服务}
-	首先进入想重启的服务的窗口，比如“nova-api”，如下图所示：
-	\sizedfic{1}{6.png}
-
-	然后按“ctrl+c”，杀死进程。随后按向上键，出现启动进程的命令，输入即重启“nova-api”服务。
-
-\subsection{使用pdb}
-	python中有一个pdb模块，使python代码也可以像gdb一样调试。\par
-
-	只要在需要开始调试的地方加上以下语句即可：
-	\begin{lstlisting}
-	import pdb; pdb.set_trace()
-	\end{lstlisting}
-
-	如下图所示：
-	\fic{7.png}
-
-	随后重启代码处相应的服务，比如这里想调试的是“nova-api”，就借助screen重启“nova-api”服务。\par
-
-	随后使用相应的命令触发这个断电，进入“nova-api”的窗口，就可以开始调试了，如下图所示：
-	\fic{8.png}
-
-\clearpage
-
-\subsubsection{pdb常用调试命令}
-	pdb常用调试命令如下所示：
-	\begin{lstlisting}
-	q  退出debug
-	h  打印可用的调试命令
-	b  设置断点，b 5 在第五行设置断点
-	h command  打印command的命令含义
-	disable codenum  使某一行断点失效
-	enable codenum   使某一行的断点有效
-	condition codenum xxx  针对断点设置条件
-	c    继续执行程序，直到下一个断点
-	n    执行下一行代码，如果当前语句有函数调用，则不会进入函数体中
-	s    执行下一行代码，但是s会进入函数
-	w    打印当前执行点的位置
-	j    codenum  让程序跳转到指定的行
-	l    列出附近的源码
-	p    打印一个参数的值
-	a    打印当前函数及参数的值
-	回车  重复执行上一行的命令
-	\end{lstlisting}
+	当函数A调用函数B时，传递给B的参数包含在A的栈帧中，函数A的返回地址被压入栈中。
 	
 \end{document}

@@ -166,6 +166,8 @@
 	DF标志是方向标志位。当DF=0时，串处理指令操作后si，di递增。当DF=1时，串处理指令操作后si，di递减。
 
 \subsection{cli}
+	设置IF位为0，屏蔽外部中断。
+
 \subsection{cmc}
 \subsection{cmp}
 	cmp指令是比较指令，指令格式为：“cmp 操作对象1, 操作对象2”，cmp的功能相当于减法指令，只是不保存结果，然后根据计算结果对标志寄存器进行设置。
@@ -204,6 +206,12 @@
 
 \subsection{esc}
 \subsection{hlt}
+	hlt指令使得程序停止运行，处理器进入暂停状态，不执行任何操作，不影响标志寄存器。\par
+
+	如果在hlt指令之前做了cli指令，那么可屏蔽中断不能唤醒cpu。\par
+
+	htl指令只能在实模式或ring0下执行。
+
 \subsection{idiv}
 \subsection{imul}
 \subsection{inc}
@@ -276,6 +284,14 @@
 \subsection{pushf}
 \subsection{rcl}
 \subsection{rcr}
+\subsection{resb}
+	程序中使用到的非初始化数据通常放在bss section中，bss代表未初始化存储空间。\par
+
+	nasm使用resb来定义非初始化数据，相当于命令“db ?”。例子如下：
+	\begin{lstlisting}
+	resb 64 ; reserve 64 bytes
+	\end{lstlisting}
+
 \subsection{rep}
 \subsection{repe}
 \subsection{repne}
@@ -295,6 +311,8 @@
 	DF标志是方向标志位。当DF=0时，串处理指令操作后si，di递增。当DF=1时，串处理指令操作后si，di递减。
 
 \subsection{sti}
+	设置IF位为1，可以响应外部中断。
+
 \subsection{stos}
 \subsection{stosd}
 	串传送指令stosd，功能为：

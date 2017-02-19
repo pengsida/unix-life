@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  19 FEB 2017 17:17
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  19 FEB 2017 08:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**libvirt的安装.tex
-(./libvirt的安装.tex
+**使用pdb跟踪openstack代码.tex
+(./使用pdb跟踪openstack代码.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
@@ -1619,8 +1619,8 @@ Package: fp-eval 1995/04/03
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 \g__fontspec_family_Consolas_int=\count319
 .................................................
@@ -1794,8 +1794,8 @@ Package: xeCJK-listings 2016/05/14 v3.4.0 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=2.5cm,right=2.5cm].
 
-(./libvirt的安装.aux)
-\openout1 = `libvirt的安装.aux'.
+(./使用pdb跟踪openstack代码.aux)
+\openout1 = `使用pdb跟踪openstack代码.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
@@ -1813,7 +1813,8 @@ LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 142.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 142.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 142.
@@ -1821,6 +1822,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 142.
 LaTeX Font Info:    ... okay on input line 142.
+
 *** you should *not* be loading the inputenc package
 *** XeTeX expects the source to be in UTF8 encoding
 *** some features of other encodings may conflict, resulting in poor output.
@@ -1947,43 +1949,116 @@ LaTeX Info: Redefining \ref on input line 142.
 LaTeX Info: Redefining \pageref on input line 142.
 LaTeX Info: Redefining \nameref on input line 142.
 
-(./libvirt的安装.out) (./libvirt的安装.out)
+(./使用pdb跟踪openstack代码.out) (./使用pdb跟踪openstack代码.out)
 \@outlinefile=\write3
-\openout3 = `libvirt的安装.out'.
+\openout3 = `使用pdb跟踪openstack代码.out'.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 142.
 
-(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
+*************************************************
+* fontspec warning: "script-not-exist"
+* 
+* Font 'STSongti-SC-Regular' does not contain script 'CJK'.
+*************************************************
+\g__fontspec_family_STSongti-SC-Regular_int=\count327
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font STSongti-SC-Regular/I (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'STSongti-SC-Regular(0)' created for font 'STSongti-SC-Regular'
+. with options [Script={CJK}].
+. 
+. This font family consists of the following NFSS series/shapes:
+. - 'normal' (m/n) with NFSS spec.: <->"STSongti-SC-Regular/OT:"
+. - 'small caps'  (m/sc) with NFSS spec.: - 'bold' (bx/n) with NFSS spec.:
+. <->"STSongti-SC-Regular/B/OT:"
+. - 'bold small caps'  (bx/sc) with NFSS spec.: - 'bold italic' (bx/it) with
+. NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
+. - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
+.................................................
+(./使用pdb跟踪openstack代码.toc
 
-)
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 160.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 161.
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 161.
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+))
+\tf@toc=\write4
+\openout4 = `使用pdb跟踪openstack代码.toc'.
+
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
+(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
+
+)
 [1
 
+]
+File: 1.png Graphic file (type QTm)
+ <use  "1.png" >
+File: 2.png Graphic file (type QTm)
+ <use  "2.png" >
+File: 3.png Graphic file (type QTm)
+ <use  "3.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2
 
 ]
-File: 2.png Graphic file (type QTm)
- <use  "2.png" > 
+File: 1.png Graphic file (type QTm)
+ <use  "1.png" >
+File: 5.png Graphic file (type QTm)
+ <use  "5.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3]
+File: 6.png Graphic file (type QTm)
+ <use  "6.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4]
+File: 7.png Graphic file (type QTm)
+ <use  "7.png" >
+File: 8.png Graphic file (type QTm)
+ <use  "8.png" >
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1991,28 +2066,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 251.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 251.
- (./libvirt的安装.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 251.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 251.
+[6
+
+]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 234.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 234.
+ (./使用pdb跟踪openstack代码.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 234.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 234.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 251.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 234.
  ) 
 Here is how much of TeX's memory you used:
- 30990 strings out of 493591
- 561940 string characters out of 6143546
- 707226 words of memory out of 5000000
- 33998 multiletter control sequences out of 15000+600000
- 9299 words of font info for 73 fonts, out of 8000000 for 9000
+ 31082 strings out of 493591
+ 564005 string characters out of 6143546
+ 706141 words of memory out of 5000000
+ 34070 multiletter control sequences out of 15000+600000
+ 9347 words of font info for 80 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,12n,72p,10367b,1256s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,11n,87p,10375b,1088s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on libvirt的安装.pdf (2 pages).
+Output written on 使用pdb跟踪openstack代码.pdf (6 pages).

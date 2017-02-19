@@ -176,11 +176,12 @@
 	sudo apt-get install libdevmapper-dev
 	sudo apt-get install libnl-3-dev
 	sudo apt-get install libnl-route-3-dev
+	sudo apt-get install uuid-dev
 		\end{lstlisting}
 
 		\item[4.] 配置libvirt，命令如下所示：
 		\begin{lstlisting}
-	./configure
+	./configure --prefix=/usr
 		\end{lstlisting}
 
 		\item[5.] 编译libvirt，命令如下所示：
@@ -198,8 +199,12 @@
 	sudo vi /etc/ld.so.conf.d/libc.conf
 		\end{lstlisting}
 
-		将文件内容写为下图中的内容：
-		\sizedfic{0.5}{1.png}
+		将文件内容写为如下内容：
+		\begin{lstlisting}
+	include /usr/lib/x86_64-linux-gnu
+	/usr/local/lib
+	/usr/lib
+		\end{lstlisting}
 
 		然后再输入如下命令：
 		\begin{lstlisting}

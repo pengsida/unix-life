@@ -137,98 +137,77 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{使用pdb跟踪openstack代码 \qquad}
+\chead{makefile快速入门 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-\tableofcontents
+% \tableofcontents
 
 \clearpage
 
-\section{使用pdb跟踪openstack代码}
-	这部分内容比较适合调试使用devstack进行安装的openstack。\par
+\section{makefile快速入门}
 
-\subsection{devstack screen使用技巧}
-	devstack环境中，openstack运行在一个screen中，每个service运行在一个窗口中，如下图所示：
-	\sizedfic{1}{1.png}
-
-	可以看到图中底下一排窗口：
-	\sizedfic{1}{2.png}
-
-\subsubsection{screen -list}
-	这个命令可以查看devstack中有哪些screen，如下图所示：
-	\fic{3.png}
-
-\subsubsection{screen -d <screen-id>}
-	这个命令用于断开与screen的连接。
-	% \fic{4.png}
-
-\subsubsection{screen -r <screen-id>}
-	这个命令用于断开并重新进入screen。
-
-\subsubsection{screen -x <screen-id>}
-	这个命令相当于在新的终端中查看这个screen。
-
-\subsubsection{screen -h}
-	通过这个命令可以查看关于screen的更多信息。
-
-\subsubsection{进入screen以后的操作}
-	使用screen -x <screen-id>进入某个screen以后，界面如下：
-	\sizedfic{1}{1.png}
-
-	图中带*号的是当前窗口。\par
-
-	可以使用“ctrl+a+n”移动到下一个窗口，可以使用“ctrl+a+p”移动到上一个窗口。
-	可以使用“ctrl+a+"”进入选择窗口的模式。\par
-
-	选择窗口还有一个更快的方式，使用使用“ctrl+a+shift+"”，就可以进入如下界面：
-	\sizedfic{0.9}{5.png}
-
-	使用“ctrl+a+[”以后就可以滚动窗口了，使用“ctrl+]”重新固定窗口。\par
-
-\subsubsection{借助screen重启openstack服务}
-	首先进入想重启的服务的窗口，比如“nova-api”，如下图所示：
-	\sizedfic{1}{6.png}
-
-	然后按“ctrl+c”，杀死进程。随后按向上键，出现启动进程的命令，输入即重启“nova-api”服务。
-
-\subsection{使用pdb}
-	python中有一个pdb模块，使python代码也可以像gdb一样调试。\par
-
-	只要在需要开始调试的地方加上以下语句即可：
+	简单的makefile如下所示：
 	\begin{lstlisting}
-	import pdb; pdb.set_trace()
+	ASM = nasm
+	ASMFLAGS = -I include/
+
+	TARGET = boot.bin loader.bin
+
+	.PHONY: everything clean all
+
+	everything: $(TARGET)
+
+	clean:
+		rm -f $(TARGET)
+
+	all: clean everything
+
+	boot.bin: boot.asm include/load.inc include/fat12hdr.inc
+		$(ASM) $(ASMFLAGS) -o $@ $<
+
+	loader.bin: loader.asm include/load.inc include/fat12hdr.inc include/pm.inc
+		$(ASM) $(ASMFLAGS) -o $@ $<
 	\end{lstlisting}
 
-	如下图所示：
-	\fic{7.png}
+	夸张的说，明白以下两点，makefile的内容就明白了一半：
+	\begin{itemize}
+		\item[1.] “=”用来定义变量。
+		\item[2.] ASM和ASMFLAGS就是两个变量，使用\$(ASM)和\$(ASMFLAGS)调用这两个变量。
+	\end{itemize}
 
-	随后重启代码处相应的服务，比如这里想调试的是“nova-api”，就借助screen重启“nova-api”服务。\par
-
-	随后使用相应的命令触发这个断电，进入“nova-api”的窗口，就可以开始调试了，如下图所示：
-	\fic{8.png}
-
-\clearpage
-
-\subsubsection{pdb常用调试命令}
-	pdb常用调试命令如下所示：
-	\begin{lstlisting}
-	q  退出debug
-	h  打印可用的调试命令
-	b  设置断点，b 5 在第五行设置断点
-	h command  打印command的命令含义
-	disable codenum  使某一行断点失效
-	enable codenum   使某一行的断点有效
-	condition codenum xxx  针对断点设置条件
-	c    继续执行程序，直到下一个断点
-	n    执行下一行代码，如果当前语句有函数调用，则不会进入函数体中
-	s    执行下一行代码，但是s会进入函数
-	w    打印当前执行点的位置
-	j    codenum  让程序跳转到指定的行
-	l    列出附近的源码
-	p    打印一个参数的值
-	a    打印当前函数及参数的值
-	回车  重复执行上一行的命令
+	makefile最重要的语法如下：
+	\begin{lstlisting}[language = bash]
+	target: prerequisites
+		command
 	\end{lstlisting}
-	
+
+	这个语法的意思是：
+	\begin{itemize}
+		\item[1.] 要想得到target，需要执行命令command。
+		\item[2.] target依赖prerequisites，当prerequisites中至少有一个文件比target文件新时，command才会被执行。
+	\end{itemize}
+
+	再来看下面的语句：
+	\begin{lstlisting}[language = bash]
+	$(ASM) $(ASMFLAGS) -o $@ $<
+	\end{lstlisting}
+
+	其中，\$@代表target，\$<代表prerequisites中的第一个文件，这条语句相当于：
+	\begin{lstlisting}[language = bash]
+	nasm -I include/ -o loader.bin loader.asm
+	\end{lstlisting}
+
+	再来看everything、clean和all，它们3个不是文件，只是一个动作名称。
+	比如“make clean”将会执行“rm -f \$(TARGET)”。
+	关键字.PHONY用来声明这些动作名称。\par
+
+	all后面跟着clean和everything，这意味着如果执行“make all”，那么clean和everything下面的动作也会被执行。
+	“make all”执行的结果如下：
+	\begin{lstlisting}
+	rm -f boot.bin loader.bin
+	nasm -I include/ -o boot.bin boot.asm
+	nasm -I include/ -o loader.bin loader.asm
+	\end{lstlisting}
+
 \end{document}

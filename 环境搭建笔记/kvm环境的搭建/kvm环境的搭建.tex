@@ -282,6 +282,7 @@ grep [pattern] [file] 用于在file中查找符合pattern的文本，并打印�
 	如果terminal输出有kvm和kvm\_intel有关的信息，就说明kvm和kvm\_intel模块加载成功了。
 
 \subsection{安装qemu-kvm}
+	建议使用包安装qemu-kvm，因为使用源码安装无法使用“make uninstall”卸载，也就是说删不掉这种方法安装的qemu-kvm。
 
 \subsubsection{下载qemu-kvm源代码}
 	使用如下命令即可下载qemu-kvm源代码：
