@@ -1,0 +1,259 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux磁盘管理 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{linux磁盘管理}
+\subsection{df命令查看系统磁盘容量}
+	“df”命令可以查看已挂载磁盘的总容量、使用容量、剩余容量等，默认单位为k，如下图所示：
+	\sizedfic{0.5}{1.png}
+
+	“df -i”查看inodes使用情况，如下图所示：
+	\sizedfic{0.5}{2.png}
+
+	“df -h”可以使用合适的单位显示，如下图所示：
+	\sizedfic{0.5}{3.png}
+
+\subsection{du命令查看目录的大小}
+	“du <dir>”可以查看某个目录以及它下面所有文件夹所占的空间，默认单位为k。\par
+
+	“du -a <dir>”可以查看某个目录以及它下面所有文件夹、所有文件所占的空间。\par
+
+	“du -h <dir>”可以查看某个目录以及它下面所有文件夹所占的空间，将使用合适的单位。\par
+
+	“du -sh <dir>”可以查看目录所占的空间，将使用合适的单位。
+
+\subsection{磁盘的分区和格式化}
+\subsubsection{fdisk命令进行磁盘的分区}
+	“fdisk -l”将直接列出系统中所有的磁盘设备以及分区表，如下图所示：
+	\sizedfic{0.45}{4.png}
+
+	"fdisk <device>"将对磁盘设备进行分区，然后进入交互界面。\par
+
+	分区模式下常用的命令如下：
+	\begin{lstlisting}
+	n 建立一个新的分区
+	w 保存操作
+	q 退出
+	d 删除一个分区
+	p 打印分区情况
+	\end{lstlisting}
+
+	如果输入’n‘，将建立一个新的分区，它会提示’e‘(扩展分区)还是‘p’(主分区)。主分区和扩展分区的介绍如下：
+	\begin{lstlisting}
+	磁盘分区有三种形式：主分区、扩展分区和逻辑分区。
+
+	主分区最多有四个。如果要在硬盘上安装操作系统，那么这个必须有一个主分区。
+	主分区中不能再划分其他类型的分区，每个主分区相当于一个逻辑磁盘。
+
+	扩展分区不能直接使用，必须将它划分为若干个逻辑分区才能使用。
+	逻辑分区相当于一个逻辑磁盘，逻辑分区必须在扩展分区中划分。
+
+	由主分区和逻辑分区构成的逻辑磁盘称为驱动器(Driver)或卷(Volume)。
+	\end{lstlisting}
+
+	使用“fdisk”进行磁盘分区的例子如下图所示：
+	\sizedfic{0.65}{5.png}
+
+\subsubsection{mkfs命令格式化磁盘分区}
+	“mkfs -t filesystem <device>”将设备格式化为某一文件系统。\par
+
+	使用“mkfs.ext2 <device>”可以将设备格式化为ext2的文件系统，“mkfs.ext3”、"mkfs.ext4"同理。\par
+
+	使用“mkfs -t filesystem -b <count> <device>”可以在格式化时设定每个数据区块占用空间的大小。
+	ext文件系统默认块大小为4096。一般来说不需要指定块的大小，否则容易出错。
+
+\subsection{挂载/卸载磁盘}
+\subsubsection{/etc/fstab文件}
+	如果想永久性地挂载或卸载磁盘，需要更改/etc/fstab文件的内容。/etc/fstab文件的内容如下所示：
+	\fic{6.png}
+
+	对这个文件的介绍如下：
+	\begin{lstlisting}
+	第一列：分区的标识，可以写：分区的LABEL、分区的UUID或者分区名
+	第二列：挂载点
+	第三列：分区的格式
+	第四列：mount的一些挂载参数
+	第五列：分区是否被dump备份，如果是的话为1，不是为0
+	第六列：开机时是否自检磁盘，1、2都表示检测，0表示不检测，/分区必须设为1
+	\end{lstlisting}
+
+	对挂载参数的介绍如下：
+	\begin{lstlisting}
+	async/sync：async表示系统每隔一段时间把内存数据写入磁盘，sync表示时时同步内存和磁盘中的数据
+	auto/noauto：开机自动挂载/不自动挂载
+	default：包含了rw，suid，dev，exec，auto，nouser，async
+	ro：按只读权限挂载
+	rw：按可读写权限挂载
+	exec/noexec：按可执行/不可执行挂载
+	user/nouser：允许/不允许root以外的其他用户挂载分区
+	suid/nosuid：允许/不允许分区有suid属性
+	usrquota：启动使用者磁盘配额模式
+	grquota：启动群组磁盘配额模式
+	\end{lstlisting}
+
+\subsubsection{mount挂载磁盘}
+	使用“mount <device> <dir>”命令把某个分区挂载到某个文件夹下。\par
+
+	“mount -a”命令会把/etc/fstab文件中出现的所有磁盘分区都挂载上。\par
+
+	“-t”选项用于指定挂载的分区类型，如果不指定将自动识别。\par
+
+	“-o”选项用于指定挂载的分区有哪些特性，也就是/etc/fstab文件中第四列的那些，使用例子如下：
+	\begin{lstlisting}
+	mount -o ro,sync,noauto /dev/sdb1 /mnt
+	\end{lstlisting}
+
+\subsubsection{blkid查看块设备的属性}
+	块设备的属性一般有UUID和TYPE，使用“blkid”可以获得所有分区的属性。\par
+
+	在挂载分区的时候推荐使用UUID，以免分区名称混乱时出现错误。\par
+
+\subsubsection{umount卸载磁盘}
+	“umount”后面可以跟分区名，也可以跟挂载点，用于卸载分区。\par
+
+	如果“umount”卸载失败时，有可能是当前目录处于要卸载的分区上，这时使用“-l”选项就可以轻松地解决问题。
+	
+\end{document}

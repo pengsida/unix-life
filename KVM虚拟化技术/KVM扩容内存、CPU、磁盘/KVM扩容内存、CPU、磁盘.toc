@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}KVM扩容内存、CPU、磁盘}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}查看虚拟机状态}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}KVM扩容内存}{2}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}设置当前使用内存“currentMemory”}{2}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}设置最大可使用内存“memory”}{3}{subsubsection.1.2.2}
+\contentsline {subsection}{\numberline {1.3}KVM调整CPU数量}{4}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}调整CPU数量需要知道的事}{6}{subsubsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.2}使用qemu-agent动态调整CPU数量}{7}{subsubsection.1.3.2}
+\contentsline {subsection}{\numberline {1.4}KVM扩展磁盘}{9}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}添加qcow2磁盘加入虚拟机}{9}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}直接扩展qcow2磁盘}{11}{subsubsection.1.4.2}

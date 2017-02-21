@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{linux磁盘管理}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{df命令查看系统磁盘容量}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{du命令查看目录的大小}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{磁盘的分区和格式化}{section.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.3.1}{fdisk命令进行磁盘的分区}{subsection.1.3}% 5
+\BOOKMARK [3][-]{subsubsection.1.3.2}{mkfs命令格式化磁盘分区}{subsection.1.3}% 6
+\BOOKMARK [2][-]{subsection.1.4}{挂载/卸载磁盘}{section.1}% 7
+\BOOKMARK [3][-]{subsubsection.1.4.1}{/etc/fstab文件}{subsection.1.4}% 8
+\BOOKMARK [3][-]{subsubsection.1.4.2}{mount挂载磁盘}{subsection.1.4}% 9
+\BOOKMARK [3][-]{subsubsection.1.4.3}{blkid查看块设备的属性}{subsection.1.4}% 10
+\BOOKMARK [3][-]{subsubsection.1.4.4}{umount卸载磁盘}{subsection.1.4}% 11
