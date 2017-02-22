@@ -1,0 +1,364 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{KVM扩容内存、CPU、磁盘 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{KVM扩容内存、CPU、磁盘}
+\subsection{查看虚拟机状态}
+	使用“dominfo <domain-name>”可以查看虚拟机的状态，其中就可以看到虚拟机当前的内存，如下图所示：
+	\sizedfic{0.5}{1.png}
+
+\subsection{KVM扩容内存}
+\subsubsection{设置当前使用内存“currentMemory”}
+	KVM只能在虚拟机的运行状态下扩展虚拟机的当前可使用内存，命令如下：
+	\begin{lstlisting}
+	virsh setmem <domain-name> <count>
+	\end{lstlisting}
+
+	使用例子如下图所示：
+	\sizedfic{0.6}{2.png}
+
+	如果想永久性地更改虚拟机的“currentMemory”，命令如下：
+	\begin{lstlisting}
+	virsh setmem <domain-name> <count> --config
+	\end{lstlisting}
+
+	需要注意的是，虚拟机还有另一个属性，就是最大可使用的内存“memory”，而当前可使用内存是“currentMemory”。
+	这里setmem命令是设置“currentMemory”，而“currentMemory”的值不能大于“memory”，否则会出错，如下图所示：
+	\sizedfic{0.5}{3.png}
+
+\subsubsection{设置最大可使用内存“memory”}
+	KVM只能在虚拟机的关机状态下调整虚拟机的最大可使用内存，命令如下：
+	\begin{lstlisting}
+	virsh setmaxmem <domain-name> <count>
+	\end{lstlisting}
+
+	使用例子如下图所示：
+	\sizedfic{0.6}{4.png}
+
+	需要注意的是，必须在虚拟机的关机状态下调整虚拟机的最大可使用内存，否则会报错，如下图所示：
+	\fic{5.png}
+
+	还有一点需要知道，如果调整“memory”小于“currentMemory”，那么“currentMemory”也会随之改变，如下图所示：
+	\sizedfic{0.5}{6.png}
+
+\subsection{KVM调整CPU数量}
+	KVM可以设置虚拟机最多可以使用的CPU数量，命令如下：
+	\begin{lstlisting}
+	virsh setvcpus <domain-name> --maximum <count> --config
+	\end{lstlisting}
+
+	设置这个值以后，需要重启虚拟机才能生效，命令如下：
+	\begin{lstlisting}
+	destroy <domain-name>
+	start <domain-name>
+	\end{lstlisting}
+
+	KVM只能在虚拟机的运行状态下调整虚拟机的CPU数量，命令如下：
+	\begin{lstlisting}
+	virsh setvcpus <domain-name> <count>
+	\end{lstlisting}
+
+	使用例子如下图所示：
+	\sizedfic{0.5}{7.png}
+
+	如果想永久性地更改虚拟机的CPU数量，命令如下：
+	\begin{lstlisting}
+	virsh setvcpus <domain-name> <count> --config
+	\end{lstlisting}
+
+	需要注意的是，CPU个数只能调大，不能调小，如下图所示：
+	\sizedfic{0.5}{8.png}
+
+	如果想减小CPU的个数，可以使用“setvcpus <domain-name> --maximum <count> --config”命令，然后重启虚拟机，如下图所示：
+	\sizedfic{0.6}{9.png}
+
+\clearpage
+
+\subsubsection{调整CPU数量需要知道的事}
+	虽然KVM可以动态地增加虚拟机CPU的数量，但是虚拟机增加的CPU其实是处于“offline”状态。\par
+	举个例子，虚拟机CPU本身状态如下图所示：
+	\fic{10.png}
+
+	随后使用“setvcpus”命令设置为4个cpu，结果虽然是分配了4个cpu，但是虚拟机中增加的3个cpu处于“offline”状态，如下图所示：
+	\fic{11.png}
+
+	只有虚拟机重启之后，这三个cpu才会投入使用，如下图所示：
+	\sizedfic{0.5}{12.png}
+
+\subsubsection{使用qemu-agent动态调整CPU数量}
+	首先在宿主机安装qemu-agent：
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	然后在虚拟机的xml配置文件的<devices>中增加如下内容：
+	\begin{lstlisting}
+	<channel type='unix'>
+		<source mode='bind' path='/var/lib/libvirt/qemu/f16x86_64.agent'/>
+   		<target type='virtio' name='org.qemu.guest_agent.0'/>
+	</channel>
+	\end{lstlisting}
+
+	如下图所示：
+	\fic{15.png}
+
+	然后在虚拟机中也安装qemu-agent:
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	这样设置以后，就可以动态地增加和减少CPU数量了。\par
+
+	动态地减少CPU数量的命令如下：
+	\begin{lstlisting}
+	virsh setvcpus --live --guest <domain-name> <count>
+	\end{lstlisting}
+
+	使用例子如下图所示：
+	\fic{13.png}
+
+	如果要保存这个设置，可以再输入如下语句：
+	\begin{lstlisting}
+	virsh setvcpus <domain-name> <count> --config
+	# 如，setcpus devstack 2 --config
+	\end{lstlisting}
+
+	需要知道的是，这里实现的并不是把CPU数量减少了，而是将虚拟机中2个CPU设置为“offline”。
+	如果在virsh中查看虚拟机的CPU数量，会发现和原来一样，如下图所示：
+	\sizedfic{0.6}{14.png}
+
+	不过这一点我觉得不必计较，因为将CPU设置为“offline”以后，就相当于没有使用这两个CPU了。\par
+
+	使用qemu-agent动态增加CPU数量的命令如下：
+	\begin{lstlisting}
+	virsh setvcpu <domain-name> <count>
+	virsh setvcpu --live --guest <domain-name> <count>
+	\end{lstlisting}
+
+	使用例子如下图所示：
+	\fic{16.png}
+
+	这样子来增加CPU数量，相当于先增加CPU数量，然后使用qemu-agent将这些CPU设置为“online”状态。\par
+
+	如果想保存这个设置，可以再输入如下语句：
+	\begin{lstlisting}
+	virsh setvcpus <domain-name> <count> --config
+	\end{lstlisting}
+
+	其实上述语句也就是加一个“--config”参数选项，用于修改下一次的启动配置。
+
+\subsection{KVM扩展磁盘}
+	KVM扩展磁盘的方式有两种：
+	\begin{itemize}
+		\item[1.] 添加qcow2磁盘加入虚拟机。
+		\item[2.] 直接扩展qcow2磁盘。
+	\end{itemize}
+
+\subsubsection{添加qcow2磁盘加入虚拟机}
+	使用这个方法需要注意的是，IDE磁盘不支持热拔插，其他磁盘可以。
+	如果想添加IDE磁盘，只能静态添加。\par
+
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 使用qemu-img工具创建一块qcow2磁盘：
+		\begin{lstlisting}
+	qemu-img create -f qcow2 file.qcow2 <size>
+	# 如，qemu-img create -f qcow2 attach.qcow2 50G
+		\end{lstlisting}
+
+		\item[2.] 向虚拟机中动态添加一块qcow2磁盘：
+		\begin{lstlisting}
+	virsh attach-disk <domain-name> <source> <target> --config
+	# 使用--config选项是为了永久添加这块磁盘
+	# 如，virsh attach-disk devstack /home/sidapeng/kvm/openstack/attach.qcow2 hdb --subdriver qcow2 --config
+		\end{lstlisting}
+
+		\item[3.] 到上个步骤，虚拟机的磁盘其实已经扩展成功了，我们可以使用如下语句查看虚拟机拥有的磁盘：
+		\begin{lstlisting}
+	virsh domblklist <domain>
+	# 如，virsh domblklist devstack
+		\end{lstlisting}
+
+		到虚拟机中查看，如下图所示：
+		\sizedfic{0.7}{17.png}
+
+		可以看出，虚拟机的磁盘空间确实扩大了，但是还需要进行分区。
+
+		\item[4.] 对虚拟机进行分区扩容：
+		\begin{lstlisting}
+	sudo fdisk /dev/sdb # 从上图可知，新增的是/dev/sdb，它还没分区
+		\end{lstlisting}
+
+		具体操作如下图所示：
+		\fic{18.png}
+
+		再使用“fdisk -l”语句，就可以看到多了/dev/sdb1分区，如下图所示：
+		\sizedfic{0.7}{19.png}
+
+		然后再对/dev/sdb1进行格式化，当前文件系统为ext4，所以使用mkfs.ext4进行格式化：
+		\begin{lstlisting}
+	sudo mkfs.ext4 /dev/sdb1
+		\end{lstlisting}
+
+		最后将这个分区挂载到/mnt下：
+		\begin{lstlisting}
+	sudo mount -t ext4 /dev/sdb1 /mnt
+		\end{lstlisting}
+
+		到此，虚拟机可以说是正式扩容了，如下图所示：
+		\sizedfic{0.5}{20.png}
+
+		 mount挂载分区在系统重启之后需要重新挂载，可以通过修改/etc/fstab文件使得挂载永久生效，如下图所示：
+		 \fic{21.png}
+	\end{itemize}
+
+\subsubsection{直接扩展qcow2磁盘}
+	使用这个方法需要注意的是，如果虚拟机的qcow2磁盘拥有快照，那么是无法使用qemu-img工具扩展这个磁盘的。
+	还有就是，这个方法无法动态扩容。\par
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 直接扩展虚拟机的qcow2磁盘：
+		\begin{lstlisting}
+	qemu-img resize file.qcow2 +<size>
+	# 比如，qemu-img resize devstack.qcow2 +50G
+		\end{lstlisting}
+
+		\item[2.] 重启虚拟机，使用“sudo fdisk -l”命令，就可以看到原先的磁盘多了50G。
+
+		\item[3.] 对磁盘进行分区，和上一小节的第四步骤一样，在此就不再详述。
+	\end{itemize}
+
+\end{document}
