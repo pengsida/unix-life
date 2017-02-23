@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}变量作用域}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}理解闭包函数}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}变量的查找规则}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}改变作用域}{2}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}Global关键字}{3}{subsubsection.1.3.1}
+\contentsline {subsection}{\numberline {1.4}globals()和locals()}{3}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}globals()函数}{3}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}locals()函数}{3}{subsubsection.1.4.2}

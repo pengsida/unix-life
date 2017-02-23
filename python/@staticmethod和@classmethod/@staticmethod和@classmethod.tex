@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{report}
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -28,8 +28,8 @@
 \usepackage{extarrows}
 \usepackage{hyperref}
 \titleformat*{\section}{\LARGE}
-% \renewcommand\refname{参考文献}
-% \renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
 %\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
 %\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -118,17 +118,6 @@
 
 \newcommand{\codefile}[1]{\lstinputlisting{#1}}
 
-\newcommand{\interval}{\vspace{0.5em}}
-
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
-
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -137,79 +126,45 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{进程 \qquad}
+\chead{@staticmethod和@classmethod \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-\tableofcontents
+% \tableofcontents
 
 \clearpage
 
-\chapter{进程}
-\section{形成进程的必要考虑}
-	CPU的个数通常总是小于进程的个数，所以我们需要进程调度，使得系统总有“正在运行的”和“正在休息的”进程。\par
+\section{@staticmethod和@classmethod}
+	一般来说，如果要使用类的方法，需要先实例化类的对象然后再调用方法。\par
 
-	为了让“正在休息的”进程在重新醒来时记住自己挂起之前的状态，我们需要一个数据结构记录一个进程的状态。\par
+	如果使用@staticmethod和@classmethod，就可以不需要实力化，直接“类名.方法名()”来调用方法。\par
 
-	还需要考虑的是，进程和进程切换运行在不同层级上。\par
+	@staticmethod和@classmethod的区别如下：
+	\begin{itemize}
+		\item[1.] @staticmethod不需要self和cls参数，就跟使用函数一样。如果它要用到类的一些属性和芳法，只能直接类名.属性名或类名.方法名。
+		\item[2.] @classmethod需要cls参数，可以用cls来调用类的属性、类的方法或者通过cls()获得实例化对象。
+	\end{itemize}
 
-	还有一点需要考虑，就是进程自己不知道什么时候被挂起，什么时候又被启动，我们需要知道诱发进程切换的原因不只一种，比如发生了时钟中断。
-
-\section{最简单的进程}
-	首先介绍一下进程切换的情形：
+	例子如下：
 	\begin{lstlisting}
-	一个进程正在运行着，此时时钟中断发生。
-	特权级从ring1跳到ring0，开始执行时钟中断处理程序。
-	中断处理程序调用进程调度模块，指定下一个应该运行的进程。
-	中断处理程序结束时，下一个进程准备就绪并开始运行，特权级从ring0跳回ring1。
+	class A(object):
+		bar = 1
+		def foo(self):
+			print 'foo'
+
+		@staticmethod
+		def static_foo():
+			print 'static_foo'
+			print A.bar
+
+		@classmethod
+		def class_foo():
+			print 'class_foo'
+			print cls.bar
+			cls().foo() # 获得实例化对象
+
+	A.static_foo()
+	A.class_foo()
 	\end{lstlisting}
-
-	从上述过程得知，我们需要完成几个部分：
-	\begin{itemize}
-		\item[1.] 时钟中断处理程序。
-		\item[2.] 进程调度模块。
-		\item[3.] 两个进程。
-	\end{itemize}
-
-\subsection{简单进程中的关键技术}
-\subsubsection{进程状态的保存}
-	需要考虑保存进程的状态，用于恢复进程，所以我们要把寄存器的值统统保存起来。\par
-	
-	一般使用push或pushad保存大多寄存器的值，并且把它写在时钟中断例程的最顶端，以便中断发生时马上被执行。\par
-
-	当恢复进程时，使用pop来恢复寄存器的值，虽然执行指令iretd回到原先的进程。
-
-\subsubsection{进程表PCB}
-	之前已经提到过，我们需要一个数据结构记录一个进程的状态。这个数据结构叫做进程表，也就是进程控制块PCB。\par
-
-	进程表是用来描述进程的，所以它必须独立于进程之外。每个进程有一个对应的进程表，我们会有很多个进程，所以就需要创建一个进程表数组。
-
-\subsubsection{进程栈和内核栈}
-	在进程切换时，我们需要考虑esp指向的位置。\par
-
-	当进程运行时，esp指向进程堆栈中的某个位置。而为了把进程的寄存器状态压进进程表，esp此时又需要指向进程表的某个位置。\par
-
-	需要知道的是，中断处理程序也可能用到堆栈操作，而显然我们不能容忍esp对进程表进行操作，所以我们应该让esp指向专门的内核栈区域。\par
-
-	总而言之，进程切换过程中，esp将出现在3个不同的区域，如下图所示：
-	\fic{1.png}
-
-	这三个区域的描述如下：
-	\begin{itemize}
-		\item 进程栈，进程运行时自身的堆栈。
-		\item 进程表，存储进程状态信息的数据结构。
-		\item 内核栈，进程调度模块运行时使用的堆栈。
-	\end{itemize}
-
-\subsubsection{特权级变换}
-	系统原先运行在ring0，所以当我们准备开始第一个进程时，我们面临一个ring0向ring1的转移。\par
-
-	这个过程和恢复进程很相似，所以我们通过假装发生了一次时钟中断来启动第一个进程，利用iretd来实现ring0向ring1的转移。\par
-
-	当执行时钟中断处理程序时，需要从ring1向ring0转移，此时要从当前TSS中取出内层ss和esp作为目标代码的ss和esp，所以我们必须事先准备好TSS。\par
-
-	因为每个进程相对独立，所以这些任务状态段相互独立。我们需要把涉及到的描述符放在局部描述符表LDT中，这意味着我们还需要为每个进程准备LDT。
-
-\subsection{简单进程的实现}
 
 \end{document}
