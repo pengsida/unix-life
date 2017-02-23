@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}nova调用libvirt}{2}
+\contentsline {subsection}{\numberline {1.1}nova创建虚拟机时对libvirt的调用}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}创建虚拟机的函数}{3}
+\contentsline {subsection}{\numberline {1.2}nova动态迁移时对libvirt的调用}{6}
+\contentsline {subsection}{\numberline {1.3}nova创建快照时对libvirt的调用}{7}
+\contentsline {subsubsection}{\numberline {1.3.1}获得虚拟机抽象对象}{8}
+\contentsline {subsubsection}{\numberline {1.3.2}获得虚拟机磁盘路径}{8}
+\contentsline {subsubsection}{\numberline {1.3.3}获得虚拟机磁盘类型}{8}
+\contentsline {subsubsection}{\numberline {1.3.4}静态创建快照}{9}
+\contentsline {subsubsection}{\numberline {1.3.5}动态创建快照}{11}
+\contentsline {section}{\numberline {2}查看libvirt的python API}{13}

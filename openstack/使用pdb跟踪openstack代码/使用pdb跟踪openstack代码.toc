@@ -1,11 +1,11 @@
-\contentsline {section}{\numberline {1}使用pdb跟踪openstack代码}{2}{section.1}
-\contentsline {subsection}{\numberline {1.1}devstack screen使用技巧}{2}{subsection.1.1}
-\contentsline {subsubsection}{\numberline {1.1.1}screen -list}{2}{subsubsection.1.1.1}
-\contentsline {subsubsection}{\numberline {1.1.2}screen -d <screen-id>}{3}{subsubsection.1.1.2}
-\contentsline {subsubsection}{\numberline {1.1.3}screen -r <screen-id>}{3}{subsubsection.1.1.3}
-\contentsline {subsubsection}{\numberline {1.1.4}screen -x <screen-id>}{3}{subsubsection.1.1.4}
-\contentsline {subsubsection}{\numberline {1.1.5}screen -h}{3}{subsubsection.1.1.5}
-\contentsline {subsubsection}{\numberline {1.1.6}进入screen以后的操作}{3}{subsubsection.1.1.6}
-\contentsline {subsubsection}{\numberline {1.1.7}借助screen重启openstack服务}{4}{subsubsection.1.1.7}
-\contentsline {subsection}{\numberline {1.2}使用pdb}{5}{subsection.1.2}
-\contentsline {subsubsection}{\numberline {1.2.1}pdb常用调试命令}{6}{subsubsection.1.2.1}
+\contentsline {section}{\numberline {1}使用pdb跟踪openstack代码}{2}
+\contentsline {subsection}{\numberline {1.1}devstack screen使用技巧}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}screen -list}{2}
+\contentsline {subsubsection}{\numberline {1.1.2}screen -d <screen-id>}{3}
+\contentsline {subsubsection}{\numberline {1.1.3}screen -r <screen-id>}{3}
+\contentsline {subsubsection}{\numberline {1.1.4}screen -x <screen-id>}{3}
+\contentsline {subsubsection}{\numberline {1.1.5}screen -h}{3}
+\contentsline {subsubsection}{\numberline {1.1.6}进入screen以后的操作}{3}
+\contentsline {subsubsection}{\numberline {1.1.7}借助screen重启openstack服务}{4}
+\contentsline {subsection}{\numberline {1.2}使用pdb}{5}
+\contentsline {subsubsection}{\numberline {1.2.1}pdb常用调试命令}{6}

@@ -161,6 +161,16 @@
 
 \subsection{setup.cfg文件的学习}
 \subsubsection{console\_scripts组}
-	console\_scripts中的entry point用于作为nova各个服务的入口点，
+	console\_scripts中的entry point用于作为nova各个服务的入口点，用于提供命令行工具。\par
+
+	常用的服务有：
+	\begin{itemize}
+		\item[1.] nova-api-os-compute：OpenStack API服务。
+		\item[2.] nova-compute：OpenStack Compute服务。
+		\item[3.] nova-conductor：OpenStack Conductor服务。
+		\item[4.] nova-scheduler：OpenStack Scheduler服务。
+	\end{itemize}
+
+	我们可以根据这些entry\_points找到相应的源代码。
 
 \end{document}

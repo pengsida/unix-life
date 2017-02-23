@@ -1,0 +1,665 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{nova调用libvirt \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{nova调用libvirt}
+	在nova/virt/libvirt/driver.py中有LibvirtDriver类，用于调用libvirt。
+
+\subsection{nova创建虚拟机时对libvirt的调用}
+	LibvirtDriver类中创建虚拟机的函数代码如下：
+	\begin{lstlisting}
+	def spawn(self, context, instance, image_meta, injected_files,
+              admin_password, network_info=None, block_device_info=None):
+		
+		# 获取disk配置信息 
+        disk_info = blockinfo.get_disk_info(CONF.libvirt.virt_type,
+                                            instance,
+                                            image_meta,
+                                            block_device_info)
+
+        ...
+
+		# 创建镜像
+        self._create_image(context, instance, disk_info['mapping'],
+                           injection_info=injection_info,
+                           block_device_info=block_device_info)
+
+        ...
+
+		# 创建xml配置文件
+        xml = self._get_guest_xml(context, instance, network_info,
+                                  disk_info, image_meta,
+                                  block_device_info=block_device_info)
+
+		...
+
+		# 创建虚拟机和网络
+        self._create_domain_and_network(
+            context, xml, instance, network_info, disk_info,
+            block_device_info=block_device_info,
+            post_xml_callback=gen_confdrive,
+            destroy_disks_on_failure=True)
+	\end{lstlisting}
+
+\clearpage
+
+\subsubsection{创建虚拟机的函数}
+	LibvirtDriver类中调用libvirt创建虚拟机和网络的函数代码如下，因为我更关注创建虚拟机的流程，所以把与创建网络有关的代码略去：
+	\begin{lstlisting}
+	def _create_domain_and_network(self, context, xml, instance, network_info,
+                                   disk_info, block_device_info=None,
+                                   power_on=True, reboot=False,
+                                   vifs_already_plugged=False,
+                                   post_xml_callback=None,
+                                   destroy_disks_on_failure=False):
+
+        ...
+
+		# 创建虚拟机
+        guest = None
+        try:
+            with self.virtapi.wait_for_instance_event(
+                    instance, events, deadline=timeout,
+                    error_callback=self._neutron_failed_callback):
+                ...
+                with self._lxc_disk_handler(instance, instance.image_meta,
+                                            block_device_info, disk_info):
+                    guest = self._create_domain(
+                        xml, pause=pause, power_on=power_on,
+                        post_xml_callback=post_xml_callback)
+					...
+        ...
+
+        return guest
+	\end{lstlisting}
+
+	创建虚拟机的函数代码如下：
+	\begin{lstlisting}
+	def _create_domain(self, xml=None, domain=None,
+                       power_on=True, pause=False, post_xml_callback=None):
+		
+		# 创建虚拟机
+		# 这里的libvirt_guest在driver.py中有引用：from nova.virt.libvirt import guest as libvirt_guest
+        if xml:
+            guest = libvirt_guest.Guest.create(xml, self._host)
+        else:
+            guest = libvirt_guest.Guest(domain)
+
+        ...
+
+        return guest
+	\end{lstlisting}
+
+	从上面的代码可以看出，nova/virt/libvirt/guest.py中的Guest类就是对虚拟机instance的抽象。\par
+
+	因为我们这里是新建虚拟机，所以domain应该是None，是调用Guest.create()函数来创建虚拟机。
+	下面来看Guest类的create()函数：
+	\begin{lstlisting}
+class Guest(object):
+	@classmethod
+    def create(cls, xml, host):
+        
+        try:
+            ...
+			# 这里使用host创建虚拟机，host是nova/virt/libvirt/host.py中的Host类
+            guest = host.write_instance_config(xml)
+        
+		...
+
+        return guest
+	\end{lstlisting}
+
+	这里的Host类的write\_instance\_config()的代码如下所示：
+	\begin{lstlisting}
+	def write_instance_config(self, xml):
+		# 直接告诉我们，get_connection()函数返回的是与libvirt相关的对象
+		# 下面这行代码可以让我们想起：virsh define demo.xml这个命令
+		# 实际上self.get_connection()返回的是一个virConnect对象
+        domain = self.get_connection().defineXML(xml)
+
+        return libvirt_guest.Guest(domain)
+	\end{lstlisting}
+
+	如果想知道openstack怎么创建一个virConnect对象，就继续看get\_connection()函数：
+	\begin{lstlisting}
+	def get_connection(self):
+        
+        try:
+			# 很清楚地看到conn对象是由_get_connection()创建的
+            conn = self._get_connection()
+        
+		...
+
+        return conn
+	\end{lstlisting}
+
+	进一步看\_get\_connection()函数：
+	\begin{lstlisting}
+	def _get_connection(self):
+		# _wrapped_conn_lock是一个互斥锁
+        with self._wrapped_conn_lock:
+			...
+			# _wrapped_conn是一个连接到libvirt的对象
+            # 当前服务没有调用libvirt是，_wrapped_conn是None
+            if self._wrapped_conn is None:
+                try:
+                    # 连接到libvirt并返回一个对象
+                    self._wrapped_conn = self._get_new_connection()
+                
+				...
+
+        return self._wrapped_conn
+	\end{lstlisting}
+
+	再来看\_get\_new\_connection()函数：
+	\begin{lstlisting}
+	def _get_new_connection(self):
+        ...
+		# 这里的uri是'qemu:///system'，根据之前的代码追踪过程可以轻易得知，在此不再详述如何追踪到它的值
+		# _read_only为False
+		# 使用_connect()函数创建wrapped_conn对象
+		# 如果熟悉libvirt API，那么看到这条语句会想到下面C语言中的这条语句：
+		#	conn = virConnectPtr("qemu:///system")
+		#	conn是virConnectPtr对象，python中是virConnect类
+        wrapped_conn = self._connect(self._uri, self._read_only)
+
+        ...
+
+        return wrapped_conn
+	\end{lstlisting}
+
+	分析到这，应该算是比较清楚了。我们如果是熟悉virConnect对象，那么就能使用libvirt的API在openstack中呼风唤雨了。\par
+
+\clearpage
+
+\subsection{nova动态迁移时对libvirt的调用}
+	LibvirtDriver类中动态迁移的函数代码如下：
+	\begin{lstlisting}
+	def live_migration(self, context, instance, dest,
+                       post_method, recover_method, block_migration=False,
+                       migrate_data=None):
+        """Spawning live_migration operation for distributing high-load.
+
+        :param context: security context
+        :param instance:
+            nova.db.sqlalchemy.models.Instance object
+            instance object that is migrated.
+        :param dest: destination host
+        :param post_method:
+            post operation method.
+            expected nova.compute.manager._post_live_migration.
+        :param recover_method:
+            recovery method when any exception occurs.
+            expected nova.compute.manager._rollback_live_migration.
+        :param block_migration: if true, do block migration.
+        :param migrate_data: a LibvirtLiveMigrateData object
+
+        """
+
+        # 'dest' will be substituted into 'migration_uri' so ensure
+        # it does't contain any characters that could be used to
+        # exploit the URI accepted by libivrt
+        if not libvirt_utils.is_valid_hostname(dest):
+            raise exception.InvalidHostname(hostname=dest)
+
+        self._live_migration(context, instance, dest,
+                             post_method, recover_method, block_migration,
+                             migrate_data)
+	\end{lstlisting}
+
+\clearpage
+
+\subsection{nova创建快照时对libvirt的调用}
+	LibvirtDriver类中创建虚拟机快照的函数是snapshot()。\par
+
+	这个函数主要功能的实现都与libvirt有关，我留取了一些主要的代码，并在之后逐个分析：
+	\begin{lstlisting}
+	def snapshot(self, context, instance, image_id, update_task_state):
+
+        try:
+			# 得到虚拟机的抽象对象virt_dom
+            virt_dom = self._lookup_by_name(instance['name'])
+        ...
+
+		# 得到虚拟机的磁盘路径
+        disk_path = libvirt_utils.find_disk(virt_dom)
+
+		# 得到虚拟机的磁盘类型
+        source_format = libvirt_utils.get_disk_type(disk_path)
+
+		# 如果是静态创建快照，将会执行下面这段代码，稍后会在“静态创建快照”一节分析
+		if CONF.libvirt.virt_type != 'lxc' and not live_snapshot:
+            if state == power_state.RUNNING or state == power_state.PAUSED:
+                ...
+                virt_dom.managedSave(0)
+
+		# snapshot_backend也将用于静态创建快照，稍后分析
+        snapshot_backend = self.image_backend.snapshot(instance,
+                disk_path,
+                image_type=source_format)
+
+        with utils.tempdir(dir=snapshot_directory) as tmpdir:
+            try:
+				...
+                if live_snapshot:
+					# 动态创建快照
+                    self._live_snapshot(virt_dom, disk_path, out_path,
+                                        image_format)
+                else:
+					# 静态创建快照
+                    snapshot_backend.snapshot_extract(out_path, image_format)
+            ...
+	\end{lstlisting}
+
+\clearpage
+
+\subsubsection{获得虚拟机抽象对象}
+	函数中的语句如下：
+	\begin{lstlisting}
+	# instance是Intance类，Instance类定义在nova/objects/instance.py中
+	# 返回了virDomain对象
+	virt_dom = self._lookup_by_name(instance['name'])
+	\end{lstlisting}
+
+	\_lookup\_by\_name()函数如下：
+	\begin{lstlisting}
+	def _lookup_by_name(self, instance_name):
+        try:
+			# 这里的_conn就是libvirt API中的virConnect对象
+            return self._conn.lookupByName(instance_name)
+        ...
+	\end{lstlisting}
+
+	lookupByName是libvirt的一个API函数，可以根据域的名字返回virDomain对象。
+
+\subsubsection{获得虚拟机磁盘路径}
+	函数中的语句如下：
+	\begin{lstlisting}
+	# libvirt_utils在driver.py中有引用：from nova.virt.libvirt import utils as libvirt_utils
+	disk_path = libvirt_utils.find_disk(virt_dom)
+	\end{lstlisting}
+
+	find\_disk函数如下：
+	\begin{lstlisting}
+	def find_disk(virt_dom):
+		# 在这里，我们只关心下面这条语句
+		# virt_dom是libvirt的virDomain对象
+		xml_desc = virt_dom.XMLDesc(0)
+		...
+	\end{lstlisting}
+
+	这里的XMLDesc()是virDomain类的一个成员函数，用于提供域的XML配置文件。
+	也就是说，获得虚拟机磁盘路径的核心函数是virDomain.XMLDesc()。\par
+
+	虽然我这里省略了find\_disk()函数接下来的代码，但是大家应该也能知道，
+	接下来就是解析这个xml文件，得到域的磁盘路径。
+
+\subsubsection{获得虚拟机磁盘类型}
+	函数中的语句如下：
+	\begin{lstlisting}
+	# libvirt_utils在driver.py中有引用：from nova.virt.libvirt import utils as libvirt_utils
+	# 返回了虚拟机磁盘的类型
+	source_format = libvirt_utils.get_disk_type(disk_path)
+	\end{lstlisting}
+
+	get\_disk\_type()函数如下：
+	\begin{lstlisting}
+	def get_disk_type(path):
+    ...
+	# 这个函数用于得到磁盘的类型
+	# qemu_img_info()返回了是QemuImgInfo类
+	# QemuImgInfo类定义于nova/openstack/common/imageutils.py中
+	# QemuImgInfo.file_format存放着磁盘类型的信息
+    return images.qemu_img_info(path).file_format
+	\end{lstlisting}
+
+	继续追踪qemu\_img\_info()函数：
+	\begin{lstlisting}
+	def qemu_img_info(path):
+    ...
+	# 这条语句相当于执行命令行：qemu-img info disk_path，返回镜像文件的信息
+	# utils是nova/utils.py文件
+    out, err = utils.execute('env', 'LC_ALL=C', 'LANG=C',
+                             'qemu-img', 'info', path)
+    ...
+	# 返回QemuImgInfo类，这个类定义于nova/openstack/common/imageutils.py中
+    return imageutils.QemuImgInfo(out)
+	\end{lstlisting}
+
+	所以说，openstack获得虚拟机磁盘信息，最终是调用了“qemu-img info <filename>”这条命令。
+
+\subsubsection{静态创建快照}
+	可以从snapshot()函数知道静态创建快照的相关语句如下：
+	\begin{lstlisting}
+	...
+	if CONF.libvirt.virt_type != 'lxc' and not live_snapshot:
+            if state == power_state.RUNNING or state == power_state.PAUSED:
+                ...
+				# 
+                virt_dom.managedSave(0)
+	# 获得与静态创建快照有关的数据结构
+	snapshot_backend = self.image_backend.snapshot(instance,
+                disk_path,
+                image_type=source_format)
+	...
+	with utils.tempdir(dir=snapshot_directory) as tmpdir:
+            try:
+				...
+                else:
+					# 静态创建快照
+                    snapshot_backend.snapshot_extract(out_path, image_format)
+	\end{lstlisting}
+
+\clearpage
+
+	我们逐句分析这三句注释了的代码：
+	\begin{itemize}
+		\item[1.] 第一句注释代码：
+		\begin{lstlisting}
+	# virt_dom是libvirt的virDomain对象
+	# virDomain.managedSave()函数用于将虚拟机的域挂起，然后将它的内存信息保存到虚拟机镜像的一个文件中
+	virt_dom.managedSave(0)
+		\end{lstlisting}
+
+		其实第一步已经完成了对虚拟机创建快照，只是现在这个快照保存在镜像文件中，还需要将它提取出来。
+
+		\item[2.] 第二句注释代码：
+		\begin{lstlisting}
+	# image_backend是nova/libvirt/imagebackend.py文件中定义的Backend类
+	# snapshot()函数根据image_type返回相应的类
+	snapshot_backend = self.image_backend.snapshot(instance,
+                disk_path,
+                image_type=source_format)
+		\end{lstlisting}
+
+		进一步看snapshot()函数：
+		\begin{lstlisting}
+	def snapshot(self, instance, disk_path, image_type=None):
+		# self.backend()根据image_type返回相应的类
+		# 具体细节在此不详述，有兴趣的可以看Backend类
+        backend = self.backend(image_type)
+        return backend(instance=instance, path=disk_path)
+		\end{lstlisting}
+
+		\item[3.] 在分析第三句注释代码前，我先说一些准备信息。\par
+		我分析代码的时候，使用的磁盘类型是qcow2类型，所以现在snapshot\_backend是Qcow2类。
+		而且现在我们已经通过managedSave()函数将它的快照保存到虚拟机镜像的一个文件中。
+		所以使用snapshot\_extract()函数就很好理解了，就是提取快照文件：
+		\begin{lstlisting}
+	snapshot_backend.snapshot_extract(out_path, image_format)
+
+	# snapshot_extract()函数如下
+class Qcow2(Image):
+	...
+	def snapshot_extract(self, target, out_format):
+        libvirt_utils.extract_snapshot(self.path, 'qcow2',
+                                       target,
+                                       out_format)
+		\end{lstlisting}
+
+\clearpage
+
+		代码到了这一步，已经是即将完成快照的提取。
+		进一步看extract\_snapshot()函数：
+		\begin{lstlisting}
+	def extract_snapshot(disk_path, source_fmt, out_path, dest_fmt):
+		# 函数相当于执行了“qemu-img convert -f source_fmt -O dest_fmt disk_path out_path”
+		# qemu-img convert就是用来提取快照的命令
+		qemu_img_cmd = ('qemu-img', 'convert', '-f', source_fmt, '-O', dest_fmt)
+		...
+		qemu_img_cmd += (disk_path, out_path)
+		execute(*qemu_img_cmd)
+		\end{lstlisting}
+	\end{itemize}
+
+	总结一下，openstack静态创建快照步骤如下：
+	\begin{itemize}
+		\item[1.] 调用virDomain.managedSave()创建快照。
+		\item[2.] 用“qemu-img convert”命令提取快照。
+	\end{itemize}
+
+\subsubsection{动态创建快照}
+	snapshot()函数中动态创建快照的相关语句如下：
+	\begin{lstlisting}
+	...
+	with utils.tempdir(dir=snapshot_directory) as tmpdir:
+            try:
+				...
+                if live_snapshot:
+					# 动态创建快照
+                    self._live_snapshot(virt_dom, disk_path, out_path,
+                                        image_format)
+				...
+	\end{lstlisting}
+
+	进一步看\_live\_snapshot()函数：
+	\begin{lstlisting}
+	def _live_snapshot(self, domain, disk_path, out_path, image_format):
+		# domain是虚拟机的virDomain对象
+
+		# 传入VIR_DOMAIN_XML_INACTIVE和VIR_DOMAIN_XML_SECURE参数
+		# 获得domain的xml配置文件
+		# 这个xml用于之后的undefine()和define()函数
+        xml = domain.XMLDesc(
+            libvirt.VIR_DOMAIN_XML_INACTIVE |
+            libvirt.VIR_DOMAIN_XML_SECURE)
+
+        try:
+			# 调用virDomain.blockJobAbort()停止活动块操作
+            domain.blockJobAbort(disk_path, 0)
+        ...
+		# 获得虚拟机backing_file的路径
+        src_back_path = libvirt_utils.get_disk_backing_file(disk_path,
+                                                            basename=False)
+        disk_delta = out_path + '.delta'
+		# 这个函数位于nova/virt/libvirt/utils.py中
+		# 函数中调用“qemu-img create -f qcow2 -o src_disk_size,src_back_path src_back_path”创建镜像文件
+        libvirt_utils.create_cow_image(src_back_path, disk_delta,
+                                       src_disk_size)
+
+        try:
+			# 因为virDomain.blockRebase()不能对persistent的domain操作
+			# 所以调用virDomain.undefine()将domain变为transient
+            if domain.isPersistent():
+                domain.undefine()
+
+            # 将虚拟机镜像文件的内容拷贝到disk_delta中的镜像文件中
+            domain.blockRebase(disk_path, disk_delta, 0,
+                               libvirt.VIR_DOMAIN_BLOCK_REBASE_COPY |
+                               libvirt.VIR_DOMAIN_BLOCK_REBASE_REUSE_EXT |
+                               libvirt.VIR_DOMAIN_BLOCK_REBASE_SHALLOW)
+
+            ...
+
+			# 调用virtDomain.blockJobAbort()终止数据拷贝
+            domain.blockJobAbort(disk_path, 0)
+            ...
+        finally:
+			# 将domain从transient变为persistent
+            self._conn.defineXML(xml)
+
+        # 这个函数调用“qemu-img convert”命令将disk_delta中的文件变为一个qcow2文件
+        libvirt_utils.extract_snapshot(disk_delta, 'qcow2',
+                                       out_path, image_format)
+	\end{lstlisting}
+
+	总结一下，openstack动态创建快照步骤如下：
+	\begin{itemize}
+		\item[1.] 使用“qemu-img create”命令创建用于备份的镜像。
+		\item[2.] 调用virtDomain.blockRebase()函数将虚拟机的磁盘内容拷贝到备份镜像中。
+		\item[3.] 使用"qemu-img convert"命令将备份镜像转换为一个qcow2文件。
+	\end{itemize}
+
+\clearpage
+
+\section{查看libvirt的python API}
+
+	可以通过python的help()函数来查看virConnect类：
+	\begin{itemize}
+		\item[1.] 首先进入python的help界面：
+		\sizedfic{0.6}{1.png}
+
+		\item[2.] 查看libvirt的帮助文档：
+		\sizedfic{0.6}{2.png}
+
+		\item[3.] 通过“virConnect”找到对virConnect各个函数的介绍：
+		\sizedfic{0.6}{3.png}
+
+	\end{itemize}
+
+	% 进一步看\_connect()函数：
+	% \begin{lstlisting}
+	% @staticmethod
+    % def _connect(uri, read_only):
+	% 	...
+	% 	# 下面这个函数使用Evenlet机制会创建一个线程
+    %     return tpool.proxy_call(
+    %         (libvirt.virDomain, libvirt.virConnect),
+    %         libvirt.openAuth, uri, auth, flags)
+	% \end{lstlisting}
+
+\end{document}
