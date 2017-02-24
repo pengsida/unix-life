@@ -316,43 +316,6 @@ class Guest(object):
 
 \clearpage
 
-\subsection{nova动态迁移时对libvirt的调用}
-	LibvirtDriver类中动态迁移的函数代码如下：
-	\begin{lstlisting}
-	def live_migration(self, context, instance, dest,
-                       post_method, recover_method, block_migration=False,
-                       migrate_data=None):
-        """Spawning live_migration operation for distributing high-load.
-
-        :param context: security context
-        :param instance:
-            nova.db.sqlalchemy.models.Instance object
-            instance object that is migrated.
-        :param dest: destination host
-        :param post_method:
-            post operation method.
-            expected nova.compute.manager._post_live_migration.
-        :param recover_method:
-            recovery method when any exception occurs.
-            expected nova.compute.manager._rollback_live_migration.
-        :param block_migration: if true, do block migration.
-        :param migrate_data: a LibvirtLiveMigrateData object
-
-        """
-
-        # 'dest' will be substituted into 'migration_uri' so ensure
-        # it does't contain any characters that could be used to
-        # exploit the URI accepted by libivrt
-        if not libvirt_utils.is_valid_hostname(dest):
-            raise exception.InvalidHostname(hostname=dest)
-
-        self._live_migration(context, instance, dest,
-                             post_method, recover_method, block_migration,
-                             migrate_data)
-	\end{lstlisting}
-
-\clearpage
-
 \subsection{nova创建快照时对libvirt的调用}
 	LibvirtDriver类中创建虚拟机快照的函数是snapshot()。\par
 
@@ -633,6 +596,121 @@ class Qcow2(Image):
 		\item[2.] 调用virtDomain.blockRebase()函数将虚拟机的磁盘内容拷贝到备份镜像中。
 		\item[3.] 使用"qemu-img convert"命令将备份镜像转换为一个qcow2文件。
 	\end{itemize}
+
+\clearpage
+
+\subsection{nova扩容时对libvirt的调用}
+	LibvirtDriver类中扩容的函数代码如下：
+	\begin{lstlisting}
+	def migrate_disk_and_power_off(self, context, instance, dest,
+                                   flavor, network_info,
+                                   block_device_info=None,
+                                   timeout=0, retry_interval=0):
+
+		...
+        disk_info_text = self.get_instance_disk_info(instance['name'],
+                block_device_info=block_device_info)
+		
+		# 异地
+        if not shared_storage:
+            utils.execute('ssh', dest, 'mkdir', '-p', inst_base)
+
+        self.power_off(instance, timeout, retry_interval)
+
+        block_device_mapping = driver.block_device_info_get_mapping(
+            block_device_info)
+
+        try:
+            utils.execute('mv', inst_base, inst_base_resize)
+
+            if shared_storage:
+                dest = None
+                utils.execute('mkdir', '-p', inst_base)
+
+            active_flavor = flavors.extract_flavor(instance)
+
+            for info in disk_info:
+                img_path = info['path']
+                fname = os.path.basename(img_path)
+                from_path = os.path.join(inst_base_resize, fname)
+
+                if (fname == 'disk.swap' and
+                    active_flavor.get('swap', 0) != flavor.get('swap', 0)):
+                    # To properly resize the swap partition, it must be
+                    # re-created with the proper size.  This is acceptable
+                    # because when an OS is shut down, the contents of the
+                    # swap space are just garbage, the OS doesn't bother about
+                    # what is in it.
+
+                    # We will not copy over the swap disk here, and rely on
+                    # finish_migration/_create_image to re-create it for us.
+                    continue
+
+                on_execute = lambda process: self.job_tracker.add_job(
+                    instance, process.pid)
+                on_completion = lambda process: self.job_tracker.remove_job(
+                    instance, process.pid)
+
+                if info['type'] == 'qcow2' and info['backing_file']:
+                    tmp_path = from_path + "_rbase"
+                    # merge backing file
+                    utils.execute('qemu-img', 'convert', '-f', 'qcow2',
+                                  '-O', 'qcow2', from_path, tmp_path)
+
+                    if shared_storage:
+                        utils.execute('mv', tmp_path, img_path)
+                    else:
+                        libvirt_utils.copy_image(tmp_path, img_path, host=dest,
+                                                 on_execute=on_execute,
+                                                 on_completion=on_completion)
+                        utils.execute('rm', '-f', tmp_path)
+
+                else: 
+                    libvirt_utils.copy_image(from_path, img_path, host=dest,
+                                             on_execute=on_execute,
+                                             on_completion=on_completion)
+        ...
+        return disk_info_text
+	\end{lstlisting}
+
+\subsection{nova动态迁移时对libvirt的调用}
+	LibvirtDriver类中动态迁移的函数代码如下：
+	\begin{lstlisting}
+	def live_migration(self, context, instance, dest,
+                       post_method, recover_method, block_migration=False,
+                       migrate_data=None):
+        """Spawning live_migration operation for distributing high-load.
+
+        :param context: security context
+        :param instance:
+            nova.db.sqlalchemy.models.Instance object
+            instance object that is migrated.
+        :param dest: destination host
+        :param post_method:
+            post operation method.
+            expected nova.compute.manager._post_live_migration.
+        :param recover_method:
+            recovery method when any exception occurs.
+            expected nova.compute.manager._rollback_live_migration.
+        :param block_migration: if true, do block migration.
+        :param migrate_data: a LibvirtLiveMigrateData object
+
+        """
+
+        # 'dest' will be substituted into 'migration_uri' so ensure
+        # it does't contain any characters that could be used to
+        # exploit the URI accepted by libivrt
+        if not libvirt_utils.is_valid_hostname(dest):
+            raise exception.InvalidHostname(hostname=dest)
+
+        self._live_migration(context, instance, dest,
+                             post_method, recover_method, block_migration,
+                             migrate_data)
+	\end{lstlisting}
+
+\clearpage
+
+\section{openstack中对libvirt调用的框架}
 
 \clearpage
 
