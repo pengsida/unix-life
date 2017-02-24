@@ -1963,30 +1963,33 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 )
 
 LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 149.
+(Font)              using `EU1/华文宋(0)/m/n' instead on input line 149.
 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.154 ...��用，而授权过程中会使用到OS_
+                                                  PROJECT_NAME，OS_USERNAME...
 
-Overfull \hbox (42.81342pt too wide) in paragraph at lines 154--156
-[]\EU1/TimesNewRoman(0)/m/n/10.95 openstack \EU1/华文中宋(0)/m/n/10.95 中 的 服 务 都 需 
-要 经 过 授 权 才 能 使 用，|  而 授 权 过 程 中 会 使 用 到 \EU1/TimesNewRoman(0)/m/n/10.95 OS_PRO
-JECT_NAME\EU1/华文中宋(0)/m/n/10.95 ，|
- []
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.154 ...��用，而授权过程中会使用到OS_
+                                                  PROJECT_NAME，OS_USERNAME...
+End of file on the terminal!
 
-
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 157.
-
-File: 1.png Graphic file (type QTm)
-<use  "1.png" >
-File: 2.png Graphic file (type QTm)
- <use  "2.png" >
-File: 3.png Graphic file (type QTm)
- <use  "3.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+ 
+Here is how much of TeX's memory you used:
+ 30728 strings out of 493591
+ 557836 string characters out of 6143546
+ 654137 words of memory out of 5000000
+ 33775 multiletter control sequences out of 15000+600000
+ 4580 words of font info for 51 fonts, out of 8000000 for 9000
+ 1347 hyphenation exceptions out of 8191
+ 48i,1n,72p,10371b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
+ge layout to be inconsistent, however.
 
 [1
 
