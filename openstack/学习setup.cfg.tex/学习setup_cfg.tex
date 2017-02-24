@@ -1,0 +1,277 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{学习setup.cfg \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{学习setup.cfg}
+\subsection{基本术语}
+	模块：python中可复用的基本代码单元，可由其他代码import。\par
+	纯python模块：由python编写的模块，包含在单独的py文件中。\par
+	扩展模块：由实现python的底层语言编写的模块，通常包含在单独的动态加载文件中。\par
+	包：包是含其他模块的模块，经常由包含\_\_init\_\_.py文件的目录发布。\par
+	模块发布：一些python模块的集合，这些模块将被一起安装。\par
+	纯模块发布：一个只包含纯python模块和包的模块发布。\par
+	非纯模块发布：至少包含一个扩展模块的模块发布。
+
+\subsection{Distutils简介}
+	Distutils可以用来在python环境中构建和安装额外的模块。\par
+
+	为了使用Distutils，除了编写源码，还需要：
+	\begin{itemize}
+		\item[1.] 编写setup.py。
+		\item[2.] 编写setup.cfg。
+		\item[3.] 创建一个源码分布。
+		\item[4.] 创建一个或多个二进制发布。
+	\end{itemize}
+
+\subsection{setup.cfg格式}
+	setup.cfg是Distutils的配置文件，他的文件格式类似于：
+	\begin{lstlisting}
+	[command]
+	option=value
+	...
+	\end{lstlisting}
+
+	其中，command是Distutils的命令参数，option是相应的参数选项。\par
+
+	setup.py文件是和setup.cfg配套存在的，可以通过setup.py查看command都有哪些参数选项：
+	\begin{lstlisting}
+	python setup.py command --help
+	\end{lstlisting}
+
+	举个例子：
+	\begin{lstlisting}
+	# setup.cfg文件的内容
+	[build]
+	build-base=blib
+	force=1
+
+	# 以上文件配置相当于下面的命令
+	python setup.py build --build-base=blib --force	
+	\end{lstlisting}
+
+	setup.cfg文件的内容由很多个section组成，比如global、metadata、file等，提供了软件包的名称、作者等信息。
+	如果我们想去理解代码结构，只需要关注[entry\_points]这一节。
+
+\subsubsection{entry\_points}
+	entry\_points提供了一个基于文件系统对象名的注册和import机制。\par
+
+	也就是说，entry\_points会把python对象和某个name关联起来，
+	之后其他的代码只要使用这个name就可以找到对应的对象，而不用关心这个对象具体所在的位置。\par
+
+	举一个例子：
+	\begin{lstlisting}[language = python]
+	# 创建一个函数对象
+	def the_function():
+		"function whose name is 'the_function'"
+		print "hello from the_function"
+
+	# 这个函数对象所在的模块是myns.mypkg.mymodule.py
+	# entry_points就可以这么写
+	[entry_points]
+	# my_ep_group_id相当于一个entry_points组，可以包含多个entry_point
+	my_ep_group_id = 
+		my_ep_func = myns.mypkg.mymodule: the_function
+	\end{lstlisting}
+
+	然后通过“python setup.py install”安装以后，就可以通过“pkg\_resources”去调用这些entry\_points：
+	\begin{lstlisting}
+	import pkg_resources
+
+	named_objects = []
+	for ep in pkg_resources.iter_entry_points(group='my_ep_group_id'):
+		named_objects.append(ep.load())
+
+	# 根据entry_points中mu_ep_group_id组的定义，可以知道named_objects[0]是the_function
+	named_objects[0]() # 输出“hello from the_function”
+	\end{lstlisting}
+
+\subsubsection{openstack中使用entry\_points的例子}
+	以Ceilometer为例，它setup.cfg中一部分内容如下：
+	\begin{lstlisting}
+	# ceilometer.compute.virt是一个entry_points组，包含了3个entry_point
+	ceilometer.compute.virt = 
+		libvirt = ceilometer.compute.virt.libvirt.inspector: LibvirtInspector
+		hyperv = ceilometer.compute.virt.hyperv.inspector: HypervInspector
+		vsphere = ceilometer.compute.virt.vmware.inspector: VsphereInspector
+	\end{lstlisting}
+
+	安装Ceilometer以后，其他程序可以利用下面几种方式调用这些entry\_point：
+	\begin{itemize}
+		\item[1.] 使用pkg\_resources，通过iter\_entry\_points遍历获得这些entry\_point：
+		\begin{lstlisting}
+	import pkg_resources
+	def run_entry_point(data):
+		group = 'ceilometer.compute.virt'
+		for entrypoint in pkg_resources.iter_entry_points(group=group):
+			plugin = entrypoint.load()
+			plugin(data) # plugin指向ceilometer.compute.virt中entry_point中注册的对象
+		\end{lstlisting}
+
+		\item[2.] 使用pkg\_resources，通过load\_entry\_point函数和entry\_point的名称来获得注册的对象：
+		\begin{lstlisting}
+	from pkg_resources import load_entry_point
+	fun = load_entry_point('ceilometer', 'ceilometer.compute.virt', 'libvirt')
+	# fun指向LibvirtInspector这个函数对象
+		\end{lstlisting}
+
+		\item[3.] 使用stevedore，通过其中的driver类来获得注册的对象：
+		\begin{lstlisting}
+	from stevedore import driver
+
+	def get_hypervisor_inspector():
+		try:
+			namespace = 'ceilometer.compute.virt'
+			# cfg.CONF.hypervisor_inspector是oslo.config的一个配置选项
+			mgr = driver.DriverManager(namespace, cfg.CONF.hypervisor_inspector, invoke_on_load=True)
+			return mgr.driver()
+		except ImportError as e:
+			LOG.error(_("Unable ro load the hypervisor inspector: %s") % (e))
+			return Inspector()
+		\end{lstlisting}
+	\end{itemize}
+
+\end{document}

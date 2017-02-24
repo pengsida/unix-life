@@ -73,7 +73,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=python,
+	language=bash,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -137,102 +137,40 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{使用pdb跟踪openstack代码 \qquad}
+\chead{nova的学习 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
+
 \begin{document}
 
 \tableofcontents
 
 \clearpage
 
-\section{使用pdb跟踪openstack代码}
-	这部分内容比较适合调试使用devstack进行安装的openstack。\par
+\section{nova的学习}
+\subsection{nova各个服务的介绍}
+	Nova由API、Compute、Conductor、Scheduler、client5个服务所组成。\par
 
-\subsection{devstack screen使用技巧}
-	devstack环境中，openstack运行在一个screen中，每个service运行在一个窗口中，如下图所示：
-	\sizedfic{1}{1.png}
+	各个服务的功能如下：
+	\begin{itemize}
+		\item[1.] API是进入Nova的HTTP接口。
+		\item[2.] Compute和VMM交互来运行虚拟机并管理虚拟机的生命周期。
+		\item[3.] Scheduler用于从可用池中选择最合适的计算节点来创建新的虚拟机实例。
+		\item[4.] Conductor为数据库的访问提供一层安全保障。
+		\item[5.] Client是openstack为了简化用户对RESTFULL API的使用而提供的API封装，用于将用户的请求转换为标准的HTTP请求。
+	\end{itemize}
 
-	可以看到图中底下一排窗口：
-	\sizedfic{1}{2.png}
+\subsection{setup.cfg文件的学习}
+\subsubsection{console\_scripts组}
+	console\_scripts中的entry point用于作为nova各个服务的入口点，用于提供命令行工具。\par
 
-\subsubsection{screen -list}
-	这个命令可以查看devstack中有哪些screen，如下图所示：
-	\fic{3.png}
+	常用的服务有：
+	\begin{itemize}
+		\item[1.] nova-api-os-compute：OpenStack API服务。
+		\item[2.] nova-compute：OpenStack Compute服务。
+		\item[3.] nova-conductor：OpenStack Conductor服务。
+		\item[4.] nova-scheduler：OpenStack Scheduler服务。
+	\end{itemize}
 
-\subsubsection{screen -d <screen-id>}
-	这个命令用于断开与screen的连接。
-	% \fic{4.png}
+	我们可以根据这些entry\_points找到相应的源代码。
 
-\subsubsection{screen -r <screen-id>}
-	这个命令用于断开并重新进入screen。
-
-\subsubsection{screen -x <screen-id>}
-	这个命令相当于在新的终端中查看这个screen。
-
-\subsubsection{screen -h}
-	通过这个命令可以查看关于screen的更多信息。
-
-\subsubsection{进入screen以后的操作}
-	使用screen -x <screen-id>进入某个screen以后，界面如下：
-	\sizedfic{1}{1.png}
-
-	图中带*号的是当前窗口。\par
-
-	可以使用“ctrl+a+n”移动到下一个窗口，可以使用“ctrl+a+p”移动到上一个窗口。
-	可以使用“ctrl+a+"”进入选择窗口的模式。\par
-
-	选择窗口还有一个更快的方式，使用使用“ctrl+a+shift+"”，就可以进入如下界面：
-	\sizedfic{0.9}{5.png}
-
-	使用“ctrl+a+[”以后就可以滚动窗口了，使用“ctrl+]”重新固定窗口。\par
-
-\subsubsection{借助screen重启openstack服务}
-	首先进入想重启的服务的窗口，比如“nova-api”，如下图所示：
-	\sizedfic{1}{6.png}
-
-	然后按“ctrl+c”，杀死进程。随后按向上键，出现启动进程的命令，输入即重启“nova-api”服务。
-
-\subsection{使用pdb}
-	python中有一个pdb模块，使python代码也可以像gdb一样调试。\par
-
-	只要在需要开始调试的地方加上以下语句即可：
-	\begin{lstlisting}
-	import pdb; pdb.set_trace()
-	\end{lstlisting}
-
-	如下图所示：
-	\fic{7.png}
-
-	随后重启代码处相应的服务，比如这里想调试的是“nova-api”，就借助screen重启“nova-api”服务。\par
-
-	随后使用相应的命令触发这个断电，进入“nova-api”的窗口，就可以开始调试了，如下图所示：
-	\fic{8.png}
-
-\clearpage
-
-\subsubsection{pdb常用调试命令}
-	pdb常用调试命令如下所示：
-	\begin{lstlisting}
-	q  退出debug
-	h  打印可用的调试命令
-	b  设置断点，b 5 在第五行设置断点
-	h command  打印command的命令含义
-	disable codenum  使某一行断点失效
-	enable codenum   使某一行的断点有效
-	condition codenum xxx  针对断点设置条件
-	c    继续执行程序，直到下一个断点
-	n    执行下一行代码，如果当前语句有函数调用，则不会进入函数体中
-	s    执行下一行代码，但是s会进入函数
-	w    打印当前执行点的位置
-	j    codenum  让程序跳转到指定的行
-	l    列出附近的源码
-	p    打印一个参数的值
-	a    打印当前函数及参数的值
-	u	 跳到上一层代码，也就是调用当前函数的函数
-	d	 跳到下一层代码，也就是进入当前所处的函数中
-	回车  重复执行上一行的命令
-	\end{lstlisting}
-
-	pdb下有一点非常好用，就是它相当于python shell，支持python中的各种语句。
-	
 \end{document}

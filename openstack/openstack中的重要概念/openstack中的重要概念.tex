@@ -73,7 +73,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=python,
+	language=bash,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -137,102 +137,100 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{使用pdb跟踪openstack代码 \qquad}
+\chead{openstack中的重要概念 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
+
 \begin{document}
+    
+\section{openstack中的重要概念}
+\subsection{flavor}
+    在OpenStack中，flavors定义了nova实例的CPU、内存、存储容量等数值。
+    简单地说，一个flavor相当于一个实例的硬件配置。\par
 
-\tableofcontents
+    一个flavor包含了如下参数：
+    \begin{itemize}
+        \item[1.] Flavor ID，这是一个flavor的uuid。uuid一般是自动产生的。
+        \item[2.] Name，一个flavor的名称。
+        \item[3.] VCPUS，虚拟CPU的数量。
+        \item[4.] Memory MB，RAM的大小，单位为MB。
+        \item[5.] Root Disk GB，root分区的磁盘空间的大小，单位为GB。
+        \item[6.] Ephemeral Disk GB，临时分区的磁盘空间的大小，单位为GB，
+                  默认值为0。需要知道的是，当虚拟机关闭时，临时分区所有数据将丢失。
+                  而且制作快照时，不会考虑临时分区中的数据。
+        \item[7.] Swap，交换空间的大小，单位为MB，默认值为0。
+        \item[8.] RXTX Factor，这是一个可选属性，用于创建不同带宽的server，默认值为1.0。
+                  RXTX Factor仅适用于基于Xen或NSX的系统。
+        \item[9.] Is Public，用于决定是否任何用户都可以使用这个flavor，默认值为True。
+        \item[10.] Extra Specs，键和值的pair，用于定义flavor可以在哪些compute node上运行。
+    \end{itemize}
 
-\clearpage
+    对于Newton而言，openstack没有默认的flavor，而Mitaka和更早的版本有如下的默认flavor：
+    \fic{1.png}
 
-\section{使用pdb跟踪openstack代码}
-	这部分内容比较适合调试使用devstack进行安装的openstack。\par
+\subsubsection{管理flavor}
+    在openstack中，可以使用openstack flavor命令行工具来管理flavor。\par
 
-\subsection{devstack screen使用技巧}
-	devstack环境中，openstack运行在一个screen中，每个service运行在一个窗口中，如下图所示：
-	\sizedfic{1}{1.png}
+    常用的openstack flavor命令如下所示：
+    \begin{itemize}
+        \item[1.] 列出flavors，并显示出flavor的属性，命令如下：
+        \begin{lstlisting}
+    openstack flavor list
+        \end{lstlisting}
 
-	可以看到图中底下一排窗口：
-	\sizedfic{1}{2.png}
+        \item[2.] 创建flavor，命令如下：
+        \begin{lstlisting}
+    openstack flavor create FLAVOR_NAME --id FLAVOR_ID --ram RAM_IN_MB --disk ROOT_DISK_IN_GB --vcpus NUMBER_OF_VCPUS
+        \end{lstlisting}
 
-\subsubsection{screen -list}
-	这个命令可以查看devstack中有哪些screen，如下图所示：
-	\fic{3.png}
+        可以通过如下命令查看create更多的选项：
+        \begin{lstlisting}
+    openstack help flavor create
+        \end{lstlisting}
 
-\subsubsection{screen -d <screen-id>}
-	这个命令用于断开与screen的连接。
-	% \fic{4.png}
+        \item[3.] 将flavor分配给一个project，命令如下：
+        \begin{lstlisting}
+    # FLAVOR是flavor的名称或ID
+    # TENANT_ID是project的ID
+    nova flavor-access-add FLAVOR TENANT_ID
+        \end{lstlisting}
 
-\subsubsection{screen -r <screen-id>}
-	这个命令用于断开并重新进入screen。
+        \item[4.] 删除flavor，命令如下：
+        \begin{lstlisting}
+    openstack flavor delete FLAVOR_ID
+        \end{lstlisting}
 
-\subsubsection{screen -x <screen-id>}
-	这个命令相当于在新的终端中查看这个screen。
+        \item[5.] 查看flavor命令的帮助手册，命令如下：
+        \begin{lstlisting}
+    openstack flavor --help
+        \end{lstlisting}
+    \end{itemize}
 
-\subsubsection{screen -h}
-	通过这个命令可以查看关于screen的更多信息。
+\subsubsection{Extra Specs}
+    这个网页可以查看Extra Specs上的值：
+    \begin{lstlisting}
+    https://docs.openstack.org/admin-guide/compute-flavors.html#extra-specs
+    \end{lstlisting}
 
-\subsubsection{进入screen以后的操作}
-	使用screen -x <screen-id>进入某个screen以后，界面如下：
-	\sizedfic{1}{1.png}
+    % flavor中的Extra Specs包含如下几个方面：
+    % \begin{itemize}
+    %     \item[1.] CPU limits，有如下几个选项：
+    %     \begin{itemize}
+    %         \item cpu\_shares，指定域的比例加权共享(propotional weighted share)，这个值没有单位。
+    %         \item cpu\_shares\_level，指定分配等级(allocation level)，有custon，high，normal和low。
+    %         \item cpu\_period，指定qemu和lxc虚拟机管理程序的enforcement interval。
+    %               在一段时间内，一个域的vCPU不允许消耗超过运行时间的配额值。
+    %               这个值应该在[1000, 1000000]的范围内。
+    %               值为0的cpu\_period表示没有值。
+    %     \end{itemize}
+    % \end{itemize}
 
-	图中带*号的是当前窗口。\par
+    % \begin{itemize}
+    %     \item[1.] 指定CPU、Memory、Disk和Bandwidth的配额quota，命令如下：
+    %     \begin{lstlisting}
+    % openstack flavor set FLAVOR_NAME \
+    %     --property quota:cpu_quota=10000 \
+    %     --property quota:cpu_period=20000
+    %     \end{lstlisting}
+    % \end{itemize}
 
-	可以使用“ctrl+a+n”移动到下一个窗口，可以使用“ctrl+a+p”移动到上一个窗口。
-	可以使用“ctrl+a+"”进入选择窗口的模式。\par
-
-	选择窗口还有一个更快的方式，使用使用“ctrl+a+shift+"”，就可以进入如下界面：
-	\sizedfic{0.9}{5.png}
-
-	使用“ctrl+a+[”以后就可以滚动窗口了，使用“ctrl+]”重新固定窗口。\par
-
-\subsubsection{借助screen重启openstack服务}
-	首先进入想重启的服务的窗口，比如“nova-api”，如下图所示：
-	\sizedfic{1}{6.png}
-
-	然后按“ctrl+c”，杀死进程。随后按向上键，出现启动进程的命令，输入即重启“nova-api”服务。
-
-\subsection{使用pdb}
-	python中有一个pdb模块，使python代码也可以像gdb一样调试。\par
-
-	只要在需要开始调试的地方加上以下语句即可：
-	\begin{lstlisting}
-	import pdb; pdb.set_trace()
-	\end{lstlisting}
-
-	如下图所示：
-	\fic{7.png}
-
-	随后重启代码处相应的服务，比如这里想调试的是“nova-api”，就借助screen重启“nova-api”服务。\par
-
-	随后使用相应的命令触发这个断电，进入“nova-api”的窗口，就可以开始调试了，如下图所示：
-	\fic{8.png}
-
-\clearpage
-
-\subsubsection{pdb常用调试命令}
-	pdb常用调试命令如下所示：
-	\begin{lstlisting}
-	q  退出debug
-	h  打印可用的调试命令
-	b  设置断点，b 5 在第五行设置断点
-	h command  打印command的命令含义
-	disable codenum  使某一行断点失效
-	enable codenum   使某一行的断点有效
-	condition codenum xxx  针对断点设置条件
-	c    继续执行程序，直到下一个断点
-	n    执行下一行代码，如果当前语句有函数调用，则不会进入函数体中
-	s    执行下一行代码，但是s会进入函数
-	w    打印当前执行点的位置
-	j    codenum  让程序跳转到指定的行
-	l    列出附近的源码
-	p    打印一个参数的值
-	a    打印当前函数及参数的值
-	u	 跳到上一层代码，也就是调用当前函数的函数
-	d	 跳到下一层代码，也就是进入当前所处的函数中
-	回车  重复执行上一行的命令
-	\end{lstlisting}
-
-	pdb下有一点非常好用，就是它相当于python shell，支持python中的各种语句。
-	
 \end{document}

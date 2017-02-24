@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  22 FEB 2017 10:56
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  24 FEB 2017 15:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**本地库连接github远程库.tex
-(./本地库连接github远程库.tex
+**resize虚拟机的流程.tex
+(./resize虚拟机的流程.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1262,8 +1262,8 @@ Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=1.5cm,right=1.5cm].
 
-(./本地库连接github远程库.aux)
-\openout1 = `本地库连接github远程库.aux'.
+(./resize虚拟机的流程.aux)
+\openout1 = `resize虚拟机的流程.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
 LaTeX Font Info:    ... okay on input line 143.
@@ -1388,12 +1388,27 @@ Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             ! on input line 143.
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/bx/n' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 149.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 145.
 
-File: 1.png Graphic file (type QTm)
-<use  "1.png" >
-File: 2.png Graphic file (type QTm)
- <use  "2.png" >
+
+Overfull \hbox (4.32pt too wide) in paragraph at lines 145--145
+| []| 
+ []
+
+(./resize虚拟机的流程.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+))
+\tf@toc=\write3
+\openout3 = `resize虚拟机的流程.toc'.
+
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1402,22 +1417,41 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [1
 
-
 ]
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/m/it' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 158.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 155.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 161.
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 161.
 
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
+[2
+
+]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1425,18 +1459,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2] (./本地库连接github远程库.aux)
+[6] (./resize虚拟机的流程.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 24146 strings out of 493638
- 442244 string characters out of 6146796
- 544111 words of memory out of 5000000
- 27274 multiletter control sequences out of 15000+600000
- 8795 words of font info for 54 fonts, out of 8000000 for 9000
+ 24258 strings out of 493638
+ 444328 string characters out of 6146796
+ 623109 words of memory out of 5000000
+ 27377 multiletter control sequences out of 15000+600000
+ 10396 words of font info for 66 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 48i,12n,72p,10371b,1320s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,13n,72p,10369b,1626s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 本地库连接github远程库.pdf (2 pages).
+Output written on resize虚拟机的流程.pdf (6 pages).

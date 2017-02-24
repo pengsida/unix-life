@@ -1,0 +1,251 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{openstack中的RPC \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{openstack中的RPC}
+	openstack中的RPC机制的实现基于AMQP作为通讯模型。
+
+\subsection{AMQP}
+	AMQP是用于异步消息通讯的消息中间件协议，它的模型如下所示：
+	\sizedfic{0.7}{1.png}
+	
+	它有四个重要的角色：
+	\begin{itemize}
+		\item[1.] Exchange，根据Routing key转发消息到对应的Message Queue中。
+		\item[2.] Routing key，Exchange根据Routing key来决定把消息发送到哪些Message Queue中。
+		\item[3.] Publisher，消息发送者，指明消息的Routing key，然后把消息传给Exchange。
+		\item[4.] Consumer，消息接受者，从Message Queue获取消息。
+	\end{itemize}
+
+	Exchange转发消息的原理如下：
+	\begin{lstlisting}
+	每一个发送的消息上都有一个routing key，而每一个Queue也有一个binding key。
+	Exchange进行消息路由时，会查询每一个Queue，如果某个Queue的binding key与某个消息的routing key相匹配，这个消息就会被转发到那个Queue里。
+	\end{lstlisting}
+
+	AMQP有三种类型的Exchange：
+	\begin{itemize}
+		\item[1.] Direct，binding key和routing key必须完全一致，不支持通配符。
+		\item[2.] Topic，同Direct类型，但支持通配符。
+		\item[3.] Fanout，忽略binding key和routing key，消息会被传递到所有绑定的队列上。
+	\end{itemize}
+
+\clearpage
+
+\subsection{RPC中的client和server}
+	在RPC通信中有两个角色：client和server。client发起RPC请求，server端接受RPC请求，然后调用本地的程序执行，
+	最后将执行结果返回给client。\par
+
+	openstack中的RPC利用了publisher和consumer实现了client和server之间的RPC通信，
+	其中publisher相当于client，consumer相当于server。\par
+
+\subsubsection{四种publisher}
+	openstack中四种publisher的介绍如下：
+	\begin{itemize}
+		\item[1.] Direct Publisher：用于点对点的消息通信，在 OpenStack RPC 通信中用于建立 RPC 消息应答通路。创建或声明 Direct Exchange，用于 RPC 的消息返回，Exchange 的名字以消息 id 命名。
+		\item[2.] Topic Publisher：用于 Publish-Subscribe（Pub-Sub）模式的通信，Topic Publisher 创建 Topic Exchange，用于 RPC 消息发送，并设置消息的 Routing Key 转发消息。
+		\item[3.] Fanout Publisher：创建 Fanout Exchange，用于广播消息的发送，所有绑定到该 Exchange 的 Message Queue 都会接收到消息。
+		\item[4.] Notify Publisher：同 Topic Publisher，在 Openstack 系统中用于发送 Notification 相关的消息。
+	\end{itemize}
+
+\subsubsection{三种consumer}
+	openstack中三种consumer的介绍如下：
+	\begin{itemize}
+		\item[1.] Direct Consumer：接收 Direct Exchange 发送的消息，创建专属的 Message Queue，即 Message Queue 的消息只能由创建 Message Queue 的 Consumer 获取。
+		\item[2.] Topic Consumer：接收 topic Exchange 根据 Routing Key 转发的消息，创建的 Message Queue 是可共享的，这就意味着多个 Consumer 可以订阅同一个 Message Queue，并从其中读取消息。
+		\item[3.] Fanout Consumer：接收 Fanout Exchange 广播的消息，并创建专属的 Message Queue。
+	\end{itemize}
+
+\subsubsection{RPC发送请求}
+	RPC中的client端由publisher实现，publisher发送消息并声明消息地址。consumer接收消息并进行消息处理，
+	如果需要消息应答则返回处理请求的结果消息。\par
+
+	OpenStack提供了三种发送消息请求的方式：
+	\begin{itemize}
+		\item[1.] rpc.call 发送 RPC 请求并返回请求处理结果，
+		由 Topic Publisher 发送消息，Topic Exchange 根据消息地址进行消息转发至对应的 Message Queue 中，
+		Topic Consumer 监听 Message Queue，发现需要处理的消息则进行消息处理，并由 Direct Publisher 将请求处理结果消息，
+		请求发送方创建 Direct Consumer 监听消息的返回结果。\par
+		如下图所示：
+		\sizedfic{0.7}{2.jpg}
+
+		\item[2.] rpc.cast 发送 RPC 请求无返回，与 rpc.call 不同之处在于，不需要请求处理结果的返回，因此没有 Direct Publisher 和 Direct Consumer 处理。\par
+		如下图所示：
+		\sizedfic{0.7}{3.jpg}
+
+		\item[3.] rpc.fanout\_cast 用于发送 RPC 广播信息无返回结果，如下图所示：
+		\sizedfic{0.6}{4.jpg}
+
+	\end{itemize}
+
+\subsection{openstack中使用RPC的例子}
+	我们分析 cinder 创建 volume 的 RPC 消息的发送过程，从而更加深刻的理解 RPC 消息的处理流程。\par
+
+	Create volume 的过程可以看做是两个阶段的 RPC 请求处理。\par
+
+	第一阶段：
+	\begin{itemize}
+		\item[1.] Client 即 cinder-api 调用 RPC.cast 发送消息，RPC.cast 创建 Topic Publisher 对象，topic 为 cinder-scheduler，也就是消息的 Routing Key，Exchange name 为 OpenStack，消息体中标记了消息接收者即 Server 所需要调用的方法“create\_volume”。
+		\item[2.] Exchange 接收到消息，根据 Routing Key 将消息发送至 Message Queue cinder-scheduler 上，这个 Message Queue 是由 cinder-scheduler 服务的 Topic Consumer 订阅的，因此，cinder-scheduler 服务将接收到 create\_volume 的消息。
+		\item[3.] Consumer 调用注册的 RPC\_dispatcher，即 cinder-scheduler manager，然后由 cinder-scheduler manager 调用 RPC 处理方法 create\_volume。
+	\end{itemize}
+
+	第一阶段的流程如下图所示：
+	\sizedfic{0.7}{5.jpg}
+
+	第一个阶段的最后是由 cinder-scheduler manager 调用 RPC 处理方法 create\_volume，我们第二阶段就是要分析这个过程：
+	\begin{itemize}
+		\item[1.] Cinder-scheduler 调用 RPC.cast，Exchange name 为 Openstack, routing-key 为 cinder-volume:host。
+		\item[2.] Exchange 接收到消息，根据 Routing Key 将消息发送到队列 cinder-volume:host 上。
+		\item[3.] 在主机 host 上的 Cinder-volume consumer 从 Queue 中接收到 message，回调 RPC\_dispatcher 即 cinder-volume manager。
+		\item[4.] Cinder-volume manger 根据消息体中 method 信息，调用 create\_volume 方法，创建 volume。
+	\end{itemize}
+
+	第二阶段的流程如下图所示：
+	\fic{6.jpg}
+
+\end{document}
