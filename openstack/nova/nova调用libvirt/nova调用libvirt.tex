@@ -146,10 +146,10 @@
 
 \clearpage
 
-\section{nova调用libvirt}
+\section{前言}
 	在nova/virt/libvirt/driver.py中有LibvirtDriver类，用于调用libvirt。
 
-\subsection{nova创建虚拟机时对libvirt的调用}
+\section{nova创建虚拟机时对libvirt的调用}
 	LibvirtDriver类中创建虚拟机的函数代码如下：
 	\begin{lstlisting}
 	def spawn(self, context, instance, image_meta, injected_files,
@@ -187,7 +187,7 @@
 
 \clearpage
 
-\subsubsection{创建虚拟机的函数}
+\subsection{创建虚拟机的函数}
 	LibvirtDriver类中调用libvirt创建虚拟机和网络的函数代码如下，因为我更关注创建虚拟机的流程，所以把与创建网络有关的代码略去：
 	\begin{lstlisting}
 	def _create_domain_and_network(self, context, xml, instance, network_info,
@@ -316,7 +316,183 @@ class Guest(object):
 
 \clearpage
 
-\subsection{nova创建快照时对libvirt的调用}
+\section{nova扩容时对libvirt的调用}
+	LibvirtDriver类中创建虚拟机快照的函数是migrate_disk_and_power_off()。
+
+	\begin{lstlisting}
+	# nova/virt/libvirt/driver.py LibvirtDriver.migrate_disk_and_power_off()
+	def migrate_disk_and_power_off(self, context, instance, dest,
+                                   flavor, network_info,
+                                   block_device_info=None,
+                                   timeout=0, retry_interval=0):
+		
+		# 获取disk配置信息
+        disk_info_text = self.get_instance_disk_info(instance['name'],
+                block_device_info=block_device_info)
+		disk_info = jsonutils.loads(disk_info_text)
+
+        # 判断是否共用storage
+        inst_base = libvirt_utils.get_instance_path(instance)
+        inst_base_resize = inst_base + "_resize"
+        shared_storage = self._is_storage_shared_with(dest, inst_base)
+
+		# ssh，迁移
+        if not shared_storage:
+            utils.execute('ssh', dest, 'mkdir', '-p', inst_base)
+
+        self.power_off(instance, timeout, retry_interval)
+
+		# 存储相关的配置
+        block_device_mapping = driver.block_device_info_get_mapping(
+            block_device_info)
+        for vol in block_device_mapping:
+            connection_info = vol['connection_info']
+            disk_dev = vol['mount_device'].rpartition("/")[2]
+            self._disconnect_volume(connection_info, disk_dev)
+
+        try:
+            utils.execute('mv', inst_base, inst_base_resize)
+            if shared_storage:
+                dest = None
+                utils.execute('mkdir', '-p', inst_base)
+
+            active_flavor = flavors.extract_flavor(instance)
+            for info in disk_info:
+                # assume inst_base == dirname(info['path'])
+                img_path = info['path']
+                fname = os.path.basename(img_path)
+                from_path = os.path.join(inst_base_resize, fname)
+
+                if (fname == 'disk.swap' and
+                    active_flavor.get('swap', 0) != flavor.get('swap', 0)):
+                    # To properly resize the swap partition, it must be
+                    # re-created with the proper size.  This is acceptable
+                    # because when an OS is shut down, the contents of the
+                    # swap space are just garbage, the OS doesn't bother about
+                    # what is in it.
+
+                    # We will not copy over the swap disk here, and rely on
+                    # finish_migration/_create_image to re-create it for us.
+                    continue
+
+                on_execute = lambda process: self.job_tracker.add_job(
+                    instance, process.pid)
+                on_completion = lambda process: self.job_tracker.remove_job(
+                    instance, process.pid)
+
+				# 如果类型是qcow2并且有后备文件
+                if info['type'] == 'qcow2' and info['backing_file']:
+                    tmp_path = from_path + "_rbase"
+                    # merge backing file
+                    utils.execute('qemu-img', 'convert', '-f', 'qcow2',
+                                  '-O', 'qcow2', from_path, tmp_path)
+
+                    if shared_storage:
+                        utils.execute('mv', tmp_path, img_path)
+                    else:
+                        libvirt_utils.copy_image(tmp_path, img_path, host=dest,
+                                                 on_execute=on_execute,
+                                                 on_completion=on_completion)
+                        utils.execute('rm', '-f', tmp_path)
+				# 如果类型是raw或者是没有后备文件的qcow2
+                else:
+                    libvirt_utils.copy_image(from_path, img_path, host=dest,
+                                             on_execute=on_execute,
+                                             on_completion=on_completion)
+        ...
+	\end{lstlisting}
+
+\subsection{获取disk配置信息}
+	相关语句如下：
+	\begin{lstlisting}
+	disk_info_text = self.get_instance_disk_info(instance['name'],
+                block_device_info=block_device_info)
+	disk_info = jsonutils.loads(disk_info_text)
+	\end{lstlisting}
+
+\subsubsection{block\_device\_info数据类型}
+
+	get\_instance\_disk\_info()函数如下：
+	\begin{lstlisting}
+	def get_instance_disk_info(self, instance_name,
+                               block_device_info=None):
+        try:
+			# 调用virConnect.lookupByName()获得virDomain对象
+            dom = self._lookup_by_name(instance_name)
+			# 调用virDomain.XMLDesc(0)获得虚拟机的xml配置文件
+            xml = dom.XMLDesc(0)
+        ...
+        return self._get_instance_disk_info(instance_name, xml,
+                                            block_device_info)
+	\end{lstlisting}
+
+	进一步看\_get\_instance\_disk\_info()函数：
+	\begin{lstlisting}
+	def _get_instance_disk_info(self, instance_name, xml,
+                                block_device_info=None):
+        block_device_mapping = driver.block_device_info_get_mapping(
+            block_device_info)
+
+        volume_devices = set()
+        for vol in block_device_mapping:
+            disk_dev = vol['mount_device'].rpartition("/")[2]
+            volume_devices.add(disk_dev)
+
+        disk_info = []
+        doc = etree.fromstring(xml)
+        disk_nodes = doc.findall('.//devices/disk')
+        path_nodes = doc.findall('.//devices/disk/source')
+        driver_nodes = doc.findall('.//devices/disk/driver')
+        target_nodes = doc.findall('.//devices/disk/target')
+
+        for cnt, path_node in enumerate(path_nodes):
+            disk_type = disk_nodes[cnt].get('type')
+            path = path_node.get('file') or path_node.get('dev')
+            target = target_nodes[cnt].attrib['dev']
+
+            if not path:
+                LOG.debug('skipping disk for %s as it does not have a path',
+                          instance_name)
+                continue
+
+            if disk_type not in ['file', 'block']:
+                LOG.debug('skipping disk because it looks like a volume', path)
+                continue
+
+            if target in volume_devices:
+                LOG.debug('skipping disk %(path)s (%(target)s) as it is a '
+                          'volume', {'path': path, 'target': target})
+                continue
+
+            # get the real disk size or
+            # raise a localized error if image is unavailable
+            if disk_type == 'file':
+                dk_size = int(os.path.getsize(path))
+            elif disk_type == 'block':
+                dk_size = lvm.get_volume_size(path)
+
+            disk_type = driver_nodes[cnt].get('type')
+            if disk_type == "qcow2":
+                backing_file = libvirt_utils.get_disk_backing_file(path)
+                virt_size = disk.get_disk_size(path)
+                over_commit_size = int(virt_size) - dk_size
+            else:
+                backing_file = ""
+                virt_size = dk_size
+                over_commit_size = 0
+
+            disk_info.append({'type': disk_type,
+                              'path': path,
+                              'virt_disk_size': virt_size,
+                              'backing_file': backing_file,
+                              'disk_size': dk_size,
+                              'over_committed_disk_size': over_commit_size})
+        return jsonutils.dumps(disk_info)
+	\end{lstlisting}
+
+\clearpage
+
+\section{nova创建快照时对libvirt的调用}
 	LibvirtDriver类中创建虚拟机快照的函数是snapshot()。\par
 
 	这个函数主要功能的实现都与libvirt有关，我留取了一些主要的代码，并在之后逐个分析：
@@ -360,7 +536,7 @@ class Guest(object):
 
 \clearpage
 
-\subsubsection{获得虚拟机抽象对象}
+\subsection{获得虚拟机抽象对象}
 	函数中的语句如下：
 	\begin{lstlisting}
 	# instance是Intance类，Instance类定义在nova/objects/instance.py中
@@ -379,7 +555,7 @@ class Guest(object):
 
 	lookupByName是libvirt的一个API函数，可以根据域的名字返回virDomain对象。
 
-\subsubsection{获得虚拟机磁盘路径}
+\subsection{获得虚拟机磁盘路径}
 	函数中的语句如下：
 	\begin{lstlisting}
 	# libvirt_utils在driver.py中有引用：from nova.virt.libvirt import utils as libvirt_utils
@@ -401,7 +577,7 @@ class Guest(object):
 	虽然我这里省略了find\_disk()函数接下来的代码，但是大家应该也能知道，
 	接下来就是解析这个xml文件，得到域的磁盘路径。
 
-\subsubsection{获得虚拟机磁盘类型}
+\subsection{获得虚拟机磁盘类型}
 	函数中的语句如下：
 	\begin{lstlisting}
 	# libvirt_utils在driver.py中有引用：from nova.virt.libvirt import utils as libvirt_utils
@@ -435,7 +611,7 @@ class Guest(object):
 
 	所以说，openstack获得虚拟机磁盘信息，最终是调用了“qemu-img info <filename>”这条命令。
 
-\subsubsection{静态创建快照}
+\subsection{静态创建快照}
 	可以从snapshot()函数知道静态创建快照的相关语句如下：
 	\begin{lstlisting}
 	...
@@ -525,7 +701,7 @@ class Qcow2(Image):
 		\item[2.] 用“qemu-img convert”命令提取快照。
 	\end{itemize}
 
-\subsubsection{动态创建快照}
+\subsection{动态创建快照}
 	snapshot()函数中动态创建快照的相关语句如下：
 	\begin{lstlisting}
 	...
@@ -596,117 +772,6 @@ class Qcow2(Image):
 		\item[2.] 调用virtDomain.blockRebase()函数将虚拟机的磁盘内容拷贝到备份镜像中。
 		\item[3.] 使用"qemu-img convert"命令将备份镜像转换为一个qcow2文件。
 	\end{itemize}
-
-\clearpage
-
-\subsection{nova扩容时对libvirt的调用}
-	LibvirtDriver类中扩容的函数代码如下：
-	\begin{lstlisting}
-	def migrate_disk_and_power_off(self, context, instance, dest,
-                                   flavor, network_info,
-                                   block_device_info=None,
-                                   timeout=0, retry_interval=0):
-
-		...
-        disk_info_text = self.get_instance_disk_info(instance['name'],
-                block_device_info=block_device_info)
-		
-		# 异地
-        if not shared_storage:
-            utils.execute('ssh', dest, 'mkdir', '-p', inst_base)
-
-        self.power_off(instance, timeout, retry_interval)
-
-        block_device_mapping = driver.block_device_info_get_mapping(
-            block_device_info)
-
-        try:
-            utils.execute('mv', inst_base, inst_base_resize)
-
-            if shared_storage:
-                dest = None
-                utils.execute('mkdir', '-p', inst_base)
-
-            active_flavor = flavors.extract_flavor(instance)
-
-            for info in disk_info:
-                img_path = info['path']
-                fname = os.path.basename(img_path)
-                from_path = os.path.join(inst_base_resize, fname)
-
-                if (fname == 'disk.swap' and
-                    active_flavor.get('swap', 0) != flavor.get('swap', 0)):
-                    # To properly resize the swap partition, it must be
-                    # re-created with the proper size.  This is acceptable
-                    # because when an OS is shut down, the contents of the
-                    # swap space are just garbage, the OS doesn't bother about
-                    # what is in it.
-
-                    # We will not copy over the swap disk here, and rely on
-                    # finish_migration/_create_image to re-create it for us.
-                    continue
-
-                on_execute = lambda process: self.job_tracker.add_job(
-                    instance, process.pid)
-                on_completion = lambda process: self.job_tracker.remove_job(
-                    instance, process.pid)
-
-                if info['type'] == 'qcow2' and info['backing_file']:
-                    tmp_path = from_path + "_rbase"
-                    # merge backing file
-                    utils.execute('qemu-img', 'convert', '-f', 'qcow2',
-                                  '-O', 'qcow2', from_path, tmp_path)
-
-                    if shared_storage:
-                        utils.execute('mv', tmp_path, img_path)
-                    else:
-                        libvirt_utils.copy_image(tmp_path, img_path, host=dest,
-                                                 on_execute=on_execute,
-                                                 on_completion=on_completion)
-                        utils.execute('rm', '-f', tmp_path)
-
-                else: 
-                    libvirt_utils.copy_image(from_path, img_path, host=dest,
-                                             on_execute=on_execute,
-                                             on_completion=on_completion)
-        ...
-        return disk_info_text
-	\end{lstlisting}
-
-\subsection{nova动态迁移时对libvirt的调用}
-	LibvirtDriver类中动态迁移的函数代码如下：
-	\begin{lstlisting}
-	def live_migration(self, context, instance, dest,
-                       post_method, recover_method, block_migration=False,
-                       migrate_data=None):
-        """Spawning live_migration operation for distributing high-load.
-
-        :param context: security context
-        :param instance:
-            nova.db.sqlalchemy.models.Instance object
-            instance object that is migrated.
-        :param dest: destination host
-        :param post_method:
-            post operation method.
-            expected nova.compute.manager._post_live_migration.
-        :param recover_method:
-            recovery method when any exception occurs.
-            expected nova.compute.manager._rollback_live_migration.
-        :param block_migration: if true, do block migration.
-        :param migrate_data: a LibvirtLiveMigrateData object
-
-        """
-
-        # 'dest' will be substituted into 'migration_uri' so ensure
-        # it does't contain any characters that could be used to
-        # exploit the URI accepted by libivrt
-        if not libvirt_utils.is_valid_hostname(dest):
-            raise exception.InvalidHostname(hostname=dest)
-
-        self._live_migration(context, instance, dest,
-                             post_method, recover_method, block_migration,
-                             migrate_data)
-	\end{lstlisting}
 
 \clearpage
 
