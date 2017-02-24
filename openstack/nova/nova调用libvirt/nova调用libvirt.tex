@@ -317,7 +317,7 @@ class Guest(object):
 \clearpage
 
 \section{nova扩容时对libvirt的调用}
-	LibvirtDriver类中创建虚拟机快照的函数是migrate_disk_and_power_off()。
+	LibvirtDriver类中创建虚拟机快照的函数是migrate\_disk\_and\_power\_off()。
 
 	\begin{lstlisting}
 	# nova/virt/libvirt/driver.py LibvirtDriver.migrate_disk_and_power_off()
@@ -325,38 +325,61 @@ class Guest(object):
                                    flavor, network_info,
                                    block_device_info=None,
                                    timeout=0, retry_interval=0):
-		
 		# 获取disk配置信息
+		# block_device_info是一个字典，如下所示：
+		# {'swap': swap,
+		# 'root_device_name': root_device_name,
+		# 'ephemerals': ephemerals,
+		# 'block_device_mapping': block_device_mapping}
+		# 
+		# disk_info_text数据类型是一个list，里面有多个字典，字典格式如下
+		# {'type': disk_type,
+		# 'path': path,
+		# 'virt_disk_size': virt_size,
+		# 'backing_file': backing_file,
+		# 'disk_size': dk_size,
+		# 'over_committed_disk_size': over_commit_size}
         disk_info_text = self.get_instance_disk_info(instance['name'],
                 block_device_info=block_device_info)
+
+		# 调用json.loads()
 		disk_info = jsonutils.loads(disk_info_text)
 
-        # 判断是否共用storage
+		# 调用os.path.join(CONF.instances_path, instance['name'])获得inst_base
         inst_base = libvirt_utils.get_instance_path(instance)
+		# 创建resize以后instance后备文件的存放路径
         inst_base_resize = inst_base + "_resize"
+		# 判断是否共用storage
         shared_storage = self._is_storage_shared_with(dest, inst_base)
 
-		# ssh，迁移
+		# 在目的主机下根据inst_base创建增量文件的文件夹
         if not shared_storage:
             utils.execute('ssh', dest, 'mkdir', '-p', inst_base)
 
+		# 关闭虚拟机
         self.power_off(instance, timeout, retry_interval)
 
-		# 存储相关的配置
+		# block_device_info是一个字典
+		# 相当于调用block_device_info.get('block_device_mapping')
         block_device_mapping = driver.block_device_info_get_mapping(
             block_device_info)
+
+		# 迁移前，通过特定类型的卷驱动卸载卷设备
         for vol in block_device_mapping:
             connection_info = vol['connection_info']
             disk_dev = vol['mount_device'].rpartition("/")[2]
             self._disconnect_volume(connection_info, disk_dev)
 
         try:
+			# 重命名inst_base为inst_base_resize
             utils.execute('mv', inst_base, inst_base_resize)
             if shared_storage:
                 dest = None
                 utils.execute('mkdir', '-p', inst_base)
 
             active_flavor = flavors.extract_flavor(instance)
+
+			# 迁移虚拟机磁盘内容
             for info in disk_info:
                 # assume inst_base == dirname(info['path'])
                 img_path = info['path']
@@ -402,92 +425,12 @@ class Guest(object):
         ...
 	\end{lstlisting}
 
-\subsection{获取disk配置信息}
+\subsection{卸载卷设备}
+
+\subsection{关闭虚拟机}
 	相关语句如下：
 	\begin{lstlisting}
-	disk_info_text = self.get_instance_disk_info(instance['name'],
-                block_device_info=block_device_info)
-	disk_info = jsonutils.loads(disk_info_text)
-	\end{lstlisting}
-
-\subsubsection{block\_device\_info数据类型}
-
-	get\_instance\_disk\_info()函数如下：
-	\begin{lstlisting}
-	def get_instance_disk_info(self, instance_name,
-                               block_device_info=None):
-        try:
-			# 调用virConnect.lookupByName()获得virDomain对象
-            dom = self._lookup_by_name(instance_name)
-			# 调用virDomain.XMLDesc(0)获得虚拟机的xml配置文件
-            xml = dom.XMLDesc(0)
-        ...
-        return self._get_instance_disk_info(instance_name, xml,
-                                            block_device_info)
-	\end{lstlisting}
-
-	进一步看\_get\_instance\_disk\_info()函数：
-	\begin{lstlisting}
-	def _get_instance_disk_info(self, instance_name, xml,
-                                block_device_info=None):
-        block_device_mapping = driver.block_device_info_get_mapping(
-            block_device_info)
-
-        volume_devices = set()
-        for vol in block_device_mapping:
-            disk_dev = vol['mount_device'].rpartition("/")[2]
-            volume_devices.add(disk_dev)
-
-        disk_info = []
-        doc = etree.fromstring(xml)
-        disk_nodes = doc.findall('.//devices/disk')
-        path_nodes = doc.findall('.//devices/disk/source')
-        driver_nodes = doc.findall('.//devices/disk/driver')
-        target_nodes = doc.findall('.//devices/disk/target')
-
-        for cnt, path_node in enumerate(path_nodes):
-            disk_type = disk_nodes[cnt].get('type')
-            path = path_node.get('file') or path_node.get('dev')
-            target = target_nodes[cnt].attrib['dev']
-
-            if not path:
-                LOG.debug('skipping disk for %s as it does not have a path',
-                          instance_name)
-                continue
-
-            if disk_type not in ['file', 'block']:
-                LOG.debug('skipping disk because it looks like a volume', path)
-                continue
-
-            if target in volume_devices:
-                LOG.debug('skipping disk %(path)s (%(target)s) as it is a '
-                          'volume', {'path': path, 'target': target})
-                continue
-
-            # get the real disk size or
-            # raise a localized error if image is unavailable
-            if disk_type == 'file':
-                dk_size = int(os.path.getsize(path))
-            elif disk_type == 'block':
-                dk_size = lvm.get_volume_size(path)
-
-            disk_type = driver_nodes[cnt].get('type')
-            if disk_type == "qcow2":
-                backing_file = libvirt_utils.get_disk_backing_file(path)
-                virt_size = disk.get_disk_size(path)
-                over_commit_size = int(virt_size) - dk_size
-            else:
-                backing_file = ""
-                virt_size = dk_size
-                over_commit_size = 0
-
-            disk_info.append({'type': disk_type,
-                              'path': path,
-                              'virt_disk_size': virt_size,
-                              'backing_file': backing_file,
-                              'disk_size': dk_size,
-                              'over_committed_disk_size': over_commit_size})
-        return jsonutils.dumps(disk_info)
+	self.power_off(instance, timeout, retry_interval)
 	\end{lstlisting}
 
 \clearpage
