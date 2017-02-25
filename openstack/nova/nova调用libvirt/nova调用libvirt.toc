@@ -1,13 +1,24 @@
 \contentsline {section}{\numberline {1}前言}{2}
 \contentsline {section}{\numberline {2}nova创建虚拟机时对libvirt的调用}{2}
-\contentsline {subsection}{\numberline {2.1}创建虚拟机的函数}{3}
-\contentsline {section}{\numberline {3}nova扩容时对libvirt的调用}{6}
-\contentsline {subsection}{\numberline {3.1}关闭虚拟机}{8}
-\contentsline {section}{\numberline {4}nova创建快照时对libvirt的调用}{9}
-\contentsline {subsection}{\numberline {4.1}获得虚拟机抽象对象}{10}
-\contentsline {subsection}{\numberline {4.2}获得虚拟机磁盘路径}{10}
-\contentsline {subsection}{\numberline {4.3}获得虚拟机磁盘类型}{10}
-\contentsline {subsection}{\numberline {4.4}静态创建快照}{11}
-\contentsline {subsection}{\numberline {4.5}动态创建快照}{13}
-\contentsline {section}{\numberline {5}openstack中对libvirt调用的框架}{15}
-\contentsline {section}{\numberline {6}查看libvirt的python API}{16}
+\contentsline {subsection}{\numberline {2.1}创建镜像}{3}
+\contentsline {subsection}{\numberline {2.2}创建xml配置文件}{5}
+\contentsline {subsection}{\numberline {2.3}创建虚拟机的函数}{6}
+\contentsline {section}{\numberline {3}nova冷迁移扩容时对libvirt的调用}{9}
+\contentsline {subsection}{\numberline {3.1}nova冷迁移扩容的流程介绍}{9}
+\contentsline {subsection}{\numberline {3.2}源主机上的操作}{9}
+\contentsline {subsubsection}{\numberline {3.2.1}预备知识：虚拟机的后端镜像和增量镜像}{9}
+\contentsline {subsubsection}{\numberline {3.2.2}migrate\_disk\_and\_power\_off函数}{10}
+\contentsline {subsubsection}{\numberline {3.2.3}关闭虚拟机}{12}
+\contentsline {subsubsection}{\numberline {3.2.4}迁移镜像文件}{14}
+\contentsline {subsubsection}{\numberline {3.2.5}源主机上冷迁移过程总结}{15}
+\contentsline {subsection}{\numberline {3.3}目的主机上的操作}{16}
+\contentsline {subsubsection}{\numberline {3.3.1}对虚拟机进行扩容}{17}
+\contentsline {subsubsection}{\numberline {3.3.2}目的主机上冷迁移过程总结}{17}
+\contentsline {section}{\numberline {4}nova创建快照时对libvirt的调用}{18}
+\contentsline {subsection}{\numberline {4.1}获得虚拟机抽象对象}{19}
+\contentsline {subsection}{\numberline {4.2}获得虚拟机磁盘路径}{19}
+\contentsline {subsection}{\numberline {4.3}获得虚拟机磁盘类型}{19}
+\contentsline {subsection}{\numberline {4.4}静态创建快照}{20}
+\contentsline {subsection}{\numberline {4.5}动态创建快照}{22}
+\contentsline {section}{\numberline {5}openstack中对libvirt调用的框架}{24}
+\contentsline {section}{\numberline {6}查看libvirt的python API}{25}
