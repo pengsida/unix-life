@@ -298,7 +298,7 @@
 	\end{lstlisting}
 
 \subsection{冷迁移中的nova-compute部分}
-\subsubsection{源主机上的操作：prep\_resize}
+\subsubsection{目的主机上的操作：prep\_resize}
 	\begin{lstlisting}
 	# nova/compute/manager.py ComputeManager.prep_resize()
 	def prep_resize(self, context, image, instance, instance_type,
@@ -342,7 +342,7 @@
                    instance_type=instance_type_p)
 	\end{lstlisting}
 
-\subsubsection{目的主机的操作：resize\_instance}
+\subsubsection{源主机的操作：resize\_instance}
 	\begin{lstlisting}
 	# nova/compute/manager.py ComputeManager.resize_instance()
 	def resize_instance(self, context, instance, image,
@@ -355,7 +355,8 @@
 			# 获得虚拟机块设备的信息
 			block_device_info = self._get_instance_block_device_info(
                                 context, instance, bdms=bdms)
-			# 关闭虚拟机并迁移disk
+			
+			# 关闭虚拟机并迁移虚拟机的增量文件
             disk_info = self.driver.migrate_disk_and_power_off(
                     context, instance, migration.dest_host,
                     instance_type, network_info,
@@ -368,6 +369,9 @@
             ...
 	\end{lstlisting}
 
+	migrate\_disk\_and\_power\_off()是源主机上将虚拟机迁移给目的主机的实现函数，主要利用了libvirt API。
+	这个函数的分析在《nova调用libvirt》中的“nova扩容时对libvirt的调用”一节。
+
 	\begin{lstlisting}
 	# nova/compute/rpcapi.py(690) ComputeAPI.finish_resize()
 	def finish_resize(self, ctxt, instance, migration, image, disk_info,
@@ -379,7 +383,7 @@
                    image=image, disk_info=disk_info, reservations=reservations)
 	\end{lstlisting}
 
-\subsubsection{源主机上的操作：finish\_resize}
+\subsubsection{目的主机上的操作：finish\_resize}
 	\begin{lstlisting}
 	# nova/compute/manager.py ComputeManager.finish_resize()
 	def finish_resize(self, context, disk_info, image, instance,
