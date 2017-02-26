@@ -531,7 +531,10 @@ class Guest(object):
 
 	如果目的主机和源主机的base镜像相同，那么只需要迁移增量镜像，就可以在目的主机上使用相同的虚拟机。\par
 
-	如果目的主机上没有相同的base镜像，还需要传输base镜像。
+	如果目的主机上没有相同的base镜像，还需要传输base镜像。\par
+
+	openstack中的后端镜像和增量镜像的位置如下图所示：
+	\fic{5.png}
 
 \subsubsection{migrate\_disk\_and\_power\_off函数}
 
