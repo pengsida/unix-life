@@ -14,7 +14,7 @@
 \patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}%
 \makeatother
-
+\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{empheq}
 \usepackage{graphicx}
@@ -338,6 +338,8 @@
         ...
 	\end{lstlisting}
 
+\clearpage
+
 \subsection{创建xml配置文件}
 	相关语句与函数如下：
 	\begin{lstlisting}
@@ -492,7 +494,6 @@ class Guest(object):
         return wrapped_conn
 	\end{lstlisting}
 
-	分析到这，应该算是比较清楚了。我们如果是熟悉Libvrit API，那么就能使用libvirt的API在openstack中呼风唤雨了。\par
 
 \clearpage
 
@@ -711,8 +712,6 @@ class Guest(object):
             self._destroy(instance)
 	\end{lstlisting}
 
-\clearpage
-
 \subsubsection{迁移镜像文件}
 	相关语句如下：
 	\begin{lstlisting}
@@ -902,7 +901,8 @@ class Guest(object):
 		\item[2.] 目的主机调用compute.ComputeManager.prep\_live\_migration()函数进行扩容前的准备。
 			      这个函数调用virt.libvirt.driver.LibvirtDriver.pre\_live\_migration()进行实际工作。
 				  函数结束后返回结果，源主机的compute.ComputeManager.live\_migration()函数继续进行。
-		\item[3.] 源主机在compute.ComputeManager.live\_migration()函数中调用virt.libvirt.driver.LibvirtDriver.live\_migration()完成迁移。
+		\item[3.] 源主机在compute.ComputeManager.live\_migration()函数中调用\par
+		virt.libvirt.driver.LibvirtDriver.live\_migration()完成迁移。
 	\end{itemize}
 
 	上面这个流程说得比较简略，而且也略去了compute-api、compute-conductor和compute-scheduler这三个服务的操作。

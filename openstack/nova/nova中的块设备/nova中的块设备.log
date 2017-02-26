@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  26 FEB 2017 11:41
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  26 FEB 2017 11:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**nova调用libvirt.tex
-(./nova调用libvirt.tex
+**nova中的块设备.tex
+(./nova中的块设备.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1326,6 +1326,9 @@ Package: fp-eval 1995/04/03
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
 .................................................
 . fontspec info: "no-scripts"
 . 
@@ -1377,33 +1380,33 @@ Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=1.5cm,right=1.5cm].
 
-(./nova调用libvirt.aux)
-\openout1 = `nova调用libvirt.aux'.
+(./nova中的块设备.aux)
+\openout1 = `nova中的块设备.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 143.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 143.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 144.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 144.
  (/usr/share/texmf/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
 
 *** you should *not* be loading the inputenc package
 *** XeTeX expects the source to be in UTF8 encoding
@@ -1415,59 +1418,59 @@ LaTeX Font Info:    ... okay on input line 143.
 .................................................
 \symlegacymaths=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 143.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 143.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 143.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 143.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 143.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 143.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 143.
-LaTeX Font Info:    Redeclaring math accent \check on input line 143.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 143.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 143.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 143.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 143.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 143.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 144.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 144.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 144.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 144.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 144.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 144.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 144.
+LaTeX Font Info:    Redeclaring math accent \check on input line 144.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 144.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 144.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 144.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 144.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `normal' on input line 143.
+(Font)              `operators' in the math version `normal' on input line 144.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> EU1/lmr/m/n on input line 143.
+(Font)                  OT1/cmr/m/n --> EU1/lmr/m/n on input line 144.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `bold' on input line 143.
+(Font)              `operators' in the math version `bold' on input line 144.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/m/n on input line 143.
+(Font)                  OT1/cmr/bx/n --> EU1/lmr/m/n on input line 144.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/m/n on input line 143.
+(Font)                  EU1/lmr/m/n --> EU1/lmr/m/n on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> EU1/lmr/m/it on input line 143.
+(Font)                  OT1/cmr/m/it --> EU1/lmr/m/it on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/bx/n on input line 143.
+(Font)                  OT1/cmr/bx/n --> EU1/lmr/bx/n on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 143.
+(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/m/n on input line 143.
+(Font)                  OT1/cmtt/m/n --> EU1/lmtt/m/n on input line 144.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/bx/n on input line 143.
+(Font)                  EU1/lmr/m/n --> EU1/lmr/bx/n on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> EU1/lmr/bx/it on input line 143.
+(Font)                  OT1/cmr/bx/it --> EU1/lmr/bx/it on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 143.
+(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 144.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 143.
+(Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 144.
 \AtBeginShipoutBox=\box67
-Package hyperref Info: Link coloring OFF on input line 143.
+Package hyperref Info: Link coloring OFF on input line 144.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -1476,13 +1479,13 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count276
 )
-LaTeX Info: Redefining \ref on input line 143.
-LaTeX Info: Redefining \pageref on input line 143.
-LaTeX Info: Redefining \nameref on input line 143.
+LaTeX Info: Redefining \ref on input line 144.
+LaTeX Info: Redefining \pageref on input line 144.
+LaTeX Info: Redefining \nameref on input line 144.
 
-(./nova调用libvirt.out) (./nova调用libvirt.out)
+(./nova中的块设备.out) (./nova中的块设备.out)
 \@outlinefile=\write3
-\openout3 = `nova调用libvirt.out'.
+\openout3 = `nova中的块设备.out'.
 
 \c@lstlisting=\count277
 
@@ -1522,25 +1525,30 @@ LaTeX Info: Redefining \nameref on input line 143.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 143.
+(lastpage)             ! on input line 144.
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/bx/n' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 145.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 146.
 
 
-Overfull \hbox (4.32pt too wide) in paragraph at lines 145--145
+Overfull \hbox (4.32pt too wide) in paragraph at lines 146--146
 | []| 
  []
 
-(./nova调用libvirt.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 3.
+(./nova中的块设备.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 3.
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
+
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+))
+\tf@toc=\write4
+\openout4 = `nova中的块设备.toc'.
+
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1553,21 +1561,10 @@ File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 )
 [1
 
-])
-\tf@toc=\write4
-\openout4 = `nova调用libvirt.toc'.
-
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[2]
+]
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/m/it' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 160.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 156.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1575,7 +1572,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[3
+[2
 
 ]
 
@@ -1584,9 +1581,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[4
+[3]
 
-]
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1600,213 +1602,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[7
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[8]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[9]
-Overfull \hbox (22.36888pt too wide) in paragraph at lines 518--518
-[]\EU1/lmr/m/n/10.95 LibvirtDriver \EU1/STZHONGS.TTF(0)/m/n/10.95 类 中 实 现 \EU1/
-lmr/m/n/10.95 resize_instance() \EU1/STZHONGS.TTF(0)/m/n/10.95 功 能 的 函 数 是 \EU1
-/lmr/m/n/10.95 migrate_disk_and_power_off()\EU1/STZHONGS.TTF(0)/m/n/10.95 。| 
- []
-
-File: 4.png Graphic file (type QTm)
-<use  "4.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[10
-
-]
-File: 5.png Graphic file (type QTm)
- <use  "5.png" >
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[12]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[13]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[14]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[16]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[17
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[18]
-Overfull \hbox (5.43344pt too wide) in paragraph at lines 899--901
-[]\EU1/STZHONGS.TTF(0)/m/n/10.95 首 先，|  源 主 机 在 \EU1/lmr/m/n/10.95 compute.Comp
-uteManager.live_migration() \EU1/STZHONGS.TTF(0)/m/n/10.95 函 数 中 通 过 \EU1/lmr/m
-/n/10.95 RPC.call()
- []
-
-
-Overfull \hbox (20.40327pt too wide) in paragraph at lines 901--904
-\EU1/STZHONGS.TTF(0)/m/n/10.95 实 际 工 作。| 函 数 结 束 后 返 回 结 果，|  源 主 机 的 \EU1/lmr/
-m/n/10.95 compute.ComputeManager.live_migration()
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[19
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[20]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[21]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[22]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[23]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[24
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[25
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[26]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[27
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[28
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[29]
-File: 1.png Graphic file (type QTm)
- <use  "1.png" >
-File: 2.png Graphic file (type QTm)
- <use  "2.png" >
-File: 3.png Graphic file (type QTm)
- <use  "3.png" >
-
+[6] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1814,26 +1610,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[30
-
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1432.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1432.
- (./nova调用libvirt.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1432.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1432.
+[7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 415.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 415.
+ (./nova中的块设备.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 415.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 415.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 30366 strings out of 493638
- 538473 string characters out of 6146796
- 767914 words of memory out of 5000000
- 33434 multiletter control sequences out of 15000+600000
+ 30041 strings out of 493638
+ 532152 string characters out of 6146796
+ 728223 words of memory out of 5000000
+ 33114 multiletter control sequences out of 15000+600000
  10756 words of font info for 67 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 48i,12n,72p,10370b,1776s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,12n,72p,10366b,1736s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on nova调用libvirt.pdf (30 pages).
+Output written on nova中的块设备.pdf (7 pages).
