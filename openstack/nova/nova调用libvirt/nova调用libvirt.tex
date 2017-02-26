@@ -509,7 +509,7 @@ class Guest(object):
 	\end{itemize}
 
 	上面这个流程说得比较简略，而且也略去了compute-api、compute-conductor和compute-scheduler这三个服务的操作。
-	如果想要详细了解这个过程，可以看《resize虚拟机的流程》这篇文章。\par
+	如果想要详细了解这个过程，可以看《扩容虚拟机的流程》这篇文章。\par
 
 	接下来，我只会分析LibvirtDriver类中实现以上功能的函数。
 
@@ -675,7 +675,7 @@ class Guest(object):
         if virt_dom is not None:
             try:
                 old_domid = virt_dom.ID()
-				# 调用virtDomain.destroy()函数关闭虚拟机
+				# 调用virDomain.destroy()函数关闭虚拟机
                 virt_dom.destroy()
             ...
 		
@@ -893,8 +893,8 @@ class Guest(object):
 
 \clearpage
 
-\section{nova在线迁移扩容时对libvirt的调用}
-\subsection{nova在线迁移扩容的流程介绍}
+\section{nova在线迁移时对libvirt的调用}
+\subsection{nova在线迁移的流程介绍}
 	流程如下：
 	\begin{itemize}
 		\item[1.] 首先，源主机在compute.ComputeManager.live\_migration()函数中通过RPC.call()让
@@ -906,7 +906,7 @@ class Guest(object):
 	\end{itemize}
 
 	上面这个流程说得比较简略，而且也略去了compute-api、compute-conductor和compute-scheduler这三个服务的操作。
-	如果想要详细了解这个过程，可以看《resize虚拟机的流程》这篇文章。\par
+	如果想要详细了解这个过程，可以看《在线迁移虚拟机的流程》这篇文章。\par
 
 	接下来，我只会分析LibvirtDriver类中实现以上功能的函数。
 
@@ -1050,6 +1050,84 @@ class Guest(object):
 
 \subsection{源主机上的操作}
 \subsubsection{live\_migration函数}
+	\begin{lstlisting}
+	def live_migration(self, context, instance, dest,
+                       post_method, recover_method, block_migration=False,
+                       migrate_data=None):
+		# dest是目标主机
+        # block_migration: if true, do block migration.
+        # migrate_data: implementation specific params
+
+        # 调用_live_migration()函数
+        greenthread.spawn(self._live_migration, context, instance, dest,
+                          post_method, recover_method, block_migration,
+                          migrate_data)
+	\end{lstlisting}
+
+	\_live\_migration()函数如下：
+	\begin{lstlisting}
+	def _live_migration(self, context, instance, dest, post_method,
+                        recover_method, block_migration=False,
+                        migrate_data=None):
+        # dest: destination host
+        # block_migration: if true, do block migration.
+        # migrate_data: implementation specific params
+        
+        try:
+            if block_migration:
+                flaglist = CONF.libvirt.block_migration_flag.split(',')
+            else:
+                flaglist = CONF.libvirt.live_migration_flag.split(',')
+            flagvals = [getattr(libvirt, x.strip()) for x in flaglist]
+            logical_sum = reduce(lambda x, y: x | y, flagvals)
+
+			# 调用virConnect.lookupByName()获得virDomain对象
+            dom = self._lookup_by_name(instance["name"])
+
+			# pre_live_migrate_data中的参数在pre_live_migration()函数中有准备
+			# res_data = {'graphics_listen_addrs': {}}
+        	# res_data['graphics_listen_addrs']['vnc'] = CONF.vncserver_listen
+        	# res_data['graphics_listen_addrs']['spice'] = CONF.spice.server_listen
+            pre_live_migrate_data = (migrate_data or {}).get(
+                                        'pre_live_migration_result', {})
+            listen_addrs = pre_live_migrate_data.get('graphics_listen_addrs')
+
+            migratable_flag = getattr(libvirt, 'VIR_DOMAIN_XML_MIGRATABLE',
+                                      None)
+			
+			# 当libvirt带有VIR_DOMAIN_XML_MIGRATABLE时，Nova会调用libvirt的virDomainMigrateToURI2函数，否则调用virDomainMigrateToURI函数
+            if migratable_flag is None or listen_addrs is None:
+                self._check_graphics_addresses_can_live_migrate(listen_addrs)
+				# 调用virtDomain.migrateToURI()函数迁移虚拟机
+				# 函数作用：Migrate the domain object from its current host to the destination host given by duri.
+				# 这个函数不能指定新的虚拟机的xml配置文件
+                dom.migrateToURI(CONF.libvirt.live_migration_uri % dest,
+                                 logical_sum,
+                                 None,
+                                 CONF.libvirt.live_migration_bandwidth)
+            else:
+                old_xml_str = dom.XMLDesc(migratable_flag)
+                new_xml_str = self._correct_listen_addr(old_xml_str,
+                                                        listen_addrs)
+                try:
+					# 这个函数可以指定新的虚拟机的xml配置文件
+                    dom.migrateToURI2(CONF.libvirt.live_migration_uri % dest,
+                                      None,
+                                      new_xml_str,
+                                      logical_sum,
+                                      None,
+                                      CONF.libvirt.live_migration_bandwidth)
+                ...
+
+        ...
+	\end{lstlisting}
+
+\subsubsection{源主机上在线迁移过程总结}
+	根据代码总结源主机上在线迁移的准备过程：
+	\begin{itemize}
+		\item[1.] 根据migrate\_data获取listen\_addrs。
+		\item[2.] 根据是否有VIR\_DOMAIN\_XML\_MIGRATABLE决定调用migrateToURI函数还是调用migrateToURI2函数。
+	\end{itemize}
 
 \clearpage
 
@@ -1336,10 +1414,6 @@ class Qcow2(Image):
 
 \clearpage
 
-\section{openstack中对libvirt调用的框架}
-
-\clearpage
-
 \section{查看libvirt的python API}
 
 	可以通过python的help()函数来查看virConnect类：
@@ -1354,16 +1428,5 @@ class Qcow2(Image):
 		\sizedfic{0.6}{3.png}
 
 	\end{itemize}
-
-	% 进一步看\_connect()函数：
-	% \begin{lstlisting}
-	% @staticmethod
-    % def _connect(uri, read_only):
-	% 	...
-	% 	# 下面这个函数使用Evenlet机制会创建一个线程
-    %     return tpool.proxy_call(
-    %         (libvirt.virDomain, libvirt.virConnect),
-    %         libvirt.openAuth, uri, auth, flags)
-	% \end{lstlisting}
 
 \end{document}

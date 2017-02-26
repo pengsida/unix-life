@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  26 FEB 2017 09:46
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  26 FEB 2017 11:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**resize虚拟机的流程.tex
-(./resize虚拟机的流程.tex
+**扩容虚拟机的流程.tex
+(./扩容虚拟机的流程.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1262,8 +1262,8 @@ Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=1.5cm,right=1.5cm].
 
-(./resize虚拟机的流程.aux)
-\openout1 = `resize虚拟机的流程.aux'.
+(./扩容虚拟机的流程.aux)
+\openout1 = `扩容虚拟机的流程.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
 LaTeX Font Info:    ... okay on input line 143.
@@ -1395,7 +1395,7 @@ Overfull \hbox (4.32pt too wide) in paragraph at lines 145--145
 | []| 
  []
 
-(./resize虚拟机的流程.toc
+(./扩容虚拟机的流程.toc
 LaTeX Font Info:    Try loading font information for U+msa on input line 2.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1406,7 +1406,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 2.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
 \tf@toc=\write3
-\openout3 = `resize虚拟机的流程.toc'.
+\openout3 = `扩容虚拟机的流程.toc'.
 
 
 
@@ -1522,18 +1522,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[15] (./resize虚拟机的流程.aux)
+[15] (./扩容虚拟机的流程.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
  24482 strings out of 493638
- 450307 string characters out of 6146796
- 660109 words of memory out of 5000000
+ 450263 string characters out of 6146796
+ 657105 words of memory out of 5000000
  27601 multiletter control sequences out of 15000+600000
  10396 words of font info for 66 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 48i,13n,72p,10369b,1626s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,13n,72p,10365b,1626s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on resize虚拟机的流程.pdf (15 pages).
+Output written on 扩容虚拟机的流程.pdf (15 pages).

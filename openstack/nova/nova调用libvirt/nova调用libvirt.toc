@@ -15,18 +15,19 @@
 \contentsline {subsubsection}{\numberline {3.3.1}finish\_migration函数}{18}
 \contentsline {subsubsection}{\numberline {3.3.2}对虚拟机进行扩容}{19}
 \contentsline {subsubsection}{\numberline {3.3.3}目的主机上冷迁移过程总结}{19}
-\contentsline {section}{\numberline {4}nova在线迁移扩容时对libvirt的调用}{20}
-\contentsline {subsection}{\numberline {4.1}nova在线迁移扩容的流程介绍}{20}
+\contentsline {section}{\numberline {4}nova在线迁移时对libvirt的调用}{20}
+\contentsline {subsection}{\numberline {4.1}nova在线迁移的流程介绍}{20}
 \contentsline {subsection}{\numberline {4.2}目的主机上的操作}{20}
 \contentsline {subsubsection}{\numberline {4.2.1}pre\_live\_migration函数}{20}
-\contentsline {subsubsection}{\numberline {4.2.2}准备后端镜像和增量镜像}{21}
+\contentsline {subsubsection}{\numberline {4.2.2}准备相关的镜像文件}{21}
+\contentsline {subsubsection}{\numberline {4.2.3}目的主机上在线迁移总结}{23}
 \contentsline {subsection}{\numberline {4.3}源主机上的操作}{23}
 \contentsline {subsubsection}{\numberline {4.3.1}live\_migration函数}{23}
-\contentsline {section}{\numberline {5}nova创建快照时对libvirt的调用}{24}
-\contentsline {subsection}{\numberline {5.1}获得虚拟机抽象对象}{25}
-\contentsline {subsection}{\numberline {5.2}获得虚拟机磁盘路径}{25}
-\contentsline {subsection}{\numberline {5.3}获得虚拟机磁盘类型}{25}
-\contentsline {subsection}{\numberline {5.4}静态创建快照}{26}
-\contentsline {subsection}{\numberline {5.5}动态创建快照}{28}
-\contentsline {section}{\numberline {6}openstack中对libvirt调用的框架}{30}
-\contentsline {section}{\numberline {7}查看libvirt的python API}{31}
+\contentsline {subsubsection}{\numberline {4.3.2}源主机上在线迁移过程总结}{24}
+\contentsline {section}{\numberline {5}nova创建快照时对libvirt的调用}{25}
+\contentsline {subsection}{\numberline {5.1}获得虚拟机抽象对象}{26}
+\contentsline {subsection}{\numberline {5.2}获得虚拟机磁盘路径}{26}
+\contentsline {subsection}{\numberline {5.3}获得虚拟机磁盘类型}{26}
+\contentsline {subsection}{\numberline {5.4}静态创建快照}{27}
+\contentsline {subsection}{\numberline {5.5}动态创建快照}{29}
+\contentsline {section}{\numberline {6}查看libvirt的python API}{31}
