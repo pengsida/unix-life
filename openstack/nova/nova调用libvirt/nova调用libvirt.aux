@@ -1,28 +1,36 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\numberline {1}前言}{2}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}nova创建虚拟机时对libvirt的调用}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}创建镜像}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}创建xml配置文件}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}创建虚拟机的函数}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}nova冷迁移扩容时对libvirt的调用}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}nova冷迁移扩容的流程介绍}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}源主机上的操作}{9}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}预备知识：虚拟机的后端镜像和增量镜像}{9}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}migrate\_disk\_and\_power\_off函数}{11}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}关闭虚拟机}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}迁移镜像文件}{15}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}源主机上冷迁移过程总结}{16}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}目的主机上的操作}{17}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}对虚拟机进行扩容}{18}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}目的主机上冷迁移过程总结}{18}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}nova创建快照时对libvirt的调用}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}获得虚拟机抽象对象}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}获得虚拟机磁盘路径}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}获得虚拟机磁盘类型}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}静态创建快照}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}动态创建快照}{23}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}openstack中对libvirt调用的框架}{25}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}查看libvirt的python API}{26}}
-\newlabel{LastPage}{{}{26}}
-\xdef\lastpage@lastpage{26}
+\@writefile{toc}{\contentsline {section}{\numberline {1}前言}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}nova创建虚拟机时对libvirt的调用}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}创建镜像}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}创建xml配置文件}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}创建虚拟机的函数}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}nova冷迁移扩容时对libvirt的调用}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}nova冷迁移扩容的流程介绍}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}源主机上的操作}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}预备知识：虚拟机的后端镜像和增量镜像}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}migrate\_disk\_and\_power\_off函数}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}关闭虚拟机}{14}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}迁移镜像文件}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}源主机上冷迁移过程总结}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}目的主机上的操作}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}finish\_migration函数}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}对虚拟机进行扩容}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}目的主机上冷迁移过程总结}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}nova在线迁移扩容时对libvirt的调用}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}nova在线迁移扩容的流程介绍}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}目的主机上的操作}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}pre\_live\_migration函数}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}准备后端镜像和增量镜像}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}源主机上的操作}{23}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}live\_migration函数}{23}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}nova创建快照时对libvirt的调用}{24}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}获得虚拟机抽象对象}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}获得虚拟机磁盘路径}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}获得虚拟机磁盘类型}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}静态创建快照}{26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}动态创建快照}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}openstack中对libvirt调用的框架}{30}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}查看libvirt的python API}{31}}
+\newlabel{LastPage}{{}{31}}
+\xdef\lastpage@lastpage{31}
 \gdef\lastpage@lastpageHy{}

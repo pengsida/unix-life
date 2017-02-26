@@ -527,6 +527,7 @@
 
 \subsubsection{目的主机上的操作：pre\_live\_migration}
     \begin{lstlisting}
+    # nova/compute/manager.py ComputeManager.pre_live_migration()
     def pre_live_migration(self, context, instance, block_migration, disk,
                            migrate_data):
         """Preparations for live migration at dest host.

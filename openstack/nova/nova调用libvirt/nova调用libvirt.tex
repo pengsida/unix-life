@@ -511,7 +511,7 @@ class Guest(object):
 	上面这个流程说得比较简略，而且也略去了compute-api、compute-conductor和compute-scheduler这三个服务的操作。
 	如果想要详细了解这个过程，可以看《resize虚拟机的流程》这篇文章。\par
 
-	接下来，我只会从LibvirtDriver类中实现以上功能的函数开始分析。
+	接下来，我只会分析LibvirtDriver类中实现以上功能的函数。
 
 \subsection{源主机上的操作}
 	LibvirtDriver类中实现resize\_instance()功能的函数是migrate\_disk\_and\_power\_off()。\par
@@ -787,6 +787,7 @@ class Guest(object):
 \clearpage
 
 \subsection{目的主机上的操作}
+\subsubsection{finish\_migration函数}
 	LibvirtDriver类中实现finish\_resize()功能的函数是finish\_migration()。\par
 
 	函数代码如下：
@@ -889,6 +890,166 @@ class Guest(object):
 		\item[1.] 首先对disk和disk.local进行扩容。
 		\item[2.] 然后创建新的虚拟机，也就是spawn()函数中的那几个步骤。
 	\end{itemize}
+
+\clearpage
+
+\section{nova在线迁移扩容时对libvirt的调用}
+\subsection{nova在线迁移扩容的流程介绍}
+	流程如下：
+	\begin{itemize}
+		\item[1.] 首先，源主机在compute.ComputeManager.live\_migration()函数中通过RPC.call()让
+				  目的主机调用compute.ComputeManager.prep\_live\_migration()，并等待这个函数的完成。
+		\item[2.] 目的主机调用compute.ComputeManager.prep\_live\_migration()函数进行扩容前的准备。
+			      这个函数调用virt.libvirt.driver.LibvirtDriver.pre\_live\_migration()进行实际工作。
+				  函数结束后返回结果，源主机的compute.ComputeManager.live\_migration()函数继续进行。
+		\item[3.] 源主机在compute.ComputeManager.live\_migration()函数中调用virt.libvirt.driver.LibvirtDriver.live\_migration()完成迁移。
+	\end{itemize}
+
+	上面这个流程说得比较简略，而且也略去了compute-api、compute-conductor和compute-scheduler这三个服务的操作。
+	如果想要详细了解这个过程，可以看《resize虚拟机的流程》这篇文章。\par
+
+	接下来，我只会分析LibvirtDriver类中实现以上功能的函数。
+
+\subsection{目的主机上的操作}
+\subsubsection{pre\_live\_migration函数}
+	\begin{lstlisting}
+    # nova/virt/libvirt/driver.py LibvirtDriver.pre_live_migration()
+    def pre_live_migration(self, context, instance, block_device_info,
+                           network_info, disk_info, migrate_data=None):
+        """Preparation live migration."""
+		
+        is_shared_block_storage = True
+        is_shared_instance_path = True
+        is_block_migration = True
+        instance_relative_path = None
+
+		# migrate_data: if not None, it is a dict which holds data
+        #               required for live migration without shared
+        #               storage.
+		# 根据migrate_data为is_shared_block_storage、is_shared_instance_path和is_block_migration赋值
+        if migrate_data:
+            is_shared_block_storage = migrate_data.get(
+                    'is_shared_block_storage', True)
+            is_shared_instance_path = migrate_data.get(
+                    'is_shared_instance_path', True)
+            is_block_migration = migrate_data.get('block_migration', True)
+            instance_relative_path = migrate_data.get('instance_relative_path')
+
+        ...
+
+        if not is_shared_instance_path:
+			# 为目的主机创建instance dir
+            if instance_relative_path:
+                instance_dir = os.path.join(CONF.instances_path,
+                                            instance_relative_path)
+            else:
+                instance_dir = libvirt_utils.get_instance_path(instance)
+
+            if os.path.exists(instance_dir):
+                raise exception.DestinationDiskExists(path=instance_dir)
+            os.mkdir(instance_dir)
+
+			# 如果目的主机和源主机不共享存储
+            if not is_shared_block_storage:
+                # Ensure images and backing files are present.
+				# 如果使用后端镜像，这个函数将创建增量镜像
+				# 否则，直接调用“qemu-img create”创建镜像
+				# 这个函数稍后分析
+                self._create_images_and_backing(context, instance,
+                                                instance_dir, disk_info)
+
+		# 如果不是block migration而且不共享instance path
+		# 还需要kernel和ramdisk，所以需要调用_fetch_instance_kernel_ramdisk()
+        if not (is_block_migration or is_shared_instance_path):
+
+            # Touch the console.log file, required by libvirt.
+            console_file = self._get_console_log_path(instance)
+            libvirt_utils.file_open(console_file, 'a').close()
+
+            # 下载kernel和ramdisk文件
+            self._fetch_instance_kernel_ramdisk(context, instance)
+
+		...
+    \end{lstlisting}
+
+\subsubsection{准备相关的镜像文件}
+
+	\begin{lstlisting}
+	def _create_images_and_backing(self, context, instance, instance_dir,
+                                   disk_info_json):
+        # disk_info数据类型是一个list，里面有多个字典，字典格式如下
+		# {'type': disk_type,
+		# 'path': path,
+		# 'virt_disk_size': virt_size,
+		# 'backing_file': backing_file,
+		# 'disk_size': dk_size,
+		# 'over_committed_disk_size': over_commit_size}
+        if not disk_info_json:
+            disk_info = []
+        else:
+			# 调用json.loads()转为list格式
+            disk_info = jsonutils.loads(disk_info_json)
+
+        for info in disk_info:
+			# 获得文件名
+            base = os.path.basename(info['path'])
+            # Get image type and create empty disk image, and
+            # create backing file in case of qcow2.
+            instance_disk = os.path.join(instance_dir, base)
+
+			# 如果不使用 backing file 的话则调用 “qemu-img create” 方法来创建空的磁盘镜像
+            if not info['backing_file'] and not os.path.exists(instance_disk):
+				# 调用“qemu-img create -f info['type'] instance_disk info['virt_disk_size']”创建镜像
+                libvirt_utils.create_image(info['type'], instance_disk,
+                                           info['virt_disk_size'])
+            elif info['backing_file']:
+                # Creating backing file follows same way as spawning instances.
+                cache_name = os.path.basename(info['backing_file'])
+
+                image = self.image_backend.image(instance,
+                                                 instance_disk,
+                                                 CONF.libvirt.images_type)
+				# 创建空的Ephemeral disk
+                if cache_name.startswith('ephemeral'):
+                    image.cache(fetch_func=self._create_ephemeral,
+                                fs_label=cache_name,
+                                os_type=instance["os_type"],
+                                filename=cache_name,
+                                size=info['virt_disk_size'],
+                                ephemeral_size=instance['ephemeral_gb'])
+				# 创建空的Swap disk
+                elif cache_name.startswith('swap'):
+                    inst_type = flavors.extract_flavor(instance)
+                    swap_mb = inst_type['swap']
+                    image.cache(fetch_func=self._create_swap,
+                                filename="swap_%s" % swap_mb,
+                                size=swap_mb * units.Mi,
+                                swap_mb=swap_mb)
+                else:
+					# 从Glance中获取image来创建Root disk
+                    image.cache(fetch_func=libvirt_utils.fetch_image,
+                                context=context,
+                                filename=cache_name,
+                                image_id=instance['image_ref'],
+                                user_id=instance['user_id'],
+                                project_id=instance['project_id'],
+                                size=info['virt_disk_size'])
+
+        # if image has kernel and ramdisk, just download
+        # following normal way.
+        self._fetch_instance_kernel_ramdisk(context, instance)
+	\end{lstlisting}
+
+\subsubsection{目的主机上在线迁移总结}
+	根据代码总结目的主机上在线迁移的准备过程：
+	\begin{itemize}
+		\item[1.] 根据migrate\_data获取is\_shared\_block\_storage、is\_shared\_instance\_path和is\_block\_migration的信息。
+		\item[2.] 如果不共享instance path，就创建instance dir。
+		\item[3.] 如果不共享存储，则需要在目的主机上根据disk\_info\_json准备相关的镜像文件。
+	\end{itemize}
+
+\subsection{源主机上的操作}
+\subsubsection{live\_migration函数}
 
 \clearpage
 
