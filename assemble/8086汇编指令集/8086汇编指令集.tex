@@ -217,6 +217,21 @@
 \subsection{inc}
 \subsection{int}
 \subsection{iret}
+	用于16位操作数大小的中断返回。该指令执行的过程基本上是int指令的逆过程：
+	\begin{itemize}
+		\item[1.] 从栈顶弹出内容到IP。
+		\item[2.] 从新栈顶弹出内容送入CS。
+		\item[3.] 从新栈顶弹出内容送入标志寄存器。
+	\end{itemize}
+
+\subsection{iretd}
+	用于32位操作数大小的中断返回。该指令执行的过程基本上是int指令的逆过程：
+	\begin{itemize}
+		\item[1.] 从栈顶弹出内容到EIP。
+		\item[2.] 从新栈顶弹出内容送入CS。
+		\item[3.] 从新栈顶弹出内容送入标志寄存器。
+	\end{itemize}
+
 \subsection{ja}
 \subsection{jb}
 \subsection{jcxz}
@@ -280,6 +295,12 @@
 \subsection{not}
 \subsection{or}
 \subsection{push}
+\subsection{pusha}
+	pusha指令依次将ax、cx、dx、bx、sp、bp、si和di压入堆栈。
+
+\subsection{pushad}
+	pushad指令依次将eax、ecx、edx、ebx、esp、ebp、esi和edi压入堆栈。
+
 \subsection{pop}
 \subsection{pushf}
 \subsection{rcl}

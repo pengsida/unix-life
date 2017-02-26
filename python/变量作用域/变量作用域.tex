@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{report}
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -28,8 +28,8 @@
 \usepackage{extarrows}
 \usepackage{hyperref}
 \titleformat*{\section}{\LARGE}
-% \renewcommand\refname{参考文献}
-% \renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
 %\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
 %\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -118,17 +118,6 @@
 
 \newcommand{\codefile}[1]{\lstinputlisting{#1}}
 
-\newcommand{\interval}{\vspace{0.5em}}
-
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
-
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -137,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{进程 \qquad}
+\chead{变量作用域 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -145,71 +134,80 @@
 
 \clearpage
 
-\chapter{进程}
-\section{形成进程的必要考虑}
-	CPU的个数通常总是小于进程的个数，所以我们需要进程调度，使得系统总有“正在运行的”和“正在休息的”进程。\par
+\section{变量作用域}
+	python的作用域一共有4个：
+	\begin{itemize}
+		\item[1.] Local，局部作用域。
+		\item[2.] Enclosing，闭包函数外的函数中。
+		\item[3.] Global，全局作用域。
+		\item[4.] Built-in，内建作用域。
+	\end{itemize}
 
-	为了让“正在休息的”进程在重新醒来时记住自己挂起之前的状态，我们需要一个数据结构记录一个进程的状态。\par
+\subsection{理解闭包函数}
+	如果在一个内部函数里，对它外面的函数中的变量进行引用，那么这个函数就被认为是闭包函数。\par
 
-	还需要考虑的是，进程和进程切换运行在不同层级上。\par
-
-	还有一点需要考虑，就是进程自己不知道什么时候被挂起，什么时候又被启动，我们需要知道诱发进程切换的原因不只一种，比如发生了时钟中断。
-
-\section{最简单的进程}
-	首先介绍一下进程切换的情形：
+	举个例子：
 	\begin{lstlisting}
-	一个进程正在运行着，此时时钟中断发生。
-	特权级从ring1跳到ring0，开始执行时钟中断处理程序。
-	中断处理程序调用进程调度模块，指定下一个应该运行的进程。
-	中断处理程序结束时，下一个进程准备就绪并开始运行，特权级从ring0跳回ring1。
+	def addx(x):
+		# adder函数就是一个闭包函数
+		def adder(y):
+			return x+y
+		return adder
 	\end{lstlisting}
 
-	从上述过程得知，我们需要完成几个部分：
-	\begin{itemize}
-		\item[1.] 时钟中断处理程序。
-		\item[2.] 进程调度模块。
-		\item[3.] 两个进程。
-	\end{itemize}
+\subsection{变量的查找规则}
+	在Local域找不到的时候，如果是闭包函数，就会到Enclosing域去找。如果不是闭包函数，就会直接去Global域找，最后到Built-in域去找。
 
-\subsection{简单进程中的关键技术}
-\subsubsection{进程状态的保存}
-	需要考虑保存进程的状态，用于恢复进程，所以我们要把寄存器的值统统保存起来。\par
-	
-	一般使用push或pushad保存大多寄存器的值，并且把它写在时钟中断例程的最顶端，以便中断发生时马上被执行。\par
+\subsection{改变作用域}
+	python只有def、class和lambda可以改变变量的作用域。如果在def/class/lambda内对变量进行赋值，那么变量在/def/class/lambda中就是Local域，如下所示：
+	\begin{lstlisting}
+	g = 1 # Global域
+	def fun():
+		g = 2 # Local域
+		return g
 
-	当恢复进程时，使用pop来恢复寄存器的值，虽然执行指令iretd回到原先的进程。
+	print fun() # 结果为2
+	print g # 结果为1
+	\end{lstlisting}
 
-\subsubsection{进程表PCB}
-	之前已经提到过，我们需要一个数据结构记录一个进程的状态。这个数据结构叫做进程表，也就是进程控制块PCB。\par
+	如果想在def/class/lambda引用Global变量，一旦对变量进行修改，那么它就会在整个def/class/lambda中变成Local域，那么很可能出现未赋值之前引用的错误：
+	\begin{lstlisting}
+	var = 1
+	def fun1():
+		print var # 出现未赋值之前引用的错误
+		var = 200
 
-	进程表是用来描述进程的，所以它必须独立于进程之外。每个进程有一个对应的进程表，我们会有很多个进程，所以就需要创建一个进程表数组。
+	def fun2():
+		var = var + 1 # 出现未赋值之前引用的错误
+		return var
+	\end{lstlisting}
 
-\subsubsection{进程栈和内核栈}
-	在进程切换时，我们需要考虑esp指向的位置。\par
+\subsubsection{Global关键字}
+	Global关键字可以使得变量变为Global域，这样def/class/lambda中对变量进行修改，全局中的变量也会被修改。
 
-	当进程运行时，esp指向进程堆栈中的某个位置。而为了把进程的寄存器状态压进进程表，esp此时又需要指向进程表的某个位置。\par
+\subsection{globals()和locals()}
+\subsubsection{globals()函数}
+	globals()返回一个字典，这个字典包含了Global域中的所有变量，包括函数变量，如下所示：
+	\begin{lstlisting}
+	def var():
+		print "Hello world"
 
-	需要知道的是，中断处理程序也可能用到堆栈操作，而显然我们不能容忍esp对进程表进行操作，所以我们应该让esp指向专门的内核栈区域。\par
+	def fun():
+		f = globals()['var']
+		f()
 
-	总而言之，进程切换过程中，esp将出现在3个不同的区域，如下图所示：
-	\fic{1.png}
+	fun() # 打印'Hello world'
+	\end{lstlisting}
 
-	这三个区域的描述如下：
-	\begin{itemize}
-		\item 进程栈，进程运行时自身的堆栈。
-		\item 进程表，存储进程状态信息的数据结构。
-		\item 内核栈，进程调度模块运行时使用的堆栈。
-	\end{itemize}
-
-\subsubsection{特权级变换}
-	系统原先运行在ring0，所以当我们准备开始第一个进程时，我们面临一个ring0向ring1的转移。\par
-
-	这个过程和恢复进程很相似，所以我们通过假装发生了一次时钟中断来启动第一个进程，利用iretd来实现ring0向ring1的转移。\par
-
-	当执行时钟中断处理程序时，需要从ring1向ring0转移，此时要从当前TSS中取出内层ss和esp作为目标代码的ss和esp，所以我们必须事先准备好TSS。\par
-
-	因为每个进程相对独立，所以这些任务状态段相互独立。我们需要把涉及到的描述符放在局部描述符表LDT中，这意味着我们还需要为每个进程准备LDT。
-
-\subsection{简单进程的实现}
+\subsubsection{locals()函数}
+	locals()返回一个字典，这个字典包含了Local域中的所有变量，包括函数变量，如下所示：
+	\begin{lstlisting}
+	def view():
+		user = 'user'
+		article = 'article'
+		ip = 'ip'
+		s = 'just a string'
+		return locals() # 相当于 return {user=user, article=article, ip=ip, s=s}
+	\end{lstlisting}
 
 \end{document}
