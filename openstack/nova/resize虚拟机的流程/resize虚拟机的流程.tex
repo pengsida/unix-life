@@ -414,9 +414,457 @@
 \section{在线迁移}
 \subsection{在线迁移中的nova-conductor部分}
     \begin{lstlisting}
-    
+    # nova/conductor/manager.py ComputeTaskManager._live_migrate()
+    def _live_migrate(self, context, instance, scheduler_hint,
+                      block_migration, disk_over_commit):
+        destination = scheduler_hint.get("host")
+        try:
+            live_migrate.execute(context, instance, destination,
+                             block_migration, disk_over_commit)
+        ...
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/conductor/tasks/live_migrate.py execute()
+    def execute(context, instance, destination,
+            block_migration, disk_over_commit):
+    task = LiveMigrationTask(context, instance,
+                             destination,
+                             block_migration,
+                             disk_over_commit)
+    # TODO(johngarbutt) create a superclass that contains a safe_execute call
+    return task.execute()
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/conductor/tasks/live_migrate.py LiveMigrationTask.execute()
+    def execute(self):
+        self._check_instance_is_running()
+        self._check_host_is_up(self.source)
+
+        if not self.destination:
+            self.destination = self._find_destination()
+        else:
+            self._check_requested_destination()
+
+        # TODO(johngarbutt) need to move complexity out of compute manager
+        # TODO(johngarbutt) disk_over_commit?
+        return self.compute_rpcapi.live_migration(self.context,
+                host=self.source,
+                instance=self.instance,
+                dest=self.destination,
+                block_migration=self.block_migration,
+                migrate_data=self.migrate_data)
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/compute/rpcapi.py ComputeAPI.live_migration()
+    def live_migration(self, ctxt, instance, dest, block_migration, host,
+                       migrate_data=None):
+        ...
+        cctxt = self.client.prepare(server=host, version=version)
+        cctxt.cast(ctxt, 'live_migration', instance=instance,
+                   dest=dest, block_migration=block_migration,
+                   migrate_data=migrate_data)
     \end{lstlisting}
 
 \subsection{在线迁移中的nova-compute部分}
+    \begin{lstlisting}
+    # nova/compute/manager.py ComputeManager.live_migration()
+    def live_migration(self, context, dest, instance, block_migration,
+                       migrate_data):
+        """Executing live migration.
+
+        :param context: security context
+        :param instance: a nova.objects.instance.Instance object
+        :param dest: destination host
+        :param block_migration: if true, prepare for block migration
+        :param migrate_data: implementation specific params
+
+        """
+
+        # NOTE(danms): since instance is not the first parameter, we can't
+        # use @object_compat on this method. Since this is the only example,
+        # we do this manually instead of complicating the decorator
+        if not isinstance(instance, obj_base.NovaObject):
+            expected = ['metadata', 'system_metadata',
+                        'security_groups', 'info_cache']
+            instance = objects.Instance._from_db_object(
+                context, objects.Instance(), instance,
+                expected_attrs=expected)
+
+        # Create a local copy since we'll be modifying the dictionary
+        migrate_data = dict(migrate_data or {})
+        try:
+            if block_migration:
+                block_device_info = self._get_instance_block_device_info(
+                    context, instance)
+                disk = self.driver.get_instance_disk_info(
+                    instance.name, block_device_info=block_device_info)
+            else:
+                disk = None
+
+            pre_migration_data = self.compute_rpcapi.pre_live_migration(
+                context, instance,
+                block_migration, disk, dest, migrate_data)
+            migrate_data['pre_live_migration_result'] = pre_migration_data
+
+        except Exception:
+            with excutils.save_and_reraise_exception():
+                LOG.exception(_LE('Pre live migration failed at %s'),
+                              dest, instance=instance)
+                self._rollback_live_migration(context, instance, dest,
+                                              block_migration, migrate_data)
+
+        # Executing live migration
+        # live_migration might raises exceptions, but
+        # nothing must be recovered in this version.
+        self.driver.live_migration(context, instance, dest,
+                                   self._post_live_migration,
+                                   self._rollback_live_migration,
+                                   block_migration, migrate_data)
+    \end{lstlisting}
+
+\subsubsection{目的主机上的操作：pre\_live\_migration}
+    \begin{lstlisting}
+    def pre_live_migration(self, context, instance, block_migration, disk,
+                           migrate_data):
+        """Preparations for live migration at dest host.
+
+        :param context: security context
+        :param instance: dict of instance data
+        :param block_migration: if true, prepare for block migration
+        :param migrate_data: if not None, it is a dict which holds data
+                             required for live migration without shared
+                             storage.
+
+        """
+        block_device_info = self._get_instance_block_device_info(
+                            context, instance, refresh_conn_info=True)
+
+        network_info = self._get_instance_nw_info(context, instance)
+        self._notify_about_instance_usage(
+                     context, instance, "live_migration.pre.start",
+                     network_info=network_info)
+
+        pre_live_migration_data = self.driver.pre_live_migration(context,
+                                       instance,
+                                       block_device_info,
+                                       network_info,
+                                       disk,
+                                       migrate_data)
+
+        # NOTE(tr3buchet): setup networks on destination host
+        self.network_api.setup_networks_on_host(context, instance,
+                                                         self.host)
+
+        # Creating filters to hypervisors and firewalls.
+        # An example is that nova-instance-instance-xxx,
+        # which is written to libvirt.xml(Check "virsh nwfilter-list")
+        # This nwfilter is necessary on the destination host.
+        # In addition, this method is creating filtering rule
+        # onto destination host.
+        self.driver.ensure_filtering_rules_for_instance(instance,
+                                            network_info)
+
+        self._notify_about_instance_usage(
+                     context, instance, "live_migration.pre.end",
+                     network_info=network_info)
+
+        return pre_live_migration_data
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/virt/libvirt/driver.py LibvirtDriver.pre_live_migration()
+    def pre_live_migration(self, context, instance, block_device_info,
+                           network_info, disk_info, migrate_data=None):
+        """Preparation live migration."""
+        # Steps for volume backed instance live migration w/o shared storage.
+        is_shared_block_storage = True
+        is_shared_instance_path = True
+        is_block_migration = True
+        instance_relative_path = None
+        if migrate_data:
+            is_shared_block_storage = migrate_data.get(
+                    'is_shared_block_storage', True)
+            is_shared_instance_path = migrate_data.get(
+                    'is_shared_instance_path', True)
+            is_block_migration = migrate_data.get('block_migration', True)
+            instance_relative_path = migrate_data.get('instance_relative_path')
+
+        if not (is_shared_instance_path and is_shared_block_storage):
+            # NOTE(dims): Using config drive with iso format does not work
+            # because of a bug in libvirt with read only devices. However
+            # one can use vfat as config_drive_format which works fine.
+            # Please see bug/1246201 for details on the libvirt bug.
+            if CONF.config_drive_format != 'vfat':
+                if configdrive.required_by(instance):
+                    raise exception.NoLiveMigrationForConfigDriveInLibVirt()
+
+        if not is_shared_instance_path:
+            # NOTE(mikal): this doesn't use libvirt_utils.get_instance_path
+            # because we are ensuring that the same instance directory name
+            # is used as was at the source
+            if instance_relative_path:
+                instance_dir = os.path.join(CONF.instances_path,
+                                            instance_relative_path)
+            else:
+                instance_dir = libvirt_utils.get_instance_path(instance)
+
+            if os.path.exists(instance_dir):
+                raise exception.DestinationDiskExists(path=instance_dir)
+            os.mkdir(instance_dir)
+
+            if not is_shared_block_storage:
+                # Ensure images and backing files are present.
+                self._create_images_and_backing(context, instance,
+                                                instance_dir, disk_info)
+
+        if not (is_block_migration or is_shared_instance_path):
+            # NOTE(angdraug): when block storage is shared between source and
+            # destination and instance path isn't (e.g. volume backed or rbd
+            # backed instance), instance path on destination has to be prepared
+
+            # Touch the console.log file, required by libvirt.
+            console_file = self._get_console_log_path(instance)
+            libvirt_utils.file_open(console_file, 'a').close()
+
+            # if image has kernel and ramdisk, just download
+            # following normal way.
+            self._fetch_instance_kernel_ramdisk(context, instance)
+
+        # Establishing connection to volume server.
+        block_device_mapping = driver.block_device_info_get_mapping(
+            block_device_info)
+        for vol in block_device_mapping:
+            connection_info = vol['connection_info']
+            disk_info = blockinfo.get_info_from_bdm(
+                CONF.libvirt.virt_type, vol)
+            self._connect_volume(connection_info, disk_info)
+
+        if is_block_migration and len(block_device_mapping):
+            # NOTE(stpierre): if this instance has mapped volumes,
+            # we can't do a block migration, since that will
+            # result in volumes being copied from themselves to
+            # themselves, which is a recipe for disaster.
+            LOG.error(
+                _LE('Cannot block migrate instance %s with mapped volumes') %
+                instance.uuid)
+            raise exception.MigrationError(
+                _('Cannot block migrate instance %s with mapped volumes') %
+                instance.uuid)
+
+        # We call plug_vifs before the compute manager calls
+        # ensure_filtering_rules_for_instance, to ensure bridge is set up
+        # Retry operation is necessary because continuously request comes,
+        # concurrent request occurs to iptables, then it complains.
+        max_retry = CONF.live_migration_retry_count
+        for cnt in range(max_retry):
+            try:
+                self.plug_vifs(instance, network_info)
+                break
+            except processutils.ProcessExecutionError:
+                if cnt == max_retry - 1:
+                    raise
+                else:
+                    LOG.warn(_LW('plug_vifs() failed %(cnt)d. Retry up to '
+                                 '%(max_retry)d.'),
+                             {'cnt': cnt,
+                              'max_retry': max_retry},
+                             instance=instance)
+                    greenthread.sleep(1)
+
+        res_data = {'graphics_listen_addrs': {}}
+        res_data['graphics_listen_addrs']['vnc'] = CONF.vncserver_listen
+        res_data['graphics_listen_addrs']['spice'] = CONF.spice.server_listen
+
+        return res_data
+    \end{lstlisting}
+
+\subsubsection{源主机上的操作：live\_migration}
+    \begin{lstlisting}
+    # nova/compute/manager.py ComputeManager.live_migration()
+    def live_migration(self, context, dest, instance, block_migration,
+                       migrate_data):
+        """Executing live migration.
+
+        :param context: security context
+        :param instance: a nova.objects.instance.Instance object
+        :param dest: destination host
+        :param block_migration: if true, prepare for block migration
+        :param migrate_data: implementation specific params
+
+        """
+
+        # NOTE(danms): since instance is not the first parameter, we can't
+        # use @object_compat on this method. Since this is the only example,
+        # we do this manually instead of complicating the decorator
+        if not isinstance(instance, obj_base.NovaObject):
+            expected = ['metadata', 'system_metadata',
+                        'security_groups', 'info_cache']
+            instance = objects.Instance._from_db_object(
+                context, objects.Instance(), instance,
+                expected_attrs=expected)
+
+        # Create a local copy since we'll be modifying the dictionary
+        migrate_data = dict(migrate_data or {})
+        try:
+            if block_migration:
+                block_device_info = self._get_instance_block_device_info(
+                    context, instance)
+                disk = self.driver.get_instance_disk_info(
+                    instance.name, block_device_info=block_device_info)
+            else:
+                disk = None
+
+            pre_migration_data = self.compute_rpcapi.pre_live_migration(
+                context, instance,
+                block_migration, disk, dest, migrate_data)
+            migrate_data['pre_live_migration_result'] = pre_migration_data
+
+        except Exception:
+            with excutils.save_and_reraise_exception():
+                LOG.exception(_LE('Pre live migration failed at %s'),
+                              dest, instance=instance)
+                self._rollback_live_migration(context, instance, dest,
+                                              block_migration, migrate_data)
+
+        # Executing live migration
+        # live_migration might raises exceptions, but
+        # nothing must be recovered in this version.
+        self.driver.live_migration(context, instance, dest,
+                                   self._post_live_migration,
+                                   self._rollback_live_migration,
+                                   block_migration, migrate_data)
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/virt/libvirt/driver.py LibvirtDriver.live_migration()
+    def live_migration(self, context, instance, dest,
+                       post_method, recover_method, block_migration=False,
+                       migrate_data=None):
+        """Spawning live_migration operation for distributing high-load.
+
+        :param context: security context
+        :param instance:
+            nova.db.sqlalchemy.models.Instance object
+            instance object that is migrated.
+        :param dest: destination host
+        :param post_method:
+            post operation method.
+            expected nova.compute.manager._post_live_migration.
+        :param recover_method:
+            recovery method when any exception occurs.
+            expected nova.compute.manager._rollback_live_migration.
+        :param block_migration: if true, do block migration.
+        :param migrate_data: implementation specific params
+
+        """
+
+        # 'dest' will be substituted into 'migration_uri' so ensure
+        # it does't contain any characters that could be used to
+        # exploit the URI accepted by libivrt
+        if not libvirt_utils.is_valid_hostname(dest):
+            raise exception.InvalidHostname(hostname=dest)
+
+        greenthread.spawn(self._live_migration, context, instance, dest,
+                          post_method, recover_method, block_migration,
+                          migrate_data)
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    # nova/virt/libvirt/driver.py LibvirtDriver._live_migration()
+    def _live_migration(self, context, instance, dest, post_method,
+                        recover_method, block_migration=False,
+                        migrate_data=None):
+        """Do live migration.
+
+        :param context: security context
+        :param instance:
+            nova.db.sqlalchemy.models.Instance object
+            instance object that is migrated.
+        :param dest: destination host
+        :param post_method:
+            post operation method.
+            expected nova.compute.manager._post_live_migration.
+        :param recover_method:
+            recovery method when any exception occurs.
+            expected nova.compute.manager._rollback_live_migration.
+        :param block_migration: if true, do block migration.
+        :param migrate_data: implementation specific params
+        """
+
+        # Do live migration.
+        try:
+            if block_migration:
+                flaglist = CONF.libvirt.block_migration_flag.split(',')
+            else:
+                flaglist = CONF.libvirt.live_migration_flag.split(',')
+            flagvals = [getattr(libvirt, x.strip()) for x in flaglist]
+            logical_sum = reduce(lambda x, y: x | y, flagvals)
+
+            dom = self._lookup_by_name(instance["name"])
+
+            pre_live_migrate_data = (migrate_data or {}).get(
+                                        'pre_live_migration_result', {})
+            listen_addrs = pre_live_migrate_data.get('graphics_listen_addrs')
+
+            migratable_flag = getattr(libvirt, 'VIR_DOMAIN_XML_MIGRATABLE',
+                                      None)
+
+            if migratable_flag is None or listen_addrs is None:
+                self._check_graphics_addresses_can_live_migrate(listen_addrs)
+                dom.migrateToURI(CONF.libvirt.live_migration_uri % dest,
+                                 logical_sum,
+                                 None,
+                                 CONF.libvirt.live_migration_bandwidth)
+            else:
+                old_xml_str = dom.XMLDesc(migratable_flag)
+                new_xml_str = self._correct_listen_addr(old_xml_str,
+                                                        listen_addrs)
+                try:
+                    dom.migrateToURI2(CONF.libvirt.live_migration_uri % dest,
+                                      None,
+                                      new_xml_str,
+                                      logical_sum,
+                                      None,
+                                      CONF.libvirt.live_migration_bandwidth)
+                except libvirt.libvirtError as ex:
+                    # NOTE(mriedem): There is a bug in older versions of
+                    # libvirt where the VIR_DOMAIN_XML_MIGRATABLE flag causes
+                    # virDomainDefCheckABIStability to not compare the source
+                    # and target domain xml's correctly for the CPU model.
+                    # We try to handle that error here and attempt the legacy
+                    # migrateToURI path, which could fail if the console
+                    # addresses are not correct, but in that case we have the
+                    # _check_graphics_addresses_can_live_migrate check in place
+                    # to catch it.
+                    # TODO(mriedem): Remove this workaround when
+                    # Red Hat BZ #1141838 is closed.
+                    error_code = ex.get_error_code()
+                    if error_code == libvirt.VIR_ERR_CONFIG_UNSUPPORTED:
+                        LOG.warn(_LW('An error occurred trying to live '
+                                     'migrate. Falling back to legacy live '
+                                     'migrate flow. Error: %s'), ex,
+                                 instance=instance)
+                        self._check_graphics_addresses_can_live_migrate(
+                            listen_addrs)
+                        dom.migrateToURI(
+                            CONF.libvirt.live_migration_uri % dest,
+                            logical_sum,
+                            None,
+                            CONF.libvirt.live_migration_bandwidth)
+                    else:
+                        raise
+
+        except Exception as e:
+            with excutils.save_and_reraise_exception():
+                LOG.error(_LE("Live Migration failure: %s"), e,
+                          instance=instance)
+                recover_method(context, instance, dest, block_migration)
+
+        post_method(context, instance, dest, block_migration,
+                    migrate_data)
+    \end{lstlisting}
 
 \end{document}
