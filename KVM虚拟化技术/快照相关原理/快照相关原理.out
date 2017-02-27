@@ -1,0 +1,25 @@
+\BOOKMARK [1][-]{section.1}{QCOW2 backing files和overlays}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{举个例子}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{创建增量镜像的命令}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{查看后端镜像的命令}{subsection.1.1}% 4
+\BOOKMARK [1][-]{section.2}{快照相关术语}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{内部快照}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.1}{内部磁盘快照}{subsection.2.1}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.2}{内部系统还原点}{subsection.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.2}{外部快照}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.1}{外部磁盘快照}{subsection.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.2}{外部系统还原点}{subsection.2.2}% 11
+\BOOKMARK [1][-]{section.3}{创建快照的命令}{}% 12
+\BOOKMARK [2][-]{subsection.3.1}{创建disk-only的内部快照}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.2}{创建disk-only的外部快照}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{reverting\040to\040snapshots}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{内部快照的回滚}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.2}{外部快照的回滚}{section.4}% 17
+\BOOKMARK [1][-]{section.5}{增量镜像和后端镜像的合并}{}% 18
+\BOOKMARK [2][-]{subsection.5.1}{blockcommit}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.2}{blockpull}{section.5}% 20
+\BOOKMARK [1][-]{section.6}{删除快照}{}% 21
+\BOOKMARK [2][-]{subsection.6.1}{删除内部快照}{section.6}% 22
+\BOOKMARK [2][-]{subsection.6.2}{删除外部快照}{section.6}% 23
+\BOOKMARK [3][-]{subsubsection.6.2.1}{方式一}{subsection.6.2}% 24
+\BOOKMARK [3][-]{subsubsection.6.2.2}{方式二}{subsection.6.2}% 25

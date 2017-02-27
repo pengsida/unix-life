@@ -1,0 +1,25 @@
+\contentsline {section}{\numberline {1}QCOW2 backing files和overlays}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}举个例子}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}创建增量镜像的命令}{2}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}查看后端镜像的命令}{3}{subsubsection.1.1.2}
+\contentsline {section}{\numberline {2}快照相关术语}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}内部快照}{4}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}内部磁盘快照}{4}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}内部系统还原点}{4}{subsubsection.2.1.2}
+\contentsline {subsection}{\numberline {2.2}外部快照}{4}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}外部磁盘快照}{4}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}外部系统还原点}{4}{subsubsection.2.2.2}
+\contentsline {section}{\numberline {3}创建快照的命令}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}创建disk-only的内部快照}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}创建disk-only的外部快照}{5}{subsection.3.2}
+\contentsline {section}{\numberline {4}reverting to snapshots}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}内部快照的回滚}{6}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}外部快照的回滚}{6}{subsection.4.2}
+\contentsline {section}{\numberline {5}增量镜像和后端镜像的合并}{7}{section.5}
+\contentsline {subsection}{\numberline {5.1}blockcommit}{7}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}blockpull}{7}{subsection.5.2}
+\contentsline {section}{\numberline {6}删除快照}{9}{section.6}
+\contentsline {subsection}{\numberline {6.1}删除内部快照}{9}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}删除外部快照}{9}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}方式一}{9}{subsubsection.6.2.1}
+\contentsline {subsubsection}{\numberline {6.2.2}方式二}{9}{subsubsection.6.2.2}
