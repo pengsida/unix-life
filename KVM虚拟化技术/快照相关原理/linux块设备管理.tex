@@ -1,0 +1,415 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{resize虚拟机的流程 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{分析resize流程前的必要知识}
+\subsection{nova中的RPC机制}
+\subsection{重要的数据类型}
+\subsubsection{req}
+\subsubsection{context}
+	\begin{lstlisting}
+	# 根据req创建环境上下文context
+	# context是nova/context.py中的RequestContext类
+	context = req.environ["nova.context"]
+	\end{lstlisting}
+
+\subsubsection{instance}
+	\begin{lstlisting}
+	# 根据req和instance_id创建instance
+	# instance是nova/context/instance.py中的Instance类
+	instance = self._get_server(context, req, instance_id)	
+
+
+	instance_type
+	flavor_id
+	deltas
+	quotas
+	vm_state
+	\end{lstlisting}
+
+\section{nova-api阶段}
+	入口函数为：
+	\begin{lstlisting}
+	# 这个函数在nova/api/openstack/compute/servers.py
+	def _resize(self, req, instance_id, flavor_id, **kwargs):
+		...
+        try:
+			# compute_api是nova/compute/api.py中的API类
+            self.compute_api.resize(context, instance, flavor_id, **kwargs)
+        ...
+	\end{lstlisting}
+
+	进一步看API.resize()函数：
+	\begin{lstlisting}
+	# nova/compute/api.py API.resize()
+	def resize(self, context, instance, flavor_id=None,
+               **extra_instance_updates):
+		...
+
+		# filter_properties与选择本地扩容或选择异地扩容有关
+        filter_properties = {'ignore_hosts': []}
+
+        if not CONF.allow_resize_to_same_host:
+            filter_properties['ignore_hosts'].append(instance['host'])
+
+        if (not flavor_id and not CONF.allow_migrate_to_same_host):
+            filter_properties['ignore_hosts'].append(instance['host'])
+		
+		...
+
+		# scheduler_hint挺重要的，是nova-scheduler的参数
+        scheduler_hint = {'filter_properties': filter_properties}
+        self.compute_task_api.resize_instance(context, instance,
+                extra_instance_updates, scheduler_hint=scheduler_hint,
+                flavor=new_instance_type,
+                reservations=quotas.reservations or [])
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/conductor/api.py ComputeTaskAPI.resize_instance()
+	def resize_instance(self, context, instance, extra_instance_updates,
+                        scheduler_hint, flavor, reservations):
+        self.conductor_compute_rpcapi.migrate_server(
+            context, instance, scheduler_hint, False, False, flavor,
+            None, None, reservations)
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/conductor/rpcapi.py ComputeTaskAPI.migrate_server()
+	def migrate_server(self, context, instance, scheduler_hint, live, rebuild,
+                  flavor, block_migration, disk_over_commit,
+                  reservations=None):
+		...
+		cctxt = self.client.prepare(version=version)
+        return cctxt.call(context, 'migrate_server',
+                          instance=instance, scheduler_hint=scheduler_hint,
+                          live=live, rebuild=rebuild, flavor=flavor_p,
+                          block_migration=block_migration,
+                          disk_over_commit=disk_over_commit,
+                          reservations=reservations)
+	\end{lstlisting}
+
+\section{nova-conductor部分}
+
+	\begin{lstlisting}
+	# nova/conductor/manager.py ComputeTaskManager.migrate_server()
+	def migrate_server(self, context, instance, scheduler_hint, live, rebuild,
+            flavor, block_migration, disk_over_commit, reservations=None):
+        ...
+        if live and not rebuild and not flavor:
+            self._live_migrate(context, instance, scheduler_hint,
+                               block_migration, disk_over_commit)
+        elif not live and not rebuild and flavor:
+            ...
+            with compute_utils.EventReporter(context, 'cold_migrate',
+                                             instance_uuid):
+                self._cold_migrate(context, instance, flavor,
+                                   scheduler_hint['filter_properties'],
+                                   reservations)
+        ...
+	\end{lstlisting}
+
+\section{冷迁移}
+
+\subsection{冷迁移中的nova-conductor部分}
+
+	\begin{lstlisting}
+	# nova/conductor/manager.py ComputeTaskManager._cold_migrate()
+	def _cold_migrate(self, context, instance, flavor, filter_properties,
+                      reservations):
+        ...
+        try:
+			...
+			# 选择目的主机
+            hosts = self.scheduler_client.select_destinations(
+                    context, request_spec, filter_properties)
+            host_state = hosts[0]
+        ...
+
+        try:
+            ...
+            (host, node) = (host_state['host'], host_state['nodename'])
+            self.compute_rpcapi.prep_resize(
+                context, image, instance,
+                flavor, host,
+                reservations, request_spec=request_spec,
+                filter_properties=filter_properties, node=node)
+        ...
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/compute/rpcapi.py ComputeAPI.prep_resize()
+	def prep_resize(self, ctxt, image, instance, instance_type, host,
+                    reservations=None, request_spec=None,
+                    filter_properties=None, node=None):
+        ...
+		cctxt = self.client.prepare(server=host, version=version)
+        cctxt.cast(ctxt, 'prep_resize',
+                   instance=instance,
+                   instance_type=instance_type_p,
+                   image=image_p, reservations=reservations,
+                   request_spec=request_spec,
+                   filter_properties=filter_properties,
+                   node=node)
+	\end{lstlisting}
+
+\subsection{冷迁移中的nova-compute部分}
+\subsubsection{目的主机上的操作：prep\_resize}
+	\begin{lstlisting}
+	# nova/compute/manager.py ComputeManager.prep_resize()
+	def prep_resize(self, context, image, instance, instance_type,
+                    reservations, request_spec, filter_properties, node):
+        ...
+        with self._error_out_instance_on_exception(context, instance,
+                                                   quotas=quotas):
+            ...
+            try:
+                self._prep_resize(context, image, instance,
+                                  instance_type, quotas,
+                                  request_spec, filter_properties,
+                                  node)
+			...
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/compute/manager.py ComputeManager._prep_resize()
+	def _prep_resize(self, context, image, instance, instance_type,
+            quotas, request_spec, filter_properties, node):
+
+        ...
+        with rt.resize_claim(context, instance, instance_type,
+                             image_meta=image, limits=limits) as claim:
+			...
+            self.compute_rpcapi.resize_instance(
+                    context, instance, claim.migration, image,
+                    instance_type, quotas.reservations)
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/compute/rpcapi.py ComputeAPI.resize_instance()
+	def resize_instance(self, ctxt, instance, migration, image, instance_type,
+                        reservations=None):
+        ...
+        cctxt = self.client.prepare(server=_compute_host(None, instance),
+                version=version)
+        cctxt.cast(ctxt, 'resize_instance',
+                   instance=instance, migration=migration,
+                   image=image, reservations=reservations,
+                   instance_type=instance_type_p)
+	\end{lstlisting}
+
+\subsubsection{源主机的操作：resize\_instance}
+	\begin{lstlisting}
+	# nova/compute/manager.py ComputeManager.resize_instance()
+	def resize_instance(self, context, instance, image,
+                        reservations, migration, instance_type,
+                        clean_shutdown=True):
+		...
+        with self._error_out_instance_on_exception(context, instance,
+                                                   quotas=quotas):
+			...
+			# 获得虚拟机块设备的信息
+			block_device_info = self._get_instance_block_device_info(
+                                context, instance, bdms=bdms)
+			
+			# 关闭虚拟机并迁移虚拟机的增量文件
+            disk_info = self.driver.migrate_disk_and_power_off(
+                    context, instance, migration.dest_host,
+                    instance_type, network_info,
+                    block_device_info,
+                    timeout, retry_interval)
+			...
+            self.compute_rpcapi.finish_resize(context, instance,
+                    migration, image, disk_info,
+                    migration.dest_compute, reservations=quotas.reservations)
+            ...
+	\end{lstlisting}
+
+	migrate\_disk\_and\_power\_off()是源主机上将虚拟机迁移给目的主机的实现函数，主要利用了libvirt API。
+	这个函数的分析在《nova调用libvirt》中的“nova扩容时对libvirt的调用”一节。
+
+	\begin{lstlisting}
+	# nova/compute/rpcapi.py(690) ComputeAPI.finish_resize()
+	def finish_resize(self, ctxt, instance, migration, image, disk_info,
+            host, reservations=None):
+		...
+        cctxt = self.client.prepare(server=host, version=version)
+        cctxt.cast(ctxt, 'finish_resize',
+                   instance=instance, migration=migration,
+                   image=image, disk_info=disk_info, reservations=reservations)
+	\end{lstlisting}
+
+\subsubsection{目的主机上的操作：finish\_resize}
+	\begin{lstlisting}
+	# nova/compute/manager.py ComputeManager.finish_resize()
+	def finish_resize(self, context, disk_info, image, instance,
+                      reservations, migration):
+        quotas = quotas_obj.Quotas.from_reservations(context,
+                                                     reservations,
+                                                     instance=instance)
+        try:
+            self._finish_resize(context, instance, migration,
+                                disk_info, image)
+        ...
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# nova/compute/manager.py ComputeManager._finish_resize()
+	def _finish_resize(self, context, instance, migration, disk_info,
+                       image):
+        ...
+        try:
+            self.driver.finish_migration(context, migration, instance,
+                                         disk_info,
+                                         network_info,
+                                         image, resize_instance,
+                                         block_device_info, power_on)
+        ...
+	\end{lstlisting}
+
+\end{document}
