@@ -142,8 +142,7 @@
 
 \begin{document}
     
-\section{openstack中的重要概念}
-\subsection{flavor}
+\section{flavor}
     在OpenStack中，flavors定义了nova实例的CPU、内存、存储容量等数值。
     简单地说，一个flavor相当于一个实例的硬件配置。\par
 
@@ -167,7 +166,7 @@
     对于Newton而言，openstack没有默认的flavor，而Mitaka和更早的版本有如下的默认flavor：
     \fic{1.png}
 
-\subsubsection{管理flavor}
+\subsection{管理flavor}
     在openstack中，可以使用openstack flavor命令行工具来管理flavor。\par
 
     常用的openstack flavor命令如下所示：
@@ -205,32 +204,26 @@
         \end{lstlisting}
     \end{itemize}
 
-\subsubsection{Extra Specs}
+\subsection{Extra Specs}
     这个网页可以查看Extra Specs上的值：
     \begin{lstlisting}
     https://docs.openstack.org/admin-guide/compute-flavors.html#extra-specs
     \end{lstlisting}
 
-    % flavor中的Extra Specs包含如下几个方面：
-    % \begin{itemize}
-    %     \item[1.] CPU limits，有如下几个选项：
-    %     \begin{itemize}
-    %         \item cpu\_shares，指定域的比例加权共享(propotional weighted share)，这个值没有单位。
-    %         \item cpu\_shares\_level，指定分配等级(allocation level)，有custon，high，normal和low。
-    %         \item cpu\_period，指定qemu和lxc虚拟机管理程序的enforcement interval。
-    %               在一段时间内，一个域的vCPU不允许消耗超过运行时间的配额值。
-    %               这个值应该在[1000, 1000000]的范围内。
-    %               值为0的cpu\_period表示没有值。
-    %     \end{itemize}
-    % \end{itemize}
+\section{Instance类}
+    \begin{lstlisting}[language = python]
+    # nova/objects/instance.py Instance
+    # nova.db.sqlalchemy.models.Instance
 
-    % \begin{itemize}
-    %     \item[1.] 指定CPU、Memory、Disk和Bandwidth的配额quota，命令如下：
-    %     \begin{lstlisting}
-    % openstack flavor set FLAVOR_NAME \
-    %     --property quota:cpu_quota=10000 \
-    %     --property quota:cpu_period=20000
-    %     \end{lstlisting}
-    % \end{itemize}
+    Instance.task_state # instance的task_state
+    Instance.power_state # instance的power_state
+    Instance.image_ref  # instance的后端镜像id
+    Instance.save()  # 用于修改数据库
+    \end{lstlisting}
+
+\section{image metadata}
+    \begin{lstlisting}
+    Another common term for “image properties” is “image metadata” because what we’re talking about here are properties that describe the image data that can be consumed by various OpenStack services 
+    \end{lstlisting}
 
 \end{document}

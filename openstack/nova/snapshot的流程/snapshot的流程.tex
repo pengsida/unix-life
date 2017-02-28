@@ -159,7 +159,7 @@
     {u'createImage': {u'name': u'snap1', u'metadata': {}}}
     \end{lstlisting}
 
-\subsubsection{instance}
+\subsubsection{Instance}
     该类是代表虚拟机数据库抽象的类。
 
     \begin{lstlisting}
@@ -170,6 +170,11 @@
 \subsubsection{bdms}
     \begin{lstlisting}
     # nova/objects/block_device.py BlockDeviceMappingList
+    \end{lstlisting}
+
+\subsubsection{Image}
+    \begin{lstlisting}
+    # glance.db.sqlalchemy.models.Image
     \end{lstlisting}
 
 \subsubsection{image\_meta}
@@ -269,7 +274,8 @@
     \begin{lstlisting}
     # nova/compute/rpcapi.py ComputeAPI.snapshot_instance()
     def snapshot_instance(self, ctxt, instance, image_id):
-        version = '3.0'
+        # server: the destination host for a message.
+        # server == instance['host']
         cctxt = self.client.prepare(server=_compute_host(None, instance),
                 version=version)
         cctxt.cast(ctxt, 'snapshot_instance',
@@ -279,114 +285,71 @@
 
 \subsection{nova-compute部分}
     \begin{lstlisting}
-    # nova/compute/manager.py ComputeManager._snapshot_instance()
+    # nova/compute/manager.py ComputeManager.snapshot_instance()
     def snapshot_instance(self, context, image_id, instance):
-        """Snapshot an instance on this host.
-
-        :param context: security context
-        :param instance: a nova.objects.instance.Instance object
-        :param image_id: glance.db.sqlalchemy.models.Image.Id
-        """
-        # NOTE(dave-mcnally) the task state will already be set by the api
-        # but if the compute manager has crashed/been restarted prior to the
-        # request getting here the task state may have been cleared so we set
-        # it again and things continue normally
+        # context: security context
+        # instance: a nova.objects.instance.Instance object
+        # image_id: glance.db.sqlalchemy.models.Image.Id
+        
         try:
+            # 修改instance的task_state
             instance.task_state = task_states.IMAGE_SNAPSHOT
+            # 调用Instance.save()方法更改数据库
             instance.save(
                         expected_task_state=task_states.IMAGE_SNAPSHOT_PENDING)
-        except exception.InstanceNotFound:
-            # possibility instance no longer exists, no point in continuing
-            LOG.debug("Instance not found, could not set state %s "
-                      "for instance.",
-                      task_states.IMAGE_SNAPSHOT, instance=instance)
-            return
-
-        except exception.UnexpectedDeletingTaskStateError:
-            LOG.debug("Instance being deleted, snapshot cannot continue",
-                      instance=instance)
-            return
+        ...
 
         self._snapshot_instance(context, image_id, instance,
                                 task_states.IMAGE_SNAPSHOT)
     \end{lstlisting}
 
     \begin{lstlisting}
+    # nova/compute/manager.py ComputeManager._snapshot_instance()
     def _snapshot_instance(self, context, image_id, instance,
                            expected_task_state):
-        context = context.elevated()
-
+        # self.driver.get_info(instance)["state"]
         current_power_state = self._get_power_state(context, instance)
         try:
+            # 修改instance的power_state
             instance.power_state = current_power_state
             instance.save()
-
-            LOG.audit(_('instance snapshotting'), context=context,
-                  instance=instance)
 
             if instance.power_state != power_state.RUNNING:
                 state = instance.power_state
                 running = power_state.RUNNING
-                LOG.warn(_('trying to snapshot a non-running instance: '
-                       '(state: %(state)s expected: %(running)s)'),
-                     {'state': state, 'running': running},
-                     instance=instance)
-
-            self._notify_about_instance_usage(
-                context, instance, "snapshot.start")
 
             def update_task_state(task_state,
                                   expected_state=expected_task_state):
                 instance.task_state = task_state
                 instance.save(expected_task_state=expected_state)
 
+            # 调用LibvirtDriver.snapshot()函数实现快照功能
             self.driver.snapshot(context, instance, image_id,
                                  update_task_state)
-
+            
+            # 记录instance状态
             instance.task_state = None
             instance.save(expected_task_state=task_states.IMAGE_UPLOADING)
-
-            self._notify_about_instance_usage(context, instance,
-                                              "snapshot.end")
-        except (exception.InstanceNotFound,
-                exception.UnexpectedDeletingTaskStateError):
-            # the instance got deleted during the snapshot
-            # Quickly bail out of here
-            msg = 'Instance disappeared during snapshot'
-            LOG.debug(msg, instance=instance)
-            try:
-                image_service = glance.get_default_image_service()
-                image = image_service.show(context, image_id)
-                if image['status'] != 'active':
-                    image_service.delete(context, image_id)
-            except Exception:
-                LOG.warning(_("Error while trying to clean up image %s"),
-                            image_id, instance=instance)
-        except exception.ImageNotFound:
-            instance.task_state = None
-            instance.save()
-            msg = _("Image not found during snapshot")
-            LOG.warn(msg, instance=instance)
+        ...
     \end{lstlisting}
 
     \begin{lstlisting}
     def snapshot(self, context, instance, image_id, update_task_state):
-        """Create snapshot from a running VM instance.
-
-        This command only works with qemu 0.14+
-        """
         try:
+            # 调用virConnect.lookupByName()返回virDomain对象
             virt_dom = self._lookup_by_name(instance['name'])
-        except exception.InstanceNotFound:
-            raise exception.InstanceNotRunning(instance_id=instance['uuid'])
+        ...
 
         base_image_ref = instance['image_ref']
 
+        # 得到instance的image的相关数据
         base = compute_utils.get_image_metadata(
             context, self._image_api, base_image_ref, instance)
-
+        
+        # Retrieves the information record for a single disk image by image_id
         snapshot = self._image_api.get(context, image_id)
 
+        # 得到instance的磁盘路径
         disk_path = libvirt_utils.find_disk(virt_dom)
         source_format = libvirt_utils.get_disk_type(disk_path)
 
