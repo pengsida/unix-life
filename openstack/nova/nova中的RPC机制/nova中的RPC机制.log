@@ -1194,38 +1194,41 @@ istry (CN)
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \chemgreekmappingsymbol with sig. 'mm' on line 477.
-.................................................
-.................................................
-. LaTeX info: "xparse/define-command"
-. 
-. Defining command \activatechemgreekmapping with sig. 'sm' on line 486.
-.................................................
-.................................................
-. LaTeX info: "xparse/define-command"
-. 
-. Defining command \selectchemgreekmapping with sig. 'm' on line 491.
-.................................................
-)
-\l__mhchem_ce_distanceFromLastComma_int=\count289
-\__mhchem_arrow_extPgfLength_skip=\skip78
-\mhchem@minispace@tmp=\skip79
-\mhchem@minibackspace@tmp=\skip80
-\mhchem@bondwidth=\skip81
-\mhchem@bondheight=\skip82
-\mhchem@smallbondwidth@tmpA=\skip83
-\mhchem@smallbondwidth@tmpB=\skip84
-\mhchem@smallbondwidth=\skip85
-\mhchem@bondtmp@minussidebearingleft=\skip86
-\mhchem@bondtmp@minussidebearingright=\skip87
-\l__mhchem_option_version_int=\count290
-\mhchem@option@minusmathsidebearingleft=\dimen266
-\mhchem@option@minusmathsidebearingright=\dimen267
-\mhchem@option@minustextsidebearingleft=\dimen268
-\mhchem@option@minustextsidebearingright=\dimen269
+. Defining command \chemgreekmappingsymbolpec error: "font-not-found"
+! 
+! The font "MONACO.TTF" cannot be found.
+! 
+! See the fontspec documentation for further information.
+! 
+! For immediate help type H <return>.
+!...............................................  
+                                                  
+l.104 \newfontfamily{\monaco}{MONACO.TTF}
+                                         
+? 
+! Emergency stop.
+!...............................................  
+                                                  
+l.104 \newfontfamily{\monaco}{MONACO.TTF}
+                                         
+|'''''''''''''''''''''''''''''''''''''''''''''''
+| A font might not be found for many reasons.
+| Check the spelling, where the font is installed etc. etc.
+| 
+| When in doubt, ask someone for help!
+|...............................................
 
-
-Package mhchem Warning: You did not specify a 'version' option for the mhchem
+ 
+Here is how much of TeX's memory you used:
+ 23738 strings out of 493591
+ 437128 string characters out of 6143546
+ 505055 words of memory out of 5000000
+ 26948 multiletter control sequences out of 15000+600000
+ 3988 words of font info for 21 fonts, out of 8000000 for 9000
+ 1347 hyphenation exceptions out of 8191
+ 48i,0n,47p,10368b,226s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
+m
 (mhchem)                package. Please write \usepackage[version=4]{mhchem}
 (mhchem)                in your preamble (or any lower number for
 (mhchem)                compatibility mode), because you might get slightly
@@ -1279,71 +1282,92 @@ Package hobsub Info: Skipping package `hobsub' (already loaded).
 Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
 Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
 Package: xcolor-patch 2016/05/16 xcolor patch
-Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
-Package atveryend Info: \enddocument detected (standard20110627).
-Package: atbegshi 2016/05/16 v1.17 At begin shipout hook (HO)
-Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
-Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
+Package: atveryend 2016/05/16 v1.9
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-addons.sty
+Package: fp-addons 1995/03/15
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/auxhook.sty
-Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-snap.sty
+Package: fp-snap 1995/04/05
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-exp.sty
+Package: fp-exp 1995/04/03
 )
-\@linkdim=\dimen271
-\Hy@linkcounter=\count291
-\Hy@pagecounter=\count292
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2016/05/05 v6.83n Hyperref: PDFDocEncoding definition (HO)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-trigo.sty
+Package: fp-trigo 1995/04/14
 )
-\Hy@SavedSpaceFactor=\count293
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/latexconfig/hyperref.cfg
-File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-pas.sty
+Package: fp-pas 1994/08/29
 )
-Package hyperref Info: Hyper figures OFF on input line 4446.
-Package hyperref Info: Link nesting OFF on input line 4451.
-Package hyperref Info: Hyper index ON on input line 4454.
-Package hyperref Info: Plain pages OFF on input line 4461.
-Package hyperref Info: Backreferencing OFF on input line 4466.
-Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4691.
-\c@Hy@tempcnt=\count294
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip18
-Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-random.sty
+Package: fp-random 1995/02/23
+\FPseed=\count273
 )
-LaTeX Info: Redefining \url on input line 5044.
-\XeTeXLinkMargin=\dimen272
-\Fld@menulength=\count295
-\Field@Width=\dimen273
-\Fld@charsize=\dimen274
-Package hyperref Info: Hyper figures OFF on input line 6298.
-Package hyperref Info: Link nesting OFF on input line 6303.
-Package hyperref Info: Hyper index ON on input line 6306.
-Package hyperref Info: backreferencing OFF on input line 6313.
-Package hyperref Info: Link coloring OFF on input line 6318.
-Package hyperref Info: Link coloring with OCG OFF on input line 6323.
-Package hyperref Info: PDF/A mode OFF on input line 6328.
-LaTeX Info: Redefining \ref on input line 6368.
-LaTeX Info: Redefining \pageref on input line 6372.
-\Hy@abspage=\count296
-\c@Item=\count297
-\c@Hfootnote=\count298
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-eqn.sty
+Package: fp-eqn 1995/04/03
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-upn.sty
+Package: fp-upn 1996/10/21
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/fp/fp-eval.sty
+Package: fp-eval 1995/04/03
+))
+\diagbox@boxa=\box65
+\diagbox@boxb=\box66
+\diagbox@boxm=\box67
+\diagbox@wd=\dimen289
+\diagbox@ht=\dimen290
+\diagbox@insepl=\dimen291
+\diagbox@insepr=\dimen292
+\diagbox@outsepl=\dimen293
+\diagbox@outsepr=\dimen294
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen295
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 
-Package hyperref Message: Driver (autodetected): hxetex.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! fontspec error: "font-not-found"
+! 
+! The font "MONACO.TTF" cannot be found.
+! 
+! See the fontspec documentation for further information.
+! 
+! For immediate help type H <return>.
+!...............................................  
+                                                  
+l.105 \newfontfamily{\monaco}{MONACO.TTF}
+                                         
+? 
+! Emergency stop.
+!...............................................  
+                                                  
+l.105 \newfontfamily{\monaco}{MONACO.TTF}
+                                         
+|'''''''''''''''''''''''''''''''''''''''''''''''
+| A font might not be found for many reasons.
+| Check the spelling, where the font is installed etc. etc.
+| 
+| When in doubt, ask someone for help!
+|...............................................
 
-(/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/hxetex.def
-File: hxetex.def 2016/05/05 v6.83n Hyperref driver for XeTeX
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2016/05/05 v6.83n Hyperref: PDF Unicode definition (HO)
-)
-(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/stringenc.sty
+ 
+Here is how much of TeX's memory you used:
+ 29327 strings out of 493591
+ 519665 string characters out of 6143546
+ 610485 words of memory out of 5000000
+ 32501 multiletter control sequences out of 15000+600000
+ 4348 words of font info for 22 fonts, out of 8000000 for 9000
+ 1347 hyphenation exceptions out of 8191
+ 48i,0n,49p,10368b,226s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
+ex/generic/oberdiek/stringenc.sty
 Package: stringenc 2016/05/16 v1.11 Convert strings between diff. encodings (HO
 )
 )
