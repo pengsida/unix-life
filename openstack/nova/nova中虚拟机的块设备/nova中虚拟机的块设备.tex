@@ -1,0 +1,234 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{nova中虚拟机的块设备 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+\section{虚拟机的本地磁盘空间}
+\subsection{虚拟机的三个分区}
+    一个虚拟机有root分区、swap分区和ephemeral分区：
+    \begin{itemize}
+        \item[1.] root disk：根分区，提供boot loader。
+        \item[2.] swap disk：交换分区，用于内存耗尽时将物理内存中一部分空间挪到swap分区中，从而释放一些物理内存空间。
+        \item[3.] ephemeral disk：狭义上的ephemeral disk，指的是根据资源状况提供额外的临时存储。
+    \end{itemize}
+
+    广义上的ephemeral disk指的是root分区、swap分区和ephemeral分区，这个ephemeral disk随着instance的生命周期创建和消亡。\par
+
+    nova flavor中定义了一个虚拟机的三个分区，Disk指的是root分区，Ephemeral指的是ephemeral分区，Swap指的是swap分区，如下图所示：
+    \fic{1.png}
+
+\subsection{nova compute节点上的磁盘镜像文件}
+    虚拟机的root分区、ephemeral分区、swap分区在nova compute节点上都有一个磁盘镜像文件，默认存放在/var/lib/nova/instances/vm-uuid目录中，如下图所示：
+    \fic{2.png}
+
+    上图中，disk对应root分区，disk.local对应ephemeral分区，disk.swap对应swap分区。\par
+
+    这些磁盘文件都是qcow2格式，都是overlay文件，都有对应的backing file，这些backing file默认是raw格式，可以通过如下命令查看它们后端镜像的位置：
+    \begin{lstlisting}
+    qemu-img info disk
+    qemu-img info disk.local
+    qemu-img info disk.swap
+    \end{lstlisting}
+
+    libvirt中的xml配置文件定义了磁盘的镜像文件和磁盘的对应关系：
+    \begin{lstlisting}
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk"/>
+      <target bus="virtio" dev="vda"/>
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk.local"/>
+      <target bus="virtio" dev="vdb"/>
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk.swap"/>
+      <target bus="virtio" dev="vdc"/>
+    </disk>
+    \end{lstlisting}
+
+\section{nova虚拟机的block\_device\_info数据结构}
+    block\_device\_info记录了虚拟机的所有磁盘和被附加的所有卷：
+    \begin{lstlisting}
+block_device_info = { 
+            'root_device_name': "/dev/sda", # root分区
+            'swap': {          # swap 分区
+               'device_name': "/dev/sdb", 
+               'swap_size': 5, 
+            } 
+            'ephemerals': [    # ephemerals 分区，可以有多个
+               {'num': 0, 
+                'virtual_name': 'eph0', 
+                'device_name': "/dev/sdc", 
+                'size': 5 }, 
+               {'num': 1, 
+                'virtual_name': 'eph1', 
+                'device_name': "/dev/sdd", 
+                'size': 5 }, 
+               {'num': 2, 
+                'virtual_name': 'eph2', 
+                'device_name': "/dev/sde", 
+                'size': 5 }, 
+               ... 
+            ], 
+            'block_device_mapping': [ # block devices mapping，可以有多个
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdf", 
+                'delete_on_termination': True }, 
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdg", 
+                'delete_on_termination': True }, 
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdh", 
+                'delete_on_termination': True }, 
+               ... 
+            ], 
+     }
+    \end{lstlisting}
+
+\end{document}
