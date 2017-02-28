@@ -15,6 +15,7 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}%
 \makeatother
 
+\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{empheq}
 \usepackage{graphicx}
@@ -137,38 +138,16 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{本地库连接github远程库 \qquad}
+\chead{snapshot的流程 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
 
-% \tableofcontents
+\tableofcontents
 
 \clearpage
 
-\section{本地库连接github远程库}
-	步骤如下：
-	\begin{itemize}
-		\item[1.] 首先创建一个github仓库，如下图所示：
-		\sizedfic{0.7}{1.png}
-		\sizedfic{0.7}{2.png}
+\section{snapshot的流程}
 
-		\item[2.] 然后创建一个本地库：
-		\begin{lstlisting}
-	# 初始化git仓库
-	git init
-	# 设置邮箱和用户名
-	git config --global user.email "you@example.com"
-  	git config --global user.name "Your Name"
-	# 创建一个文件，因为如果是空仓库，是无法连接到远程库的
-	touch readme
-	git add readme
-	git commit -m "first commit"
-	# 连接到远程库
-	git remote add origin git@github.com:wwtalwtaw/temp.git
-	# 上传文件
-	git push -u origin master # 将提示输入github的用户名和密码
-		\end{lstlisting}
-	\end{itemize}
 
 \end{document}
