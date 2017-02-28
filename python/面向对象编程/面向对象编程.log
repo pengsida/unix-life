@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  19 FEB 2017 23:12
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  26 FEB 2017 18:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1963,7 +1963,7 @@ Package lastpage Info: Please have a look at the pageslts package at
 . fontspec info: "no-font-shape"
 . 
 . Could not resolve font STSongti-SC-Regular/I (it probably doesn't exist).
-..........................................................
+.................................................
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1978,11 +1978,23 @@ Package lastpage Info: Please have a look at the pageslts package at
 . NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
 . - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
 .................................................
+(./面向对象编程.toc
+
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+))
 \tf@toc=\write4
 \openout4 = `面向对象编程.toc'.
 
-
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 135.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1998,13 +2010,6 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
 ]
 
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 143.
-
-
-LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 183.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
@@ -2018,18 +2023,12 @@ LaTeX Font Warning: Font shape `EU1/华文中宋(0)/m/it' undefined
 (Font)              using `EU1/华文中宋(0)/m/n' instead on input line 186.
 
 
-LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 229.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [3]
-
-LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 276.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2038,18 +2037,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4]
 
-LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 331.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [5]
-
-LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 386.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2058,9 +2051,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [6]
 
-LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 436.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
@@ -2068,39 +2058,38 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [7]
 
-LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 484.
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
+[8] 
+AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.500 ^^I需要知道的是，如果_
-                                     _getattr__函数中没有特殊处理�...
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 535.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 535.
+ (./面向对象编程.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 535.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 535.
 
-? 
-! Emergency stop.
-<inserted text> 
-                $
-l.500 ^^I需要知道的是，如果_
-                                     _getattr__函数中没有特殊处理�...
-End of file on the terminal!
 
- 
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 535.
+ ) 
 Here is how much of TeX's memory you used:
- 31000 strings out of 493591
- 562385 string characters out of 6143546
+ 31068 strings out of 493591
+ 563480 string characters out of 6143546
  755816 words of memory out of 5000000
- 34031 multiletter control sequences out of 15000+600000
- 4660 words of font info for 61 fonts, out of 8000000 for 9000
+ 34066 multiletter control sequences out of 15000+600000
+ 9355 words of font info for 81 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,13n,87p,10363b,1778s stack positions out of 5000i,500n,10000p,200000b,80000s
-Output written on 面向对象编程.pdf (8 pages).
-,10363b,1778s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,12n,87p,10363b,1778s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on 面向对象编程.pdf (9 pages).
