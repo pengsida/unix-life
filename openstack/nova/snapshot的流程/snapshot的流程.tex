@@ -159,29 +159,42 @@
     {u'createImage': {u'name': u'snap1', u'metadata': {}}}
     \end{lstlisting}
 
+\subsubsection{instance}
+    该类是代表虚拟机数据库抽象的类。
+
+    \begin{lstlisting}
+    # nova/objects/instance.py Instance
+    # nova.db.sqlalchemy.models.Instance
+    \end{lstlisting}
+
+\subsubsection{bdms}
+    \begin{lstlisting}
+    # nova/objects/block_device.py BlockDeviceMappingList
+    \end{lstlisting}
+
+\subsubsection{image\_meta}
+    \begin{lstlisting}
+    {'status': u'queued', 'name': u'snap1', 'deleted': False, 'container_format': u'bare', 'created_at': datetime.datetime(2017, 2, 28, 5, 38, 57, tzinfo=<iso8601.iso8601.Utc object at 0x7fc8fc5a3d10>), 'disk_format': u'qcow2', 'updated_at': datetime.datetime(2017, 2, 28, 5, 38, 57, tzinfo=<iso8601.iso8601.Utc object at 0x7fc8fc5a3d10>), 'id': u'9ce400ab-7785-445c-9e89-9ea35d6de063', 'owner': u'd6fda80e5d464008825d806edf4ecc20', 'min_ram': 0, 'checksum': None, 'min_disk': 40, 'is_public': False, 'deleted_at': None, 'properties': {u'instance_uuid': u'ed38cd61-3b9c-47b8-b3e0-b9c511053b23', u'instance_type_memory_mb': u'4096', u'user_id': u'ea66cd61e4564f88b2a877868fe1b8a4', u'image_type': u'snapshot', u'instance_type_id': u'1', u'instance_type_name': u'm1.medium', u'instance_type_ephemeral_gb': u'0', u'instance_type_rxtx_factor': u'1.0', u'instance_type_root_gb': u'40', u'network_allocated': u'True', u'instance_type_flavorid': u'3', u'instance_type_vcpus': u'2', u'instance_type_swap': u'0', u'base_image_ref': u'1ed1b0e2-f9ae-4a9a-a0aa-166f6a75d5f2'}, 'size': 0}
+    \end{lstlisting}
+
 \subsection{nova-api部分}
     \begin{lstlisting}
     # nova/api/openstack/compute/servers.py Controller._action_create_image()
     def _action_create_image(self, req, id, body):
         # id是instance id
-        """Snapshot a server instance."""
         context = req.environ['nova.context']
         entity = body.get("createImage", {})
 
         image_name = entity.get("name")
 
-        if not image_name:
-            msg = _("createImage entity requires name attribute")
-            raise exc.HTTPBadRequest(explanation=msg)
+        ...
 
         props = {}
         metadata = entity.get('metadata', {})
-        common.check_img_metadata_properties_quota(context, metadata)
+        
         try:
             props.update(metadata)
-        except ValueError:
-            msg = _("Invalid metadata")
-            raise exc.HTTPBadRequest(explanation=msg)
+        ...
 
         instance = self._get_server(context, req, id)
 
@@ -189,6 +202,7 @@
                     context, instance.uuid)
 
         try:
+            # 判断root分区是否是volume
             if self.compute_api.is_volume_backed_instance(context, instance,
                                                           bdms):
                 img = instance['image_ref']
@@ -211,13 +225,9 @@
                                                   instance,
                                                   image_name,
                                                   extra_properties=props)
-        except exception.InstanceInvalidState as state_error:
-            common.raise_http_conflict_for_instance_invalid_state(state_error,
-                        'createImage')
-        except exception.Invalid as err:
-            raise exc.HTTPBadRequest(explanation=err.format_message())
+        ...
 
-        # build location of newly-created image entity
+        # 以下代码的功能：build location of newly-created image entity
         image_id = str(image['id'])
         url_prefix = self._view_builder._update_glance_link_prefix(
                 req.application_url)
@@ -234,21 +244,20 @@
     \begin{lstlisting}
     # nova/compute/api.py API.snapshot()
     def snapshot(self, context, instance, name, extra_properties=None):
-        """Snapshot the given instance.
+        # instance: nova.db.sqlalchemy.models.Instance
+        # name: name of the snapshot
+        # extra_properties: dict of extra image properties to include
+        #                   when creating the image.
+        # returns: A dict containing image metadata
 
-        :param instance: nova.db.sqlalchemy.models.Instance
-        :param name: name of the snapshot
-        :param extra_properties: dict of extra image properties to include
-                                 when creating the image.
-        :returns: A dict containing image metadata
-        """
+        # 函数功能：Create new image entry in the image service.  This new image will be reserved for the compute manager to upload a snapshot or backup.
         image_meta = self._create_image(context, instance, name,
                                         'snapshot',
                                         extra_properties=extra_properties)
 
-        # NOTE(comstud): Any changes to this method should also be made
-        # to the snapshot_instance() method in nova/cells/messaging.py
+        # 更改instance的task_state
         instance.task_state = task_states.IMAGE_SNAPSHOT_PENDING
+        # 调用Instance.save()方法更改数据库
         instance.save(expected_task_state=[None])
 
         self.compute_rpcapi.snapshot_instance(context, instance,
