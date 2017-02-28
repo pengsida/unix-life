@@ -1,0 +1,342 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{快照相关原理 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+\section{QCOW2 backing files和overlays}
+    backing file的中文是后端镜像，overlay的中文是增量镜像。\par
+
+    qemu中经常使用qcow2镜像，因为它具有copy-on-write特性。
+    这种特性支持：当我们创建虚拟机时，可以先创建一个base-image，也就是backing file，也就是后端镜像。
+    后端镜像中包含有完整的OS以及引导程序。随后可以根据base-image为模板创建多个虚拟机，
+    也就是在backing file的基础上创建多个copy-on-write overlays镜像。\par
+
+    不止如此，我们还可以在创建好的overlay镜像上再创建overlay镜像，如下图所示：
+    \fic{1.png}
+
+    在上图中，overlay-1的backing file是RootBase，overlay-1A的backing file是overlay-1，
+    overlay-1B的backing file是overlay-1A。\par
+
+    当然我们也可以在一个base-image上创建多个overlays镜像，如下图所示：
+    \fic{2.png}
+
+    以下是关于backing file的注意事项：
+    \begin{lstlisting}
+    一个overlay镜像创建以后，它的backing file是不允许被修改的，只能是read-only。
+    \end{lstlisting}
+
+\subsection{举个例子}
+\subsubsection{创建增量镜像的命令}
+    现在FedoraBase.img中刚刚装好了Fedora-17操作系统，现在我们可以如下命令将它变成后端镜像，并且在它的基础上制作增量镜像：
+    \begin{lstlisting}
+    qemu-img create -b FedoraBase.img -f qcow2 Fedora-guest-1.qcow2
+    \end{lstlisting}
+
+    有时候，一个虚拟机仅仅是刚刚装好操作系统是不够的，最好是还有完整的软件包更新，此时我们将Fedora-guest-1.qcow2中的
+    虚拟机的软件包进行更新，然后在进行如下命令：
+    \begin{lstlisting}
+    qemu-img create -b Fedora-guest-1.qcow2 -f qcow2 Fedora-guest-with-updates-1.qcow2
+    \end{lstlisting}
+
+    此时Fedora-guest-1.qcow2也变成了一个read-only文件，而Fedora-guest-with-updates-1.qcow2作为一个增量镜像，
+    它里面已经装好了带有完整软件包更新的操作系统。\par
+
+\subsubsection{查看后端镜像的命令}
+
+    可以通过如下命令查看虚拟机镜像的backing file：
+    \begin{lstlisting}
+    qemu-img info Fedora-guest-1.qcow2
+    \end{lstlisting}
+
+    可以通过如下命令查看虚拟机镜像的backing chain：
+    \begin{lstlisting}
+    qemu-img info --backing-chain Fedora-guest-with-updates-1.qcow2
+    \end{lstlisting}
+
+\clearpage
+
+\section{快照相关术语}
+\subsection{内部快照}
+\subsubsection{内部磁盘快照}
+    这个将存储snapshot时虚拟机磁盘的状态。
+    虚拟机在执行快照之后的snapshot和delta都存放在原来的qcow2文件中。\par
+
+    可以使用“qemu-img snapshot”命令对一台offline的虚拟机进行快照管理。
+    关于它更多的描述可以查看《KVM基础功能》中的“qemu-img工具”一节。\par
+    也可以在QEMU monitor中的“savevm”命令对一台online的虚拟机进行快照创建。
+    关于它更多的描述可以查看《KVM高级功能》中的“QEMU监控器”一节。
+
+\subsubsection{内部系统还原点}
+    系统还原点指的是RAM state、device state和disk state。内部系统还原点存放在原来的qcow2镜像中。\par
+
+    需要知道的是，只有在运行状态才能创建内部系统还原点。内部系统还原点的建立也是使用“savevm”命令。
+
+\subsection{外部快照}
+    当一个外部快照建立时，虚拟机被保存的状态将被存放在一个文件中，这个文件也就成为了read-only的后端镜像，
+    而同时将产生一个新文件，作为一个增量镜像overlay来记录snapshot以后的delta。
+
+\subsubsection{外部磁盘快照}
+    虚拟机磁盘信息的快照将被存放在一个文件中，然后snapshot之后的delta将被一个新的qcow2文件记录。\par
+
+\subsubsection{外部系统还原点}
+    虚拟机的磁盘状态将被保存到一个文件中，内存和设备的状态将被保存到另外一个新的文件中。
+
+\clearpage
+
+\section{创建快照的命令}
+\subsection{创建disk-only的内部快照}
+    假设我们有一个虚拟机叫做“f17vm1”，可以通过如下命令创建一个内部快照，这个内部快照的名字叫做“snap1”，
+    它的描述是“snap1-desc”：
+    \begin{lstlisting}
+    virsh snapshot-create-as f17vm1 snap1 snap1-desc
+    \end{lstlisting}
+
+    可以通过命令查看镜像的快照信息：
+    \begin{lstlisting}
+    # 方法一
+    virsh snapshot-list f17vm1
+    # 方法二
+    qemu-img info f17vm1.qcow2
+    \end{lstlisting}
+
+\subsection{创建disk-only的外部快照}
+    可以使用virsh创建外部快照。假设我们有一个“devstack”的虚拟机，它的磁盘名为“hda”，原先的磁盘为“devstack.qcow2”。
+    一旦创建快照以后，“devstack.qcow2”文件就会变成backing file，而命令行中指定的“file”选项将作为overlay镜像，如下图所示：
+    \fic{3.png}
+
+\clearpage
+
+\section{reverting to snapshots}
+\subsection{内部快照的回滚}
+    内部快照回滚很简单，如下所示：
+    \begin{lstlisting}
+    virsh snapshot-revert --domain f17vm1 snap1
+    \end{lstlisting}
+
+\subsection{外部快照的回滚}
+    外部回滚需要将虚拟机的磁盘设备替换为某一版的外部快照文件：
+    \begin{lstlisting}
+    # 查看image chain
+    qemu-img info --bacing-chain active.qcow2
+    \end{lstlisting}
+
+    然后将图中的“file”选项的值修改为某一版的外部快照文件的路径：
+    \fic{6.png}
+
+\clearpage
+
+\section{增量镜像和后端镜像的合并}
+    增量镜像和后端镜像合并的两种方式：
+    \begin{itemize}
+        \item[1.] blockcommit：将增量镜像融入后端镜像中。
+        \item[2.] blockpull：将后端镜像融入增量镜像中。
+    \end{itemize}
+
+\subsection{blockcommit}
+    blockcommit将增量镜像融入后端镜像中。\par
+    假如存在镜像链base<-overlay1<-overlay2<-overlay3，
+    将overlay2融入overlay1以后，原先指向overlay2的overlay3镜像将直接指向overlay1镜像。\par
+
+    通过下图很容易理解上一段话：
+    \fic{4.png}
+
+    实现上图中的过程很简单，只要先将snap-3融入snap-2中，再把snap-2融入snap-1中就可以：
+    \begin{lstlisting}
+    virsh blockcommit --domain f17 vda --base sn2.qcow2 --top sn3.qcow2 --wait --verbose
+    virsh blockcommit --domain f17 vda --base sn1.qcow2 --top sn2.qcow2 --wait --verbose
+    \end{lstlisting}
+
+\subsection{blockpull}
+    blockpull将后端镜像融入增量镜像中。需要注意的是，这里的增量镜像必须是active的，也就是镜像链末端的增量镜像。\par
+
+    假如存在镜像链base<-overlay1<-overlay2<-overlay3，
+    将overlay1融入overlay2以后，原先指向overlay2的overlay3镜像将直接指向overlay1镜像。\par
+
+    通过下图很容易理解上一段话：
+    \fic{5.png}
+
+    可以通过如下命令实现上述操作：
+    \begin{lstlisting}
+    # 将后端镜像融入增量镜像
+    virsh blockpull --domain RootBase --path var/lib/libvirt/images/active.qcow2 --base /var/lib/libvirt/images/RootBase.qcow2 --wait --verbose
+    # 清除原先快照的数据
+    virsh snapshot-delete --domain RootBase Snap-3 --metadata
+    virsh snapshot-delete --domain RootBase Snap-2 --metadata
+    virsh snapshot-delete --domain RootBase Snap-1 --metadata
+    \end{lstlisting}
+
+\clearpage
+
+\section{删除快照}
+\subsection{删除内部快照}
+    删除内部快照比较简单，命令如下：
+    \begin{lstlisting}
+    virsh snapshot-delete --domain f17vm --snapshotname snap6
+    \end{lstlisting}
+
+\subsection{删除外部快照}
+    假设我们现在有一个image chain：base<-sn1<-sn2<-sn3。现在我们想删除外部快照sn2.。
+
+\subsubsection{方式一}
+    将sn2融入sn1中，然后将sn1作为sn3的后端镜像：
+    \begin{lstlisting}
+    qemu-img commit sn2.qcow2
+    # -u代表非安全模式，假设新的后端镜像和旧的后端镜像完全相同
+    qemu-img rebase -u -b sn1.qcow2 sn3.qcow2
+    # 最后删除外部快照sn2
+    rm sn2.qcow2
+    \end{lstlisting}
+
+\subsubsection{方式二}
+    使用安全模式将sn1作为sn3的后端镜像：
+    \begin{lstlisting}
+    # 安全模式下，sn3原先的后端镜像sn2只要和sn1有一点不一样，都会被融入sn1中
+    qemu-img rebase -b sn1.qcow2 sn3.qcow2
+    # 最后删除外部快照sn2
+    rm sn2.qcow2
+    \end{lstlisting}
+
+\end{document}
