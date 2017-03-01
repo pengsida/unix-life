@@ -487,7 +487,8 @@
 		// 设置ldtr
 		lldt [esp + P_LDT_SEL]
 		// 将进程结构体的栈帧的末地址赋值给TSS中ring0堆栈指针域
-		// 下一次中断发生时，ss、esp、eflags、cs、eip将被依次压栈
+		// 当ring1转移至ring0时，堆栈将被自动切换到TSS中ss0和esp0指定的位置
+		// 下一次中断发生时，ss、esp、eflags、cs、eip将被依次压入进程结构体的栈帧中
 		// 从ring0到ring1时候，iretd会把这些弹出
 		lea eax, [esp + P_STACK_TOP]
 		mov dword [tss + TSS3_S_SP0], eax
@@ -508,6 +509,14 @@
 
 	进程结构体中的栈帧如下图，再对照着上面的代码，应该就很好理解了：
 	\fic{3.png}
-	
+
+\subsection{总结}
+	为了实现从ring0到ring1，我们进行了以下几个步骤：
+	\begin{itemize}
+		\item[1.] 准备好进程体TestA()。
+		\item[2.] 初始化GDT中的TSS和LDT两个描述符，以及初始化TSS。
+		\item[3.] 准备进程表。
+		\item[4.] 完成跳转，实现从ring0到ring1。
+	\end{itemize}
 
 \end{document}
