@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=C,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -210,6 +210,304 @@
 
 	因为每个进程相对独立，所以这些任务状态段相互独立。我们需要把涉及到的描述符放在局部描述符表LDT中，这意味着我们还需要为每个进程准备LDT。
 
-\subsection{简单进程的实现}
+\section{从ring0到ring1}
+\subsection{时钟中断处理程序}
+	如果想实现从ring0到ring1的转移，只需要用一个iretd指令。\par
+
+	我们的时钟中断处理程序如下：
+	\begin{lstlisting}
+	ALIGN 16
+	hwint00:
+		iretd
+	\end{lstlisting}
+
+\subsection{进程表、进程体、GDT、TSS}
+	一个进程开始之前，我们必须初始化cs、ds、es、fs、gs、ss、esp、eip、eflags，才能让一个进程正常运行。\par
+
+	其中，cs、ds、fs、es这些段寄存器对应的是LDT中的描述符，所以我们还要初始化局部描述符表。
+	因为LDT本身是进程的一部分，所以需要把它放在进程表中，并且还需要在GDT中增加相应的描述符，对应的选择子将被加载给ldtr。\par
+
+	因为每个进程都有一个任务状态段，所以我们必须初始化一个TSS，并且在GDT中增加相应的描述符，对应的选择子将被加载给tr。
+	目前，TSS中我们只会用到ss和esp，所以我们只初始化它们两个。\par
+
+	gs指向显存的描述符，用于访问显存。\par
+
+	根据上述描述，各寄存器和GDT、LDT、TSS的关系如下图：
+	\fic{2.png}
+	
+\subsection{一个简单的进程执行体}
+	我们的第一个进程执行体如下：
+	\begin{lstlisting}
+	// 位于main.c文件
+	void TestA()
+	{
+		int i = 0;
+		while(1)
+		{
+			disp_str("A");
+			disp_int(i++);
+			disp_str(".");
+			delay(1);
+		}
+	}
+
+	// delay()函数放置在klib.c文件中
+	PUBLIC void delay(int time)
+	{
+		int i, j, k;
+		for(k = 0; k < time; k++)
+		{
+			for(i = 0; i < 10; i++)
+			{
+				for(j = 0; j < 10000; j++){}
+			}
+		}
+	}
+	\end{lstlisting}
+
+	这里，我们为了等待中断的发生，我们将在重新放置堆栈和GDT表之后，将跳转到一个kernel\_main()函数：
+	\begin{lstlisting}
+	// 位于main.c文件
+	PUBLIC int kernel_main()
+	{
+		disp_str("----\"kernel_main\" begins----\n");
+		while(1){}
+	}
+
+	// 修改kernel.asm文件
+	extern kernel_main
+		...
+		jmp kernel_main
+	\end{lstlisting}
+
+\subsection{定义进程表}
+	进程表就是存储进程状态信息的数据结构，在这之前我们还要定义栈帧和进程结构体。
+
+\subsubsection{定义栈帧}
+	\begin{lstlisting}
+	// 位于proc.h文件
+	typedef struct s_stackframe
+	{
+		// gs、fs、es、ds、edi、esi、ebp、kernel_esp、ebx、edx、ecx、eax将被save()函数压栈
+		u32 gs;
+		u32 fs;
+		u32 es;
+		u32 ds;
+		u32 edi;
+		u32 esi;
+		u32 ebp;
+		u32 kernel_esp;
+		u32 ebx;
+		u32 edx;
+		u32 ecx;
+		u32 eax;
+
+		u32 retaddr; // 暂时不知道它有什么用
+
+		// 在中断发生时将被CPU压栈
+		u32 eip;
+		u32 cs;
+		u32 eflags;
+		u32 esp;
+		u32 ss;
+	}STACK_FRAME;
+	\end{lstlisting}
+
+\subsubsection{定义进程结构体}
+	根据之前的总结，我们知道，一个进程，拥有进程表、LDT、指向LDT的选择子、进程号和进程名。所以它的代码定义如下：
+	\begin{lstlisting}
+	// 位于proc.h文件
+	typedef struct s_proc
+	{
+		STACK_FRAME regs;
+		u16 ldt_sel;
+		DESCRIPTOR ldts[LDT_SIZE];
+		u32 pid;
+		char p_name[16];
+	}PROCESS;
+	\end{lstlisting}
+
+\subsubsection{初始化进程表}
+	进程表就是进程结构体的数组：
+	\begin{lstlisting}
+	// 位于global.c文件
+	PUBLIC PROCESS proc_table[NR_TASKS];
+	\end{lstlisting}
+
+	初始化进程表的代码如下：
+	\begin{lstlisting}
+	PROCESS* p_proc = proc_table;
+
+	// 初始化ldt_sel
+	p_proc->ldt_sel = SELECTOR_LDT_FIRST;
+
+	// 初始化ldts[LDT_SIZE]
+	memcpy(&p_proc->ldts[0], &gdt[SELECTOR_KERNEL_CS>>3], sizeof(DESCRIPTOR));
+	p_proc->ldts[0].attr1 = DA_C | PRIVILEGE_TASK << 5;
+	memcpy(&p_proc->ldts[1], &gdt[SELECTOR_KERNEL_DS>>3], sizeof(DESCRIPTOR));
+	p_proc->ldts[1].attr1 = DA_DRW | PRIVILEGE_TASK << 5;
+
+	// 初始化栈帧regs中的寄存器
+	// cs指向LDT中第一个描述符
+	p_proc->regs.cs = (0 & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+	// ds、es、fs、ss指向LDT中的第二个描述符
+	p_proc->regs.ds = (8 & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+	p_proc->regs.es = (8 & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+	p_proc->regs.fs = (8 & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+	p_proc->regs.ss = (8 & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+	// gs指向显存
+	p_proc->regs.gs = (SELECTOR_KERNEL_GS & SA_RPL_MASK) | RPL_TASK;
+	// eip指向TestA，进程将从TestA的入口地址开始运行
+	p_proc->regs.eip = (u32)TestA;
+	// esp指向了单独的栈
+	p_proc->regs.esp = (u32)task_stack + TASK_SIZE_TOTAL;
+	// 将IOPL位设为1，让进程可以使用I/O指令
+	p_proc->regs.eflags = 0x1202;
+	\end{lstlisting}
+
+	上述代码中的宏定义于protect.h中：
+	\begin{lstlisting}
+	#define INDEX_DUMMY 0
+	#define INDEX_FLAT_C 1
+	#define INDEX_FLAT_RW 2
+	#define INDEX_VIDEO 3
+	#define INDEX_TSS 4
+	#define INDEX_LDT_FIRST 5
+
+	#define SELECTOR_DUMMY 0
+	#define SELECTOR_FLAT_C 0x08
+	#define SELECTOR_FLAT_RW 0x10
+	#define SELECTOR_VIDEO (0x18 + 3)
+	#define SELECTOR_TSS 0x20
+	#define SELECTOR_LDT_FIRST 0x28
+
+	#define SELECTOR_KERNEL_CS SELECTOR_FLAT_C
+	#define SELECTOR_KERNEL_DS SELECTOR_FLAT_RW
+	#define SELECTOR_KERNEL_GS SELECTOR_VIDEO
+
+	// 每个任务有一个单独的LDT
+	#define LDT_SIZE 2
+
+	#define SA_RPL_MASK 0xFFFC
+	#define SA_RPL0 0
+	#define SA_RPL1 1
+	#define SA_RPL2 2
+	#define SA_RPL3 3
+
+	#define SA_TI_MASK 0xFFFB
+	#define SA_TIG 0
+	#define SA_TIL 4
+	\end{lstlisting}
+
+\subsection{初始化GDT表中的LDT描述符}
+	进程拥有LDT表，而GDT中需要有进程的LDT的描述符，所有我们还需要初始化GDT中进程LDT的描述符：
+	\begin{lstlisting}
+	// 位于proctect.h
+	init_descriptor(&gdt[INDEX_LDT_FIRST], vir2phys(seg2phys(SELECTOR_KERNEL_DS), proc_table[0].ldts), LDT_SIZE * sizeof(DESCRIPTOR) - 1, DA_LDT);
+
+	PRIVATE void init_descriptor(DESCRIPTOR* p_desc, u32 base, u32 limit, u16 attribute)
+	{
+		p_desc->limit_low = limit & 0x0FFFF;
+		p_desc->base_low = base & 0x0FFFF;
+		p_desc->base_mid = (base >> 16) & 0x0FF;
+		p_desc->attr1 = attribute & 0x0FF;
+		p_desc->limit_high_attr2 = ((limit>>16) & 0x0F) | (attribute>>8) & 0xF0;
+		p_desc->base_high = (base >> 24) & 0x0FF;
+	}
+
+	// 根据段名求绝对地址
+	PUBLIC u32 seg2phys(u16 seg)
+	{
+		DESCRIPTOR* p_dest = &gdt[seg >> 3];
+		return (p_dest->base_high<<24 | p_dest->base_mid<<16 | p_dest->base_low);
+	}
+
+	// vir2phys是一个宏，定义于protect.h中
+	#define vir2phys(seg_base, vir) (32)((u32)(seg_base) + (u32)vir)
+	\end{lstlisting}
+
+\subsection{初始化GDT表中的TSS}
+\subsubsection{定义TSS}
+	TSS的定义如下：
+	\begin{lstlisting}
+	typedef struct s_tss
+	{
+		u32 backlink;
+		u32 esp0;
+		u32 ss0;
+		u32 esp1;
+		u32 ss1;
+		u32 esp2;
+		u32 ss2;
+		u32 cr3;
+		u32 eip;
+		u32 flags;
+		u32 eax;
+		u32 ecx;
+		u32 edx;
+		u32 ebx;
+		u32 esp;
+		u32 ebp;
+		u32 esi;
+		u32 edi;
+		u32 es;
+		u32 cs;
+		u32 ss;
+		u32 ds;
+		u32 fs;
+		u32 gs;
+		u32 ldt;
+		u16 trap;
+		u16 iobase; // I/O位图基址
+	}TSS;
+	\end{lstlisting}
+
+\subsubsection{初始化TSS}
+	代码如下：
+	\begin{lstlisting}
+	memset(&tss, 0, sizeof(tss));
+	tss.ss0 = SELECTOR_KERNEL_CS;
+	init_descriptor(&gdt[INDEX_TSS], vir2phys(seg2phys(SELECTOR_KERNEL_DS), &tss), sizeof(tss)-1, DA_386TSS);
+	tss.iobase = sizeof(tss);
+	\end{lstlisting}
+
+\subsection{实现从ring0到ring1}
+	在main.c中添加两行代码：
+	\begin{lstlisting}
+	//p_proc_ready是指向进程表结构的指针
+	p_proc_ready = proc_table;
+	restart();
+	\end{lstlisting}
+
+	restart()函数定义在kernel.asm中，如果要恢复一个进程，需要将esp指向这个结构体的开始处，然后运行一些列的pop指令将寄存器值弹出：
+	\begin{lstlisting}
+	restart:
+		// 将esp指向进程结构体的开始处
+		mov esp, [p_proc_ready]
+		// 设置ldtr
+		lldt [esp + P_LDT_SEL]
+		// 将进程结构体的栈帧的末地址赋值给TSS中ring0堆栈指针域
+		// 下一次中断发生时，ss、esp、eflags、cs、eip将被依次压栈
+		// 从ring0到ring1时候，iretd会把这些弹出
+		lea eax, [esp + P_STACK_TOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+		// 中断发生时，eax、ecx、edx、ebx、esp、ebp、esi、edi、ds、es、fs和gs压栈
+		// 从ring0到ring1时，需要使用pop指令弹出
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+
+		// 跳过retaddr
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+	进程结构体中的栈帧如下图，再对照着上面的代码，应该就很好理解了：
+	\fic{3.png}
+	
 
 \end{document}

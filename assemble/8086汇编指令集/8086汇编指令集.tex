@@ -240,6 +240,13 @@
 \subsection{jna}
 \subsection{jnb}
 \subsection{jne}
+\subsection{lea}
+	该指令有两个操作数。左边是目的操作数，表示操作结果保存在此，该指令目的操作数只能是8个通用寄存器之一。逗号右边的是源操作数，该指令的源操作数只能是一个存储单元，表达存储单元有多种寻址方式。\par
+
+	lea指令的功能是将源操作数、即存储单元的有效地址（偏移地址）传送到目的操作数。\par
+
+	举个例子：lea bx,[bx+si+0xf54h]指令中,[bx+si+0xf54h]采用相对基址变址的寻址方式表达存储单元，它表示的存储单元的有效地址是：bx内容加si内容加0xf54h。这个结果被传送到bx中。
+
 \subsection{lgdt}
 	lgdt指令用于将内存单元值加载到GDTR，语句如下：
 	\begin{lstlisting}
