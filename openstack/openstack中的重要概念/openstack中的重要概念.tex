@@ -15,6 +15,7 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}%
 \makeatother
 
+\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{empheq}
 \usepackage{graphicx}
@@ -73,7 +74,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -141,8 +142,38 @@
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
+
+\section{BlockDeviceMapping}
+    \url{https://docs.openstack.org/developer/nova/block_device_mapping.html}
+
+    \begin{lstlisting}
+class BlockDeviceMapping(base.NovaPersistentObject, base.NovaObject):
+    fields = {
+        'id': fields.IntegerField(),
+        'instance_uuid': fields.UUIDField(),
+        'instance': fields.ObjectField('Instance', nullable=True),
+        'source_type': fields.StringField(nullable=True),
+        'destination_type': fields.StringField(nullable=True),
+        'guest_format': fields.StringField(nullable=True),
+        'device_type': fields.StringField(nullable=True),
+        'disk_bus': fields.StringField(nullable=True),
+        'boot_index': fields.IntegerField(nullable=True),
+        'device_name': fields.StringField(nullable=True),
+        'delete_on_termination': fields.BooleanField(default=False),
+        'snapshot_id': fields.StringField(nullable=True),
+        'volume_id': fields.StringField(nullable=True),
+        'volume_size': fields.IntegerField(nullable=True),
+        'image_id': fields.StringField(nullable=True),
+        'no_device': fields.BooleanField(default=False),
+        'connection_info': fields.StringField(nullable=True),
+    }
+    \end{lstlisting}
     
 \section{flavor}
+    \url{https://docs.openstack.org/admin-guide/compute-flavors.html}
+
+    \url{https://docs.openstack.org/admin-guide/cli-manage-flavors.html}
+
     在OpenStack中，flavors定义了nova实例的CPU、内存、存储容量等数值。
     简单地说，一个flavor相当于一个实例的硬件配置。\par
 
@@ -211,19 +242,232 @@
     \end{lstlisting}
 
 \section{Instance类}
+    \url{https://developer.openstack.org/api-guide/compute/server_concepts.html}
+
     \begin{lstlisting}[language = python]
     # nova/objects/instance.py Instance
-    # nova.db.sqlalchemy.models.Instance
-
-    Instance.task_state # instance的task_state
-    Instance.power_state # instance的power_state
-    Instance.image_ref  # instance的后端镜像id
     Instance.save()  # 用于修改数据库
     \end{lstlisting}
 
+    \begin{lstlisting}
+class Instance(BASE, NovaBase):
+    """Represents a guest VM."""
+    __tablename__ = 'instances'
+    __table_args__ = (
+        Index('uuid', 'uuid', unique=True),
+        Index('project_id', 'project_id'),
+        Index('instances_host_deleted_idx',
+              'host', 'deleted'),
+        Index('instances_reservation_id_idx',
+              'reservation_id'),
+        Index('instances_terminated_at_launched_at_idx',
+              'terminated_at', 'launched_at'),
+        Index('instances_uuid_deleted_idx',
+              'uuid', 'deleted'),
+        Index('instances_task_state_updated_at_idx',
+              'task_state', 'updated_at'),
+        Index('instances_host_node_deleted_idx',
+              'host', 'node', 'deleted'),
+        Index('instances_host_deleted_cleaned_idx',
+              'host', 'deleted', 'cleaned'),
+    )
+    injected_files = []
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    @property
+    def name(self):
+        try:
+            base_name = CONF.instance_name_template % self.id
+        except TypeError:
+            # Support templates like "uuid-%(uuid)s", etc.
+            info = {}
+            # NOTE(russellb): Don't use self.iteritems() here, as it will
+            # result in infinite recursion on the name property.
+            for column in iter(orm.object_mapper(self).columns):
+                key = column.name
+                # prevent recursion if someone specifies %(name)s
+                # %(name)s will not be valid.
+                if key == 'name':
+                    continue
+                info[key] = self[key]
+            try:
+                base_name = CONF.instance_name_template % info
+            except KeyError:
+                base_name = self.uuid
+        return base_name
+
+    @property
+    def _extra_keys(self):
+        return ['name']
+
+    user_id = Column(String(255))
+    project_id = Column(String(255))
+
+    image_ref = Column(String(255)) # instance的后端镜像id
+    kernel_id = Column(String(255))
+    ramdisk_id = Column(String(255))
+    hostname = Column(String(255))
+
+    launch_index = Column(Integer)
+    key_name = Column(String(255))
+    key_data = Column(MediumText())
+
+    power_state = Column(Integer) # instance的power_state
+    vm_state = Column(String(255))
+    task_state = Column(String(255)) # instance的task_state
+
+    memory_mb = Column(Integer)
+    vcpus = Column(Integer)
+    root_gb = Column(Integer)
+    ephemeral_gb = Column(Integer)
+    ephemeral_key_uuid = Column(String(36))
+
+    # This is not related to hostname, above.  It refers
+    #  to the nova node.
+    # instance所在的宿主机
+    host = Column(String(255))  # , ForeignKey('hosts.id'))
+    # To identify the "ComputeNode" which the instance resides in.
+    # This equals to ComputeNode.hypervisor_hostname.
+    node = Column(String(255))
+
+    # *not* flavorid, this is the internal primary_key
+    instance_type_id = Column(Integer)
+
+    user_data = Column(MediumText())
+
+    reservation_id = Column(String(255))
+
+    scheduled_at = Column(DateTime)
+    launched_at = Column(DateTime)
+    terminated_at = Column(DateTime)
+
+    availability_zone = Column(String(255))
+
+    # User editable field for display in user-facing UIs
+    display_name = Column(String(255))
+    display_description = Column(String(255))
+
+    # To remember on which host an instance booted.
+    # An instance may have moved to another host by live migration.
+    launched_on = Column(MediumText())
+
+    # NOTE(jdillaman): locked deprecated in favor of locked_by,
+    # to be removed in Icehouse
+    locked = Column(Boolean)
+    locked_by = Column(Enum('owner', 'admin'))
+
+    os_type = Column(String(255))
+    architecture = Column(String(255))
+    vm_mode = Column(String(255))
+    uuid = Column(String(36))
+
+    root_device_name = Column(String(255))
+    default_ephemeral_device = Column(String(255))
+    default_swap_device = Column(String(255))
+    config_drive = Column(String(255))
+
+    # User editable field meant to represent what ip should be used
+    # to connect to the instance
+    access_ip_v4 = Column(types.IPAddress())
+    access_ip_v6 = Column(types.IPAddress())
+
+    auto_disk_config = Column(Boolean())
+    progress = Column(Integer)
+
+    # EC2 instance_initiated_shutdown_terminate
+    # True: -> 'terminate'
+    # False: -> 'stop'
+    # Note(maoy): currently Nova will always stop instead of terminate
+    # no matter what the flag says. So we set the default to False.
+    shutdown_terminate = Column(Boolean(), default=False)
+
+    # EC2 disable_api_termination
+    disable_terminate = Column(Boolean(), default=False)
+
+    # OpenStack compute cell name.  This will only be set at the top of
+    # the cells tree and it'll be a full cell name such as 'api!hop1!hop2'
+    cell_name = Column(String(255))
+    internal_id = Column(Integer)
+
+    # Records whether an instance has been deleted from disk
+    cleaned = Column(Integer, default=0)
+    \end{lstlisting}
+
 \section{image metadata}
+    image metadata的概念：
     \begin{lstlisting}
     Another common term for “image properties” is “image metadata” because what we’re talking about here are properties that describe the image data that can be consumed by various OpenStack services 
+    \end{lstlisting}
+
+    image metadata的示例：
+    \begin{lstlisting}
+    {'status': u'queued', 
+     'name': u'snap1', 
+     'deleted': False, 
+     'container_format': u'bare', 
+     'created_at': datetime.datetime(2017, 2, 28, 5, 38, 57, tzinfo=<iso8601.iso8601.Utc object at 0x7fc8fc5a3d10>), 
+     'disk_format': u'qcow2', 
+     'updated_at': datetime.datetime(2017, 2, 28, 5, 38, 57, tzinfo=<iso8601.iso8601.Utc object at 0x7fc8fc5a3d10>), 
+     'id': u'9ce400ab-7785-445c-9e89-9ea35d6de063', 
+     'owner': u'd6fda80e5d464008825d806edf4ecc20', 
+     'min_ram': 0, 
+     'checksum': None, 
+     'min_disk': 40, 
+     'is_public': False, 
+     'deleted_at': None, 
+     'properties': {u'instance_uuid': u'ed38cd61-3b9c-47b8-b3e0-b9c511053b23', 
+                    u'instance_type_memory_mb': u'4096', 
+                    u'user_id': u'ea66cd61e4564f88b2a877868fe1b8a4', 
+                    u'image_type': u'snapshot', 
+                    u'instance_type_id': u'1', 
+                    u'instance_type_name': u'm1.medium', 
+                    u'instance_type_ephemeral_gb': u'0', 
+                    u'instance_type_rxtx_factor': u'1.0', 
+                    u'instance_type_root_gb': u'40', 
+                    u'network_allocated': u'True', 
+                    u'instance_type_flavorid': u'3', 
+                    u'instance_type_vcpus': u'2', 
+                    u'instance_type_swap': u'0', 
+                    u'base_image_ref': u'1ed1b0e2-f9ae-4a9a-a0aa-166f6a75d5f2'}, 
+     'size': 0}
+    \end{lstlisting}
+
+\section{Image}
+    \begin{lstlisting}
+class Image(BASE, GlanceBase):
+    """Represents an image in the datastore."""
+    __tablename__ = 'images'
+    __table_args__ = (Index('checksum_image_idx', 'checksum'),
+                      Index('visibility_image_idx', 'visibility'),
+                      Index('ix_images_deleted', 'deleted'),
+                      Index('owner_image_idx', 'owner'),
+                      Index('created_at_image_idx', 'created_at'),
+                      Index('updated_at_image_idx', 'updated_at'))
+
+    id = Column(String(36), primary_key=True,
+                default=lambda: str(uuid.uuid4()))
+    name = Column(String(255))
+    disk_format = Column(String(20))
+    container_format = Column(String(20))
+    size = Column(BigInteger().with_variant(Integer, "sqlite"))
+    virtual_size = Column(BigInteger().with_variant(Integer, "sqlite"))
+    status = Column(String(30), nullable=False)
+    visibility = Column(Enum('private', 'public', 'shared', 'community',
+                        name='image_visibility'), nullable=False,
+                        server_default='shared')
+    checksum = Column(String(32))
+    min_disk = Column(Integer, nullable=False, default=0)
+    min_ram = Column(Integer, nullable=False, default=0)
+    owner = Column(String(255))
+    protected = Column(Boolean, nullable=False, default=False,
+                       server_default=sql.expression.false())
+    \end{lstlisting}
+
+\section{用户请求Request}
+    \begin{lstlisting}
+class Request(webob.Request):
+    """Add some OpenStack API-specific logic to the base webob.Request."""
     \end{lstlisting}
 
 \end{document}
