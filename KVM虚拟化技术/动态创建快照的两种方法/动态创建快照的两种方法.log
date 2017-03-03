@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  3 MAR 2017 15:35
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  3 MAR 2017 15:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**动态创建快照的两种方式.tex
-(./动态创建快照的两种方式.tex
+**动态创建快照的两种方法.tex
+(./动态创建快照的两种方法.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1380,8 +1380,8 @@ Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=1.5cm,right=1.5cm].
 
-(./动态创建快照的两种方式.aux)
-\openout1 = `动态创建快照的两种方式.aux'.
+(./动态创建快照的两种方法.aux)
+\openout1 = `动态创建快照的两种方法.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
 LaTeX Font Info:    ... okay on input line 144.
@@ -1483,9 +1483,9 @@ LaTeX Info: Redefining \ref on input line 144.
 LaTeX Info: Redefining \pageref on input line 144.
 LaTeX Info: Redefining \nameref on input line 144.
 
-(./动态创建快照的两种方式.out) (./动态创建快照的两种方式.out)
+(./动态创建快照的两种方法.out) (./动态创建快照的两种方法.out)
 \@outlinefile=\write3
-\openout3 = `动态创建快照的两种方式.out'.
+\openout3 = `动态创建快照的两种方法.out'.
 
 \c@lstlisting=\count277
 
@@ -1572,7 +1572,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 183.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 183.
- (./动态创建快照的两种方式.aux)
+ (./动态创建快照的两种方法.aux)
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 183.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 183.
 
@@ -1589,4 +1589,4 @@ Here is how much of TeX's memory you used:
  1328 hyphenation exceptions out of 8191
  48i,11n,72p,10368b,1245s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 动态创建快照的两种方式.pdf (1 page).
+Output written on 动态创建快照的两种方法.pdf (1 page).
