@@ -15,6 +15,7 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}%
 \makeatother
 
+\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{empheq}
 \usepackage{graphicx}
@@ -137,38 +138,97 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{本地库连接github远程库 \qquad}
+\chead{nova中虚拟机的块设备 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
 
-% \tableofcontents
+\tableofcontents
 
 \clearpage
+\section{虚拟机的本地磁盘空间}
+\subsection{虚拟机的三个分区}
+    一个虚拟机有root分区、swap分区和ephemeral分区：
+    \begin{itemize}
+        \item[1.] root disk：根分区，提供boot loader。
+        \item[2.] swap disk：交换分区，用于内存耗尽时将物理内存中一部分空间挪到swap分区中，从而释放一些物理内存空间。
+        \item[3.] ephemeral disk：狭义上的ephemeral disk，指的是根据资源状况提供额外的临时存储。
+    \end{itemize}
 
-\section{本地库连接github远程库}
-	步骤如下：
-	\begin{itemize}
-		\item[1.] 首先创建一个github仓库，如下图所示：
-		\sizedfic{0.7}{1.png}
-		\sizedfic{0.7}{2.png}
+    广义上的ephemeral disk指的是root分区、swap分区和ephemeral分区，这个ephemeral disk随着instance的生命周期创建和消亡。\par
 
-		\item[2.] 然后创建一个本地库：
-		\begin{lstlisting}
-	# 初始化git仓库
-	git init
-	# 设置邮箱和用户名
-	git config --global user.email "you@example.com"
-  	git config --global user.name "Your Name"
-	# 创建一个文件，因为如果是空仓库，是无法连接到远程库的
-	touch readme
-	git add readme
-	git commit -m "first commit"
-	# 连接到远程库
-	git remote add origin git@github.com:wwtalwtaw/temp.git
-	# 上传文件
-	git push -u origin master # 将提示输入github的用户名和密码
-		\end{lstlisting}
-	\end{itemize}
+    nova flavor中定义了一个虚拟机的三个分区，Disk指的是root分区，Ephemeral指的是ephemeral分区，Swap指的是swap分区，如下图所示：
+    \fic{1.png}
+
+\subsection{nova compute节点上的磁盘镜像文件}
+    虚拟机的root分区、ephemeral分区、swap分区在nova compute节点上都有一个磁盘镜像文件，默认存放在/var/lib/nova/instances/vm-uuid目录中，如下图所示：
+    \fic{2.png}
+
+    上图中，disk对应root分区，disk.local对应ephemeral分区，disk.swap对应swap分区。\par
+
+    这些磁盘文件都是qcow2格式，都是overlay文件，都有对应的backing file，这些backing file默认是raw格式，可以通过如下命令查看它们后端镜像的位置：
+    \begin{lstlisting}
+    qemu-img info disk
+    qemu-img info disk.local
+    qemu-img info disk.swap
+    \end{lstlisting}
+
+    libvirt中的xml配置文件定义了磁盘的镜像文件和磁盘的对应关系：
+    \begin{lstlisting}
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk"/>
+      <target bus="virtio" dev="vda"/>
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk.local"/>
+      <target bus="virtio" dev="vdb"/>
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none"/>
+      <source file="/var/lib/nova/instances/eddc46a8-e026-4b2c-af51-dfaa436fcc7b/disk.swap"/>
+      <target bus="virtio" dev="vdc"/>
+    </disk>
+    \end{lstlisting}
+
+\section{nova虚拟机的block\_device\_info数据结构}
+    block\_device\_info记录了虚拟机的所有磁盘和被附加的所有卷：
+    \begin{lstlisting}
+block_device_info = { 
+            'root_device_name': "/dev/sda", # root分区
+            'swap': {          # swap 分区
+               'device_name': "/dev/sdb", 
+               'swap_size': 5, 
+            } 
+            'ephemerals': [    # ephemerals 分区，可以有多个
+               {'num': 0, 
+                'virtual_name': 'eph0', 
+                'device_name': "/dev/sdc", 
+                'size': 5 }, 
+               {'num': 1, 
+                'virtual_name': 'eph1', 
+                'device_name': "/dev/sdd", 
+                'size': 5 }, 
+               {'num': 2, 
+                'virtual_name': 'eph2', 
+                'device_name': "/dev/sde", 
+                'size': 5 }, 
+               ... 
+            ], 
+            'block_device_mapping': [ # block devices mapping，可以有多个
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdf", 
+                'delete_on_termination': True }, 
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdg", 
+                'delete_on_termination': True }, 
+               {'cinfo': {....some cinder volume data....}, 
+                'mount_device': "/dev/sdh", 
+                'delete_on_termination': True }, 
+               ... 
+            ], 
+     }
+    \end{lstlisting}
 
 \end{document}

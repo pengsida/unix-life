@@ -148,6 +148,27 @@
 
 \section{nova中的RPC机制}
 \subsection{基础部分}
+\subsubsection{rpcapi.py}
+    \begin{lstlisting}
+    def _compute_host(host, instance):
+        '''Get the destination host for a message.
+
+        :param host: explicit host to send the message to.
+        :param instance: If an explicit host was not specified, use
+                        instance['host']
+
+        :returns: A host
+        '''
+        if host:
+            return host
+        if not instance:
+            raise exception.NovaException(_('No compute host specified'))
+        if not instance['host']:
+            raise exception.NovaException(_('Unable to find host for '
+                                            'Instance %s') % instance['uuid'])
+        return instance['host']
+    \end{lstlisting}
+
 \subsubsection{rpc.py}
     \begin{lstlisting}
     def get_client(target, version_cap=None, serializer=None):

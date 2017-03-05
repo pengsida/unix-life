@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  26 FEB 2017 11:44
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  3 MAR 2017 15:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**nova中的块设备.tex
-(./nova中的块设备.tex
+**动态创建快照的两种方法.tex
+(./动态创建快照的两种方法.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1380,8 +1380,8 @@ Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=1.5cm,right=1.5cm].
 
-(./nova中的块设备.aux)
-\openout1 = `nova中的块设备.aux'.
+(./动态创建快照的两种方法.aux)
+\openout1 = `动态创建快照的两种方法.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
 LaTeX Font Info:    ... okay on input line 144.
@@ -1483,9 +1483,9 @@ LaTeX Info: Redefining \ref on input line 144.
 LaTeX Info: Redefining \pageref on input line 144.
 LaTeX Info: Redefining \nameref on input line 144.
 
-(./nova中的块设备.out) (./nova中的块设备.out)
+(./动态创建快照的两种方法.out) (./动态创建快照的两种方法.out)
 \@outlinefile=\write3
-\openout3 = `nova中的块设备.out'.
+\openout3 = `动态创建快照的两种方法.out'.
 
 \c@lstlisting=\count277
 
@@ -1528,81 +1528,37 @@ Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             ! on input line 144.
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/bx/n' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 146.
-
-
-Overfull \hbox (4.32pt too wide) in paragraph at lines 146--146
-| []| 
- []
-
-(./nova中的块设备.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 2.
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 2.
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
-\tf@toc=\write4
-\openout4 = `nova中的块设备.toc'.
-
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 148.
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 
 )
-[1
+Overfull \hbox (0.29909pt too wide) in paragraph at lines 156--157
+[]\EU1/STZHONGS.TTF(0)/m/n/10.95 根 据 虚 拟 机 的 磁 盘 镜 像 创 建 一 块 增 量 镜 像，|  这 块 增 量
+ 镜 像 的 名 称 为 \EU1/lmr/m/n/10.95 devstack.qcow2\EU1/STZHONGS.TTF(0)/m/n/10.95 ：|
+ 
+ []
 
-]
+LaTeX Font Info:    Try loading font information for U+msa on input line 158.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 158.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (4.71747pt too wide) in paragraph at lines 162--162
+[]\EU1/STZHONGS.TTF(0)/m/n/10.95 此 时，|  如 果 不 重 启 虚 拟 机，|  那 么 虚 拟 机 上 数 据 的 改 
+动 将 同 时 记 录 到 \EU1/lmr/m/n/10.95 devstack.qcow2.base
+ []
+
 
 LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/m/it' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 156.
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 171.
 
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[2
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[3]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[4]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[5]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[6] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1610,24 +1566,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 415.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 415.
- (./nova中的块设备.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 415.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 415.
+[1
+
+
+]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 183.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 183.
+ (./动态创建快照的两种方法.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 183.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 183.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 30041 strings out of 493638
- 532152 string characters out of 6146796
- 728223 words of memory out of 5000000
- 33114 multiletter control sequences out of 15000+600000
- 10756 words of font info for 67 fonts, out of 8000000 for 9000
+ 29887 strings out of 493638
+ 528049 string characters out of 6146796
+ 649225 words of memory out of 5000000
+ 32973 multiletter control sequences out of 15000+600000
+ 9155 words of font info for 55 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 48i,12n,72p,10366b,1736s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,11n,72p,10368b,1245s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on nova中的块设备.pdf (7 pages).
+Output written on 动态创建快照的两种方法.pdf (1 page).
