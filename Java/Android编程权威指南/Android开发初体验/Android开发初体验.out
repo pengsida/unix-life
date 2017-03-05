@@ -1,0 +1,8 @@
+\BOOKMARK [1][-]{section.1}{第一个用户界面}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{视图层级结构}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{组件属性}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{第一个用户界面的字符串资源}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{从布局XML到视图对象}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.5}{创建按键动作}{section.1}% 6
+\BOOKMARK [3][-]{subsubsection.1.5.1}{资源与资源ID}{subsection.1.5}% 7
+\BOOKMARK [3][-]{subsubsection.1.5.2}{通过资源ID使用组件}{subsection.1.5}% 8

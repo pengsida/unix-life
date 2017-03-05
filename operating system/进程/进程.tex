@@ -474,7 +474,7 @@
 \subsection{实现从ring0到ring1}
 	在main.c中添加两行代码：
 	\begin{lstlisting}
-	//p_proc_ready是指向进程表结构的指针
+	// p_proc_ready是指向进程表结构的指针
 	p_proc_ready = proc_table;
 	restart();
 	\end{lstlisting}
@@ -490,7 +490,7 @@
 		// 当ring1转移至ring0时，堆栈将被自动切换到TSS中ss0和esp0指定的位置
 		// 下一次中断发生时，ss、esp、eflags、cs、eip将被依次压入进程结构体的栈帧中
 		// 从ring0到ring1时候，iretd会把这些弹出
-		lea eax, [esp + P_STACK_TOP]
+		lea eax, [esp + P_STACKTOP] 
 		mov dword [tss + TSS3_S_SP0], eax
 
 		// 中断发生时，eax、ecx、edx、ebx、esp、ebp、esi、edi、ds、es、fs和gs压栈
@@ -508,7 +508,7 @@
 	\end{lstlisting}
 
 	进程结构体中的栈帧如下图，再对照着上面的代码，应该就很好理解了：
-	\fic{3.png}
+	\sizedfic{0.3}{3.png}
 
 \subsection{总结}
 	为了实现从ring0到ring1，我们进行了以下几个步骤：
@@ -518,5 +518,184 @@
 		\item[3.] 准备进程表。
 		\item[4.] 完成跳转，实现从ring0到ring1。
 	\end{itemize}
+
+\section{丰富中断处理程序}
+\subsection{让时钟中断开始起作用}
+	首先打开时钟中断：
+	\begin{lstlisting}
+	out_bype(INT_M_CTLMASK, 0xFE);
+	out_bype(INT_S_CTLMASK, 0xFF);
+	\end{lstlisting}
+
+	为了告知8259A当前中断结束，我们还需要在中断处理程序中把中断结束位EOI置为1:
+	\begin{lstlisting}
+	hwint00:
+		mov al, EOI
+		out INT_M_CTL, al
+		iretd
+	\end{lstlisting}
+
+	EOI和INT\_M\_CTL定义在sconst.inc中：
+	\begin{lstlisting}
+	INT_M_CTL equ 0x20
+	INT_M_CTLMASK equ 0x21
+	INT_S_CTL equ 0xA0
+	INT_S_CTLMASK equ 0xA1
+
+	EOI equ 0x20
+	\end{lstlisting}
+
+\subsection{现场的保护与恢复}
+	在中断处理程序中，其实有必要进行现场的保护：
+	\begin{lstlisting}
+	ALIGN 16
+	hwint00:
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+
+		iretd
+	\end{lstlisting}
+
+\subsection{赋值TSS中的esp0}
+	时钟中断打开以后，就存在ring0和ring1之间频繁的切换。两个层级之间的切换包含：代码的跳转和堆栈的切换。\par
+
+	当ring1切换到ring0时，我们需要用到TSS。目前为止，TSS对于我们的用处是用于保存ring0堆栈的信息，也就是ss和esp两个寄存器的信息。\par
+
+	当进程被中断切到内核态时，各个寄存器需要被立即压栈，所以TSS中的esp0应该是当前进程的进程表中保存寄存器值的地方，也就是s\_stackframe的最高地址处。\par
+
+	因为我们不可能在进程运行时设置esp0的值，所以需要在iretd执行之前做这件事：
+	\begin{lstlisting}
+	ALIGN 16
+	hwint00:
+		; 跳过retaddr
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		lea eax, [esp + P_STACKTOP] 
+		; 给esp0赋值
+		mov dword [tss + TSS3_S_SP0], eax
+
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		; 跳过retaddr
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+	也就是说，在切换到ring0的时候，esp0的值将赋值给esp，随后esp指向regs最高地址的，随着各寄存器值的压栈，esp指向了regs的最低地址处。
+	为了下一次中断的正常进行，我们在iretd之前，将esp0设为regs的最高地址。
+
+\subsection{内核栈}
+	esp现在指向的是进程表，如果在中断处理程序中要用到堆栈操作，进程表就会被破坏掉，所以我们需要将esp指向另外的地方，也就是内核栈。
+
+	\begin{lstlisting}
+	ALIGN 16
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		mov esp, StackTop ; 进入内核栈
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		mov esp, [p_proc_ready] ; 离开内核栈
+
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+\subsubsection{尝试比较复杂的中断例程}
+	有了内核栈，我们就可以用一些比较复杂的中断处理程序：
+	\begin{lstlisting}
+	extern disp_str
+
+	[SECTION .data]
+	clock_int_msg db "^",0
+
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		push dx, ss
+		push ds, dx
+		push es, dx
+
+		mov esp, StackTop
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		push clock_int_msg
+		call disp_str
+		add esp, 4
+
+		mov esp, [p_proc_ready]
+
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
 
 \end{document}

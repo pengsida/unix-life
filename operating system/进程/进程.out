@@ -11,3 +11,7 @@
 \BOOKMARK [2][-]{subsection.1.3.6}{初始化GDT表中的TSS}{section.1.3}% 11
 \BOOKMARK [2][-]{subsection.1.3.7}{实现从ring0到ring1}{section.1.3}% 12
 \BOOKMARK [2][-]{subsection.1.3.8}{总结}{section.1.3}% 13
+\BOOKMARK [1][-]{section.1.4}{丰富中断处理程序}{chapter.1}% 14
+\BOOKMARK [2][-]{subsection.1.4.1}{让时钟中断开始起作用}{section.1.4}% 15
+\BOOKMARK [2][-]{subsection.1.4.2}{现场的保护与恢复}{section.1.4}% 16
+\BOOKMARK [2][-]{subsection.1.4.3}{赋值TSS中的esp0}{section.1.4}% 17
