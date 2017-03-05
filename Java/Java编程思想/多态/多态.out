@@ -1,0 +1,6 @@
+\BOOKMARK [1][-]{section.1}{多态}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{绑定}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{多态的缺陷}{section.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.2.1}{private函数无法动态绑定}{subsection.1.2}% 4
+\BOOKMARK [3][-]{subsubsection.1.2.2}{域无法动态绑定}{subsection.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.3}{协变返回类型}{section.1}% 6
