@@ -1,0 +1,304 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{实现特权级转移 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{实现特权级转移}
+\subsection{理论知识}
+	特权级转移需要借助堆栈切换。当调用门用于把程序控制转移到一个更高级别的非一致性代码段时，处理器会自动切换到目的代码段特权级的堆栈。
+	此时处理器会按照以下步骤切换堆栈：
+	\begin{itemize}
+		\item 当前任务的TSS段存放着特权级0、1和2的堆栈的初始指针值。处理器会将目的代码段的DPL作为新任务的CPL，并从TSS中选择新栈的SS和ESP。
+		\item 将SS和ESP寄存器的当前值压入新栈，并将新栈的段选择符和栈指针加载到SS和ESP。
+		\item 将调用门描述符中指定的参数从当前栈压入新栈。参数数目由调用门描述符中的PARAM COUNT字段决定。
+		\item 将CS和EIP寄存器的当前值压入新栈，并将目的代码段选择符加载到CS，将调用门选择符中的偏移值加载到EIP中。
+	\end{itemize}
+
+	调用过程如下图所示：
+	\fic{1.png}
+
+	当调用过程结束后，处理器使用RET执行远返回到一个调用过程。此时CPU会执行以下步骤：
+	\begin{itemize}
+		\item 检查保存的CS寄存器中的RPL字段值，以确定返回时特权级是否需要改变。
+		\item 弹出新栈中的CS和EIP值，并且检查代码段描述符的DPL和代码段选择符的RPL。
+		\item 如果返回过程会改变特权级，而且此时RET指令包含一个参数个数操作数，那么就需要在弹出CS和EIP之后，将参数个数值加载到ESP寄存器中，用于丢弃新栈中的参数。
+		\item 弹出SS和ESP，从而切换回调用者的堆栈。
+		\item 检查DS、ES、FS和GS，如果其中的段选择符指向的段描述符的DPL小于新CPL(仅适用于一致代码段)，处理器将用空选择符来加载这个段寄存器。
+	\end{itemize}
+
+	综上，使用调用门实现不同特权级之间的调用可以分为两个过程，一个是通过调用门和call指令实现从低特权级转移到高特权级，
+	另一个是通过ret指令实现从高特权级到低特权级。
+
+\subsection{代码实现}
+\subsubsection{高特权级到低特权级}
+	根据上一节可知，处理器通过ret指令实现从高特权级到低特权级。在ret指令执行之前，堆栈中应该已经有了ss、esp、cs和eip。如下图所示：
+	\fic{2.png}
+
+	首先添加一个特权级为3的代码段，为了实现代码段转移，我们需要添加一个代码段和相应的堆栈段。
+	先是在GDT表中添加该代码段和堆栈段的描述符，然后定义堆栈段ring3和代码段ring3。随后，我们在32位代码段中通过执行retf指令跳转到ring3代码段中。
+	\begin{lstlisting}
+	; 在GDT中添加相应的代码段和堆栈段
+	[SECTION .gdt]
+	; ...
+	; 特权级为3
+	LABEL_DESC_CODE_RING3: Descriptor 0, SegCodeRing3Len-1, DA_C+DA_32+DA_DPL3
+	LABEL_DESC_STACK3: Descriptor 0, TopOfStack3, DA_DRWA+DA_32+DA_DPL3
+	; ...
+	; 请求特权级为3
+	SelectorCodeRing3 equ LABEL_DESC_CODE_RING3-LABEL_GDT+SA_RPL3
+	SelectorStack3 equ LABEL_DESC_STACK3-LABEL_GDT+SA_RPL3
+	; ...
+	; 定义堆栈段ring3
+	[SECTION .s3]
+	ALIGN 32
+	[BITS 32]
+	LABEL_STACK3:
+		; 该堆栈段有512个字节大小
+		times 512 db 0
+	TopOfStack3 equ $-LABEL_STACK3-1
+	; ...
+	; 定义代码段ring3
+	[SECTION .ring3]
+	ALIGN 32
+	[BITS 32]
+	LABEL_CODE_RING3:
+		mov ax, SelectorVideo
+		mov gs, ax
+		mov edi, (80*14 + 0) * 2
+		mov ah, 0Ch
+		mov al, '3'
+		mov [gs:edi], ax
+		jmp $
+	SegCodeRing3Len equ $-LABEL_CODE_RING3
+	; ...
+	[SECTION .s32]
+	[BITS 32]
+	LABEL_SEG_CODE32:
+		; ...
+		; 压入ss
+		push SelectorStack3
+		; 压入esp
+		push TopOfStack3
+		; 压入cs
+		push SelectorCodeRing3
+		; 压入eip
+		push 0
+		; 执行ret指令
+		retf
+	\end{lstlisting}
+\subsubsection{低特权级到高特权级}
+	从低特权级到高特权级转移的时候，需要用到TSS，所以要添加TSS段。
+	需要根据TSS的结构定义TSS，TSS的结构如下图:
+	\fic{3.png}
+
+	\begin{lstlisting}
+	[SECTION .gdt]
+	LABEL_DESC_TSS: Descriptor 0, TSSLen-1, DA_386TSS
+	; ...
+	SelectorTSS equ LABEL_DESC_TSS-LABEL_GDT
+	; ...
+	[SECTION .tss]
+	ALIGN
+	[BITS 32]
+	LABEL_TSS:
+		DD 0 ; 前一任务链接
+		DD TopOfStack   ; 0级堆栈段基址
+		DD SelectorStack ; 0级堆栈选择符
+		DD 0 ; 1级堆栈段基址
+		DD 0 ; 1级堆栈选择符
+		DD 0 ; 2级堆栈段基址
+		DD 0 ; 2级堆栈选择符
+		DD 0 ; CR3
+		DD 0 ; EIP
+		DD 0 ; EFLAGS
+		DD 0 ; EIP
+		DD 0 ; EAX
+		DD 0 ; ECX
+		DD 0 ; EDX
+		DD 0 ; EBX
+		DD 0 ; ESP
+		DD 0 ; EBP
+		DD 0 ; ESI
+		DD 0 ; EDI
+		DD 0 ; ES
+		DD 0 ; CS
+		DD 0 ; SS
+		DD 0 ; DS
+		DD 0 ; FS
+		DD 0 ; GS
+		DD 0 ; LDT段选择符
+		DW 0 ; 调试陷阱T标志位
+		DW $-LABEL_TSS+2 ; I/O位图基址
+		DB 0ffh ; I/O位图结束标志
+	TSSLen equ $-LABEL_TSS
+	\end{lstlisting}
+
+	接着添加调用门，用于不同特权级的转移。调用门的添加步骤在第四次中已经讲到了，
+	在这里就不再详细论述。添加调用门成功后，就可以在ring3代码段中通过调用门转移到特权级为0的代码段中。
+	\begin{lstlisting}
+	[SECTION .gdt]
+	; ...
+	; 定义一个特权级为0的代码段
+	LABEL_DESC_CODE_TEST: Descriptor 0, SegCodeDestLen-1, DA_C+DA_32
+	; 定义一个能够跳转到0特权级代码段的门描述符
+	LABEL_CALL_GATE_TEST: Gate SelectorCodeDest, 0, 0, DA_386Gate+DA_DPL3
+	; ...
+	SelectorCallGateTest equ LABEL_CALL_GATE_TEST - LABEL_GDT
+
+	; 在32位代码段中加载TSS描述符
+	; 需要在特权级变换之前加载TSS描述符
+	[SECTION .s32]
+	; ...
+	mov ax, SelectorTSS
+	ltr ax
+	; ...
+
+	; 在ring3代码段中通过调用门跳转到特权级为0的代码段中
+	[SECTION .ring3]
+	ALIGN 32
+	[BITS 32]
+	LABEL_CODE_RING3:
+		mov ax, SelectorVideo
+		mov gs, ax
+		mov edi, (80 * 14 + 0) * 2
+		mov ah, 0Ch
+		mov al, '3'
+		mov [gs:edi], ax
+		call SelectorCallGateTest:0
+		jmp $
+	SegCodeRing3Len equ $-LABEL_CODE_RING3
+	\end{lstlisting}
+
+
+\end{document}
