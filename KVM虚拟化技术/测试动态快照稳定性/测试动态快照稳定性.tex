@@ -1,0 +1,336 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{测试动态快照稳定性 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+\clearpage
+
+\section{测试动态快照稳定性}
+\subsection{测试的思路}
+	首先我介绍一下当前环境：libvirt中定义了两个虚拟机overlay1和overlay2。
+	overlay1的磁盘文件是overlay1.qcow2，overlay2的磁盘文件也是overlay1.qcow2。
+	overlay1.qcow2的后端镜像是base.qcow2。\par
+
+	overlay1.qcow2上存放这test\_in\_vm.sh、monitor.sh和judge.sh这三个脚本文件。
+	这个三脚本文件的功能分别是：
+	\begin{lstlisting}
+	test_in_vm.sh：将1～4000000这些数字写入num.txt文件中，每个数字一行。
+	monitor.sh：这个文件用于监测test_in_vm.sh这个进程是否运行结束。
+	judge.sh：这个文件用于判断num.txt是否有4000000，用于判断数据的完整性。
+	\end{lstlisting}
+
+	接下来我说一下测试方案：
+	\begin{itemize}
+		\item[1.] 首先启动虚拟机overlay1,注意它的磁盘文件为overlay1.qcow2。
+		\item[2.] 在宿主机环境中，登录到overlay1上，执行上面的test\_in\_vm.sh脚本。
+		\item[3.] 动态创建快照，此时虚拟机overlay1的磁盘文件就变成了overlay2.qcow2。
+		\item[4.] 查看overlay1上的数据是否完整，也就是查看overlay2.qcow2磁盘上的数据是否完整。
+		\item[5.] 启动虚拟机overlay2,注意它的磁盘文件为overlay2.qcow2。
+				  随后查看它上面的数据是否不完整，也就是查看overlay1.qcow2磁盘上的数据是否不完整。
+		\item[6.] 关闭虚拟机overlay1和overlay2。
+		\item[7.] 清除之前的改动，返回到最初的环境，也就是要把overlay2.qcow2这个增量文件删除，
+		          将虚拟机overlay1的磁盘文件更换为原来的overlay1.qcow2，将虚拟机overlay1的磁盘文件更换为overlay1.qcow2，并且删除虚拟机overlay1的快照数据。
+	\end{itemize}
+
+\subsection{测试需要的环境}
+	首先创建一个base.qcow2镜像：
+	\begin{lstlisting}
+	qemu-img create -f qcow2 base.qcow2 50G
+	\end{lstlisting}
+
+	随后在base.qcow2镜像上安装ubuntu系统，并且在这个镜像的基础上创建增量镜像overlay1.qcow2：
+	\begin{lstlisting}
+	qemu-img create -f qcow2 -b base.qcow2 overlay1.qcow2
+	\end{lstlisting}
+
+	在overlay1.qcow2上启动虚拟机overlay1,overlay1的xml配置文件内容如下：
+	\begin{lstlisting}[language = xml]
+	<domain type='kvm'>
+		<name>overlay1</name>
+		<memory>1048576</memory>
+		<currentMemory>1048576</currentMemory>
+		<vcpu>4</vcpu>
+		<os>
+			<type arch='x86_64' machine='pc'>hvm</type>
+			<boot dev='cdrom'/>
+		</os>
+		<features>
+			<acpi/>
+			<apic/>
+			<pae/>
+		</features>
+		<clock offset='localtime'/>
+		<on_poweroff>destroy</on_poweroff>
+		<on_reboot>restart</on_reboot>
+		<on_crash>destroy</on_crash>
+		<devices>
+			<emulator>/usr/bin/qemu-system-x86_64</emulator>
+			<disk type='file' device='disk'>
+				<driver name='qemu' type='qcow2'/>
+				<source file='/home/pengsida/kvm/openstack/overlay1.qcow2'/>
+				<target dev='hda' bus='ide'/>
+			</disk>
+			<interface type='network'>
+				<source network='default'/>
+			</interface>
+			<interface type='network'>
+				<source network='default'/>
+			</interface>
+			<input type='mouse' bus='ps2'/>
+			<graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0' keymap='en-us'/>
+			<channel type='unix'>
+				<source mode='bind' path='/var/lib/libvirt/qemu/f16x86_64.agent'/>
+				<target type='virtio' name='org.qemu.guest_agent.0'/>
+			</channel>
+		</devices>
+	</domain>
+	\end{lstlisting}
+
+	在宿主机上安装qemu-guest-agent：
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	随后启动虚拟机overlay1：
+	\begin{lstlisting}
+	# 在overlay1.xml目录下
+	sudo virsh define overlay1.xml
+	sudo virsh start overlay1
+	\end{lstlisting}
+
+	在虚拟机中安装qemu-guest-agent：
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	然后在overlay1上创建两个test\_in\_vm.sh、monitor.sh和judge.sh这三个脚本文件。\par
+
+	test\_in\_vm.sh脚本内容如下:
+	\begin{lstlisting}
+	#!/bin/bash
+
+	times=2000
+
+	rm num.txt
+
+	num=1
+
+	for((i=0;i<=times;i++))
+	do
+		for((j=0;j<=times;j++))
+		do
+			echo $num >> num.txt
+			num=$[$num+1]
+		done
+	done
+	\end{lstlisting}
+
+	monitor.sh脚本内容如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	test=`ps aux | grep ./test.sh`
+	num=`echo $test | awk -v RS='/bin/bash ./test.sh' 'END {print --NR}'`
+
+	while (( $num >= 1 )) 
+	do
+		echo "./test.sh is running"
+		sleep 5
+		test=`ps aux | grep ./test.sh`
+		num=`echo $test | awk -v RS='/bin/bash ./test.sh' 'END {print --NR}'`
+	done
+
+	echo "./test.sh is done"
+	\end{lstlisting}
+
+	judge.sh脚本内容如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	num=`awk 'END {print NR}' num.txt`
+
+	if (( num == 4000000)) 
+	then
+		echo "data is complete"
+	else
+		echo "data is not complete"
+	fi
+	\end{lstlisting}
+
+	随后在宿主机上创建address.sh脚本文件，这个脚本文件可以根据虚拟机的名字返回虚拟机的ip地址：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	MAC=`awk '/virbr0/ { print $4 }' /proc/net/arp`
+	VM=$1
+
+	line=`virsh dumpxml $VM | grep "mac address"`
+	address=`echo $line | awk -F "" '
+	{
+		for(i=1; i<=NF; i++)
+		{
+			if($i ~ /'\''/)
+				break
+		}
+		i++
+		str=""
+		for(;i<=NF;i++)
+		{
+			if($i ~ /'\''/)
+				break
+			temp=$i
+			str=(str temp)
+		}
+		print str
+	}'`
+
+	ip=`awk '/'$address'/ {print $1}' /proc/net/arp`
+
+	echo $ip
+	\end{lstlisting}
+
+\subsection{测试的代码}
+\subsubsection{}
+
+\end{document}
