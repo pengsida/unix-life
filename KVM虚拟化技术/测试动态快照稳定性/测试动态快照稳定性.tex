@@ -181,6 +181,9 @@
 	\end{itemize}
 
 \subsection{测试需要的环境}
+	我们现在想要的测试环境是拥有虚拟机overlay1,它的磁盘文件是overlay1.qcow2，
+	快照链为base.qcow2<-overlay1.qcow2。\par
+
 	首先创建一个base.qcow2镜像：
 	\begin{lstlisting}
 	qemu-img create -f qcow2 base.qcow2 50G
@@ -459,6 +462,38 @@
 		\item[7.] 清除之前的改动，返回到最初的环境，也就是将新生成的增量文件overlay3.qcow2重命名为overlay2.qcow2。
 		          随后删除之前生成的快照元数据。因为动态创建快照以后虚拟机overlay2的磁盘文件变成了overlay3.qcow2，我们还需要将虚拟机overlay2的磁盘文件更换为overlay2.qcow2。
 	\end{itemize}
+
+\subsection{测试环境的搭建}
+	经过第一种情况的测试后，我们现在的环境是拥有虚拟机overlay1,它的磁盘文件是overlay1.qcow2，
+	快照链为base.qcow2<-overlay1.qcow2。\par
+
+	现在我们想要拥有的环境是拥有虚拟机overlay2,它的磁盘文件是overlay2.qcow2，
+	快照链为base.qcow2<-overlay1.qcow2<-overlay2.qcow2。\par
+
+	搭建环境的步骤如下：
+	\begin{itemize}
+		\item[1.] 关闭虚拟机overlay1：
+		\begin{lstlisting}
+	virsh destroy overlay1
+		\end{lstlisting}
+
+		\item[2.] 创建虚拟机overlay2,需要保证它的磁盘文件是overlay1.qcow2:
+		\begin{lstlisting}
+	virsh start overlay2
+		\end{lstlisting}
+
+		\item[3.] 对overlay2动态创建外部快照，此时它的磁盘文件就变成了overlay2.qcow2:
+		\begin{lstlisting}
+	virsh snapshot-create-as overlay2 snap snap-desc --disk-only --diskspec hda,snapshot=external,file=/home/pengsida/kvm/openstack/overlay2.qcow2 --atomic
+		\end{lstlisting}
+
+		\item[4.] 删除之前生成的快照元数据：
+		\begin{lstlisting}
+	virsh snapshot-delete overlay2 snap --metadata
+		\end{lstlisting}
+	\end{itemize}
+
+	经过上述步骤，我们就得到了想要的测试环境。当然最好先ssh登录到虚拟机overlay2.从而信任overlay2虚拟机。
 
 \subsection{测试代码}
 	\begin{lstlisting}

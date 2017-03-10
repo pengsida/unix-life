@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  10 MAR 2017 11:33
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  10 MAR 2017 13:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1606,7 +1606,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
-Overfull \hbox (34.95042pt too wide) in paragraph at lines 442--443
+Overfull \hbox (34.95042pt too wide) in paragraph at lines 445--446
 []\EU1/lmr/m/n/10.95 openstack \EU1/STZHONGS.TTF(0)/m/n/10.95 上 一 台 虚 拟 机 被 动 态
  创 建 快 照 以 后，|  它 的 快 照 链 为 \EU1/lmr/m/n/10.95 base.qcow2<-overlay1.qcow2<-
  []
@@ -1624,7 +1624,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8] 
+[8]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1632,12 +1639,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 528.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 528.
+[10]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 563.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 563.
  (./测试动态快照稳定性.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 528.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 528.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 563.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 563.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1646,10 +1653,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  30136 strings out of 493638
  531351 string characters out of 6146796
- 750221 words of memory out of 5000000
+ 717221 words of memory out of 5000000
  33207 multiletter control sequences out of 15000+600000
  10724 words of font info for 63 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  48i,12n,72p,10366b,1839s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 测试动态快照稳定性.pdf (9 pages).
+Output written on 测试动态快照稳定性.pdf (10 pages).
