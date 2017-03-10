@@ -126,7 +126,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{多态 \qquad}
+\chead{接口 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -134,160 +134,95 @@
 
 \clearpage
 
-\section{多态}
-	多态又称为动态绑定，和C++的多态类似。在讨论多态之前，先感受一下多态的特性。例子如下：
-	\begin{lstlisting}[language = Java]
-	class Instrument
+\section{抽象类和抽象方法}
+	抽象方法：只有声明而没有方法体：
+	\begin{lstlisting}[language = java]
+	abstract void f();
+	\end{lstlisting}
+
+	包含抽象方法的类叫做抽象类。如果一个类包含一个或多个抽象方法，该类必须被限定为抽象的。\par
+
+	如果从一个抽象类继承，并想创建该新类的对象，那么必须为基类中的所有抽象方法提供方法定义，否则这个导出类也是抽象类，并且编译器会强制我们用abstract关键字来限定这个类。\par
+
+	定义抽象类的例子如下：
+	\begin{lstlisting}[language = java]
+	abstract class Instrument
 	{
-		public void play()
-		{
-			System.out.println("Instrument.play()");
-		}
+		private int i;
+		public abstract void play(Note n);
+		public String what(){return "Instrument";}
+		public abstract void adjust();
 	}
 
 	class Wind extends Instrument
 	{
-		public void play()
+		public void play(Note n)
 		{
-			System.out.println("Wind.play()");
+			print("Wind.play() " + n);
 		}
+
+		public String what()
+		{
+			return "Wind";
+		}
+
+		public void adjust(){}
 	}
 
-	public class Music
+	public static void main(String[] args)
 	{
-		public static void tune(Instrument i)
+		Wind test = new Wind();
+		test.what();
+	}
+	\end{lstlisting}
+
+\section{接口}
+	一个接口表示：”所有实现了特定接口的类看起来都像这样“。因此，任何使用某特定接口的代码都知道可以调用该接口的哪些方法。\par
+
+	要创建一个接口，需要用interface关键字来替代class关键字。
+	interface关键字产生了一个完全抽象的类，它允许创建者确定方法名、参数列表和返回类型，但是没有任何方法体。\par
+
+	如果要让一个类实现一个接口，需要使用implements关键字，它表示：“interface只是它的外貌，但是现在我要声明它是如何工作的。”
+	一旦实现了某个接口，其实现就变成了一个普通的类，就可以按常规方式扩展它。\par
+
+	需要知道的是，interface中的方法如果没有特定声明，就自动是public的。而接口中的域如果没有特定声明，那么就自动是static和final的。\par
+
+	定义接口的例子如下：
+	\begin{lstlisting}[language = java]
+	interface Instrument
+	{
+		int VALUE = 5;
+		void play(Note n);
+		void adjust();
+	}
+
+	class Wind implements Instrument
+	{
+		public vid play(Note n)
 		{
-			i.play();
+			print(this + ".play()" + n);
 		}
-		public static void main(String[] args)
+
+		public String toString(){return "Wind";}
+		public void adjust()
 		{
-			Wind flute = new Wind();
-			// tune接受Instrument类型
-			// 将Wind转为Instrument类型
-			// 输出的是：Wind.play()
-			tune(flute); 
+			print(this + ".adjust()");
 		}
 	}
 	\end{lstlisting}
 
-	从这个例子可以看出一个多态的现象：虽然tune函数接受一个Instrument引用，但是它知道这个Instrument引用指向的是Wind对象。
-	正是动态绑定实现了这项特性。
+\section{完全解耦}
 
-\subsection{绑定}
-	将一个函数调用和一个函数主体关联起来称为绑定。绑定有两种类型，如下：
-	\begin{itemize}
-		\item 前期绑定。在程序执行前就将一个函数调用和一个函数主体关联起来。
-		\item 后期绑定，又称为动态绑定。在程序运行时根据对象的类型进行绑定。
-	\end{itemize}
+\section{Java中的多重继承}
 
-	Java中除了static方法和final方法，其他所有方法都是后期绑定的。
+\section{通过继承来扩展接口}
 
-\subsection{多态的缺陷}
-\subsubsection{private函数无法动态绑定}
-	程序不能对private函数进行动态绑定。这是因为private函数是final函数，而且导出类无法覆盖基类中的private函数。例子如下：
-	\begin{lstlisting}[language = Java]
-	class PrivateOvrride
-	{
-		private void f()
-		{
-			System.out.println("private f()");
-		}
+\section{适配接口}
 
-		public static void main(String[] args)
-		{
-			PrivateOvrride po = new Derived();
-			po.f(); // 不会指向Derived类中的f()，而是指向PrivateOvrride类中的f()
-		}
-	}
+\section{接口中的域}
 
-	public class Derived extends PrivateOvrride
-	{
-		public void f()
-		{
-			System.out.println("public f()");
-		}
-	}
-	\end{lstlisting}
+\section{嵌套接口}
 
-	为了避免造成混乱的代码，导出类中的函数名不要和基类中的private函数名相同。
-
-\subsubsection{域无法动态绑定}
-	和C++一样，Java中域是无法动态绑定的。也就是说，程序无法根据对象的类型选择相应的域。例子如下：
-	\begin{lstlisting}[language = Java]
-	class Super
-	{
-		public int field = 0;
-	}
-
-	Sub extends Super
-	{
-		public int field = 1;
-	}
-
-	public class FieldAccess
-	{
-		public static void main(String[] args)
-		{
-			Super sup = new Sub();
-			System.out.println(sup.field); // 输出0
-			Sub sub = new Sub();
-			System.out.println(sub.field); // 输出1
-		}
-	}
-	\end{lstlisting}
-
-	为了避免造成混乱的代码，不要把基类中的域和导出类的域赋予相同的名字。
-
-\subsection{协变返回类型}
-	协变返回类型表明，子类覆写基类方法时，返回的类型可以是基类方法返回类型的子类。
-
-	\begin{lstlisting}[language = Java]
-	class Grain
-	{
-		public String toString()
-		{
-			return "Grain";
-		}
-	}
-
-	class Wheat extends Grain
-	{
-		public String toString()
-		{
-			return "Wheat";
-		}
-	}
-
-	class Mill
-	{
-		Grain process()
-		{
-			return new Grain();
-		}
-	}
-
-	class WheatMill extends Mill
-	{
-		Wheat process()
-		{
-			return new Wheat();
-		}
-	}
-
-	public class CovariantReturn
-	{
-		public static void main(String[] args)
-		{
-			Mill m = new Mill();
-			Grain g = m.process();
-			System.out.println(g); // 输出Grain
-			m = new WheatMill();
-			g = m.process();
-			System.out.println(g); // 输出Wheat
-		}
-	}
-	\end{lstlisting}
-
-	
+\section{接口与工厂}
 
 \end{document}

@@ -698,4 +698,798 @@
 		iretd
 	\end{lstlisting}
 
+\subsubsection{中断重入}
+	我们现在想要在中断处理过程中允许下一个中断发生，先来感受一下中断重入的现象：
+	\begin{lstlisting}
+	extern delay
+
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		mov esp, StackTop
+		
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+	
+		sti ; 发生时钟中断时会把中断关掉，为了体会中断重入的现象，我们在此把中断打开
+
+		push clock_int_msg
+		call disp_int
+		add esp, 4
+
+		push 1
+		call delay
+		add esp, 4
+
+		cli
+
+		mov esp, [p_proc_ready]
+
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+	为了让中断不会不断地重入，我们需要让中断处理程序知道自己是不是在嵌套执行，此时我们只需要设置一个全局变量。
+	这个全局变量有一个初值-1，当中断处理程序开始执行时它自加，结束时自减。\par
+
+	在处理程序开头处这个变量需要被检查一下，如果值不是0，则说明在一次中断未处理完之前就又发生了一次中断，这时直接跳到最后。
+	代码如下：
+	\begin{lstlisting}
+	// 设置全局变量
+	PUBLIC int kernel_main()
+	{
+		k_reenter = -1;
+	}
+
+	; 在中断例程中加入k_reenter自加以及判断是否为0的代码
+	extern k_reenter
+
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		inc dword [k_reenter] ; k_reenter自加
+		cmp dword [k_reenter], 0
+		jne .re_enter
+
+		mov esp, StackTop
+
+		sti
+
+		push clock_int_msg
+		call disp_str
+		add esp, 4
+
+		cli
+
+		mov esp, [p_proc_ready]
+
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+	.re_enter:
+		dec dword [k_reenter]
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+\section{多进程}
+\subsection{添加一个进程体}
+	进程体B的内容如下：
+	\begin{lstlisting}
+	void TestB()
+	{
+		int i = 0x1000;
+		while(1)
+		{
+			disp_str("B");
+			disp_int(i++);
+			disp_str(".");
+			delay(1);
+		}
+	}
+	\end{lstlisting}
+
+\subsection{相关的变量和宏}
+	进程有四个要素：进程体、进程表、GDT和TSS。接下来我们来初始化进程表。\par
+
+	为了让我们的代码实现自动化，让增加一个进程变得简单而迅速，我们使用一个task\_table数组。
+	这个数组的每一项定义好一个任务的开始地址、堆栈，在初始化进程表示，只要用一个for循环依次读取每一项，然后填充到相应的进程表项中就可以了。\par
+
+	首先在proc.h中声明一个数组类型：
+	\begin{lstlisting}
+	typedef void (*task_f)();
+
+	typedef struct s_task
+	{
+		task_f initial_eip;
+		int stacksize;
+		char name[32];
+	}
+	\end{lstlisting}
+
+	随后我们在global.c中增加task\_table中增加一个定义：
+	\begin{lstlisting}
+	PUBLIC TASK task_table[NR_TASKS] = {{TestA, STACK_SIZE_TESTA, "TestA"}, {TestB, STACK_SIZE_TESTB, "TestB"}};
+	\end{lstlisting}
+
+	一些相关的宏的定义如下：
+	\begin{lstlisting}
+	#define NR_TASKS 2
+
+	#define STACK_SIZE_TESTA 0x8000
+	#define STACK_SIZE_TESTB 0x8000
+
+	#define STACK_SIZE_TOTAL (STACK_SIZE_TESTA + \
+							  STACK_SIZE_TESTB)
+	\end{lstlisting}
+
+\subsection{初始化进程表}
+	下面用for循环和task\_table数组进行进程表的初始化工作：
+	\begin{lstlisting}
+	PUBLIC int kernel_main()
+	{
+		disp_str("----\"kernel_main\" begins----");
+
+		TASK* p_task = task_table;
+		PROCESS* p_proc = proc_table;
+		char* p_task_stack = task_stack + STACK_SIZE_TOTAL;
+		u16 selector_ldt = SELECTOR_LDT_FIRST;
+		int i;
+
+		for(i = 0; i < NR_TASKS; i++)
+		{
+			strcpy(p_proc->p_name; p_task->name);
+			p_proc->pid = i;
+			p_proc->ldt_sel = selector_ldt;
+			memcpy(&p_proc->ldts[0], &gdt[SELECTOR_KERNEL_CS >> 3], sizeof[DESCRIPTOR]);
+			p_proc->ldts[0].attr1 = DA_C | PRIVILEGE_TASK << 5;
+			memcpy(&p_proc->ldts[1], &gdt[SELECTOR_KERNEL_DS >> 3], sizeof[DESCRIPTOR]);
+			p_proc->ldts[1].attr1 = DA_DRW | PRIVILEGE_TASK << 5;
+			p_proc->regs.cs = ((8*0) & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+			p_proc->regs.ds = ((8*1) & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+			p_proc->regs.es = ((8*1) & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+			p_proc->regs.fs = ((8*1) & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+			p_proc->regs.ss = ((8*1) & SA_RPL_MASK & SA_TI_MASK) | SA_TIL | RPL_TASK;
+			p_proc->regs.gs = (SELECTOR_KERNEL_GS & SA_RPL_MASK) | RPL_TASK;
+
+			p_proc->regs.eip = (u32)p_task->initial_eip;
+			p_proc->regs.esp = (u32)p_task_stack;
+			p_proc->regs.eflags = 0x1202;
+
+			p_task_stack -= p_task->stacksize;
+			p_proc++;
+			p_task++;
+			selector_ldt += 1 << 3;
+		}
+
+		k_reenter = -1;
+
+		p_proc_ready = proc_table;
+		restart();
+
+		while(1){}
+	}
+	\end{lstlisting}
+
+\subsection{初始化LDT}
+	 每一个进程都会在GDT中对应有一个LDT描述符，我们刚刚在进程表中初始化了LDT描述符对应的选择子，但是还没初始化描述符本身。\par
+
+	 下面使用循环初始化进程的描述符：
+	 \begin{lstlisting}
+	 int i;
+	 PROCESS* p_proc = proc_table;
+	 u16 selector_ldt = INDEX_LDT_FIRST << 3;
+	 for(i = 0; i < NR_TASKS; i++)
+	 {
+		 init_descriptor(&gdt[selector_ldt>>3], vir2phys(seg2phys(SELECTOR_KERNEL_DS), proc_table[i].ldts), LDT_SIZE*sizeof(DESCRIPTOR)-1, DA_LDT);
+		 p_proc++;
+		 selector_ldt += 1 << 3;
+	 }
+	 \end{lstlisting}
+
+\subsection{修改中断处理程序}
+	一个进程由“睡眠”状态变成“运行”状态，需要将esp指向进程表项的开始处，然后在执行lldt之后经历一系列pop指令恢复各个寄存器的值。
+	因为进程的一切信息都包含在进程表中，所以，想要恢复不同的进程，只需要将esp指向不同的进程表就可以了。\par
+
+	代码如下：
+	\begin{lstlisting}
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push bfseries
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		inc dword [k_reenter]
+		cmp dword [k_reenter], 0
+		jne .re_enter
+
+		mov esp, StackTop
+
+		sti
+		push 0
+		call clock_handler
+		add esp, 4
+		cli
+
+		mov esp, [p_proc_ready]
+		lldt [esp + P_LDT_SEL]
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+	.re_enter:
+		dec dword [k_reenter]
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+		iretd
+	\end{lstlisting}
+
+	时钟中断的核心代码clock\_handler函数如下：
+	\begin{lstlisting}
+	PUBLIC void clock_handler(int irq)
+	{
+		disp_str("#");
+		p_proc_ready++;
+		if(p_proc_ready >= proc_table + NR_TASKS)
+			p_proc_ready = proc_table;
+	}
+	\end{lstlisting}
+
+\subsection{添加一个任务的步骤总结}
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 首先添加一个进程体：
+		\begin{lstlisting}
+	void TestC()
+	{
+		int i = 0x2000;
+		while(1)
+		{
+			disp_str("C");
+			disp_int(i++);
+			disp_str(".");
+			delay(1);
+		}
+	}
+		\end{lstlisting}
+
+		\item[2.] 然后在task\_table中添加一项进程：
+		\begin{lstlisting}
+	PUBLIC TASK task_table[NR_TASKS] = {
+		{TestA, STACK_SIZE_TESTA, "TestA"},
+		{TestB, STACK_SIZE_TESTB, "TestB"},
+		{TestC, STACK_SIZE_TESTC, "TestC"}
+	};	
+		\end{lstlisting}
+
+		\item[3.] 最后需要添加一些宏变量：
+		\begin{lstlisting}
+	#define NR_TASKS 3
+
+	#define STACK_SIZE_TESTA 0x8000
+	#define STACK_SIZE_TESTB 0x8000
+	#define STACK_SIZE_TESTC 0x8000
+
+	#define STACK_SIZE_TOTAL (STACK_SIZE_TESTA + \
+							  STACK_SIZE_TESTB + \
+							  STACK_SIZE_TESTC)
+		\end{lstlisting}
+	\end{itemize}
+
+\section{Minix的中断处理}
+	Minix的中断处理代码充满了美感，下面是它的中断处理机制的代码的一部分：
+	\begin{lstlisting}
+	#define hwint_master(irq)	\
+		call save				\
+		inb INT_CTLMSK 			\
+		orb al, (1<<irq)		\
+		outb INT_CTLMSK			\
+		movb al, ENABLE			\
+		outb INT_CTL			\
+		sti						\
+		push irq				\
+		call (_irq_table + 4*irq) \
+		pop ecx 				\
+		cli 					\
+		test eax, eax			\
+		jz 0f					\
+		inb INT_CTLMSK			\
+		andb al, -[1<<irq]		\
+		outb INT_CTLMSK			\
+	0:	ret
+
+		.align 16
+	_hwint00:
+		hwint_master(0)
+
+		.align 16
+	_hwint01:
+		hwint_master(1)
+
+		.align 16
+	_hwint02:
+		hwint_master(2)
+
+		.align 16
+	_hwint03:
+		hwint_master(3)
+
+		.align 16
+	_hwint04:
+		hwint_master(4)
+
+		.align 16
+	_hwint05:
+		hwint_master(5)
+
+		.align 16
+	_hwint06:
+		hwint_master(6)
+
+		.align 16
+	_hwint07:
+		hwint_master(7)
+
+	#define hwint_slave(irq)	\
+		call save				\
+		inb INT2_CTLMASK		\
+		orb al, (1<<[irq-8])	\
+		outb INT2_CTLMASK		\
+		movb al, ENABLE			\
+		outb INT_CTL			\
+		jmp .+2					\
+		outb INT2_CTL			\
+		sti						\
+		push irq				\
+		call (_irq_table + 4*irq) \
+		pop ecx					\
+		cli						\
+		test eax, eax			\
+		jz 0f					\
+		inb INT2_CTLMASK		\
+		andb al, -[1<<[irq-8]]	\
+		outb INT2_CTLMASK		\
+	0:	ret
+		
+		.align 16
+	_hwint08:
+		hwint_slave(8)
+
+		.align 16
+	_hwint09:
+		hwint_slave(9)
+
+		.align 16
+	_hwint10:
+		hwint_slave(10)
+
+		.align 16
+	_hwint11:
+		hwint_slave(11)
+
+		.align 16
+	_hwint12:
+		hwint_slave(12)
+
+		.align 16
+	_hwint13:
+		hwint_slave(13)
+
+		.align 16
+	_hwint14:
+		hwint_slave(14)
+
+		.align 16
+	_hwint15:
+		hwint_slave(15)
+	\end{lstlisting}
+
+	hwint\_master首先调用一个函数save，将寄存器的值保存起来，然后操纵8259A避免在处理当前中断的同时发生同样类型的中断。
+	随后，给8259A的中断命令寄存器发出中断结束命令EOI。然后用sti指令打开种顿啊，
+	调用函数(*\_irq\_table[irq])(irq)，这是与当前中断相关的一个例程。
+	再用cli关中断、test指令判断函数(*\_irq\_table[irq])(irq)的返回值，如果非零的话就重新打开当前发生的中断，如果是零的话就直接ret。\par
+
+	首先来看看save函数：
+	\begin{lstlisting}
+	.align 16
+save:
+	cld
+	pushad
+o16 push ds
+o16	push es
+o16	push fs
+o16	push gs
+	mov dx, ss
+	mov ds, dx
+	mov es, dx
+	mov eax, esp
+	incb (_k_reenter)
+	jnz set_restart1
+	mov esp, k_stktop
+	push _restart
+	xor ebp, ebp
+	jmp RETADR-P_STACKBASE(eax)
+
+	.align 4
+set_restart1:
+	push restart1
+	jmp RETADR-P_STACKBASE(eax)
+	\end{lstlisting}
+
+	上面函数中的代码大部分挺熟悉的，主要是jmp RETADR-P\_STACKBASE(eax)需要理解。这里的eax指向进程表的初始地址，而RETADR-P\_STACKBASE的定义如下：
+	\begin{lstlisting}
+	P_STACKBASE = 0
+	GSREG = P_STACKBASE
+	FSREG = GSREG + 2
+	ESREG = FSREG + 2
+	DSREG = ESREG + 2
+	DIREG = DSREG + 2
+	SIREG = DIREG + w
+	BPREG = SIREG + w
+	STREG = SIREG + w
+	BXREG = STREG + w
+	DXREG = BXREG + w
+	CXREG = DXREG + w
+	AXREG = CXREG + w
+	RETADR = AXREG + w
+	PCREG = RETADR + w
+	CSREG = PCREG + w
+	PSWREG = CSREG + w
+	SPREG = PSWREG + w
+	SSREG = SPREG + w
+	P_STACKTOP = SSREG + w
+	P_LDT_SEL = P_STACKTOP
+	P_LDT = P_LDT_SEL + w
+	\end{lstlisting}
+
+	所以RETADR-P\_STACKBASE的值就是执行call save这条指令时压栈的返回地址相对于进程表起始地址的偏移。
+	所以jmp RETADR-P\_STACKBASE(eax)将跳转到inb INT\_CTLMASK以后继续向下执行。\par
+
+	save函数还设置了，如果非中断重入，就跳转到\_restart，如果中断重入，就跳转到restart1，这两个函数的代码如下：
+	\begin{lstlisting}
+	_restart:
+		cmp (_held_head), 0
+		jz over_call_unhold
+		call _unhold
+	over_call_unhold:
+		mov esp, (_proc_ptr)
+		lldt P_LDT_SEL(esp)
+		lea eax, P_STACKTOP(esp)
+		mov (_ess+TSS3_S_SP0), eax
+	restart1:
+		decb (_k_reenter)
+	o16 pop gs
+	o16 pop fs
+	o16 pop es
+	o16 pop ds
+		popad
+		add esp, 4
+		iretd
+	\end{lstlisting}
+
+\subsection{对minix代码的学习}
+	首先学习对中断重入方式的处理：
+	\begin{lstlisting}
+	hwint00:
+		sub esp, 4
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		inc byte [gs:0]
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		inc dword [k_reenter]
+		cmp dword [k_reenter], 0
+		jne .1
+
+		mov esp, StackTop
+
+		push restart
+		jmp .2
+
+	.1:
+		push restart_reenter
+
+	.2:
+		sti
+
+		push 0
+		call clock_handler
+		add esp, 4
+
+		cli
+
+		ret
+
+	
+	; 从hwint00中分离出restart代码
+	restart:
+		mov esp, [p_proc_ready]
+		lldt [esp + P_LDT_SEL]
+		lea eax, [esp + P_STACKTOP]
+		mov dword [tss + TSS3_S_SP0], eax
+
+	restart_reenter:
+		dec dword [k_reenter]
+		pop gs
+		pop fs
+		pop es
+		pop ds
+		popad
+		add esp, 4
+
+		iretd
+	\end{lstlisting}
+
+	这里的中断重入处理方式，不管是否重入，都会调用clock\_handler函数，所以我们还需要修改时钟中断处理程序，使得它发生中断重入时直接返回：
+	\begin{lstlisting}
+	PUBLIC void clock_handler(int irq)
+	{
+		disp_str("#");
+
+		if(k_reenter != 0)
+		{
+			disp_str("!");
+			return;
+		}
+
+		p_proc_ready++;
+		if(p_proc_ready >= proc_table + NR_TASKS)
+			p_proc_ready = proc_table;
+	}
+	\end{lstlisting}
+
+	随后分离出save函数的代码：
+	\begin{lstlisting}
+	hwint00:
+		call save
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		sti
+		push 0
+		call clock_handler
+		add esp, 4
+		cli
+
+		ret
+
+	save:
+		pushad
+		push ds
+		push es
+		push fs
+		push gs
+		mov dx, ss
+		mov ds, dx
+		mov es, dx
+
+		mov eax, esp
+
+		inc dword [k_reenter]
+		cmp dword [k_reenter], 0
+		jne .1
+		mov esp, StackTop
+		push restart
+		jmp [eax + RETADR - P_STACKBASE]
+	
+	.1:
+		push restart_reenter
+		jmp [eax + RETADR - P_STACKBASE]
+	\end{lstlisting}
+
+	我们之前是允许时钟中断时再次发生时钟中断的，现在我们来禁止这种现象：
+	\begin{lstlisting}
+	hwint00:
+		call save
+
+		; 禁止时钟中断发生
+		in al, INT_M_CTLMASK
+		or al, 1
+		out INT_M_CTLMASK, al
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		sti
+		push 0
+		call clock_handler
+		add esp, 4
+		cli
+
+		; 允许时钟中断发生
+		in al, INT_M_CTLMASK
+		and al, 0xFE
+		out INT_M_CTLMASK, al
+
+		ret
+	\end{lstlisting}
+
+	将时钟中断处理程序改成一个类似的宏，用于通用的中断处理程序中:
+	\begin{lstlisting}
+	extern irq_table
+
+	%macro hwint_master 1
+		call save
+		in al, INT_M_CTLMASK
+		or al, (1 << %1)
+		out INT_M_CTLMASK, al
+
+		mov al, EOI
+		out INT_M_CTL, al
+
+		sti
+		push %1
+		call [irq_table + 4 * %1]
+		pop ecx
+		cli
+
+		in al, INT_M_CTLMASK
+		and al, -(1 << %1)
+		out INT_M_CTLMASK, al
+		ret
+	%endmacro
+	\end{lstlisting}
+
+	irq\_table是一个函数指针数组，存放着中断处理程序，需要初始化irq\_table:
+	\begin{lstlisting}
+	PUBLIC void init_8259A()
+	{
+		int i;
+		for(i = 0; i < NR_IRQ; i++)
+			irq_table[i] = spurious_irq;
+	}
+	\end{lstlisting}
+
+	我们再写一个函数put\_irq\_handler来为irq\_table赋值：
+	\begin{lstlisting}
+	PUBLIC void put_irq_handler(int irq, irq_handler handler)
+	{
+		disable_irq(irq);
+		irq_table[irq] = handler;
+	}
+	\end{lstlisting}
+
+	然后在kernel\_main()函数中指定时钟中断处理程序：
+	\begin{lstlisting}
+	PUBLIC int kernel_main()
+	{
+		put_irq_handler(CLOCK_IRQ, clock_handler);
+		enable_irq(CLOCK_IRQ);
+	}
+	\end{lstlisting}
+
+	这里用到的disable\_irq函数和enable\_irq函数如下：
+	\begin{lstlisting}
+	global enable_irq
+	global disable_irq
+
+	disable_irq:
+		mov ecx, [esp + 4]
+		pushf
+		cli
+		mov ah, 1
+		rol ah, cl
+		cmp cl, 8
+		jae disable_8
+
+	disable_0:
+		in al, INT_M_CTLMASK
+		test al, ah
+		jnz dis_already
+		or al, ah
+		out INT_M_CTLMASK, al
+		popf
+		mov eax, 1
+		ret
+
+	disable_8:
+		in al, INT_S_CTLMASK
+		test al, ah
+		jnz dis_already
+		or al, ah
+		out INT_S_CTLMASK, al
+		popf
+		mov eax, 1
+		ret
+
+	dis_already:
+		popf
+		xor eax, eax
+		ret
+
+	enable_irq:
+		mov ecx, [esp + 4]
+		pushf
+		cli
+		mov ah, -1
+		rol ah, cl
+		cmp cl, 8
+		jae enable_8
+	enable_0:
+		in al, INT_M_CTLMASK
+		and al, ah
+		out INT_M_CTLMASK, al
+		popf
+		ret
+	enable_8:
+		in al, INT_S_CTLMASK
+		and al, ah
+		out INT_S_CTLMASK, al
+		popf
+		ret
+	\end{lstlisting}
+
+\subsection{实现进程需要的步骤}
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 初始化8259A。
+		\item[2.] 初始化IDT。
+		\item[3.] 初始化GDT中的TSS和LDT两个描述符，以及初始化TSS。
+		\item[4.] 初始化进程表。
+		\item[5.] 指定时钟中断处理程序。
+		\item[6.] 让8259A可以接收时钟中断。
+		\item[7.] restart()。
+	\end{itemize}
+
 \end{document}
