@@ -15,7 +15,6 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}%
 \makeatother
 
-\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{empheq}
 \usepackage{graphicx}
@@ -138,21 +137,50 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{linux块设备管理 \qquad}
+\chead{使用包安装qemu-kvm \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
 
-\tableofcontents
+% \tableofcontents
 
 \clearpage
 
-\section{硬盘}
-    一个硬盘就是一个块设备，当内核检测到硬盘后，在/dev/下会看到/dev/sda/。\par
-    如果想用一个磁盘来得到不同的分区来做不同的事，我们可以使用fdisk工具得到/dev/sda1、/dev/sda2等。
+\section{使用包安装qemu-kvm}
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 首先检查linux内核是否加载kvm内核模块，命令如下：
+		\begin{lstlisting}
+	lsmod | grep kvm
+		\end{lstlisting}
 
-\section{LVM \& Device mapper}
-\subsection{LVM}
-    LVM是一种逻辑卷管理器，通过LVM可以对硬盘创建逻辑卷组和得到逻辑卷。
+		如果有包含“kvm”和“kvm\_intel”，说明linux内核已经加载kvm内核模块。否则需要使用如下命令加载kvm内核模块：
+		\begin{lstlisting}
+	sudo modprobe kvm
+		\end{lstlisting}
+
+		如果加载失败，说明当前linux内核不支持kvm，需要自行编译安装，编译安装的步骤可以查看《KVM环境的搭建》这个文档。
+
+		\item[2.] 搭建qemu-kvm、libvirt环境：
+		\begin{lstlisting}
+	sudo apt-get install qemu-kvm qemu-system libvirt-bin bridge-utils
+		\end{lstlisting}
+
+		\item[3.] 安装libvirt图形化管理工具：
+		\begin{lstlisting}
+	sudo apt-get install virt-manager python-spice-client-gtk
+		\end{lstlisting}
+
+		\item[4.] 启动libvirt和virsh查看是否安装成功：
+		\begin{lstlisting}
+	sudo libvirtd
+	# 打开另一个终端
+	sudo virsh
+		\end{lstlisting}
+
+		如果没有报错，就是安装成功，否则更多信息可以查看《libvirt的安装》和《kvm管理工具》中的“创建一个虚拟机”那一节。
+	\end{itemize}
+
+
 
 \end{document}

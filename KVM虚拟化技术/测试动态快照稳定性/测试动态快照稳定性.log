@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  2 MAR 2017 15:57
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  10 MAR 2017 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**openstack中的重要概念.tex
-(./openstack中的重要概念.tex
+**测试动态快照稳定性.tex
+(./测试动态快照稳定性.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1301,7 +1301,141 @@ Package: fp-pas 1994/08/29
 Package: fp-random 1995/02/23
 \FPseed=\count271
 )
-(/usr/sharbol \Sigma on input line 143.
+(/usr/share/texlive/texmf-dist/tex/latex/fp/fp-eqn.sty
+Package: fp-eqn 1995/04/03
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fp/fp-upn.sty
+Package: fp-upn 1996/10/21
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fp/fp-eval.sty
+Package: fp-eval 1995/04/03
+))
+\diagbox@boxa=\box64
+\diagbox@boxb=\box65
+\diagbox@boxm=\box66
+\diagbox@wd=\dimen286
+\diagbox@ht=\dimen287
+\diagbox@insepl=\dimen288
+\diagbox@insepr=\dimen289
+\diagbox@outsepl=\dimen290
+\diagbox@outsepr=\dimen291
+)
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen292
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+.................................................
+. fontspec info: "no-scripts"
+. 
+. Font MONACO.TTF does not contain any OpenType `Script' information.
+.................................................
+\g__fontspec_family_MONACO.TTF_int=\count272
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'MONACO.TTF(0)' created for font 'MONACO.TTF' with options [].
+. 
+. This font family consists of the following NFSS series/shapes:
+. - 'normal' (m/n) with NFSS spec.: <->"[MONACO]/OT:"
+. - 'small caps'  (m/sc) with NFSS spec.: 
+.................................................
+\g__fontspec_family_STZHONGS.TTF_int=\count273
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'STZHONGS.TTF(0)' created for font 'STZHONGS.TTF' with options
+. [Script={CJK}].
+. 
+. This font family consists of the following NFSS series/shapes:
+. - 'normal' (m/n) with NFSS spec.:
+. <->"[STZHONGS]/OT:script=hani;language=DFLT;"
+. - 'small caps'  (m/sc) with NFSS spec.: 
+.................................................
+
+(/usr/share/texlive/texmf-dist/tex/latex/lastpage/lastpage.sty
+Package: lastpage 2015/03/29 v1.2m Refers to last page's name (HMM; JPG)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip79
+\f@ncyO@elh=\skip80
+\f@ncyO@erh=\skip81
+\f@ncyO@olh=\skip82
+\f@ncyO@orh=\skip83
+\f@ncyO@elf=\skip84
+\f@ncyO@erf=\skip85
+\f@ncyO@olf=\skip86
+\f@ncyO@orf=\skip87
+)
+(/usr/share/texlive/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
+Package: xeCJK-listings 2016/02/10 v3.3.4 xeCJK patch file for listings
+\l__xeCJK_listings_max_char_int=\count274
+\l__xeCJK_listings_flag_int=\count275
+)
+
+LaTeX Warning: Unused global option(s):
+    [left=1.5cm,right=1.5cm].
+
+(./测试动态快照稳定性.aux)
+\openout1 = `测试动态快照稳定性.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 143.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 143.
+ (/usr/share/texmf/tex/latex/tipa/t3cmr.fd
+File: t3cmr.fd 2001/12/31 TIPA font definitions
+)
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+
+*** you should *not* be loading the inputenc package
+*** XeTeX expects the source to be in UTF8 encoding
+*** some features of other encodings may conflict, resulting in poor output.
+.................................................
+. fontspec info: "setup-math"
+. 
+. Adjusting the maths setup (use [no-math] to avoid this).
+.................................................
+\symlegacymaths=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 143.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 143.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 143.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 143.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 143.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 143.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 143.
+LaTeX Font Info:    Redeclaring math accent \check on input line 143.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 143.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 143.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 143.
 LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 143.
 LaTeX Font Info:    Redeclaring math symbol \Phi on input line 143.
 LaTeX Font Info:    Redeclaring math symbol \Psi on input line 143.
@@ -1335,8 +1469,26 @@ LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
 (Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 143.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 143.
-\Hy@linkcounter=\count198
-\c@lstlisting=\count199
+\AtBeginShipoutBox=\box67
+Package hyperref Info: Link coloring OFF on input line 143.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count276
+)
+LaTeX Info: Redefining \ref on input line 143.
+LaTeX Info: Redefining \pageref on input line 143.
+LaTeX Info: Redefining \nameref on input line 143.
+
+(./测试动态快照稳定性.out) (./测试动态快照稳定性.out)
+\@outlinefile=\write3
+\openout3 = `测试动态快照稳定性.out'.
+
+\c@lstlisting=\count277
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1374,206 +1526,56 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 143.
-! Undefined control sequence.
-l.146     \href
-               {https://docs.openstack.org/developer/nova/block_device_mappi...
 
-? 
-! Emergency stop.
-l.146     \href
-               {https://docs.openstack.org/developer/nova/block_device_mappi...
-End of file on the terminal!
+LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/bx/n' undefined
+(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 145.
 
- 
-Here is how much of TeX's memory you used:
- 23918 strings out of 493638
- 438013 string characters out of 6146796
- 503799 words of memory out of 5000000
- 27096 multiletter control sequences out of 15000+600000
- 4036 words of font info for 27 fonts, out of 8000000 for 9000
- 1328 hyphenation exceptions out of 8191
- 48i,1n,72p,10372b,226s stack positions out of 5000i,500n,10000p,200000b,80000s
-No pages of output.
-: "setup-math"
-. 
-. Adjusting the maths setup (use [no-math] to avoid this).
-.................................................
-\symlegacymaths=\mathgroup6
-LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 144.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 144.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 144.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 144.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 144.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 144.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 144.
-LaTeX Font Info:    Redeclaring math accent \check on input line 144.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 144.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 144.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 144.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 144.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 144.
-LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `normal' on input line 144.
 
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> EU1/lmr/m/n on input line 144.
-LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `bold' on input line 144.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/m/n on input line 144.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/m/n on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> EU1/lmr/m/it on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/bx/n on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/m/n on input line 144.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/bx/n on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> EU1/lmr/bx/it on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 144.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 144.
-\AtBeginShipoutBox=\box67
-Package hyperref Info: Link coloring OFF on input line 144.
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+Overfull \hbox (4.32pt too wide) in paragraph at lines 145--145
+| []| 
+ []
 
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+(./测试动态快照稳定性.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-\c@section@level=\count276
-)
-LaTeX Info: Redefining \ref on input line 144.
-LaTeX Info: Redefining \pageref on input line 144.
-LaTeX Info: Redefining \nameref on input line 144.
-\@outlinefile=\write3
-\openout3 = `openstack中的重要概念.out'.
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+))
+\tf@toc=\write4
+\openout4 = `测试动态快照稳定性.toc'.
 
 
 
-Package hyperref Warning: Rerun to get /PageLabels entry.
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-\c@lstlisting=\count277
-*geometry* driver: auto-detecting
-*geometry* detected driver: xetex
-*geometry* verbose mode - [ preamble ] result:
-* driver: xetex
-* paper: a4paper
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: 
-* h-part:(L,W,R)=(89.62709pt, 418.25368pt, 89.6271pt)
-* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
-* \paperwidth=597.50787pt
-* \paperheight=845.04684pt
-* \textwidth=418.25368pt
-* \textheight=591.5302pt
-* \oddsidemargin=17.3571pt
-* \evensidemargin=17.3571pt
-* \topmargin=-7.86334pt
-* \headheight=12.0pt
-* \headsep=25.0pt
-* \topskip=11.0pt
-* \footskip=30.0pt
-* \marginparwidth=50.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidefalse
-* \@mparswitchfalse
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-Package lastpage Info: Please have a look at the pageslts package at
-(lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 144.
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 
 )
-Runaway argument?
-! Paragraph ended before \href@split was complete.
-<to be read again> 
-                   \par 
-l.148 
-      
-? 
-! Emergency stop.
-<to be read again> 
-                   \par 
-l.148 
-      
-End of file on the terminal!
-
- 
-Here is how much of TeX's memory you used:
- 29640 strings out of 493638
- 522633 string characters out of 6146796
- 607916 words of memory out of 5000000
- 32774 multiletter control sequences out of 15000+600000
- 4396 words of font info for 28 fonts, out of 8000000 for 9000
- 1328 hyphenation exceptions out of 8191
- 48i,1n,72p,10372b,303s stack positions out of 5000i,500n,10000p,200000b,80000s
-No pages of output.
-aTeX Font Info:    Try loading font information for U+msb on input line 147.
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
 [1
 
 ]
-File: 1.png Graphic file (type QTm)
- <use  "1.png" >
-
-LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/bx/n' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 200.
-
-
-LaTeX Font Warning: Font shape `EU1/STZHONGS.TTF(0)/m/it' undefined
-(Font)              using `EU1/STZHONGS.TTF(0)/m/n' instead on input line 222.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2]
-Overfull \hbox (1.65874pt too wide) in paragraph at lines 245--246
-[][]$[][][][][] [] [] [] [][][][][][][][][] [] [][][][][][][][][] [] [][][] [] 
-[][][][][][][][][][] [] [][][][][][][] [] [][][][][][] [] [][][][][][][][] [] [
-][][][]$[] 
- []
+[2
 
+] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1595,14 +1597,20 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
+File: 1.png Graphic file (type QTm)
+ <use  "1.png" >
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6] 
-AED: lastpage setting LastPage
+[6]
+Overfull \hbox (34.95042pt too wide) in paragraph at lines 442--443
+[]\EU1/lmr/m/n/10.95 openstack \EU1/STZHONGS.TTF(0)/m/n/10.95 上 一 台 虚 拟 机 被 动 态
+ 创 建 快 照 以 后，|  它 的 快 照 链 为 \EU1/lmr/m/n/10.95 base.qcow2<-overlay1.qcow2<-
+ []
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1610,23 +1618,38 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 473.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 473.
- (./openstack中的重要概念.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 473.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 473.
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8] 
+AED: lastpage setting LastPage
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 528.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 528.
+ (./测试动态快照稳定性.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 528.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 528.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 30169 strings out of 493638
- 532594 string characters out of 6146796
- 754916 words of memory out of 5000000
- 33242 multiletter control sequences out of 15000+600000
- 10740 words of font info for 65 fonts, out of 8000000 for 9000
+ 30136 strings out of 493638
+ 531351 string characters out of 6146796
+ 750221 words of memory out of 5000000
+ 33207 multiletter control sequences out of 15000+600000
+ 10724 words of font info for 63 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 48i,12n,72p,10372b,1774s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,12n,72p,10366b,1839s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on openstack中的重要概念.pdf (7 pages).
+Output written on 测试动态快照稳定性.pdf (9 pages).

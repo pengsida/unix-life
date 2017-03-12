@@ -138,21 +138,43 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{linux块设备管理 \qquad}
+\chead{virsh命令缩短快照链 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
 
-\tableofcontents
+\clearpage
+
+\section{virsh命令缩短快照链}
+	使用virsh命令动态创建快照的方法在《动态创建快照的两种方法》中已经提过了，在这篇文档中介绍的是，
+	当镜像链为4时，如何将镜像链的长度变为3。\par
+
+	假设我们现在的镜像链为base <- overlay1 <- overlay2 <- overlay3：
+	\begin{itemize}
+		\item[1.] 首先将overlay2融入overlay1中：
+		\begin{lstlisting}
+	# overlay是虚拟机的名字
+	sudo virsh blockcommit --domain overlay hda --base overlay1.qcow2 --top overlay2.qcow2 --wait --verbose
+		\end{lstlisting}
+
+		\item[2.] 清除原先快照2的元数据：
+		\begin{lstlisting}
+	sudo virsh snapshot-delete overlay snap2 --metadata
+		\end{lstlisting}
+
+		\item[3.] 这两个步骤以后，可以看到overlay3.qcow2的镜像链如下：
+		\fic{1.png}
+	\end{itemize}
+
+	需要知道的是，使用virsh命令动态创建快照时，不会影响虚拟机的运行。使用virsh命令缩短镜像链时，也不会影响虚拟机的运行。\par
 
 \clearpage
 
-\section{硬盘}
-    一个硬盘就是一个块设备，当内核检测到硬盘后，在/dev/下会看到/dev/sda/。\par
-    如果想用一个磁盘来得到不同的分区来做不同的事，我们可以使用fdisk工具得到/dev/sda1、/dev/sda2等。
+	这里还有一个问题，先看下图：
+	\fic{2.png}
 
-\section{LVM \& Device mapper}
-\subsection{LVM}
-    LVM是一种逻辑卷管理器，通过LVM可以对硬盘创建逻辑卷组和得到逻辑卷。
+	就是当使用virsh命令动态创建快照后，虚拟机的磁盘文件被替换为新创建的增量文件后，一旦关闭虚拟机，第一次使用“sudo virsh start”命令无法成功，需要两次才能成功，不知道为什么会这样。\par
+
+	当有2层3层overlay时，使用“qemu-img”工具就会遇到图中这种“could not open backing file”的问题，而且我试了一早上也没办法解决，暂时想不出解决办法，所以不得不放弃“qemu-img”这种动态创建快照的方法。
 
 \end{document}

@@ -1615,29 +1615,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 ]
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+Package Fancyhdr ed.
+<inserted text> 
+                $
+l.567 ...n\_create\_image()函数中调用compute_
+                                                  api.snapshot()函数时，...
 
-[9]
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.567 ...n\_create\_image()函数中调用compute_
+                                                  api.snapshot()函数时，...
+End of file on the terminal!
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[10]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11]
-Overfull \hbox (5.64267pt too wide) in paragraph at lines 701--702
-[]\EU1/STZHONGS.TTF(0)/m/n/10.95 首 先 将 虚 拟 机 磁 盘 镜 像 改 名，|  加 个 后 缀”| \EU1/lmr/
-m/n/10.95 .base |\EU1/STZHONGS.TTF(0)/m/n/10.95 “，|  它 的 路 径 也 就 变 成 了 \EU1/lmr
+ 
+Here is how much of TeX's memory you used:
+ 30114 strings out of 493638
+ 531972 string characters out of 6146796
+ 753911 words of memory out of 5000000
+ 33193 multiletter control sequences out of 15000+600000
+ 10748 words of font info for 66 fonts, out of 8000000 for 9000
+ 1328 hyphenation exceptions out of 8191
+ 48i,12n,72p,10369b,1889s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on snapshot优化方案.pdf (8 pages).
+HONGS.TTF(0)/m/n/10.95 “，|  它 的 路 径 也 就 变 成 了 \EU1/lmr
 /m/n/10.95 disk_path.base\EU1/STZHONGS.TTF(0)/m/n/10.95 。| 
  []
 

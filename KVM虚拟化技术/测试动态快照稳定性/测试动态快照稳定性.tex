@@ -1,0 +1,528 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{测试动态快照稳定性 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{测试第一种情况}
+\subsection{第一种情况的描述}
+	openstack上如果一台虚拟机从来没有创建过快照，那么它的快照链为base<-overlay1。
+	我们现在想测试的是，如果此时对虚拟机做动态快照，是否会对虚拟机上进程的执行产生影响，是否会对在处理中的数据的完整性造成影响。\par
+
+	所以我们现在想要测试的是，如果虚拟机上运行着一个脚本，这个脚本的功能是向num.txt文件中写入1～4000000个数字，每个数字一行。
+	此时我们对这台虚拟机进行动态快照，查看脚本是否正常运行，然后查看新建的增量文件的磁盘上数据的完整性，并且查看原来的磁盘文件上的数据是否中断。
+
+\subsection{测试的思路}
+	首先我介绍一下当前环境：libvirt中定义了两个虚拟机overlay1和overlay2。
+	overlay1的磁盘文件是overlay1.qcow2，overlay2的磁盘文件也是overlay1.qcow2。
+	overlay1.qcow2的后端镜像是base.qcow2。\par
+
+	overlay1.qcow2上存放这test\_in\_vm.sh、monitor.sh和judge.sh这三个脚本文件。
+	这个三脚本文件的功能分别是：
+	\begin{lstlisting}
+	test_in_vm.sh：将1～4000000这些数字写入num.txt文件中，每个数字一行。
+	monitor.sh：这个文件用于监测test_in_vm.sh这个进程是否运行结束。
+	judge.sh：这个文件用于判断num.txt是否有4000000，用于判断数据的完整性。
+	\end{lstlisting}
+
+	接下来我说一下测试方案：
+	\begin{itemize}
+		\item[1.] 首先启动虚拟机overlay1,注意它的磁盘文件为overlay1.qcow2。
+		\item[2.] 在宿主机环境中，ssh登录到overlay1上，执行上面的test\_in\_vm.sh脚本。
+		\item[3.] 动态创建快照，此时虚拟机overlay1的磁盘文件就变成了overlay2.qcow2。
+		\item[4.] 等待overlay1上的脚本执行结束。随后查看overlay1上的数据是否完整，也就是查看overlay2.qcow2磁盘上的数据是否完整。
+		\item[5.] 启动虚拟机overlay2,注意它的磁盘文件为overlay2.qcow2。
+				  随后查看它上面的数据是否不完整，也就是查看overlay1.qcow2磁盘上的数据是否不完整。
+		\item[6.] 关闭虚拟机overlay1和overlay2。
+		\item[7.] 清除之前的改动，返回到最初的环境，也就是要把overlay2.qcow2这个增量文件删除，
+		          将虚拟机overlay1的磁盘文件更换为原来的overlay1.qcow2，将虚拟机overlay1的磁盘文件更换为overlay1.qcow2，并且删除虚拟机overlay1的快照数据。
+	\end{itemize}
+
+\subsection{测试需要的环境}
+	首先创建一个base.qcow2镜像：
+	\begin{lstlisting}
+	qemu-img create -f qcow2 base.qcow2 50G
+	\end{lstlisting}
+
+	随后在base.qcow2镜像上安装ubuntu系统，随后在这个系统上安装ssh：
+	\begin{lstlisting}
+	sudo apt install openssh-server
+	\end{lstlisting}
+
+	然后在这个镜像的基础上创建增量镜像overlay1.qcow2：
+	\begin{lstlisting}
+	qemu-img create -f qcow2 -b base.qcow2 overlay1.qcow2
+	\end{lstlisting}
+
+	在overlay1.qcow2上启动虚拟机overlay1,overlay1的xml配置文件内容如下：
+	\begin{lstlisting}[language = xml]
+	<domain type='kvm'>
+		<name>overlay1</name>
+		<memory>1048576</memory>
+		<currentMemory>1048576</currentMemory>
+		<vcpu>4</vcpu>
+		<os>
+			<type arch='x86_64' machine='pc'>hvm</type>
+			<boot dev='cdrom'/>
+		</os>
+		<features>
+			<acpi/>
+			<apic/>
+			<pae/>
+		</features>
+		<clock offset='localtime'/>
+		<on_poweroff>destroy</on_poweroff>
+		<on_reboot>restart</on_reboot>
+		<on_crash>destroy</on_crash>
+		<devices>
+			<emulator>/usr/bin/qemu-system-x86_64</emulator>
+			<disk type='file' device='disk'>
+				<driver name='qemu' type='qcow2'/>
+				<source file='/home/pengsida/kvm/openstack/overlay1.qcow2'/>
+				<target dev='hda' bus='ide'/>
+			</disk>
+			<interface type='network'>
+				<source network='default'/>
+			</interface>
+			<interface type='network'>
+				<source network='default'/>
+			</interface>
+			<input type='mouse' bus='ps2'/>
+			<graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0' keymap='en-us'/>
+			<channel type='unix'>
+				<source mode='bind' path='/var/lib/libvirt/qemu/f16x86_64.agent'/>
+				<target type='virtio' name='org.qemu.guest_agent.0'/>
+			</channel>
+		</devices>
+	</domain>
+	\end{lstlisting}
+
+	在宿主机上安装qemu-guest-agent：
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	随后启动虚拟机overlay1：
+	\begin{lstlisting}
+	# 在overlay1.xml目录下
+	sudo virsh define overlay1.xml
+	sudo virsh start overlay1
+	\end{lstlisting}
+
+	在虚拟机中安装qemu-guest-agent：
+	\begin{lstlisting}
+	sudo apt install qemu-guest-agent
+	\end{lstlisting}
+
+	然后在overlay1上创建两个test\_in\_vm.sh、monitor.sh和judge.sh这三个脚本文件。\par
+
+	test\_in\_vm.sh脚本内容如下:
+	\begin{lstlisting}
+	#!/bin/bash
+
+	times=2000
+
+	rm num.txt
+
+	num=1
+
+	for((i=0;i<=times;i++))
+	do
+		for((j=0;j<=times;j++))
+		do
+			echo $num >> num.txt
+			num=$[$num+1]
+		done
+	done
+	\end{lstlisting}
+
+	monitor.sh脚本内容如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	test=`ps aux | grep ./test.sh`
+	num=`echo $test | awk -v RS='/bin/bash ./test.sh' 'END {print --NR}'`
+
+	while (( $num >= 1 )) 
+	do
+		echo "./test.sh is running"
+		sleep 5
+		test=`ps aux | grep ./test.sh`
+		num=`echo $test | awk -v RS='/bin/bash ./test.sh' 'END {print --NR}'`
+	done
+
+	echo "./test.sh is done"
+	\end{lstlisting}
+
+	judge.sh脚本内容如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	num=`awk 'END {print NR}' num.txt`
+
+	if (( num == 4000000)) 
+	then
+		echo "data is complete"
+	else
+		echo "data is not complete"
+	fi
+	\end{lstlisting}
+
+	随后在宿主机上创建address.sh脚本文件，这个脚本文件可以根据虚拟机的名字返回虚拟机的ip地址：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	MAC=`awk '/virbr0/ { print $4 }' /proc/net/arp`
+	VM=$1
+
+	line=`virsh dumpxml $VM | grep "mac address"`
+	address=`echo $line | awk -F "" '
+	{
+		for(i=1; i<=NF; i++)
+		{
+			if($i ~ /'\''/)
+				break
+		}
+		i++
+		str=""
+		for(;i<=NF;i++)
+		{
+			if($i ~ /'\''/)
+				break
+			temp=$i
+			str=(str temp)
+		}
+		print str
+	}'`
+
+	ip=`awk '/'$address'/ {print $1}' /proc/net/arp`
+
+	echo $ip
+	\end{lstlisting}
+
+	首先ssh登录到虚拟机overlay1:
+	\begin{lstlisting}
+	# 使用address.sh脚本获得overlay1虚拟机的ip地址
+	overlay1=`./address.sh overlay1`
+	echo $overlay1 # 如果输出为空，需要重复上面的命令
+	ssh pengsida@$overlay1 # 假设虚拟机的用户名是pengsida
+	\end{lstlisting}
+
+	随后关闭虚拟机overlay1：
+	\begin{lstlisting}
+	sudo virsh destroy overlay1
+	\end{lstlisting}
+
+	随后开启虚拟机overlay2：
+	\begin{lstlisting}
+	sudo virsh define overlay2.xml
+	sudo virsh start overlay2
+	\end{lstlisting}
+
+	同样是ssh登录到虚拟机overlay2：
+	\begin{lstlisting}
+	overlay2=`./address.sh overlay2`
+	echo $overlay2 # 如果输出为空，需要重复上面的命令，直到获得overlay2的ip
+	ssh pengsida@$overlay2
+	\end{lstlisting}
+
+	随后关闭虚拟机overlay2：
+	\begin{lstlisting}
+	sudo virsh destroy overlay2
+	\end{lstlisting}
+
+	这里之所以要ssh登录到虚拟机overlay1和overlay2的原因是需要信任未连接过的ip地址，如下图所示：
+	\fic{1.png}
+
+\subsection{测试的代码}
+	在宿主机上创建test.sh脚本，内容如下：
+	\begin{lstlisting}
+	#!/bin/bash
+
+	# 步骤一
+	# 创建虚拟机overlay1，磁盘文件为overlay1.qcow2
+	sudo virsh start overlay1
+	# 等待虚拟机启动
+	sleep 30
+
+
+	# 步骤二
+	# 获取虚拟机ip地址
+	overlay1=`./address.sh overlay1`
+	# ssh登录到overlay1上，执行上面的test.sh脚本
+	sshpass -p p1111111 ssh pengsida@$overlay1 ./test_in_vm.sh &
+
+	# 先让./test.sh脚本运行5秒
+	sleep 5
+
+
+	# 步骤三
+	# 动态创建快照，此时虚拟机overlay1的磁盘文件变为overlay2.qcow2
+	sudo virsh snapshot-create-as overlay1 snap snap-desc --disk-only --diskspec hda,snapshot=external,file=/home/pengsida/kvm/openstack/overlay2.qcow2 --atomic
+
+	sleep 5
+
+
+	# 步骤四
+	# 等待test.sh脚本执行结束
+	sshpass -p p1111111 ssh pengsida@$overlay1 ./monitor.sh
+	# 判断overlay1.qcow2上的数据是否完整
+	sshpass -p p1111111 ssh pengsida@$overlay1 ./judge.sh
+
+
+	# 步骤五
+	# 创建虚拟机overlay2，磁盘文件为overlay1.qcow2
+	sudo virsh start overlay2
+	# 等待虚拟机启动
+	sleep 60
+	# 获取虚拟机ip地址
+	overlay2=`./address.sh overlay2`
+	# 判断overlay1.qcow2上的数据是否完整
+	sshpass -p p1111111 ssh pengsida@$overlay2 ./judge.sh
+
+
+	# 步骤六
+	sudo virsh destroy overlay1
+	sudo virsh destroy overlay2
+
+
+	# 步骤七
+	sudo virsh snapshot-delete overlay1 snap --metadata
+	sudo rm /home/pengsida/kvm/openstack/overlay2.qcow2
+
+	# 将虚拟机overlay1的磁盘文件更换为overlay1.qcow2
+	sudo virsh detach-disk overlay1 hda --persistent
+	sudo virsh attach-disk overlay1 /home/pengsida/kvm/openstack/overlay1.qcow2 hda --subdriver qcow2 --persistent
+	\end{lstlisting}
+
+\section{测试第二种情况}
+\subsection{第二种情况的描述}
+	openstack上一台虚拟机被动态创建快照以后，它的快照链为base.qcow2<-overlay1.qcow2<-overlay2.qcow2。
+	我们现在想测试的是，如果此时对虚拟机做动态快照，并且缩短快照链，是否会对虚拟机上进程的执行产生影响，是否会对在处理中的数据的完整性造成影响。\par
+
+	所以我们现在想要测试的是，如果虚拟机上运行着一个脚本，这个脚本的功能是向num.txt文件中写入1～4000000个数字，每个数字一行。
+	此时我们对这台虚拟机进行动态快照，并且缩短这台虚拟机的快照链，查看脚本是否正常运行，然后查看新建的增量文件的磁盘上数据的完整性，并且查看原来的磁盘文件上的数据是否中断。\par
+
+\subsection{测试的思路}
+	测试方案如下：
+	\begin{itemize}
+		\item[1.] 首先启动虚拟机overlay2,注意它的磁盘文件为overlay2.qcow2，虚拟机的快照链为base.qcow2<-overlay1.qcow2<-overlay2.qcow2。
+		\item[2.] 在宿主机环境中，ssh登录到overlay2上，执行上面的test\_in\_vm.sh脚本。
+		\item[3.] 动态创建快照，此时虚拟机overlay2的磁盘文件就变成了overlay3.qcow2，此时它的快照链为base.qcow2<-overlay1.qcow2<-overlay2.qcow2<-overlay3.qcow2。
+				  然后缩短虚拟机的快照链，此时它的快照链为base.qcow2<-overlay1.qcow2<-overlay3.qcow2。
+		\item[4.] 等待overlay2上的脚本执行结束。查看overlay2上的数据是否完整，也就是查看overlay3.qcow2磁盘上的数据是否完整。
+		\item[5.] 启动虚拟机overlay3,注意它的磁盘文件为overlay2.qcow2。
+				  随后查看它上面的数据是否不完整，也就是查看overlay2.qcow2磁盘上的数据是否不完整。
+		\item[6.] 关闭虚拟机overlay2和overlay3。
+		\item[7.] 清除之前的改动，返回到最初的环境，也就是将新生成的增量文件overlay3.qcow2重命名为overlay2.qcow2。
+		          随后删除之前生成的快照元数据。因为动态创建快照以后虚拟机overlay2的磁盘文件变成了overlay3.qcow2，我们还需要将虚拟机overlay2的磁盘文件更换为overlay2.qcow2。
+	\end{itemize}
+
+\subsection{测试代码}
+	\begin{lstlisting}
+	#!/bin/bash
+
+	# 步骤一
+	# 创建虚拟机overlay2，磁盘文件为overlay2.qcow2，它的镜像链为base.qcow2<-overlay1.qcow2<-overlay2.qcow2
+	virsh start overlay2
+	# 等待虚拟机启动
+	sleep 30
+
+
+	# 步骤二
+	# 获取虚拟机ip地址
+	overlay1=`./address.sh overlay2`
+	# ssh登录到overlay1上，执行上面的test.sh脚本
+	sshpass -p p1111111 ssh pengsida@$overlay2 ./test_in_vm.sh &
+
+	# 先让脚本运行3秒
+	sleep 3
+
+
+	# 步骤三
+	# 动态创建快照，overlay2的磁盘文件变为overlay3.qcow2
+	virsh snapshot-create-as overlay2 snap snap-desc --disk-only --diskspec hda,snapshot=external,file=/home/pengsida/kvm/openstack/overlay3.qcow2 --atomic
+
+	# 缩短快照链，这里只能动态缩短快照链
+	virsh blockcommit --domain overlay2 hda --base overlay1.qcow2 --top overlay2.qcow2 --wait --verbose
+
+	sleep 5
+
+
+	# 步骤四
+	# 等待test.sh脚本执行结束
+	sshpass -p p1111111 ssh pengsida@$overlay2 ./monitor.sh
+	# 判断overlay1.qcow2上的数据是否完整
+	sshpass -p p1111111 ssh pengsida@$overlay2 ./judge.sh
+
+
+	# 步骤五
+	# 创建虚拟机overlay3，磁盘文件为overlay2.qcow2
+	virsh start overlay3
+	# 等待虚拟机启动
+	sleep 60
+	# 获取虚拟机ip地址
+	overlay3=`./address.sh overlay3`
+
+	# 判断overlay1.qcow2上的数据是否完整
+	sshpass -p p1111111 ssh pengsida@$overlay3 ./judge.sh
+
+	# 步骤六
+	# 关闭虚拟机overlay2和overlay3
+	virsh destroy overlay2
+	virsh destroy overlay3
+
+	# 步骤七
+	# 因为之前的overlay2.qcow2在合并中被删除了，所以现在直接将新生成的overlay3.qcow2重命名为overlay2.qcow2，它的后端镜像仍然是overlay1.qcow2
+	sudo mv /home/pengsida/kvm/openstack/overlay3.qcow2 /home/pengsida/kvm/openstack/overlay2.qcow2
+	# 删除之前生成的快照元数据
+	virsh snapshot-delete overlay2 snap --metadata
+	# 因为动态创建快照以后overlay2的磁盘文件变成了overlay3.qcow2
+	# 将虚拟机overlay2的磁盘文件更换为overlay2.qcow2
+	virsh detach-disk overlay2 hda --persistent
+	virsh attach-disk overlay2 /home/pengsida/kvm/openstack/overlay2.qcow2 hda --subdriver qcow2 --persistent
+	\end{lstlisting}
+
+\end{document}
