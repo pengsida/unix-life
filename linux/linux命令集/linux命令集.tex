@@ -1,0 +1,238 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux命令集 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{chkconfig}
+	chkconfig命令检查、设置系统的各种服务。这是Red Hat公司遵循GPL规则所开发的程序，它可查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。谨记chkconfig不是立即自动禁止或激活一个服务，它只是简单的改变了符号连接。\par
+
+	chkconfig参数选项如下：
+	\begin{lstlisting}
+	--add：增加所指定的系统服务，让chkconfig指令得以管理它，并同时在系统启动的叙述文件内增加相关数据； 
+	--del：删除所指定的系统服务，不再由chkconfig指令管理，并同时在系统启动的叙述文件内删除相关数据； 
+	--level<等级代号>：指定读系统服务要在哪一个执行等级中开启或关毕。
+	\end{lstlisting}
+
+	等级代号列表如下：
+	\begin{lstlisting}
+	 等级0表示：表示关机 
+	 等级1表示：单用户模式 
+	 等级2表示：无网络连接的多用户命令行模式 
+	 等级3表示：有网络连接的多用户命令行模式 
+	 等级4表示：不可用 
+	 等级5表示：带图形界面的多用户模式 
+	 等级6表示：重新启动
+	\end{lstlisting}
+
+	chkconfig使用例子如下：
+	\begin{lstlisting}
+	chkconfig --list #列出所有的系统服务。 
+	chkconfig --add httpd #增加httpd服务。 
+	chkconfig --del httpd #删除httpd服务。 
+	chkconfig --level httpd 2345 on #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态。 
+	chkconfig --list #列出系统所有的服务启动情况。 
+	chkconfig --list mysqld #列出mysqld服务设置情况。 
+	chkconfig --level 35 mysqld on #设定mysqld在等级3和5为开机运行服务，--level 35表示操作只在等级3和5执行，on表示启动，off表示关闭。 
+	chkconfig mysqld on #设定mysqld在各等级为on，“各等级”包括2、3、4、5等级。
+	\end{lstlisting}
+
+\subsection{增加一个服务}
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 服务脚本必须存放在/etc/ini.d/目录下。
+		\item[2.] chkconfig --add servicename在chkconfig工具服务列表中增加此服务，此时服务会被在/etc/rc.d/rcN.d中赋予K/S入口了。
+		\item[3.] chkconfig --level 35 mysqld on修改服务的默认启动等级。 
+	\end{itemize}
+
+\section{netstat}
+	netstat命令用来打印Linux中网络系统的状态信息，可让你得知整个Linux系统的网络情况。\par
+
+	netstat参数选项如下：
+	\begin{lstlisting}
+	-a或--all：显示所有连线中的Socket； 
+	-A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址； 
+	-c或--continuous：持续列出网络状态； 
+	-C或--cache：显示路由器配置的快取信息； 
+	-e或--extend：显示网络其他相关信息； 
+	-F或--fib：显示FIB； 
+	-g或--groups：显示多重广播功能群组组员名单； 
+	-h或--help：在线帮助； 
+	-i或--interfaces：显示网络界面信息表单； 
+	-l或--listening：显示监控中的服务器的Socket； 
+	-M或--masquerade：显示伪装的网络连线； 
+	-n或--numeric：直接使用ip地址，而不通过域名服务器； 
+	-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称； 
+	-o或--timers：显示计时器； 
+	-p或--programs：显示正在使用Socket的程序识别码和程序名称； 
+	-r或--route：显示Routing Table； 
+	-s或--statistice：显示网络工作信息统计表； 
+	-t或--tcp：显示TCP传输协议的连线状况； 
+	-u或--udp：显示UDP传输协议的连线状况； 
+	-v或--verbose：显示指令执行过程； 
+	-V或--version：显示版本信息； 
+	-w或--raw：显示RAW传输协议的连线状况； 
+	-x或--unix：此参数的效果和指定"-A unix"参数相同； 
+	--ip或--inet：此参数的效果和指定"-A inet"参数相同。
+	\end{lstlisting}
+
+\subsection{查看连接某服务端口最多的IP地址}
+	\begin{lstlisting}
+	netstat -ntu | grep :80 | awk '{print $5}' | cut -d: -f1 | awk '{++ip[$1]} END {for(i in ip) print ip[i],"\t",i}' | sort -nr
+	\end{lstlisting}
+
+\subsection{获得TCP各种状态列表}
+	\begin{lstlisting}
+	netstat -nt | grep -e 127.0.0.1 -e 0.0.0.0 -e ::: -v | awk '/^tcp/ {++state[$NF]} END {for(i in state) print i,"\t",state[i]}'
+	\end{lstlisting}
+
+\subsection{查看phpcgi进程数}
+	\begin{lstlisting}
+	netstat -anpo | grep "php-cgi" | wc -l
+	\end{lstlisting}
+
+\section{wc}
+	“wc -l”可以查看一个文件的行数。
+
+\end{document}

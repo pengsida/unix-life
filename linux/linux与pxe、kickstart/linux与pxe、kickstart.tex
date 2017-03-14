@@ -1,0 +1,237 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux与pxe、kickstart \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{现实需求}
+	以正常的DVD 光碟片安装一两台Linux 系统似乎是没啥大问题，但如果有好几间电脑教室，里头有几十部总共数百部的主机要你装Linux 系统的话，那使用DVD 光碟来装也太花时间了。
+	此时，选择透过网络来进行安装就是一项可以思考的方向！ 
+	同时，如果电脑教室的PC 需要有多重作业系统的环境下，如何准备一个可以裸机安装的功能， 就是一个相当重要的任务了。
+
+\section{使用pxe}
+\subsection{常规安装操作系统的步骤}
+	使用DVD安装系统的步骤如下：
+	\begin{itemize}
+		\item[1.] 透过BIOS开机，并调整成可以让光碟优先开机的模式。
+		\item[2.] 以光碟内的作业系统核心开机，驱动系统的硬件装置。
+		\item[3.] 上一步的作业系统直接呼叫安装程序来进行安装选项。
+		\item[4.] 进入安装模式与使用者互动选取用户需要的软件操作环境。
+		\item[5.] 系统开始安装软件到硬盘上，安装完毕通常需要重新开机才能结束安装程序。
+		\item[6.] 重新开机后，会进入首次使用的设定画面，简单设定后，即可开始登入系统使用。
+	\end{itemize}
+
+\subsection{pxe的工作流程}
+	% 对于现在的系统而言，首先是boot loader载入kernel，然后再开始运行系统。
+	% 如果用DVD安装系统时，BIOS选择从DVD开机，光碟中有开机管理程序和简易的kernel，随后开始驱动整个系统硬件，进入安装系统的步骤。\par
+
+	pxe的全称是“preboot execution environment”，也就是开机前的执行环境。
+	借助pxe机制，就可以在还没有安装操作系统的情况下取得网络并且下载开机管理程序和kernel。\par
+
+	达成pxe机制需要两个基础，一个是用户端的网卡必须支持pxe用户端功能，并且开机时可以选择从网卡开机，这样系统才可以从网卡进入pxe用户端的程序。
+	还有一个是pxe服务器必须提供至少含有dhcp以及tftp的服务才行。其中dhcp服务在能够提供客户端的网络参数之外，还需要告知客户端tftp所在的位置。
+	而tftp是向客户端提供开机管理程序(boot loader)和kernel file下载点的重要服务。\par
+
+	pxe服务端的dhcp服务和tftp服务只能让pxe客户端开机，通常还需要提供客户端所需要的程序和软件资料的来源。
+	所以pxe服务端还需要加上nfs/ftp/http等通讯协议。\par
+
+	pxe整体运作流程如下图：
+	\fic{1.jpg}
+
+	从上图可以看到，dhcp服务除了回传正确的网络参数，还提供了tftp与相关开机管理程序的信息。
+	而tftp需要提供开机管理程序、linux的开机核心与相关档案。
+	除此之外，我们还需要设定nfs/http/ftp来提供要安装的操作系统。
+
+\subsection{DHCP服务的配置}
+	DHCP服务用于提供用户端网络参数与tftp的地址，以及boot loader的文件名。
+	我们通过编辑/etc/dhcp/dhcpd.conf来实现这个功能，在subnet区块内加入两个参数：
+	\begin{lstlisting}
+	# /etc/dhcp/dhcpd.conf
+
+	subnet 192.168.42.0 netmask 255.255.255.0 {
+		...
+		next-server 192.168.42.254 # tftp的地址
+		filename "pxelinux.0" # boot loader的文件名
+	}
+	\end{lstlisting}
+
+	重启dhcp服务以后，针对这个内网的tftp设定就生效了。根据之前的流程图，pxe client就会根据这个boot loader的文件名向tftp请求下载开机管理程序。
+	所以我们需要接着设置tftp服务。
+
+\subsection{TFTP服务的设置}
+\subsubsection{配置tftp}
+	TFTP服务用于提供开机管理程序(boot loader)和核心(kernel)，我们接下来配置tftp服务。\par
+
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 首先安装tftp：
+		\begin{lstlisting}
+	yum install tftp-server tftp
+		\end{lstlisting}
+
+		\item[2.] 随后需要告诉用户端tftp资料的根目录的位置，才能让用户端取得完整的绝对路径相关资料。
+				  在下面的篇配置案例中，所有的文件统一放在/install/目录下，而tftp的根目录也就放在/install/tftpboot/这个目录下：
+				  \fic{2.png}
+
+		\item[3.] 因为tftp由xinetd这个super daemon管理，所以设置好tftp之后，还需要启动xinetd：
+		\begin{lstlisting}
+	/etc/init.d/xinetd restart
+	chkconfig xinetd on
+	chkconfig tftp on
+	netstat -tulnp | grep xinetd # 查看是否有在运行
+		\end{lstlisting}
+	\end{itemize}
+
+	根据上述的配置过程可知，这里通过tftp提供的资料都放置于/install/tftpboot/目录下。\par
+
+\subsubsection{添加开机管理程序和开机选单}
+	如果要使用pxe的开机管理程序和开机选单的话，还需要安装CentOs内建提供的syslinux软件，然后将其中的两个文件拷贝到/install/tftpboot/目录下：
+	\fic{3.png}
+
+	其中pxelinux.cfg是一个目录，可以放置预设的开机选单，如果还没有特定的用户端时，可以在prelinux.cfg目录下创建一个名为default的文件，这个文件的功能类似于grub的menu.lst文件，用于提供一个选单的设定。
+
+\subsubsection{添加kernel文件}
+	
+
+\end{document}
