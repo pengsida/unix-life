@@ -15,3 +15,14 @@
 \BOOKMARK [2][-]{subsection.1.4.1}{让时钟中断开始起作用}{section.1.4}% 15
 \BOOKMARK [2][-]{subsection.1.4.2}{现场的保护与恢复}{section.1.4}% 16
 \BOOKMARK [2][-]{subsection.1.4.3}{赋值TSS中的esp0}{section.1.4}% 17
+\BOOKMARK [2][-]{subsection.1.4.4}{内核栈}{section.1.4}% 18
+\BOOKMARK [1][-]{section.1.5}{多进程}{chapter.1}% 19
+\BOOKMARK [2][-]{subsection.1.5.1}{添加一个进程体}{section.1.5}% 20
+\BOOKMARK [2][-]{subsection.1.5.2}{相关的变量和宏}{section.1.5}% 21
+\BOOKMARK [2][-]{subsection.1.5.3}{初始化进程表}{section.1.5}% 22
+\BOOKMARK [2][-]{subsection.1.5.4}{初始化LDT}{section.1.5}% 23
+\BOOKMARK [2][-]{subsection.1.5.5}{修改中断处理程序}{section.1.5}% 24
+\BOOKMARK [2][-]{subsection.1.5.6}{添加一个任务的步骤总结}{section.1.5}% 25
+\BOOKMARK [1][-]{section.1.6}{Minix的中断处理}{chapter.1}% 26
+\BOOKMARK [2][-]{subsection.1.6.1}{对minix代码的学习}{section.1.6}% 27
+\BOOKMARK [2][-]{subsection.1.6.2}{实现进程需要的步骤}{section.1.6}% 28

@@ -1,0 +1,306 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{复用类 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{复用类}
+	Java中复用类的两种方式：
+	\begin{itemize}
+		\item 在新的类中产生现有类的对象，这种方法称为组合。
+		\item 按照现有类的类型来创建新类，这种方法称为继承。
+	\end{itemize}
+
+\subsection{类的组合}
+	组合技术很直观，只要将对象引用置于新类中即可。例子如下：
+	\begin{lstlisting}[language = Java]
+	class WaterSource
+	{
+		private String s;
+		WaterSource()
+		{
+			System.out.println("WaterSource");
+			s = "Constructed";
+		}
+	}
+	\end{lstlisting}
+
+\subsection{类的继承}
+	Java中继承的语法和C++类似，不过Java中使用关键字extends声明。
+	如果继承基类，新类就会得到基类中所有非私有的域和成员函数。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Cleanser
+	{
+		private String s = "Cleanser";
+		public void append(String a)
+		{
+			s += a;
+		}
+		public static void main(String[] args)
+		{
+			Cleanser x = new Cleanser();
+			x.append(" hello world");
+		}
+	}
+
+	public class Detergent extends Cleanser
+	{
+		public static void main(String[] args)
+		{
+			Detergent x = new Detergent();
+			x.append(" hello world");
+			Cleanser.main(args);
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{基类的初始化}
+	如果没有特别声明，将调用基类默认的构造器或者无参数构造器。
+	如果想调用一个带参数的基类构造器，就必须使用super显式地调用基类构造器。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Game
+	{
+		Game(int i)
+		{
+			System.out.println("Hello World");
+		}
+	}
+
+	public class Chess extends Game
+	{
+		Chess()
+		{
+			super(1);
+			System.out.println("Chess constructor");
+		}
+		public static void main(String[] args)
+		{
+			Chess c = new Chess();
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{名称屏蔽}
+	与C++不同的是，Java中导出类如果重载基类中的函数，并不会屏蔽其在基类中该函数的任何版本。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Homer
+	{
+		char doh(char c)
+		{
+			return c;
+		}
+		float doh(float c)
+		{
+			return c;
+		}
+	}
+
+	class Bart extends Homer
+	{
+		String doh(String s)
+		{
+			return s;
+		}
+	}
+	\end{lstlisting}
+
+	需要注意的是，因为这个语法特点，Java中其实是没有名称屏蔽的。那么当我们要覆写基类中的一个函数时，很可能将其重载而非覆写。
+	为了防止这个错误的发生，Java提供了@Override注解相应的函数。如果这个函数是重载而非覆写时，编译器就会产生错误：
+	\begin{lstlisting}[language = Java]
+	class Lisa extends Homer
+	{
+		@Override
+		String doh(String s)
+		{
+			return s; // 将产生错误
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{向上转型}
+	继承技术最重要的不是为新的类提供函数，而是用于表现新类和基类之间的关系。新类是现有类的一种类型。例子如下：
+	\begin{lstlisting}[language = Java]
+	class Instrument
+	{
+		public void play(){}
+		static void tune(Instrument i)
+		{
+			i.play();
+		}
+	}
+
+	public class Wind extends Instrument
+	{
+		public static void main(String[] args)
+		{
+			Wind flute = new Wind();
+			Instrument.tune(flute);
+			// tune函数接受的是Instrument对象
+			// 这里它也可以接受Wind对象
+			// 因为Wind是Instrument的一种类型
+		}
+	}
+	\end{lstlisting}
+
+	将导出类引用转换为基类引用的动作称为向上转型。在实现上看，导出类是基类的一个超集。
+	在向上转型的过程中，导出类引用转换为基类引用，并且只保留基类拥有的方法。\par
+	导出类无法继承private函数。即使在导出类中以相同的名称声明一个函数，也不会覆盖基类中相应的private函数，而是生成了一个新的函数。
+	当向上转型时，这个函数将会被丢弃。
+
+\subsubsection{继承技术的用途}
+	相对于组合技术，继承技术不常用。只有需要从新类向基类进行向上转型，继承才是必要的。
+
+\subsection{final关键字}
+	final关键字可以修饰数据、函数和类。
+\subsubsection{final数据}
+	Java中使用final告知一块数据是恒定不变的，相当于C中的const关键字。
+	需要知道的是，Java中常量必须是基本数据类型。\par
+	一个既是static又是final的域只占据一段不能改变的存储空间。\par
+	当用final修饰对象引用时，这个引用将恒定不变。也就是说，引用一旦被初始化指向一个对象，就无法再把它改为指向另一个对象，而被引用的对象本身是可以被修改的。
+	Java没有提供使任何对象恒定不变的途径。\par
+	Java允许生成空白final。也就是这个域被final修饰但又没有赋初值。final域在使用前必须被初始化。\par
+	在函数参数列表中将参数指明为final，那么在函数中就无法修改参数引用所指向的对象。
+\subsubsection{final函数}
+	使用final函数的原因如下：
+	\begin{itemize}
+		\item 将函数锁定。以防任何继承类修改它的实现。
+		\item 追求效率。当一个函数指明为final，编译器就将该函数的所有调用都转为内嵌调用。这和C++的inline关键字的作用一样。
+	\end{itemize}
+
+	类中private方法都隐式地指定为final。
+
+\subsubsection{final类}
+	当将某个类的整体定义为final，那么这个类就无法被继承。final类中的域不一定是final的。
+
+
+\end{document}
