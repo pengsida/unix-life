@@ -10,3 +10,10 @@
 \BOOKMARK [3][-]{subsubsection.2.4.4}{设定开机选单}{subsection.2.4}% 10
 \BOOKMARK [2][-]{subsection.2.5}{提供软件安装服务器}{section.2}% 11
 \BOOKMARK [2][-]{subsection.2.6}{通过网络安装操作系统}{section.2}% 12
+\BOOKMARK [1][-]{section.3}{使用kickstart大量部署CentOS系统}{}% 13
+\BOOKMARK [2][-]{subsection.3.1}{kickstart可用参数}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.2}{command指令项目区段}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.3}{软件安装区段}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.4}{安装前、安装后的额外动作区段}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.5}{搭配pxe使用}{section.3}% 18
+\BOOKMARK [1][-]{section.4}{更加详细的部署步骤}{}% 19
