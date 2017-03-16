@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -9,7 +9,15 @@
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
 \usepackage{longtable}
+\usepackage{empheq}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{rotating}
@@ -23,35 +31,24 @@
 \usepackage{xcolor}
 \usepackage{geometry}
 \setcounter{secnumdepth}{4}
-\usepackage{mhchem}
-\usepackage{multirow}
-\usepackage{extarrows}
-\usepackage{hyperref}
-\titleformat*{\section}{\LARGE}
-\renewcommand\refname{参考文献}
-\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
-%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
-%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
 \titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
-\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
-\setCJKfamilyfont{cjkhwxk}{STXingkai}
-\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
-% \setCJKfamilyfont{cjkhwxk}{华文行楷}
-% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
-\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
 \newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
-\newfontfamily\wryh{Microsoft YaHei}
-\newfontfamily\hwzs{STZhongsong}
-\newfontfamily\hwst{STSong}
-\newfontfamily\hwfs{STFangsong}
-\newfontfamily\jljt{MicrosoftYaHei}
-\newfontfamily\hwxk{STXingkai}
-% \newfontfamily\hwzs{华文中宋}
-% \newfontfamily\hwst{华文宋体}
-% \newfontfamily\hwfs{华文仿宋}
-% \newfontfamily\jljt{方正静蕾简体}
-% \newfontfamily\hwxk{华文行楷}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
 \newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
 \newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
 \newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
@@ -79,32 +76,36 @@
 \lstset{
 	language=bash,
 	numbers=left,
-	numberstyle=\tiny\color{white},
+	numberstyle=\tiny\color{black},
 	showspaces=false,
 	showstringspaces=false,
 	basicstyle=\scriptsize,
 	keywordstyle=\color{purple},
-	commentstyle=\itshape\color{cgreen},
+	commentstyle=\color{cgreen},
 	stringstyle=\color{blue},
 	frame=lines,
 	% escapeinside=``,
 	extendedchars=true, 
-	xleftmargin=0em,
-	xrightmargin=0em, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
 	backgroundcolor=\color{cred},
 	aboveskip=1em,
 	breaklines=true,
 	tabsize=4
 } 
 
-\newfontfamily{\consolas}{Consolas}
-\newfontfamily{\monaco}{Monaco}
-\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
-\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
-\setmainfont{Times New Roman}
-
-\setCJKmainfont{华文中宋}
-
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
 
 \newcommand{\fic}[1]{\begin{figure}[H]
 		\center
@@ -176,8 +177,10 @@
 	pxe服务端的dhcp服务和tftp服务只能让pxe客户端开机，通常还需要提供客户端所需要的程序和软件资料的来源。
 	所以pxe服务端还需要加上nfs/ftp/http等通讯协议。\par
 
+\clearpage
+
 	pxe整体运作流程如下图：
-	\fic{1.jpg}
+	\sizedfic{0.58}{1.jpg}
 
 	从上图可以看到，dhcp服务除了回传正确的网络参数，还提供了tftp与相关开机管理程序的信息。
 	而tftp需要提供开机管理程序、linux的开机核心与相关档案。
@@ -232,6 +235,156 @@
 	其中pxelinux.cfg是一个目录，可以放置预设的开机选单，如果还没有特定的用户端时，可以在prelinux.cfg目录下创建一个名为default的文件，这个文件的功能类似于grub的menu.lst文件，用于提供一个选单的设定。
 
 \subsubsection{添加kernel文件}
-	
+	我们想利用原版安装光碟取得linux安装软件的kernel文件。现在iso文件放置在/install/iso/CentOS-6.4-x86\_64-bin-DVD1.iso，
+	预计把kernel文件放置在/install/tftpboot/kernel/centos6.4/。\par
+
+	步骤如下：
+	\begin{lstlisting}
+	mount -o loop /install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /mnt
+	mkdir -p /install/tftp/kernel/centos6.4
+	cp /mnt/isolinux/vmlinuz /install/tftpboot/kernel/centos6.4
+	cp /mnt/isolinux/initrd.img /install/tftpboot/kernel/centos6.4
+	cp /mnt/isolinux/isolinux.cfg /install/tftpboot/pxelinux.cfg/demo
+	umount /mnt
+	\end{lstlisting}
+
+	复制的三个文件描述如下：
+	\begin{itemize}
+		\item[1.] vmlinuz，用于安装软件的kernel file。
+		\item[2.] initrd.img，开机过程中所需要的核心模组参数。
+		\item[3.] isolinux.cfg，开机选单。
+	\end{itemize}
+
+\subsubsection{设定开机选单}
+	我们这里有两个开机选项，一个是透过本机硬盘开机(local boot)。还有一个是通过刚刚我们下载的kernel file开机，从而进入安装模式。
+	我们可以通过pxelinux.cfg目录下的default文件来设置开机选项，如下所示：
+	\begin{lstlisting}
+	# [root@centos ~]# vim /install/tftpboot/pxelinux.cfg/default
+	# default文件内容
+	UI vesamenu.c32 # 使用vesamenu.c32这个类图形的介面程式 
+	TIMEOUT 300 # 单位0.1秒，所以这个设定可等待30秒来进入预设开机 
+	DISPLAY ./boot.msg # 提供一些额外的资讯，让使用者更了解选单意义！ 
+	MENU TITLE Welcome to PXE Server System # 这行只是提供一个大标题而已！ 
+	LABEL local # 第一个选单的项目，LABEL后面接boot loader认识的选单项目
+		MENU LABEL Boot from local drive # 通过MENU LABEL来写入选单的相关信息
+		MENU DEFAULT # 此选单为预设项目(等待逾时就进入此开机) 
+		localboot 0 # 本机磁碟开机的特定项目！ 
+
+	LABEL network1 
+		MENU LABEL Boot from PXE Server for Install CentOS 6.4 
+		kernel ./kernel/centos6.4/vmlinuz # 核心所在的档名 
+		append initrd=./kernel/centos6.4/initrd.img # 就是核心外带参数啊！
+	\end{lstlisting}
+
+	我们上面设置的过程中调用了boot.msg文件来提供额外的资讯，内容如下：
+	\begin{lstlisting}
+	# [root@centos ~]# vim /install/tftpboot/boot.msg
+	# boot.msg文件内容
+	Welcome to VBird's PXE Server System.
+
+	The 1st menu can let you system goto hard disk menu.
+	The 2nd menu can goto interactive installation step.
+	\end{lstlisting}
+
+\subsection{提供软件安装服务器}
+	搭建一个安装服务器很简单，只要下载CentOs的一块DVD，将里面的资料以nfs/http/ftp等方式分享出去，那么这个主机就变成了软件安装服务器。\par
+
+	方式如下：
+	\begin{lstlisting}
+	# 1.先将DVD的资料给他放置于所需要的目录中，当然直接使用挂载最快！
+	[root@centos ~]# mkdir -p /install/nfs_share/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /install/nfs_share/centos6.4 iso9660 defaults,loop 0 0
+	#特别要注意的是档案系统与参数，记得光碟使用iso9660且需要加上loop
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#这样就挂载结束，比复制来复制去要简单的多喔！
+
+	# 2.制作NFS分享，要注意对内port有规范喔！
+	[root@centos ~]# yum -y install nfs-utils
+	[root@centos ~]# vim /etc/exports
+	/install/nfs_share/ 192.168.42.0/24(ro,async,nohide,crossmnt) localhost(ro,async,nohide,crossmnt)
+	# NFS的设定是很简单，不过，要注意由于server上面有两个挂载点在分享的目录上， 
+	#所以得要加上nohide与crossmnt这两个参数才行！  且后续的服务要开比较多就是了～
+
+	[root@centos ~]# vim /etc/sysconfig/nfs
+	RQUOTAD_PORT=901 
+	LOCKD_TCPPORT=902 
+	LOCKD_UDPPORT=902 
+	MOUNTD_PORT=903 
+	STATD_PORT=904
+	#找到上面这几个设定值，我们得要设定好固定的port来开放防火墙给用户处理！
+
+	[root@centos ~]# vim /etc/idmapd.conf
+	[General]
+	Domain = i4502.dic.ksu
+	[Mapping]
+	Nobody-User = nfsnobody
+	Nobody-Group = nfsnobody
+	#找到上面几个设定值，我们这里假设ID对应的无此帐号使用nfsnobody设定！
+
+	[root@centos ~]# /etc/init.d/rpcbind restart
+	[root@centos ~]# /etc/init.d/nfs restart
+	[root@centos ~]# /etc/init.d/rpcidmapd restart
+	[root@centos ~]# /etc/init.d/nfslock restart
+	[root@centos ~]# chkconfig rpcbind on
+	[root@centos ~]# chkconfig nfs on
+	[root@centos ~]# chkconfig rpcidmapd on
+	[root@centos ~]# chkconfig nfslock on
+	[root@centos ~]# rpcinfo -p
+		program vers proto port service
+		100000 4 tcp 111 portmapper
+		100000 4 udp 111 portmapper
+		100011 2 udp 901 rquotad
+		100011 2 tcp 901 rquotad
+		100005 3 udp 903 mountd
+		100005 3 tcp 903 mountd
+		100003 4 tcp 2049 nfs
+		100003 4 udp 2049 nfs
+		100021 4 udp 902 nlockmgr
+		100021 4 tcp 902 nlockmgr
+		100024 1 udp 904 status
+		100024 1 tcp 904 status
+	#要注意喔，我们得要启动的port有111, 2049,901~904这几个！  防火墙要开！
+
+	[root@centos ~]# showmount -e localhost
+	Export list for localhost:
+	/install/nfs_share 192.168.42.0/24,localhost
+	# OK！  看到上面这些东西，就是搞定啰！  赞！
+
+	# 3.然后我们也来开放www服务提供这个安装伺服器吧！  简单作法如下：
+	[root@centos ~]# yum install httpd
+	[root@centos ~]# /etc/init.d/httpd start
+	[root@centos ~]# chkconfig httpd on
+	[root@centos ~]# mkdir -p /var/www/html/install/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /var/www/html/install/centos6.4 iso9660 defaults,loop 0 0
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#同样的，用挂载的应该会比较快速些～
+
+	# 4.如果还想要提供FTP的处理呢？  那还是简单的这样做即可：
+	[root@centos ~]# yum install vsftpd
+	[root@centos ~]# /etc/init.d/vsftpd start
+	[root@centos ~]# chkconfig vsftpd on
+	[root@centos ~]# mkdir -p /var/ftp/install/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /var/ftp/install/centos6.4 iso9660 \ 
+		defaults,loop,context=system_u:object_r:public_content_t:s0 0 0
+	#上面是同一行，比较重要的是参数的部分多了context喔！  因为我们这个系统有使用SELinux， 
+	#为了要避免挂载的档案系统出现FTP的SELinux错误，因此这里得要加上此参数才行！
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#超级简单的这样就搞定了！
+	\end{lstlisting}
+
+	通过上述步骤，我们就可以将iso文件以nfs/http/ftp等方式分享出去，也就搭建了一个安装软件的服务器。
+
+\subsection{通过网络安装操作系统}
+	安装步骤在下面这个网站中有详细介绍：\par
+	\url{http://linux.vbird.org/linux_enterprise/0120installation.php#pxe_client}
 
 \end{document}
