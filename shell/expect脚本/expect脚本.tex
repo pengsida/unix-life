@@ -146,16 +146,15 @@
 \clearpage
 
 \section{expect脚本的参数}
-	expect通过命令行参数传递参数，通过\$argc获取参数个数，\$argv是参数数组，使用[lindex \$argv n]获取第n个参数，
-	其中\$argv 0是脚本的名字。\par
+	expect通过命令行参数传递参数，通过\$argc获取参数个数，\$argv是参数数组，使用[lindex \$argv n-1]获取第n个参数。\par
 
 	使用例子如下：
 	\begin{lstlisting}
 	#!/usr/bin/expect
 
 	set num $argc # 获得参数个数
-	set username [lindex $argv 1] # 获得第1个参数
-	set passwd [lindex $argv 2] # 获得第2个参数
+	set username [lindex $argv 0] # 获得第1个参数
+	set passwd [lindex $argv 1] # 获得第2个参数
 	\end{lstlisting}
 
 \section{expect脚本中的常用命令}
@@ -254,14 +253,16 @@
 	set CMD [lindex $argv 3]
 
 	spawn ssh $USER@$IP $CMD
-	expect{
-		"(yes/no)?"{
+	expect {
+		"(yes/no)" {
 			send "yes\r"
 			expect "password:"
 			send "$PASSWD\r"
 		}
-		""
+		"password:" {send "$PASSWD\r"}
+		"* to host" {exit 1}
 	}
+	expect eof
 	\end{lstlisting}
 
 \end{document}

@@ -1,0 +1,249 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{ironic的介绍 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{ironic的功能}
+	Ironic可以用于解决物理机的添加、删除、电源管理和安装部署。\par
+	Ironic可以看成一组Hypervisor API的集合，其功能与libvirt类似，
+	所以ironic可以看成一个hypervisor驱动来给Nova使用。
+
+\section{ironic的架构}
+\subsection{项目组成}
+	\begin{itemize}
+		\item ironic：包含ironic-api和ironic-conductor进程。
+		\item python-ironicclient：python client and CLI。
+		\item ironic-python-agent：一个运行在deployment ramdisk中的python程序，用于执行一系列部署动作。
+		\item pyghmi：一个python的IPMI库，用于代替IPMItool。
+		\item ironic-inspector：硬件自检工具。
+		\item ironic-lib：ironic的通用库函数。
+		\item ironic-webclient：web客户端。
+		\item ironic-ui：ironic的horizon插件。
+		\item bifrost：一套只运行ironic的Ansible脚本。
+	\end{itemize}
+
+\clearpage
+
+\subsection{ironic与其他组件的调用关系}
+	ironic与其他组件的调用关系如下图所示：
+	\sizedfic{0.9}{1.png}
+
+	从上图可以得到如下信息：
+	\begin{itemize}
+		\item[1.] Ironic API是一个RESTful API服务，nova compute服务通过Ironic API与Ironic进行交互。
+		\item[2.] Ironic Conductor用于完成Ironic服务的绝大部分工作，与Ironic API通过RPC进行交互，负责与Neutron、Glance等组件进行交互。
+		\item[3.] Drivers是真正管理物理机的模块，通过一系列的驱动来支持不同的硬件。
+		\item[4.] Database用于存储资源信息。
+		\item[5.] 消息队列。
+	\end{itemize}
+
+\section{ironic的关键技术}
+	在安装操作系统时，我们需要存储介质来存储系统镜像、需要控制物理机来开关机，在网络部署环境中还需要预启动环境。
+
+\subsection{预启动环境PXE}
+	PXE是一种无盘启动技术，使计算机通过网络启动，采用Client/Server的网络模式。
+	在计算机的启动过程中，客户端要求服务器分配IP地址，再用TFTP协议下载一个开机引导程序，从而引导安装放置于服务器中的操作系统。\par
+
+	具体的安装操作系统的步骤如下：
+	\begin{itemize}
+		\item[1.] 客户机从自己的PXE网卡启动，向本网络中的DHCP服务器索取IP，并搜寻引导文件的位置。
+		\item[2.] DHCP服务器返回分给客户机的IP和network bootstrap program的放置位置。
+		\item[3.] 客户机想本网络中的TFTP服务器索取network bootstrap program。
+		\item[4.] 客户机取得network bootstrap program之后执行该文件，并根据执行结果通过TFTP服务器加载内核和文件系统。
+		\item[5.] 安装操作系统。
+	\end{itemize}
+
+	安装流程如下图所示：
+	\sizedfic{0.7}{2.jpg}
+
+\subsection{远程开机IPMI}
+	IPMI是智能平台管理接口，IPMI通过网络连接到基板管理器(BMC)进行交流，不依赖BIOS或者操作系统，
+	这使得在操作系统不响应或未加载的情况下仍然可以进行开关机、信息提取等操作。\par
+
+	IPMI有如下功能：
+	\begin{itemize}
+		\item 远程电源控制
+		\item 串口IP映射
+		\item 支持健康关机
+		\item 机箱环境监控(温度、风扇转速和CPU电压)
+		\item 远程设备身份LED控制
+		\item 系统事件日志
+		\item 平台事件跟踪
+		\item 数据记录
+		\item 虚拟KVM会话
+		\item 虚拟媒介
+	\end{itemize}
+
+	Ironic利用IPMI可以实现以下功能：
+	\begin{itemize}
+		\item[1.] 可以在客户机通电的情况下，对它进行远程管理：开机、关机和重启。
+		\item[2.] 基于文本的控制台重定向，可以远程查看和修改BIOS设置，系统启动过程，登入系统等。
+		\item[3.] 可以远程通过串口IP映射连接客户机，远程安装系统，查看系统启动故障等问题。
+		\item[4.] 可以通过系统的串行端口进行访问。
+		\item[5.] 记录故障日志和发送SNMP警报，访问系统事件日志和传感器状况。
+	\end{itemize}
+
+\subsection{存储技术iSCSI}
+	iSCSI技术是一种新存储技术，该技术将现有SCSI接口与以太网络技术结合，使客户机可与使用IP网络的存储装置互相交换资料。
+	iSCSI主要是透过TCP/IP的技术，将存储设备透过iSCSI target功能，做成可以提供磁盘的服务器端。再透过iSCSI initiator功能将客户机做成能够挂载使用远程存储装置的客户端，如此变成能够iSCSI设置来进行磁盘的应用了。\par
+
+	也就是说，iSCSI这个架构将存储装置和主机分为了两个部分，分别是：
+	\begin{itemize}
+		\item iSCSI target，就是存储设备端，存放磁盘或RAID的设备。
+		\item iSCSI initiator，就是能够使用target的用户端。想要连接到iSCSI target的客户机，必须安装iSCSI initiator的相关功能后才能够使用iSCSI target提供的磁盘。
+	\end{itemize}
+
+\section{ironic的API}
+	这个网站记录了ironic的API：\href{https://developer.openstack.org/api-ref/baremetal/?expanded=list-api-versions-detail,show-v1-api-detail,create-node-detail,list-nodes-detail,list-nodes-detailed-detail,show-node-details-detail,update-node-detail,delete-node-detail,validate-node-detail,set-maintenance-flag-detail,clear-maintenance-flag-detail,set-boot-device-detail,get-boot-device-detail,get-supported-boot-devices-detail,inject-nmi-non-masking-interrupts-detail,node-state-summary-detail,change-node-power-state-detail,change-node-provision-state-detail,set-raid-config-detail,get-console-detail,start-stop-console-detail,list-methods-detail,call-a-method-detail,list-attached-vifs-of-a-node-detail,attach-a-vif-to-a-node-detail,detach-vif-from-a-node-detail,list-portgroups-detail,create-portgroup-detail,list-detailed-portgroups-detail,show-portgroup-details-detail,update-a-portgroup-detail,delete-portgroup-detail,list-portgroups-by-node-detail,list-detailed-portgroups-by-node-detail,list-ports-detail,create-port-detail,list-detailed-ports-detail,show-port-details-detail,update-a-port-detail,delete-port-detail,list-ports-by-node-detail,list-detailed-ports-by-node-detail,list-ports-by-portgroup-detail,list-detailed-ports-by-portgroup-detail,list-drivers-detail,show-driver-details-detail,show-driver-properties-detail,show-driver-logical-disk-properties-detail,id104-detail,id108-detail,list-chassis-with-details-detail,show-chassis-details-detail,update-chassis-detail,delete-chassis-detail,create-chassis-detail,list-chassis-detail,agent-lookup-detail,agent-heartbeat-detail}{ironic API}\par
+
+	ironic API的使用需要搭配curl命令，使用例子可以查看这个网站：
+	\url{https://developer.openstack.org/zh_CN/api-guide/quick-start/api-quick-start.html}
+
+\section{ironic的安装与配置}
+	这个网站记录了ironic的安装与配置：\par
+	\url{https://doodu.gitbooks.io/openstack-ironic/content/an_zhuang_yu_pei_zhi.html}
+
+\end{document}
