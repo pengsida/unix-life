@@ -1,0 +1,5 @@
+\BOOKMARK [1][-]{section.1}{Activity类}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{findViewById}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{onCreate}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Button类}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{setOnClickListener}{section.2}% 5

@@ -1,0 +1,479 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=java,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{Android中常用的API \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+% \clearpage
+
+\section{Activity类}
+\subsection{findViewById}
+	函数声明如下：
+	\begin{lstlisting}
+	public view findViewById(int id);
+	\end{lstlisting}
+
+	该方法以组件的资源ID作为参数，返回一个视图对象。需要注意的事，赋值前，需要先将返回的View转型。
+
+\subsection{getIntent}
+	函数声明如下：
+	\begin{lstlisting}
+	Intent getIntent (String uri);
+	\end{lstlisting}
+
+	Activity.getIntent()方法返回了由startActivity(Intent)方法转发的Intent对象。
+
+\subsection{onActivityResult}
+	函数声明如下：
+	\begin{lstlisting}
+	protected void onActivityResult(int requestCode, int resultCode, Intent data);
+	\end{lstlisting}
+
+	当用户从子activity返回到父activity时，ActivityManager将调用onActivityResult()方法，
+	这个方法的参数来自于父activity的原始请求代码，以及setResult()方法参数中的结果代码和intent。\par
+
+	使用例子如下：
+	\begin{lstlisting}
+	public class QuizActivity extends AppCompatActivity{
+		private boolean mIsCheater;
+		...
+		@Override
+		protected void onActivityResult(int requestCode, int resultCode, Intent data)
+		{
+			if(resultCode != Activity.RESULT_OK)
+				return;
+			
+			if(resultCode == REQUEST_CODE_CHEAT)
+			{
+				if(data == null)
+					return;
+				mIsCheater = data.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
+			}
+		}
+	}
+	\end{lstlisting}
+
+\subsection{onCreate}
+	函数声明如下：
+	\begin{lstlisting}
+	void onCreate(Bundle);
+	\end{lstlisting}
+
+	当Activity子类被调用后，onCreate(Bundle)方法会被调用，用于初始化。\par
+
+	英文介绍如下：\par
+	Called when the activity is starting. 
+	This is where most initialization should go: calling setContentView(int) to inflate the activity's UI, 
+	using findViewById(int) to programmatically interact with widgets in the UI, 
+	calling managedQuery(android.net.Uri, String[], String, String[], String) to retrieve cursors for data being displayed, etc.\par
+
+	activity通过覆盖这个方法来准备以下用户界面相关的工作：
+	\begin{itemize}
+		\item[1.] 实例化组件并将组件放置在屏幕上，调用setContentView()方法。
+		\item[2.] 为组件设置监听器以处理用户交互。
+		\item[3.] 访问外部模型数据。
+	\end{itemize}
+
+\subsection{onSaveInstanceState}
+	函数声明如下：
+	\begin{lstlisting}
+	protected void onSaveInstanceState(Bundle outState);
+	\end{lstlisting}
+
+	这个方法通常在onPause()、onStop()和onDestroy()方法之前由系统调用。\par
+
+	onSaveInstanceState()要求activity将自身状态数据保存在Bundle对象中。Bundle是存储字符串键与限定类型值之间映射关系的一种结构。\par
+
+	一般通过覆盖onSaveInstanceState()方法将一些数据保存在bundle中，然后在onCreate()方法中取回这些数据，从而完成activity销毁与新建之间的数据传递。保存activity的数据：
+	\begin{lstlisting}
+	public class QuizActivity extends AppCompatActivity {
+		private static final String KEY_INDEX = "index";
+		...
+		@Override
+		public void onSaveInstanceState(Bundle savedInstanceState)
+		{
+			super.onSaveInstanceState(savedInstanceState);
+			savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+		}
+	}
+	\end{lstlisting}
+
+	取出activity的数据：
+	\begin{lstlisting}
+	public class QuizActivity extends AppCompatActivity {
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			...
+			if(savedInstanceState != null)
+				mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+		}
+	}
+	\end{lstlisting}
+
+\subsection{setContentView}
+	函数声明如下：
+	\begin{lstlisting}
+	public void setContentView(int layoutResID);
+	\end{lstlisting}
+
+	根据传入的布局资源ID参数，该方法生成指定布局的视图并将其放置在屏幕上。使用例子如下：
+	\begin{lstlisting}
+	import android.os.Bundle;
+	
+	public class QuizActivity extends AppCompatActivity
+	{
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_quiz);
+		}
+	}
+	\end{lstlisting}
+
+\subsection{setResult}
+\subsubsection{只返回结果代码}
+	函数声明如下：
+	\begin{lstlisting}
+	public final void setResult(int resultCode);
+	\end{lstlisting}
+
+	如果子activity由startActivityForResult()方法启动，那么result code总是会返回给父activity。
+	result code的取值有Activity.RESULT\_OK，Activity.RESULT\_CANCELED。
+	如果在没调用setResult()方法的情况下，用户单击了后退按钮，父activity则会收到Activity.RESULT\_CANCELED的结果代码。
+
+\subsubsection{返回附带数据}
+	函数声明如下：
+	\begin{lstlisting}
+	public final void setResult(int resultCode, Intent data);
+	\end{lstlisting}
+
+	我们这里通过Intent对象附带数据，从而会传给父activity，例子如下：
+	\begin{lstlisting}
+	public class CheatActivity extends AppCompatActivity{
+		private static final String EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown";
+		...
+		@Override
+		protected void onCreate(Bundle savedInstanceState){
+			...
+			mShowAnswer.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v)
+				{
+					...
+					Intent data = new Intent();
+					data.putExtra(EXTRA_ANSWER_SHOWN, true);
+					setResult(RESULT_OK, data);
+				}
+			});
+		}
+	}
+	\end{lstlisting}
+
+\subsection{startActivity}
+	函数声明如下：
+	\begin{lstlisting}
+	public void startActivity(Intent intent);
+	\end{lstlisting}
+
+	当activity调用startActivity()方法时，调用请求发送给了操作系统的ActivityManager，它负责创建Activity实例并调用其onCreate()方法。
+	其中startActivity()方法的Intent类型参数用于指示ActivityManager启动哪个Activity。
+
+	使用例子如下：
+	\begin{lstlisting}
+	mCheatButton = (Button)findViewById(R.id.cheat_button);
+	mCheatButton.setOnClickListener(new View.OnClickListener(){
+		@Override
+		public void onClick(View v)
+		{
+			Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+			startActivity(i);
+		}
+	});
+	\end{lstlisting}
+
+\subsection{startActivityForResult}
+	函数声明如下：
+	\begin{lstlisting}
+	public void startActivityForResult(Intent intent, int requestCode);
+	\end{lstlisting}
+
+	第一个参数是Intent对象，用于指示ActivityManager启动哪个Activity，第二个参数是请求代码。
+	请求代码将先被发送给子activity，然后再返回给父activity。
+	当一个activity启动多个不同类型的子activity，并且需要判断区分消息回馈方时，通常会用到该请求代码。\par
+
+	使用例子如下：
+	\begin{lstlisting}
+	public class QuizActivity extends AppCompatActivity{
+		...
+		private static final int REQUEST_CODE_CHEAT = 0;
+
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			...
+			mCheatButton.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v)
+				{
+					...
+					Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+					startActivityForResult(i, REQUEST_CODE_CHEAT);
+				}
+			});
+		}
+	}
+	\end{lstlisting}
+
+\section{Bundle类}
+	Bundle类对象一般用于保存activity基本数据类型的一些数据，从而实现activity销毁与新建之间的数据传递。
+
+\subsection{getInt}
+	函数声明如下：
+	\begin{lstlisting}
+	int getInt(String key, int defaultValue)
+	\end{lstlisting}
+
+\subsection{putInt}
+	函数声明如下：
+	\begin{lstlisting}
+	void putInt (String key, int value)
+	\end{lstlisting}
+
+\section{Button类}
+\subsection{setOnClickListener}
+	函数声明如下：
+	\begin{lstlisting}
+	void setOnClickListener(View.OnClickListener);
+	\end{lstlisting}
+
+	传入SetOnClickListener()方法的监听器参数一般是一个匿名内部类，例子如下：
+	\begin{lstlisting}
+	import android.widget.Button;
+
+	public class Test extends AppCompatActivity
+	{
+		private Button mTrueButton;
+
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			super.onCreate(savedInstanceState);
+
+			mTrueButton = (Button)findViewById(R.id.true_button);
+			mTrueButton.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v){}
+			});
+		}
+	}
+	\end{lstlisting}
+
+\section{Intent类}
+	Intent对象是component用来与操作系统通信的一种媒介工具。component包括service、activity、broadcast receiver和content provider。
+
+\subsection{Intent构造方法}
+	函数声明如下：
+	\begin{lstlisting}
+	public Intent(Context packageContext, Class<?> cls);
+	\end{lstlisting}
+
+	传入该方法的Class类型参数告诉ActivityManager应该启用哪个activiry，Context类型参数告诉ActivityManager参数在哪个actitivy中可以找到它。\par
+
+	使用例子如下：
+	\begin{lstlisting}
+	mCheatButton = (Button)findViewById(R.id.cheat_button);
+	mCheatButton.setOnClickListener(new View.OnClickListener(){
+		@Override
+		public void onClick(View v)
+		{
+			Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+			startActivity(i);
+		}
+	});
+	\end{lstlisting}
+
+\subsection{getBooleanExtra}
+	函数声明如下：
+	\begin{lstlisting}
+	public boolean getBooleanExtra(String name, boolean defaultValue);
+	\end{lstlisting}
+
+\subsection{putExtra}
+	函数声明如下：
+	\begin{lstlisting}
+	public Intent putExtra(String name, boolean value);
+	\end{lstlisting}
+
+\section{TextView类}
+\subsection{setText}
+	函数声明如下：
+	\begin{lstlisting}
+	void setText(int resid);
+	\end{lstlisting}
+
+	介绍：Sets the string value of the TextView.
+
+\section{Toast类}
+	Toast类的介绍：A toast is a view containing a quick little message for the user. The toast class helps you create and show those.
+
+\subsection{makeText}
+	函数声明如下：
+	\begin{lstlisting}
+	public static Toast makeText(Context context, int redId, int duration);
+	\end{lstlisting}
+
+	该方法用于创建一个toast，第一个Context参数是Activity的一个实例，第二个参数是toast要显示的字符串消息的资源ID，Toast类必须借助Context才能找到并使用字符串的资源ID。
+	第三个参数通常是两个Toast常量中的一个，用来指定toast消息显示的持续时间。\par
+
+	makeText函数一般和show()方法配合使用：
+	\begin{lstlisting}
+	mTrueButton.setOnClickListener(new View.OnClickListener(){
+		@Override
+		public void onClick(View v)
+		{
+			Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
+		}
+	});
+	\end{lstlisting}
+
+\subsection{show}
+	函数声明如下：
+	\begin{lstlisting}
+	void show();
+	\end{lstlisting}
+
+	该方法用于在屏幕上显示toast消息。
+
+\end{document}
