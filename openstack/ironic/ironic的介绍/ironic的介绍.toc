@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}ironic的功能}{2}{section.1}
+\contentsline {section}{\numberline {2}ironic的架构}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}项目组成}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}ironic与其他组件的调用关系}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}ironic的关键技术}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}预启动环境PXE}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}远程开机IPMI}{5}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}存储技术iSCSI}{5}{subsection.3.3}
+\contentsline {section}{\numberline {4}ironic的API}{6}{section.4}
+\contentsline {section}{\numberline {5}ironic的安装与配置}{6}{section.5}

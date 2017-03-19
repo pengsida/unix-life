@@ -1,0 +1,437 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}  
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux命令集 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{chkconfig}
+	chkconfig命令检查、设置系统的各种服务。这是Red Hat公司遵循GPL规则所开发的程序，它可查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。谨记chkconfig不是立即自动禁止或激活一个服务，它只是简单的改变了符号连接。\par
+
+	chkconfig参数选项如下：
+	\begin{lstlisting}
+	--add：增加所指定的系统服务，让chkconfig指令得以管理它，并同时在系统启动的叙述文件内增加相关数据； 
+	--del：删除所指定的系统服务，不再由chkconfig指令管理，并同时在系统启动的叙述文件内删除相关数据； 
+	--level<等级代号>：指定读系统服务要在哪一个执行等级中开启或关毕。
+	\end{lstlisting}
+
+	等级代号列表如下：
+	\begin{lstlisting}
+	 等级0表示：表示关机 
+	 等级1表示：单用户模式 
+	 等级2表示：无网络连接的多用户命令行模式 
+	 等级3表示：有网络连接的多用户命令行模式 
+	 等级4表示：不可用 
+	 等级5表示：带图形界面的多用户模式 
+	 等级6表示：重新启动
+	\end{lstlisting}
+
+	chkconfig使用例子如下：
+	\begin{lstlisting}
+	chkconfig --list #列出所有的系统服务。 
+	chkconfig --add httpd #增加httpd服务。 
+	chkconfig --del httpd #删除httpd服务。 
+	chkconfig --level httpd 2345 on #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态。 
+	chkconfig --list #列出系统所有的服务启动情况。 
+	chkconfig --list mysqld #列出mysqld服务设置情况。 
+	chkconfig --level 35 mysqld on #设定mysqld在等级3和5为开机运行服务，--level 35表示操作只在等级3和5执行，on表示启动，off表示关闭。 
+	chkconfig mysqld on #设定mysqld在各等级为on，“各等级”包括2、3、4、5等级。
+	\end{lstlisting}
+
+\subsection{增加一个服务}
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 服务脚本必须存放在/etc/ini.d/目录下。
+		\item[2.] chkconfig --add servicename在chkconfig工具服务列表中增加此服务，此时服务会被在/etc/rc.d/rcN.d中赋予K/S入口了。
+		\item[3.] chkconfig --level 35 mysqld on修改服务的默认启动等级。 
+	\end{itemize}
+
+\section{curl}
+	curl命令是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载，所以是综合传输工具，但按传统，习惯称curl为下载工具。作为一款强力工具，curl支持包括HTTP、HTTPS、ftp等众多协议，还支持POST、cookies、认证、从指定偏移处下载部分文件、用户代理字符串、限速、文件大小、进度条等特征。做网页处理流程和数据检索自动化，curl可以祝一臂之力。\par
+
+	curl参数选项如下:
+	\begin{lstlisting}
+	-a/--append 上传文件时，附加到目标文件 
+	-A/--user-agent<string> 设置用户代理发送给服务器 
+	-anyauth 可以使用“任何”身份验证方法 
+	-b/--cookie cookie<name=string/file> 字符串或文件读取位置 
+	--basic 使用HTTP基本验证 
+	-B/--use-ascii 使用ASCII/文本传输 
+	-c/--cookie-jar<file> 操作结束后把cookie写入到这个文件中 
+	-C/--continue-at<offset> 断点续转 
+	-d/--data<data> HTTP POST方式传送数据 
+	--data-ascii<data> 以ascii的方式post数据 
+	--data-binary<data> 以二进制的方式post数据 
+	--negotiate 使用HTTP身份验证 
+	--digest 使用数字身份验证 
+	--disable-eprt 禁止使用EPRT或LPRT 
+	--disable-epsv 禁止使用EPSV 
+	-D/--dump-header<file> 把header信息写入到该文件中 
+	--egd-file<file> 为随机数据(SSL)设置EGD socket路径 
+	--tcp-nodelay<cert[:passwd]> 使用TCP_NODELAY选项 
+	-e/--referer 来源网址 
+	-E/--cert<cert[:passwd]> 客户端证书文件和密码 (SSL) 
+	--cert-type<type> 证书文件类型 (DER/PEM/ENG) (SSL) 
+	--key<key> 私钥文件名 (SSL) 
+	--key-type<type> 私钥文件类型 (DER/PEM/ENG) (SSL) 
+	--pass<pass> 私钥密码 (SSL) 
+	--engine<eng> 加密引擎使用 (SSL). "--engine list" for list 
+	--cacert<file> CA证书 (SSL) 
+	--capath<directory> CA目录 (made using c_rehash) to verify peer against (SSL) 
+	--ciphers<list> SSL密码 
+	--compressed 要求返回是压缩的形势 (using deflate or gzip) 
+	--connect-timeout<seconds> 设置最大请求时间 
+	--create-dirs 建立本地目录的目录层次结构 
+	--crlf 上传是把LF转变成CRLF 
+	-f/--fail 连接失败时不显示http错误 
+	--ftp-create-dirs 如果远程目录不存在，创建远程目录 
+	--ftp-method [multicwd/nocwd/singlecwd] 控制CWD的使用 
+	--ftp-pasv 使用 PASV/EPSV 代替端口 
+	--ftp-skip-pasv-ip 使用PASV的时候,忽略该IP地址 
+	--ftp-ssl 尝试用 SSL/TLS 来进行ftp数据传输 
+	--ftp-ssl-reqd 要求用 SSL/TLS 来进行ftp数据传输 
+	-F/--form<name=content> 模拟http表单提交数据 
+	--form-string<name=string> 模拟http表单提交数据 
+	-g/--globoff 禁用网址序列和范围使用{}和[] 
+	-G/--get 以get的方式来发送数据 
+	-H/--header<line> 自定义头信息传递给服务器 
+	--ignore-content-length 忽略的HTTP头信息的长度 
+	-i/--include 输出时包括protocol头信息 
+	-I/--head 只显示请求头信息 
+	-j/--junk-session-cookies 读取文件进忽略session cookie 
+	--interface<interface> 使用指定网络接口/地址 
+	--krb4<level> 使用指定安全级别的krb4 
+	-k/--insecure 允许不使用证书到SSL站点 
+	-K/--config 指定的配置文件读取 
+	-l/--list-only 列出ftp目录下的文件名称 
+	--limit-rate<rate> 设置传输速度 
+	--local-port<NUM> 强制使用本地端口号 
+	-m/--max-time<seconds> 设置最大传输时间 
+	--max-redirs<num> 设置最大读取的目录数 
+	--max-filesize<bytes> 设置最大下载的文件总量 
+	-M/--manual 显示全手动 
+	-n/--netrc 从netrc文件中读取用户名和密码 
+	--netrc-optional 使用 .netrc 或者 URL来覆盖-n 
+	--ntlm 使用 HTTP NTLM 身份验证 
+	-N/--no-buffer 禁用缓冲输出 
+	-o/--output 把输出写到该文件中 
+	-O/--remote-name 把输出写到该文件中，保留远程文件的文件名 
+	-p/--proxytunnel 使用HTTP代理 
+	--proxy-anyauth 选择任一代理身份验证方法 
+	--proxy-basic 在代理上使用基本身份验证 
+	--proxy-digest 在代理上使用数字身份验证 
+	--proxy-ntlm 在代理上使用ntlm身份验证 
+	-P/--ftp-port 使用端口地址，而不是使用PASV 
+	-q 作为第一个参数，关闭 .curlrc 
+	-Q/--quote<cmd> 文件传输前，发送命令到服务器 
+	-r/--range<range> 检索来自HTTP/1.1或FTP服务器字节范围 
+	--range-file 读取（SSL）的随机文件 
+	-R/--remote-time 在本地生成文件时，保留远程文件时间 
+	--retry<num> 传输出现问题时，重试的次数 
+	--retry-delay<seconds> 传输出现问题时，设置重试间隔时间 
+	--retry-max-time<seconds> 传输出现问题时，设置最大重试时间 
+	-s/--silent 静默模式。不输出任何东西 
+	-S/--show-error 显示错误 
+	--socks4<host[:port]> 用socks4代理给定主机和端口 
+	--socks5<host[:port]> 用socks5代理给定主机和端口 
+	--stderr<file> 
+	-t/--telnet-option<OPT=val> Telnet选项设置 
+	--trace<file> 对指定文件进行debug 
+	--trace-ascii<file> Like --跟踪但没有hex输出 
+	--trace-time 跟踪/详细输出时，添加时间戳 
+	-T/--upload-file<file> 上传文件 
+	--url<URL> Spet URL to work with 
+	-u/--user<user[:passwd]> 设置服务器的用户和密码 
+	-U/--proxy-user<user[:passwd]> 设置代理用户名和密码 
+	-v 使用操作的过程更加详细
+	-w/--write-out [format] 什么输出完成后 
+	-x/--proxy<host[:port]> 在给定的端口上使用HTTP代理 
+	-X/--request<command> 指定什么命令 
+	-y/--speed-time 放弃限速所要的时间，默认为30 
+	-Y/--speed-limit 停止传输速度的限制，速度时间
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	 curl http://man.linuxde.net/test.iso -o filename.iso --progress
+	\end{lstlisting}
+
+\section{find}
+	find命令用来在指定目录下查找文件。任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。\par
+
+	find参数选项如下：
+	\begin{lstlisting}
+	-amin<分钟>：查找在指定时间曾被存取过的文件或目录，单位以分钟计算； 
+	-anewer<参考文件或目录>：查找其存取时间较指定文件或目录的存取时间更接近现在的文件或目录； 
+	-atime<24小时数>：查找在指定时间曾被存取过的文件或目录，单位以24小时计算； 
+	-cmin<分钟>：查找在指定时间之时被更改过的文件或目录； 
+	-cnewer<参考文件或目录>查找其更改时间较指定文件或目录的更改时间更接近现在的文件或目录； 
+	-ctime<24小时数>：查找在指定时间之时被更改的文件或目录，单位以24小时计算； 
+	-daystart：从本日开始计算时间； 
+	-depth：从指定目录下最深层的子目录开始查找； 
+	-expty：寻找文件大小为0 Byte的文件，或目录下没有任何子目录或文件的空目录； 
+	-exec<执行指令>：假设find指令的回传值为True，就执行该指令； 
+	-false：将find指令的回传值皆设为False； 
+	-fls<列表文件>：此参数的效果和指定“-ls”参数类似，但会把结果保存为指定的列表文件； 
+	-follow：排除符号连接； 
+	-fprint<列表文件>：此参数的效果和指定“-print”参数类似，但会把结果保存成指定的列表文件； 
+	-fprint0<列表文件>：此参数的效果和指定“-print0”参数类似，但会把结果保存成指定的列表文件； 
+	-fprintf<列表文件><输出格式>：此参数的效果和指定“-printf”参数类似，但会把结果保存成指定的列表文件； 
+	-fstype<文件系统类型>：只寻找该文件系统类型下的文件或目录； 
+	-gid<群组识别码>：查找符合指定之群组识别码的文件或目录； 
+	-group<群组名称>：查找符合指定之群组名称的文件或目录； 
+	-help或——help：在线帮助； 
+	-ilname<范本样式>：此参数的效果和指定“-lname”参数类似，但忽略字符大小写的差别； 
+	-iname<范本样式>：此参数的效果和指定“-name”参数类似，但忽略字符大小写的差别； 
+	-inum：查找符合指定的inode编号的文件或目录； 
+	-ipath<范本样式>：此参数的效果和指定“-path”参数类似，但忽略字符大小写的差别； 
+	-iregex<范本样式>：此参数的效果和指定“-regexe”参数类似，但忽略字符大小写的差别； 
+	-links<连接数目>：查找符合指定的硬连接数目的文件或目录； 
+	-iname<范本样式>：指定字符串作为寻找符号连接的范本样式； 
+	-ls：假设find指令的回传值为True，就将文件或目录名称列出到标准输出； 
+	-maxdepth<目录层级>：设置最大目录层级； 
+	-mindepth<目录层级>：设置最小目录层级； 
+	-mmin<分钟>：查找在指定时间曾被更改过的文件或目录，单位以分钟计算； 
+	-mount：此参数的效果和指定“-xdev”相同； 
+	-mtime<24小时数>：查找在指定时间曾被更改过的文件或目录，单位以24小时计算； 
+	-name<范本样式>：指定字符串作为寻找文件或目录的范本样式； 
+	-newer<参考文件或目录>：查找其更改时间较指定文件或目录的更改时间更接近现在的文件或目录； 
+	-nogroup：找出不属于本地主机群组识别码的文件或目录； 
+	-noleaf：不去考虑目录至少需拥有两个硬连接存在； 
+	-nouser：找出不属于本地主机用户识别码的文件或目录； 
+	-ok<执行指令>：此参数的效果和指定“-exec”类似，但在执行指令之前会先询问用户，若回答“y”或“Y”，则放弃执行命令； 
+	-path<范本样式>：指定字符串作为寻找目录的范本样式； 
+	-perm<权限数值>：查找符合指定的权限数值的文件或目录； 
+	-print：假设find指令的回传值为True，就将文件或目录名称列出到标准输出。格式为每列一个名称，每个名称前皆有“./”字符串； 
+	-print0：假设find指令的回传值为True，就将文件或目录名称列出到标准输出。格式为全部的名称皆在同一行； -printf<输出格式>：假设find指令的回传值为True，就将文件或目录名称列出到标准输出。格式可以自行指定； -prune：不寻找字符串作为寻找文件或目录的范本样式; -regex<范本样式>：指定字符串作为寻找文件或目录的范本样式； -size<文件大小>：查找符合指定的文件大小的文件； -true：将find指令的回传值皆设为True； -typ<文件类型>：只寻找符合指定的文件类型的文件； -uid<用户识别码>：查找符合指定的用户识别码的文件或目录； -used<日数>：查找文件或目录被更改之后在指定时间曾被存取过的文件或目录，单位以日计算； 
+	-user<拥有者名称>：查找符和指定的拥有者名称的文件或目录； 
+	-version或——version：显示版本信息； 
+	-xdev：将范围局限在先行的文件系统中； 
+	-xtype<文件类型>：此参数的效果和指定“-type”参数类似，差别在于它针对符号连接检查。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 在/home目录下查找以.txt结尾的文件名
+	find /home -name "*.txt"
+	\end{lstlisting}
+
+\section{mount}
+	mount命令用于加载文件系统到指定的加载点。此命令的最常用于挂载cdrom，使我们可以访问cdrom中的数据，因为你将光盘插入cdrom中，Linux并不会自动挂载，必须使用Linux mount命令来手动完成挂载。\par
+
+	mount参数选项如下：
+	\begin{lstlisting}
+	-V：显示程序版本； 
+	-l：显示已加载的文件系统列表； 
+	-h：显示帮助信息并退出； 
+	-v：冗长模式，输出指令执行的详细信息； 
+	-n：加载没有写入文件“/etc/mtab”中的文件系统； 
+	-r：将文件系统加载为只读模式； 
+	-o：选项用于指定挂载的分区有哪些特性;
+	-a：加载文件“/etc/fstab”中描述的所有文件系统。
+	\end{lstlisting}
+
+	例子如下：
+	\begin{lstlisting}
+	# 在目录上挂载包含文件系统的文件
+	# /dev/loop可以使得文件如同块设备一般被访问
+	mount -o loop example.img /home/you/dir
+	\end{lstlisting}
+
+	在目录上挂载包含文件系统的文件一般需要两步：1.用一个循环设备节点连接文件。2.在目录上挂载该循环设备。
+	这个挂载的实现除了使用上述的mount命令，还可以通过两条命令来完成：
+	\begin{lstlisting}
+	losetup /dev/loop0 example.img
+	mount /dev/loop0 /home/you/dir
+	\end{lstlisting}
+
+\section{netstat}
+	netstat命令用来打印Linux中网络系统的状态信息，可让你得知整个Linux系统的网络情况。\par
+
+	netstat参数选项如下：
+	\begin{lstlisting}
+	-a或--all：显示所有连线中的Socket； 
+	-A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址； 
+	-c或--continuous：持续列出网络状态； 
+	-C或--cache：显示路由器配置的快取信息； 
+	-e或--extend：显示网络其他相关信息； 
+	-F或--fib：显示FIB； 
+	-g或--groups：显示多重广播功能群组组员名单； 
+	-h或--help：在线帮助； 
+	-i或--interfaces：显示网络界面信息表单； 
+	-l或--listening：显示监控中的服务器的Socket； 
+	-M或--masquerade：显示伪装的网络连线； 
+	-n或--numeric：直接使用ip地址，而不通过域名服务器； 
+	-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称； 
+	-o或--timers：显示计时器； 
+	-p或--programs：显示正在使用Socket的程序识别码和程序名称； 
+	-r或--route：显示Routing Table； 
+	-s或--statistice：显示网络工作信息统计表； 
+	-t或--tcp：显示TCP传输协议的连线状况； 
+	-u或--udp：显示UDP传输协议的连线状况； 
+	-v或--verbose：显示指令执行过程； 
+	-V或--version：显示版本信息； 
+	-w或--raw：显示RAW传输协议的连线状况； 
+	-x或--unix：此参数的效果和指定"-A unix"参数相同； 
+	--ip或--inet：此参数的效果和指定"-A inet"参数相同。
+	\end{lstlisting}
+
+\subsection{查看连接某服务端口最多的IP地址}
+	\begin{lstlisting}
+	netstat -ntu | grep :80 | awk '{print $5}' | cut -d: -f1 | awk '{++ip[$1]} END {for(i in ip) print ip[i],"\t",i}' | sort -nr
+	\end{lstlisting}
+
+\subsection{获得TCP各种状态列表}
+	\begin{lstlisting}
+	netstat -nt | grep -e 127.0.0.1 -e 0.0.0.0 -e ::: -v | awk '/^tcp/ {++state[$NF]} END {for(i in state) print i,"\t",state[i]}'
+	\end{lstlisting}
+
+\subsection{查看phpcgi进程数}
+	\begin{lstlisting}
+	netstat -anpo | grep "php-cgi" | wc -l
+	\end{lstlisting}
+
+\section{wc}
+	“wc -l”可以查看一个文件的行数。
+
+\end{document}

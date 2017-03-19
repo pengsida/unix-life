@@ -1,0 +1,669 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux与pxe、kickstart \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{现实需求}
+	以正常的DVD 光碟片安装一两台Linux 系统似乎是没啥大问题，但如果有好几间电脑教室，里头有几十部总共数百部的主机要你装Linux 系统的话，那使用DVD 光碟来装也太花时间了。
+	此时，选择透过网络来进行安装就是一项可以思考的方向！ 
+	同时，如果电脑教室的PC 需要有多重作业系统的环境下，如何准备一个可以裸机安装的功能， 就是一个相当重要的任务了。
+
+\section{使用pxe}
+\subsection{常规安装操作系统的步骤}
+	使用DVD安装系统的步骤如下：
+	\begin{itemize}
+		\item[1.] 透过BIOS开机，并调整成可以让光碟优先开机的模式。
+		\item[2.] 以光碟内的作业系统核心开机，驱动系统的硬件装置。
+		\item[3.] 上一步的作业系统直接呼叫安装程序来进行安装选项。
+		\item[4.] 进入安装模式与使用者互动选取用户需要的软件操作环境。
+		\item[5.] 系统开始安装软件到硬盘上，安装完毕通常需要重新开机才能结束安装程序。
+		\item[6.] 重新开机后，会进入首次使用的设定画面，简单设定后，即可开始登入系统使用。
+	\end{itemize}
+
+\subsection{pxe的工作流程}
+	% 对于现在的系统而言，首先是boot loader载入kernel，然后再开始运行系统。
+	% 如果用DVD安装系统时，BIOS选择从DVD开机，光碟中有开机管理程序和简易的kernel，随后开始驱动整个系统硬件，进入安装系统的步骤。\par
+
+	pxe的全称是“preboot execution environment”，也就是开机前的执行环境。
+	借助pxe机制，就可以在还没有安装操作系统的情况下取得网络并且下载开机管理程序和kernel。\par
+
+	达成pxe机制需要两个基础，一个是用户端的网卡必须支持pxe用户端功能，并且开机时可以选择从网卡开机，这样系统才可以从网卡进入pxe用户端的程序。
+	还有一个是pxe服务器必须提供至少含有dhcp以及tftp的服务才行。其中dhcp服务在能够提供客户端的网络参数之外，还需要告知客户端tftp所在的位置。
+	而tftp是向客户端提供开机管理程序(boot loader)和kernel file下载点的重要服务。\par
+
+	pxe服务端的dhcp服务和tftp服务只能让pxe客户端开机，通常还需要提供客户端所需要的程序和软件资料的来源。
+	所以pxe服务端还需要加上nfs/ftp/http等通讯协议。\par
+
+\clearpage
+
+	pxe整体运作流程如下图：
+	\sizedfic{0.58}{1.jpg}
+
+	从上图可以看到，dhcp服务除了回传正确的网络参数，还提供了tftp与相关开机管理程序的信息。
+	而tftp需要提供开机管理程序、linux的开机核心与相关档案。
+	除此之外，我们还需要设定nfs/http/ftp来提供要安装的操作系统。
+
+\subsection{DHCP服务的配置}
+	DHCP服务用于提供用户端网络参数与tftp的地址，以及boot loader的文件名。
+	我们通过编辑/etc/dhcp/dhcpd.conf来实现这个功能，在subnet区块内加入两个参数：
+	\begin{lstlisting}
+	# /etc/dhcp/dhcpd.conf
+
+	subnet 192.168.42.0 netmask 255.255.255.0 {
+		...
+		next-server 192.168.42.254 # tftp的地址
+		filename "pxelinux.0" # boot loader的文件名
+	}
+	\end{lstlisting}
+
+	重启dhcp服务以后，针对这个内网的tftp设定就生效了。根据之前的流程图，pxe client就会根据这个boot loader的文件名向tftp请求下载开机管理程序。
+	所以我们需要接着设置tftp服务。
+
+\subsection{TFTP服务的设置}
+\subsubsection{配置tftp}
+	TFTP服务用于提供开机管理程序(boot loader)和核心(kernel)，我们接下来配置tftp服务。\par
+
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 首先安装tftp：
+		\begin{lstlisting}
+	yum install tftp-server tftp
+		\end{lstlisting}
+
+		\item[2.] 随后需要告诉用户端tftp资料的根目录的位置，才能让用户端取得完整的绝对路径相关资料。
+				  在下面的篇配置案例中，所有的文件统一放在/install/目录下，而tftp的根目录也就放在/install/tftpboot/这个目录下：
+				  \fic{2.png}
+
+		\item[3.] 因为tftp由xinetd这个super daemon管理，所以设置好tftp之后，还需要启动xinetd：
+		\begin{lstlisting}
+	/etc/init.d/xinetd restart
+	chkconfig xinetd on
+	chkconfig tftp on
+	netstat -tulnp | grep xinetd # 查看是否有在运行
+		\end{lstlisting}
+	\end{itemize}
+
+	根据上述的配置过程可知，这里通过tftp提供的资料都放置于/install/tftpboot/目录下。\par
+
+\subsubsection{添加开机管理程序和开机选单}
+	如果要使用pxe的开机管理程序和开机选单的话，还需要安装CentOs内建提供的syslinux软件，然后将其中的两个文件拷贝到/install/tftpboot/目录下：
+	\fic{3.png}
+
+	其中pxelinux.cfg是一个目录，可以放置预设的开机选单，如果还没有特定的用户端时，可以在prelinux.cfg目录下创建一个名为default的文件，这个文件的功能类似于grub的menu.lst文件，用于提供一个选单的设定。
+
+\subsubsection{添加kernel文件}
+	我们想利用原版安装光碟取得linux安装软件的kernel文件。现在iso文件放置在/install/iso/CentOS-6.4-x86\_64-bin-DVD1.iso，
+	预计把kernel文件放置在/install/tftpboot/kernel/centos6.4/。\par
+
+	步骤如下：
+	\begin{lstlisting}
+	mount -o loop /install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /mnt
+	mkdir -p /install/tftp/kernel/centos6.4
+	cp /mnt/isolinux/vmlinuz /install/tftpboot/kernel/centos6.4
+	cp /mnt/isolinux/initrd.img /install/tftpboot/kernel/centos6.4
+	cp /mnt/isolinux/isolinux.cfg /install/tftpboot/pxelinux.cfg/demo
+	umount /mnt
+	\end{lstlisting}
+
+	复制的三个文件描述如下：
+	\begin{itemize}
+		\item[1.] vmlinuz，用于安装软件的kernel file。
+		\item[2.] initrd.img，开机过程中所需要的核心模组参数。
+		\item[3.] isolinux.cfg，开机选单。
+	\end{itemize}
+
+\subsubsection{设定开机选单}
+	我们这里有两个开机选项，一个是透过本机硬盘开机(local boot)。还有一个是通过刚刚我们下载的kernel file开机，从而进入安装模式。
+	我们可以通过pxelinux.cfg目录下的default文件来设置开机选项，如下所示：
+	\begin{lstlisting}
+	# [root@centos ~]# vim /install/tftpboot/pxelinux.cfg/default
+	# default文件内容
+	UI vesamenu.c32 # 使用vesamenu.c32这个类图形的介面程式 
+	TIMEOUT 300 # 单位0.1秒，所以这个设定可等待30秒来进入预设开机 
+	DISPLAY ./boot.msg # 提供一些额外的资讯，让使用者更了解选单意义！ 
+	MENU TITLE Welcome to PXE Server System # 这行只是提供一个大标题而已！ 
+	LABEL local # 第一个选单的项目，LABEL后面接boot loader认识的选单项目
+		MENU LABEL Boot from local drive # 通过MENU LABEL来写入选单的相关信息
+		MENU DEFAULT # 此选单为预设项目(等待逾时就进入此开机) 
+		localboot 0 # 本机磁碟开机的特定项目！ 
+
+	LABEL network1 
+		MENU LABEL Boot from PXE Server for Install CentOS 6.4 
+		kernel ./kernel/centos6.4/vmlinuz # 核心所在的档名 
+		append initrd=./kernel/centos6.4/initrd.img # 就是核心外带参数啊！
+	\end{lstlisting}
+
+	我们上面设置的过程中调用了boot.msg文件来提供额外的资讯，内容如下：
+	\begin{lstlisting}
+	# [root@centos ~]# vim /install/tftpboot/boot.msg
+	# boot.msg文件内容
+	Welcome to VBird's PXE Server System.
+
+	The 1st menu can let you system goto hard disk menu.
+	The 2nd menu can goto interactive installation step.
+	\end{lstlisting}
+
+\subsection{提供软件安装服务器}
+	搭建一个安装服务器很简单，只要下载CentOs的一块DVD，将里面的资料以nfs/http/ftp等方式分享出去，那么这个主机就变成了软件安装服务器。\par
+
+	方式如下：
+	\begin{lstlisting}
+	# 1.先将DVD的资料给他放置于所需要的目录中，当然直接使用挂载最快！
+	[root@centos ~]# mkdir -p /install/nfs_share/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /install/nfs_share/centos6.4 iso9660 defaults,loop 0 0
+	#特别要注意的是档案系统与参数，记得光碟使用iso9660且需要加上loop
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#这样就挂载结束，比复制来复制去要简单的多喔！
+
+	# 2.制作NFS分享，要注意对内port有规范喔！
+	[root@centos ~]# yum -y install nfs-utils
+	[root@centos ~]# vim /etc/exports
+	/install/nfs_share/ 192.168.42.0/24(ro,async,nohide,crossmnt) localhost(ro,async,nohide,crossmnt)
+	# NFS的设定是很简单，不过，要注意由于server上面有两个挂载点在分享的目录上， 
+	#所以得要加上nohide与crossmnt这两个参数才行！  且后续的服务要开比较多就是了～
+
+	[root@centos ~]# vim /etc/sysconfig/nfs
+	RQUOTAD_PORT=901 
+	LOCKD_TCPPORT=902 
+	LOCKD_UDPPORT=902 
+	MOUNTD_PORT=903 
+	STATD_PORT=904
+	#找到上面这几个设定值，我们得要设定好固定的port来开放防火墙给用户处理！
+
+	[root@centos ~]# vim /etc/idmapd.conf
+	[General]
+	Domain = i4502.dic.ksu
+	[Mapping]
+	Nobody-User = nfsnobody
+	Nobody-Group = nfsnobody
+	#找到上面几个设定值，我们这里假设ID对应的无此帐号使用nfsnobody设定！
+
+	[root@centos ~]# /etc/init.d/rpcbind restart
+	[root@centos ~]# /etc/init.d/nfs restart
+	[root@centos ~]# /etc/init.d/rpcidmapd restart
+	[root@centos ~]# /etc/init.d/nfslock restart
+	[root@centos ~]# chkconfig rpcbind on
+	[root@centos ~]# chkconfig nfs on
+	[root@centos ~]# chkconfig rpcidmapd on
+	[root@centos ~]# chkconfig nfslock on
+	[root@centos ~]# rpcinfo -p
+		program vers proto port service
+		100000 4 tcp 111 portmapper
+		100000 4 udp 111 portmapper
+		100011 2 udp 901 rquotad
+		100011 2 tcp 901 rquotad
+		100005 3 udp 903 mountd
+		100005 3 tcp 903 mountd
+		100003 4 tcp 2049 nfs
+		100003 4 udp 2049 nfs
+		100021 4 udp 902 nlockmgr
+		100021 4 tcp 902 nlockmgr
+		100024 1 udp 904 status
+		100024 1 tcp 904 status
+	#要注意喔，我们得要启动的port有111, 2049,901~904这几个！  防火墙要开！
+
+	[root@centos ~]# showmount -e localhost
+	Export list for localhost:
+	/install/nfs_share 192.168.42.0/24,localhost
+	# OK！  看到上面这些东西，就是搞定啰！  赞！
+
+	# 3.然后我们也来开放www服务提供这个安装伺服器吧！  简单作法如下：
+	[root@centos ~]# yum install httpd
+	[root@centos ~]# /etc/init.d/httpd start
+	[root@centos ~]# chkconfig httpd on
+	[root@centos ~]# mkdir -p /var/www/html/install/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /var/www/html/install/centos6.4 iso9660 defaults,loop 0 0
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#同样的，用挂载的应该会比较快速些～
+
+	# 4.如果还想要提供FTP的处理呢？  那还是简单的这样做即可：
+	[root@centos ~]# yum install vsftpd
+	[root@centos ~]# /etc/init.d/vsftpd start
+	[root@centos ~]# chkconfig vsftpd on
+	[root@centos ~]# mkdir -p /var/ftp/install/centos6.4
+	[root@centos ~]# vim /etc/fstab
+	/install/iso/CentOS-6.4-x86_64-bin-DVD1.iso /var/ftp/install/centos6.4 iso9660 \ 
+		defaults,loop,context=system_u:object_r:public_content_t:s0 0 0
+	#上面是同一行，比较重要的是参数的部分多了context喔！  因为我们这个系统有使用SELinux， 
+	#为了要避免挂载的档案系统出现FTP的SELinux错误，因此这里得要加上此参数才行！
+
+	[root@centos ~]# mount -a
+	[root@centos ~]# df
+	#超级简单的这样就搞定了！
+	\end{lstlisting}
+
+	通过上述步骤，我们就可以将iso文件以nfs/http/ftp等方式分享出去，也就搭建了一个安装软件的服务器。
+
+\subsection{通过网络安装操作系统}
+	安装步骤在下面这个网站中有详细介绍：\par
+	\url{http://linux.vbird.org/linux_enterprise/0120installation.php#pxe_client}
+
+\clearpage
+
+\section{使用kickstart大量部署CentOS系统}
+	通过kickstrt可以自动选择系统的安装选项，让系统自己安装。
+
+\subsection{kickstart可用参数}
+	CentOs系统中root目录下有一个anaconda-ks.cfg文件，内容如下;
+	\sizedfic{0.9}{4.png}
+
+	kickstart文件的内容包含三大部分：
+	\begin{itemize}
+		\item[1.] command，指令项目区段，就是上面档案中最开头的部分，亦即是我们主要设定系统的项目！ 这包括软体来源、安装模式(升级或全新安装)、键盘格式、网路设定、 防火墙设定、使用者身份认证设定、时区、SELinux 启动、开机管理程式与磁碟分割等最重要的项目部分了。 
+		\item[2.] \%package，软件安装区段，CentOS提供的软件非常多，还有所谓的软件群组呢！ 同时还支援第三方协力软件的来源。 kickstart可以在这个阶段来处理各式软件的安装。 
+		\item[3.] \%pre \%post，安装前、安装后设定区段，有时候，安装前后我总是得要针对系统作个设定或测试什么的，举例来说，假设我在系统安装完毕后，想要直接进行开机选单的增加或修改， 然后再进行开机的动作直接生效，我就不用还得要一部一部机器的登入去修改了。 还有包括想要直接加入ssh 金钥的设定控制等项目，写在\%post 里头的话， 会变的很方便喔！
+	\end{itemize}
+
+\subsection{command指令项目区段}
+	下面介绍常见的设定值：
+	\begin{itemize}
+		\item[1.] install，进入安装模式。
+		\item[2.] upgrade，进入升级模式，升级原本的旧系统。
+		\item[3.] text，进入文字界面的自动安装。
+		\item[4.] graphical，进入图形界面的自动安装。
+		\item[5.] cdrom，使用光碟安装。
+		\item[6.] harddrive，使用硬盘安装。
+		\item[7.] nfs/url，使用网络安装操作系统。
+		\begin{itemize}
+			\item url：以本文档中的http/ftp协定而言，应该要写成如下的模样来告知kickstart去哪里读取iso文件： 
+			\begin{lstlisting}
+	url --url http://192.168.42.254/install/centos6.4 
+	url --url ftp://192.168.42.254/install/centos6.4 
+			\end{lstlisting}
+
+			\item nfs：以本文档中的NFS分享目录来说，就应该要写成： 
+			\begin{lstlisting}
+	nfs --server=192.168.42.254 --dir=/install/nfs_share/centos6.4 
+			\end{lstlisting}
+		\end{itemize}
+
+		\item[8.] lang，设定系统语言。
+		\item[9.] keyboard，设置系统键盘按键格式。
+		\item[10.] network，设定网络参数。 所需要设定的项目包括哪一张网卡要启动(--device)？ 开机时要不要启动(--onboot)？ 使用什么方式设定IP 等等(--bootproto dhcp/static)。\par
+
+				   如果以eth0的dhcp方式设定：
+				   \begin{lstlisting}
+	network --onboot yes --device eth0 --bootproto dhcp 
+				   \end{lstlisting}
+
+				   如果想要使用固定IP的设定：
+				   \begin{lstlisting}
+	network --onboot yes --device eth0 --bootproto static --ip 192.168.42.201 --netmask 255.255.255.0 --gateway 192.168.42.254 --nameserver 192.168.42.254
+				   \end{lstlisting}
+		\item[11.] rootpw，用于设定root密码。
+		\item[12.] firewall，用于设置防火墙：
+		\begin{lstlisting}
+	# 不要在这部电脑使用防火墙系统，直接放行所有连线功能：
+	firewall --disabled 
+
+	# 仅放行ssh的连线功能： 
+	firewall --service=ssh # 启用的服务，可以是ssh, telnet, smtp, http, ftp等等 
+	firewall --port=22:tcp # 启用的埠口，也可以使用2049:udp之类的模式！ 
+	# 上面两个取任何一个都可以！
+
+	# 让eth1变成信任网域，且放行port 22, 25, 80等埠口： 
+	firewall --port=22:tcp,25:tcp,80:tcp --trust eth1
+	# 如果有多个网卡，可以指定某张网卡变成信任装置，这样直接放行所有的进出封包在eth1上头～ 
+	# 但不包括其他eth0, eth2...介面，仅有eth1是信任的意思。
+		\end{lstlisting}
+
+		\item[13.] authconfig，放行使用者登入的身份认证模组：
+		\begin{lstlisting}
+	# CentOS预设的身份验证设定值：使用sha1 512bits演算法
+	authconfig --enableshadow --passalgo=sha512 <==较佳的预设值！ 
+
+	#如果想要使用旧的md5编码来取代新的sha1编码，可以这样做看看： 
+	authconfig --enableshadow --enablemd5
+		\end{lstlisting}
+
+		\item[14.] selinux，用于设置SELinux：
+		\begin{lstlisting}
+	selinux --permissive
+	#主要的模式有： --enforcing --disabled --permissive喔！
+		\end{lstlisting}
+
+		\item[15.] timezone，设定系统所在区域的时区。系统支援的时区列于/usr/share/zoneinfo/目录下。
+		\item[16.] bootloader，开机管理程序的安装与设定：
+		\begin{lstlisting}
+	# 原本预设的bootloader安装于MBR以及预设CentOS 6.x的核心参数如下：
+	bootloader --location=mbr --driveorder=vda --append="crashkernel=auto rhgb quiet" 
+	# grub安装于MBR,安装于vda那颗硬盘上，且增加核心参数为crashkernel=auto rhgb quiet 
+
+	# 先找vda安装，如果找不到，就找sda安装，再找不到，就找hda安装在MBR内： 
+	bootloader --location=mbr --driveorder=vda,sda,hda --append="crashkernel=auto rhgb quiet"
+		\end{lstlisting}
+
+		\item[17.] halt，reboot，poweroff，shutdown：
+		安装完毕之后，需要安装程式帮你的系统进行什么行为的意思。 
+		一般来说，如果是kickstart 的环境中，这个值没有设定的话，就会直接进入”reboot“重新开机的阶段。 
+		如果你想要系统安装完毕后自动关机，那就使用”poweroff“即可，使用shutdown跟poweroff类似。 
+		那如果你想要让安装完毕后等待使用者按任意键才继续， 就像一般手动挑选设定来安装Linux的最后一步，要你按下一步才会重新开机的模式时，那就使用”halt“停止即可。 
+
+		\item[18.] zerombr，用于强制初始化硬盘。
+		\item[19.] clearpart，既然要安装在系统上，就得要进行分割才行。 
+		不过，如果你的分割表不想要被破坏，那么就得要使用clearpart --none 才行！ 
+		不过我们这里使用裸机安装嘛！ 所以当然得要重新分割。 
+		因此，clearpart 就得要写成--all 了！ 
+		那如果你有很多颗硬盘呢？ 然后仅有一颗要进行重新分割，此时就得要使用“--drives”来说明哪颗硬盘要被分割了。 
+		所以可以这样做：
+		\begin{lstlisting}
+	# 所有硬盘的分割表通通被清除！
+	clearpart --all 
+
+	# 仅清除vda硬盘的分割表，其他的硬盘不要清除分割表！ 
+	clearpart --drives=vda --all
+		\end{lstlisting}
+
+		\item[20.] part，用于设置详细的分割参数。如果我们想这么分割：根目录为主要分割，使用5GB硬盘;/home 为主分割，使用所有剩余硬盘容量;/usr使用10GB;/var使用20GB;/tmp使用1GB;swap使用1GB：
+		\begin{lstlisting}
+	part / --fstype=ext4 --size=5000 --ondisk=vda --asprimary 
+	part /home --fstype=ext4 --grow --ondisk=vda --asprimary 
+	part /usr --fstype=ext4 --size=10000 --ondisk=vda 
+	part /var --fstype=ext4 --size=20000 --ondisk=vda 
+	part /tmp --fstype=ext4 --size=1000 --ondisk=vda 
+	part swap --fstype=swap --size=1000
+	# 如果仅有一颗硬盘，那么--ondisk可以省略喔！ 
+	# 使用--size来规范该分割的大小，单位是MB啰！ 
+	# 使用--grow就可以让系统自动去判断最大可用容量，然后通通丢给该分割！ 
+	# 使用--asprimary就会将该分割强制列在主要分割类型中！
+		\end{lstlisting}
+
+		\item[21.] services，设置开机启动或关闭的服务。如果你不想要开机启动cups, kdump, acpid, portreserve 这四个服务，那你可以使用如下的方式来取消开机启动：
+		\begin{lstlisting}
+ 	services --disabled cups,kdump,acpid,portreserve
+		\end{lstlisting}
+
+		\item[22.] repo，额外的yum软件仓库。
+	\end{itemize}
+
+\subsection{软件安装区段}
+	在这里既可以安装特定的软件，也可以安装一个软件群组，还可以安装额外的语系：
+	\begin{lstlisting}
+	%packages
+	@base # 前面加个@的，代表是软体群组喔！
+	@console-internet
+	@core
+	@debugging
+	@directory-client
+	@hardware-monitoring
+	@chinese-support # 中文语系支援！  这个重要！
+	....(中间省略)....
+	pax # 直接写软体名称的，就是单一软体而已！
+	oddjob
+	sgpio
+	device-mapper-persistent-data
+	....(底下省略)....
+	\end{lstlisting}
+
+\subsection{安装前、安装后的额外动作区段}
+	\%pre 的用途比较少，因为安装前大概只要注意到硬体侦测，以厘清我们想要安装的模式为何而已。 
+	如果是安装后到重新开机前的行为，那就热闹多了！ 
+	因为我们可能会增加ssh 的金钥、额外挂载与设定某些特定的脚本程式到/etc/rc.d/rc.local、
+	额外进行其他partition 的完整复原等等。 
+	举例来说，如果我想要安装完毕之后， 让root 加入ssh 金钥，这样我才能够不用密码登入此机器时，那可以这样处理：
+	\begin{lstlisting}
+	%post
+	#!/bin/sh
+	mkdir -p /root/.ssh
+	chmod 700 /root/.ssh
+	chown root.root /root/.ssh
+	echo "ssh-rsa AAAAB3NzaC1yc2EA...== root@i4502.dic.ksu" >> /root/.ssh/authorized_keys
+	chmod 644 /root/.ssh/authorized_keys
+	chown root.root /root/.ssh/authorized_keys
+	\end{lstlisting}
+
+\subsection{搭配pxe使用}
+	首先设置kickstart文档，我们想实现的安装方式如下：
+	\begin{itemize}
+		\item 透过纯文字的方法全新安装一套CentOS系统
+		\item 我要透过区域网路内的NFS 伺服器来取得安装软体来源
+		\item 网路预设使用dhcp 服务来启动，且开机就会驱动网卡
+		\item root 密码是要给予加密过的资料
+		\item 防火墙预设放行22, 25, 80, 111 等埠口
+		\item 认证设定保持原有的状态即可(sha512)
+		\item 将SELinux 启动于宽容模式下
+		\item 安装完毕后进行重新开机的动作
+		\item 仅作出一个3GB 大小的根目录来安装这个小型控制系统即可
+		\item 关闭cups, kdump, acpid, portreserve 等服务
+		\item 安装一些软件包
+		\item 安装完毕后加入root的ssh金钥！
+	\end{itemize}
+
+	在/install/nfs\_share/kickstart/目录下创建pcroom\_raw.ks文件，内容如下：
+	\begin{lstlisting}
+	 install
+	text
+	nfs --server=192.168.42.254 --dir=/install/nfs_share/centos6.4
+	lang zh_TW.UTF-8
+	keyboard us
+	network --onboot yes --device eth0 --bootproto dhcp --noipv6
+	rootpw --iscrypted 刚刚你用grub-crypt作出的密码参数
+	firewall --port=22:tcp,25:tcp,80:tcp,111:tcp,111:udp,9000:udp,9001:udp
+	authconfig --enableshadow --passalgo=sha512
+	selinux --permissive
+	timezone Asia/Taipei
+	bootloader --location=mbr --driveorder=vda --append="crashkernel=auto rhgb quiet"
+	reboot
+
+	zerombr
+	clearpart --all
+	part / --fstype=ext4 --size=3000
+
+	services --disabled cups,kdump,acpid,portreserve
+
+	repo --name="CentOS" --baseurl=nfs:192.168.42.254:/install/nfs_share/centos6.4 --cost=100
+
+	%packages
+	@base
+	@console-internet
+	@core
+	@debugging
+	@directory-client
+	@hardware-monitoring
+	@java-platform
+	@large-systems
+	@network-file-system-client
+	@performance
+	@perl-runtime
+	@server-platform
+	@server-policy
+	pax
+	oddjob
+	sgpio
+	device-mapper-persistent-data
+	samba-winbind
+	certmonger
+	pam_krb5
+	krb5-workstation
+	perl-DBD-SQLite
+
+	%post
+	#!/bin/sh
+	mkdir -p /root/.ssh
+	chmod 700 /root/.ssh
+	chown root.root /root/.ssh
+	echo " 刚刚你制作出的id_rsa.pub档案的内容 " >> /root/.ssh/authorized_keys
+	chmod 644 /root/.ssh/authorized_keys
+	chown root.root /root/.ssh/authorized_keys
+	\end{lstlisting}
+
+	我们得要告知用户端在取得PXE的环境后，还能够自动下载这个kickstart设定文件，
+	这样用户端电脑才会自己安装而不会进入询问模式。 
+	这时得要修改pxelinux.cfg/default内容了！ 
+	我们现在增加另外一个选单，这个选单可以让系统自动的以刚刚的kickstart方式来自我裸机安装：
+	\begin{lstlisting}
+	# default文件内容
+	UI vesamenu.c32 # 使用vesamenu.c32这个类图形的介面程式 
+	TIMEOUT 300 # 单位0.1秒，所以这个设定可等待30秒来进入预设开机 
+	DISPLAY ./boot.msg # 提供一些额外的资讯，让使用者更了解选单意义！ 
+	MENU TITLE Welcome to PXE Server System # 这行只是提供一个大标题而已！ 
+	LABEL local # 第一个选单的项目，LABEL后面接boot loader认识的选单项目
+		MENU LABEL Boot from local drive # 通过MENU LABEL来写入选单的相关信息
+		localboot 0 # 本机磁碟开机的特定项目！ 
+
+	LABEL network1 
+		MENU LABEL Boot from PXE Server for Install CentOS 6.4 
+		kernel ./kernel/centos6.4/vmlinuz # 核心所在的档名 
+		append initrd=./kernel/centos6.4/initrd.img # 就是核心外带参数啊！
+
+	LABEl kickstart1
+		MENU LABEL Boot from PXE Server for AUTO Install CentOS 6.4 raw
+		MENU DEFAULT # 此选单为预设项目(等待逾时就进入此开机) 
+		kernel ./kernel/centos6.4/vmlinuz
+		append initrd=./kernel/centos6.4/initrd.img ks=nfs:192.168.42.254:/install/nfs_share/kickstart/pcroom_raw.ks
+	\end{lstlisting}
+
+\section{更加详细的部署步骤}
+	这篇文档是根据以下网站学习所做的笔记，里面有更详细的操作步骤：\par
+	\url{http://linux.vbird.org/linux_enterprise/0120installation.php}
+
+\end{document}
