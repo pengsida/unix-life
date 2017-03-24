@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -9,7 +9,14 @@
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
 \usepackage{longtable}
+\usepackage{empheq}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{rotating}
@@ -23,35 +30,24 @@
 \usepackage{xcolor}
 \usepackage{geometry}
 \setcounter{secnumdepth}{4}
-\usepackage{mhchem}
-\usepackage{multirow}
-\usepackage{extarrows}
-\usepackage{hyperref}
-\titleformat*{\section}{\LARGE}
-\renewcommand\refname{参考文献}
-\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
-%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
-%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
 \titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
-\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
-\setCJKfamilyfont{cjkhwxk}{STXingkai}
-\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
-% \setCJKfamilyfont{cjkhwxk}{华文行楷}
-% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
-\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
 \newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
-\newfontfamily\wryh{Microsoft YaHei}
-\newfontfamily\hwzs{STZhongsong}
-\newfontfamily\hwst{STSong}
-\newfontfamily\hwfs{STFangsong}
-\newfontfamily\jljt{MicrosoftYaHei}
-\newfontfamily\hwxk{STXingkai}
-% \newfontfamily\hwzs{华文中宋}
-% \newfontfamily\hwst{华文宋体}
-% \newfontfamily\hwfs{华文仿宋}
-% \newfontfamily\jljt{方正静蕾简体}
-% \newfontfamily\hwxk{华文行楷}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
 \newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
 \newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
 \newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
@@ -77,14 +73,14 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
 	showstringspaces=false,
 	basicstyle=\scriptsize,
 	keywordstyle=\color{purple},
-	commentstyle=\itshape\color{cgreen},
+	commentstyle=\color{cgreen},
 	stringstyle=\color{blue},
 	frame=lines,
 	% escapeinside=``,
@@ -97,14 +93,18 @@
 	tabsize=4
 } 
 
-\newfontfamily{\consolas}{Consolas}
-\newfontfamily{\monaco}{Monaco}
-\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
-\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
-\setmainfont{Times New Roman}
-
-\setCJKmainfont{华文中宋}
-
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
 
 \newcommand{\fic}[1]{\begin{figure}[H]
 		\center
@@ -120,6 +120,15 @@
 
 \newcommand{\interval}{\vspace{0.5em}}
 
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
 % 改变段间隔
 \setlength{\parskip}{0.2em}
 \linespread{1.1}
@@ -128,38 +137,19 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{更改pypi源 \qquad}
+\chead{查看linux系统版本 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
+
 \begin{document}
 
-% \tableofcontents
+\tableofcontents
 
-% \clearpage
+\clearpage
 
-\section{更改pypi源}
-	在~目录下创建.pip文件夹：
+\section{查看linux系统版本}
+	命令如下：
 	\begin{lstlisting}
-	mkdir .pip
-	\end{lstlisting}
-
-	在.pip文件夹下创建pip.conf文件：
-	\begin{lstlisting}
-	touch pip.conf
-	\end{lstlisting}
-
-	在pip.conf文件写入以下内容：
-	\begin{lstlisting}
-	[global]
-	index-url=http://mirrors.aliyun.com/pypi/simple/
-
-	[install]
-	trusted-host=mirrors.aliyun.com
-	\end{lstlisting}
-
-\subsection{在命令行中指定pip源}
-	可以在命令行中添加以上参数，可以让pip从指定的镜像源安装软件：
-	\begin{lstlisting}
-	pip install pythonModuleName -i http://mirrors.aliyun.com/pypi/simple/
+	cat /proc/version
 	\end{lstlisting}
 
 \end{document}

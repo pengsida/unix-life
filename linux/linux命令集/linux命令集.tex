@@ -186,6 +186,59 @@
 		\item[3.] chkconfig --level 35 mysqld on修改服务的默认启动等级。 
 	\end{itemize}
 
+\section{cpio}
+	cpio命令主要是用来建立或者还原备份档的工具程序，cpio命令可以复制文件到归档包中，或者从归档包中复制文件。\par
+
+	cpio参数选项如下：
+	\begin{lstlisting}
+	-0或--null：接受新增列控制字符，通常配合find指令的“-print0”参数使用； 
+	-a或--rest-access-time：重新设置文件的存取时间； 
+	-A或--append：附加到已存在的备份文档中，且这个备份文档必须存放在磁盘上，而不能放置于磁带机里； 
+	-b或--awap：此参数的效果和同时指定“-ss”参数相同； 
+	-B：将输入/输出的区块大小改成5210Bytes； 
+	-c：使用旧ASCII备份格式； 
+	-C<区块大小>或--io-size=<区块大小>：设置输入/输出的区块大小，单位是Byte； 
+	-d或--make-directories：如有需要cpio会自行建立目录； 
+	-E<范本文件>或--pattern-file=<范本文件>：指定范本文件，其内含有一个或多个范本样式，让cpio解开符合范本条件的文件，格式为每列一个范本样式； 
+	-f或--nonmatching：让cpio解开所有不符合范本条件的文件； 
+	-F<备份档>或--file=<备份档>：指定备份档的名称，用来取代标准输入或输出，也能借此通过网络使用另一台主机的保存设备存取备份档； 
+	-H<备份格式>：指定备份时欲使用的文件格式； 
+	-i或--extract：执行copy-in模式，还原备份档； 
+	-l<备份档>：指定备份档的名称，用来取代标准输入，也能借此通过网络使用另一台主机的保存设备读取备份档； 
+	-k：此参数将忽略不予处理，仅负责解决cpio不同版本间的兼容性问题； 
+	-l或--link：以硬连接的方式取代复制文件，可在copy-pass模式下运用； 
+	-L或--dereference：不建立符号连接，直接复制该连接所指向的原始文件； 
+	-m或preserve-modification-time：不去更改文件的更改时间； 
+	-M<回传信息>或--message=<回传信息>：设置更换保存媒体的信息； 
+	-n或--numeric-uid-gid：使用“-tv”参数列出备份档的内容时，若再加上参数“-n”，则会以用户识别和群组识别码替代拥有者和群组名称列出文件清单； 
+	-o或--create：执行copy-out模式，建立备份档； 
+	-O<备份档>：指定备份档的名称，用来取代标准输出，也能借此通过网络使用另一台主机的保存设备存放备份档； 
+	-p或--pass-through：执行copy-pass模式，略过备份步骤，直接将文件复制到目的目录； 
+	-r或--rename：当有文件名称需要更改时，采用互动模式； 
+	-R<拥有者><:/.><所属群组>或----owner<拥有者><:/.><所属群组> 在copy-in模式还原备份档，或copy-pass模式复制文件时，可指定这些备份，复制的文件的拥有者与所属群组； 
+	-s或--swap-bytes：交换每队字节的内容； 
+	-S或--swap-halfwords：交换每半个字节的内容； 
+	-t或--list：将输入的内容呈现出来； 
+	-u或--unconditional：置换所有文件，不论日期时间的新旧与否，皆不予询问而直接覆盖； 
+	-v或--verbose：详细显示指令的执行过程； 
+	-V或--dot：执行指令时。在每个文件的执行程序前面加上“.”号； 
+	--block-size=<区块大小>：设置输入/输出的区块大小，假如设置数值为5，则区块大小为2500，若设置成10，则区块大小为5120，以此类推； 
+	--force-local：强制将备份档存放在本地主机； 
+	--help：在线帮助； 
+	--no-absolute-filenames：使用相对路径建立文件名称； 
+	--no-preserve-owner：不保留文件的拥有者，谁解开了备份档，那些文件就归谁所有； 
+	-only-verify-crc：当备份档采用CRC备份格式时，可使用这项参数检查备份档内的每个文件是否正确无误； 
+	--quiet：不显示复制了多少区块； 
+	--sparse：倘若一个文件内含有大量的连续0字节，则将此文件存在稀疏文件； 
+	--version：显示版本信息。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# initrd.img是一个cpio归档文件，解压initrd.img文件
+	cpio -i --make-directories < initrd.img
+	\end{lstlisting}
+
 \section{curl}
 	curl命令是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载，所以是综合传输工具，但按传统，习惯称curl为下载工具。作为一款强力工具，curl支持包括HTTP、HTTPS、ftp等众多协议，还支持POST、cookies、认证、从指定偏移处下载部分文件、用户代理字符串、限速、文件大小、进度条等特征。做网页处理流程和数据检索自动化，curl可以祝一臂之力。\par
 
@@ -296,6 +349,26 @@
 	 curl http://man.linuxde.net/test.iso -o filename.iso --progress
 	\end{lstlisting}
 
+\section{file}
+	file命令用来探测给定文件的类型。file命令对文件的检查分为文件系统、魔法幻数检查和语言检查3个过程。\par
+
+	file参数选项如下:
+	\begin{lstlisting}
+	-b：列出辨识结果时，不显示文件名称； 
+	-c：详细显示指令执行过程，便于排错或分析程序执行的情形； 
+	-f<名称文件>：指定名称文件，其内容有一个或多个文件名称时，让file依序辨识这些文件，格式为每列一个文件名称； 
+	-L：直接显示符号连接所指向的文件类别； 
+	-m<魔法数字文件>：指定魔法数字文件； 
+	-v：显示版本信息； 
+	-z：尝试去解读压缩文件的内容。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 查看initrd.img文件类型
+	file initrd.img
+	\end{lstlisting}
+
 \section{find}
 	find命令用来在指定目录下查找文件。任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。\par
 
@@ -354,6 +427,35 @@
 	\begin{lstlisting}
 	# 在/home目录下查找以.txt结尾的文件名
 	find /home -name "*.txt"
+	\end{lstlisting}
+
+\section{gunzip}
+	gunzip命令用来解压缩文件。gunzip是个使用广泛的解压缩程序，它用于解开被gzip压缩过的文件，这些压缩文件预设最后的扩展名为.gz。事实上gunzip就是gzip的硬连接，因此不论是压缩或解压缩，都可通过gzip指令单独完成。\par
+
+	gunzip参数选项如下;
+	\begin{lstlisting}
+	-a或——ascii：使用ASCII文字模式； 
+	-c或--stdout或--to-stdout：把解压后的文件输出到标准输出设备； 
+	-f或-force：强行解开压缩文件，不理会文件名称或硬连接是否存在以及该文件是否为符号连接； 
+	-h或——help：在线帮助； 
+	-l或——list：列出压缩文件的相关信息； 
+	-L或——license：显示版本与版权信息； 
+	-n或--no-name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其忽略不予处理； 
+	-N或——name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其回存到解开的文件上； 
+	-q或——quiet：不显示警告信息； 
+	-r或——recursive：递归处理，将指定目录下的所有文件及子目录一并处理； 
+	-S或<压缩字尾字符串>或----suffix<压缩字尾字符串>：更改压缩字尾字符串； 
+	-t或——test：测试压缩文件是否正确无误； 
+	-v或——verbose：显示指令执行过程； 
+	-V或——version：显示版本信息；
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 解压etc.zip.gz文件
+	gunzip /opt/etc.zip.gz
+	# 查看etc.zip.gz文件的压缩信息
+	gunzip -l /opt/etc.zip.gz
 	\end{lstlisting}
 
 \section{mount}
@@ -431,7 +533,120 @@
 	netstat -anpo | grep "php-cgi" | wc -l
 	\end{lstlisting}
 
+\section{od}
+	od命令用于输出文件的八进制、十六进制或其它格式编码的字节，通常用于显示或查看文件中不能直接显示在终端的字符。\par
+	常见的文件为文本文件和二进制文件。此命令主要用来查看保存在二进制文件中的值。比如，程序可能输出大量的数据记录，每个数据是一个单精度浮点数。这些数据记录存放在一个文件中，如果想查看下这个数据，这时候od命令就派上用场了。在我看来，od命令主要用来格式化输出文件数据，即对文件中的数据进行无二义性的解释。不管是IEEE754格式的浮点数还是ASCII码，od命令都能按照需求输出它们的值。\par
+
+	od参数选项如下：
+	\begin{lstlisting}
+	-a：此参数的效果和同时指定“-ta”参数相同； 
+	-A：<字码基数>：选择以何种基数计算字码； 
+	-b：此参数的效果和同时指定“-toc”参数相同； 
+	-c：此参数的效果和同时指定“-tc”参数相同，select printable characters or backslash escapes 
+	-d：此参数的效果和同时指定“-tu2”参数相同； 
+	-f：此参数的效果和同时指定“-tfF”参数相同； 
+	-h：此参数的效果和同时指定“-tx2”参数相同； 
+	-i：此参数的效果和同时指定“-td2”参数相同； 
+	-j<字符数目>或--skip-bytes=<字符数目>：略过设置的字符数目； 
+	-l：此参数的效果和同时指定“-td4”参数相同； 
+	-N<字符数目>或--read-bytes=<字符数目>：到设置的字符树目为止； 
+	-o：此参数的效果和同时指定“-to2”参数相同； 
+	-s<字符串字符数>或--strings=<字符串字符数>：只显示符合指定的字符数目的字符串； 
+	-t<输出格式>或--format=<输出格式>：设置输出格式； 
+	-v或--output-duplicates：输出时不省略重复的数据； 
+	-w<每列字符数>或--width=<每列字符数>：设置每列的最大字符数； 
+	-x：此参数的效果和同时指定“-h”参数相同； 
+	--help：在线帮助； 
+	--version：显示版本信息。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 使用单字节十进制进行解释
+	od -t d1 tmp
+	# 设置格式为十进制
+	od -A d -c tmp
+	# 每行输出两个字节
+	od -w2 -c tmp
+	\end{lstlisting}
+
+\section{scp}
+	scp命令用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。可能会稍微影响一下速度。当你服务器硬盘变为只读read only system时，用scp可以帮你把文件移出来。另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，rsync就远远不及它了。虽然 rsync比scp会快一点，但当小文件众多的情况下，rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用。\par
+
+	scp参数选项如下：
+	\begin{lstlisting}
+	-1：使用ssh协议版本1； 
+	-2：使用ssh协议版本2； 
+	-4：使用ipv4； 
+	-6：使用ipv6； 
+	-B：以批处理模式运行； 
+	-C：使用压缩； 
+	-F：指定ssh配置文件； 
+	-l：指定宽带限制； 
+	-o：指定使用的ssh选项； 
+	-P：指定远程主机的端口号； 
+	-p：保留文件的最后修改时间，最后访问时间和权限模式； 
+	-q：不显示复制进度； 
+	-r：以递归方式复制。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 从远程机器复制文件到本地目录
+	scp pengsida@172.16.19.223:/home/pengsida/devstack/local.conf ~/local.conf
+	# 上传本地文件到远程机器指定目录
+	scp ~/local.conf pengsida@172.16.19.223:/home/pengsida/devstack/local.conf
+	# 上传本地目录到远程机器指定目录
+	scp -r ~/devstack pengsida@172.16.19.223:/home/pengsida/devstack
+	\end{lstlisting}
+
+\section{strings}
+	strings命令在对象文件或二进制文件中查找可打印的字符串。字符串是4个或更多可打印字符的任意序列，以换行符或空字符结束。 strings命令对识别随机对象文件很有用。\par
+
+	strings参数选项如下：
+	\begin{lstlisting}
+	-a --all：扫描整个文件而不是只扫描目标文件初始化和装载段 
+	-f –print-file-name：在显示字符串前先显示文件名 
+	-n –bytes=[number]：找到并且输出所有NUL终止符序列 
+	- ：设置显示的最少的字符数，默认是4个字符 
+	-t --radix={o,d,x} ：输出字符的位置，基于八进制，十进制或者十六进制 
+	-o ：类似--radix=o 
+	-T --target= ：指定二进制文件格式 -e --encoding={s,S,b,l,B,L} ：选择字符大小和排列顺序:s = 7-bit, S = 8-bit, {b,l} = 16-bit, {B,L} = 32-bit
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 列出ls中所有的ASCII文本
+	strings /bin/ls
+	\end{lstlisting}
+
+\section{telnet}
+	telnet命令用于登录远程主机，对远程主机进行管理。telnet因为采用明文传送报文，安全性不好，很多Linux服务器都不开放telnet服务，而改用更安全的ssh方式了。但仍然有很多别的系统可能采用了telnet方式来提供远程登录，因此弄清楚telnet客户端的使用方式仍是很有必要的。\par
+
+	命令形式如下：
+	\begin{lstlisting}
+	telnet host [port]
+	\end{lstlisting}
+
 \section{wc}
 	“wc -l”可以查看一个文件的行数。
+
+\section{zcat}
+	zcat命令用于不真正解压缩文件，就能显示压缩包中文件的内容的场合。\par
+
+	zcat参数选项如下：
+	\begin{lstlisting}
+	-S：指定gzip格式的压缩包的后缀。当后缀不是标准压缩包后缀时使用此选项； 
+	-c：将文件内容写到标注输出； 
+	-d：执行解压缩操作； 
+	-l：显示压缩包中文件的列表； 
+	-L：显示软件许可信息； 
+	-q：禁用警告信息； 
+	-r：在目录上执行递归操作； 
+	-t：测试压缩文件的完整性； 
+	-V：显示指令的版本信息； 
+	-l：更快的压缩速度； 
+	-9：更高的压缩比。
+	\end{lstlisting}
 
 \end{document}

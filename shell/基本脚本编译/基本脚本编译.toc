@@ -8,10 +8,11 @@
 \contentsline {subsection}{\numberline {3.1}反引号}{5}{subsection.3.1}
 \contentsline {section}{\numberline {4}重定向输入输出}{5}{section.4}
 \contentsline {subsection}{\numberline {4.1}输出重定向}{5}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}/dev/null}{6}{subsubsection.4.1.1}
 \contentsline {subsection}{\numberline {4.2}输入重定向}{6}{subsection.4.2}
 \contentsline {section}{\numberline {5}管道}{6}{section.5}
-\contentsline {section}{\numberline {6}数学计算}{6}{section.6}
-\contentsline {subsection}{\numberline {6.1}expr命令}{6}{subsection.6.1}
+\contentsline {section}{\numberline {6}数学计算}{7}{section.6}
+\contentsline {subsection}{\numberline {6.1}expr命令}{7}{subsection.6.1}
 \contentsline {subsection}{\numberline {6.2}使用方括号}{7}{subsection.6.2}
 \contentsline {subsection}{\numberline {6.3}进行浮点运算}{8}{subsection.6.3}
 \contentsline {section}{\numberline {7}退出脚本}{9}{section.7}

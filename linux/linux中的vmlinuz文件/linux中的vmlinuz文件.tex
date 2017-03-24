@@ -128,7 +128,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{更换apt-get源 \qquad}
+\chead{linux中的vmlinuz文件 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
@@ -136,67 +136,39 @@
 
 \clearpage
 
-\section{更换apt-get源}
-	首先复制原文件备份：
+\section{linux中的vmlinuz文件}
+	vmlinuz是可引导的、压缩的内核。
+
+\subsection{解压vmlinuz}
+	vmlinuz文件是采用gzip压缩的，不过vmlinuz的开头部分内嵌有gzip解压缩代码，所以不能用gunzip命令解压vmlinuz，应该使用如下步骤：
 	\begin{lstlisting}
-	sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+	pengsida@scholes:~/temp$ file vmlinuz 
+	vmlinuz: Linux kernel x86 boot executable bzImage, version 4.4.0-66-generic (buildd@lgw01-28) #87-Ubuntu SMP Fri Mar 3 15:, RO-rootFS, swap_dev 0x6, Normal VGA
+	pengsida@scholes:~/temp$ od -t x1 -A d vmlinuz | grep "1f 8b 08"
+	0018864 ac fe ff ff 1f 8b 08 00 00 00 00 00 02 03 ec fd
+	# 计算bizip压缩内容开始处的offset，为：18864 + 4 = 18868  （4是从0018864起到"if 8b 08"之间的字节数）
+	# 解压出被压缩的kernel中的内容
+	pengsida@scholes:~/temp$ dd if=vmlinuz bs=1 skip=18868 | zcat > vmlinuz-test
+
+	gzip: stdin: decompression OK, trailing garbage ignored
+	pengsida@scholes:~/temp$ file vmlinuz-test 
+	vmlinuz-test: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=0d5c16d890fd8e36ad100fc60cdb28c426532d0b, stripped
+	pengsida@scholes:~/temp$ strings vmlinuz-test | grep 'Linux version'
+	Linux version 4.4.0-66-generic (buildd@lgw01-28) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #87-Ubuntu SMP Fri Mar 3 15:29:05 UTC 2017 (Ubuntu 4.4.0-66.87-generic 4.4.44)
+	pengsida@scholes:~/temp$ strings vmlinuz-test | grep '/sbin'
+	/sbin/reboot
+	/sbin/init
+	PATH=/sbin:/usr/sbin:/bin:/usr/bin
+	PATH=/sbin:/bin:/usr/sbin:/usr/bin
+	/sbin/request-key
+	/sbin/tomoyo-init
+	/sbin/modprobe
+	/sbin/poweroff
+	initialize_domain /sbin/modprobe from any
+	initialize_domain /sbin/hotplug from any
 	\end{lstlisting}
 
-	然后将/etc/apt/sources.list设置为如下内容：
-	\begin{lstlisting}
-## distribution.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
-## team. Also, please note that software in universe WILL NOT receive any
-## review or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu 
-## team, and may not be under a free licence. Please satisfy yourself as to 
-## your rights to use the software. Also, please note that software in 
-## multiverse WILL NOT receive any review or updates from the Ubuntu
-## security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-
-## N.B. software from this repository may not have been tested as
-## extensively as that contained in the main release, although it includes
-## newer versions of some applications which may provide useful features.
-## Also, please note that software in backports WILL NOT receive any review
-## or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-
-## Uncomment the following two lines to add software from Canonical's
-## 'partner' repository.
-## This software is not part of Ubuntu, but is offered by Canonical and the
-## respective vendors as a service to Ubuntu users.
-# deb http://archive.canonical.com/ubuntu trusty partner
-# deb-src http://archive.canonical.com/ubuntu trusty partner
-
-## This software is not part of Ubuntu, but is offered by third-party
-## developers who want to ship their latest software.
-deb http://extras.ubuntu.com/ubuntu trusty main
-deb-src http://extras.ubuntu.com/ubuntu trusty main
-	\end{lstlisting}
-
-	最后更新源：
-	\begin{lstlisting}
-	sudo apt-get update
-	\end{lstlisting}
+	如下图所示：
+	\fic{1.png}
 
 \end{document}
