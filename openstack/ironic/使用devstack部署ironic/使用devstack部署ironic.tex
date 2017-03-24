@@ -147,6 +147,9 @@
 \clearpage
 
 \section{使用devstack部署ironic}
+	使用devstack部署ironic有两种方法，第一种方法是否成功取决于devstack的版本，第二种方法直接提供了devstack文件，
+	所以在ubuntu14.04的环境想部署肯定可以成功。
+
 \subsection{第一种方法}
 	这里使用devstack在ubuntu14.04上部署ironic，步骤如下：
 	\begin{itemize}
@@ -252,6 +255,13 @@ IRONIC_VM_LOG_DIR=$HOME/temp/ironic-bm-logs
 	\end{itemize}
 
 \subsection{第二种方法}
-	
+	这里使用devstack在ubuntu14.04上部署ironic，首先到这个网站下载devstack.tar.gz文件：
+	\href{https://github.com/wwtalwtaw/unix-life/blob/master/openstack/ironic/使用devstack部署ironic/devstack.tar.gz}{下载devstack.tar.gz}\par
+
+	解压devstack.tar.gz以后进入devstack目录，运行如下命令：
+	\begin{lstlisting}
+	sudo ./tools/create-stack-user.sh
+	./stack.sh
+	\end{lstlisting}
 
 \end{document}
