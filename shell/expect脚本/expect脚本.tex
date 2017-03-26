@@ -265,4 +265,29 @@
 	expect eof
 	\end{lstlisting}
 
+\subsection{使用命令行参数运行expect}
+	有时候写个expect脚本比较麻烦，直接只用命令行参数去执行命令，或者嵌套在shell脚本、python脚本中，这样可以减少expect脚本的数量。
+	例子如下：
+	\begin{lstlisting}
+	expect -c '
+           set timeout 1;
+           spawn ssh user@localhost -p 22  ;
+           expect {
+               yes/no { send "yes\r"; exp_continue }
+               *assword* { send \"password\r\" }
+           } ;
+           expect user@*   {send " ls -l \r" }  ;
+           expect user@*  { send exit\r } ;
+           expect eof ;
+       '
+	\end{lstlisting}
+
+	对以上程序的解释：
+	\begin{itemize}
+		\item[1.] expect的参数-c后面是字符串，被两个单引号包含，相当于expect脚本里面的内容。
+		\item[2.] 命令用;号隔开，可以在同一行里。
+		\item[3.] send exit最好要有。退出ssh，这样程序不会阻塞。如果没有使用，在这个shell命令执行完，无法立刻输入字符。
+		\item[4.] expect脚本必须以interact或expect eof结束，执行自动化任务通常expect eof就够了。
+	\end{itemize}
+
 \end{document}

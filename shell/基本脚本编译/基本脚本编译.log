@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  7 MAR 2017 10:45
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.2.21)  23 MAR 2017 16:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1621,8 +1621,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-File: 3.png Graphic file (type QTm)
- <use  "3.png" >
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1630,6 +1628,8 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
+File: 3.png Graphic file (type QTm)
+ <use  "3.png" >
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1654,21 +1654,21 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 475.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 475.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 486.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 486.
  (./基本脚本编译.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 475.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 475.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 486.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 486.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 30003 strings out of 493638
- 531050 string characters out of 6146796
- 659220 words of memory out of 5000000
- 33070 multiletter control sequences out of 15000+600000
+ 30064 strings out of 493638
+ 532215 string characters out of 6146796
+ 666220 words of memory out of 5000000
+ 33131 multiletter control sequences out of 15000+600000
  10756 words of font info for 67 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  48i,12n,72p,10363b,1734s stack positions out of 5000i,500n,10000p,200000b,80000s

@@ -1,0 +1,267 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{使用devstack部署ironic \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{使用devstack部署ironic}
+	使用devstack部署ironic有两种方法，第一种方法是否成功取决于devstack的版本，第二种方法直接提供了devstack文件，
+	所以在ubuntu14.04的环境想部署肯定可以成功。
+
+\subsection{第一种方法}
+	这里使用devstack在ubuntu14.04上部署ironic，步骤如下：
+	\begin{itemize}
+		\item[1.] 首先下载devstack：
+		\begin{lstlisting}
+	git clone http://git.trystack.cn/openstack-dev/devstack.git
+	sudo ./devstack/tools/create-stack-user.sh
+		\end{lstlisting}
+
+		\item[2.] 进入devstack目录下，创建local.conf文件，文件内容如下：
+		\begin{lstlisting}
+[[local|localrc]]
+
+GIT_BASE=http://git.trystack.cn
+NOVNC_REPO=http://git.trystack.cn/kanaka/noVNC.git
+SPICE_REPO=http://git.trystack.cn/git/spice/spice-html5.git
+
+FORCE=yes
+
+# Credentials
+ADMIN_PASSWORD=p1111111
+DATABASE_PASSWORD=p1111111
+RABBIT_PASSWORD=p1111111
+SERVICE_PASSWORD=p1111111
+SERVICE_TOKEN=p1111111
+SWIFT_HASH=p1111111
+SWIFT_TEMPURL_KEY=p1111111
+
+# Enable Ironic plugin
+enable_plugin ironic http://git.trystack.cn/openstack/ironic
+
+# Enable Neutron which is required by Ironic and disable nova-network.
+disable_service n-net
+disable_service n-novnc
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service neutron
+
+# Enable Swift for agent_* drivers
+enable_service s-proxy
+enable_service s-object
+enable_service s-container
+enable_service s-account
+
+# Disable Horizon
+disable_service horizon
+
+# Disable Heat
+disable_service heat h-api h-api-cfn h-api-cw h-eng
+
+# Disable Cinder
+disable_service cinder c-sch c-api c-vol
+
+# Swift temp URL's are required for agent_* drivers.
+SWIFT_ENABLE_TEMPURLS=True
+
+# Create 3 virtual machines to pose as Ironic's baremetal nodes.
+IRONIC_VM_COUNT=3
+IRONIC_VM_SSH_PORT=22
+IRONIC_BAREMETAL_BASIC_OPS=True
+DEFAULT_INSTANCE_TYPE=baremetal
+
+# Enable Ironic drivers.
+IRONIC_ENABLED_DRIVERS=fake,agent_ssh,agent_ipmitool,pxe_ssh,pxe_ipmitool
+
+# Change this to alter the default driver for nodes created by devstack.
+# This driver should be in the enabled list above.
+IRONIC_DEPLOY_DRIVER=agent_ipmitool
+
+# The parameters below represent the minimum possible values to create
+# functional nodes.
+IRONIC_VM_SPECS_RAM=1280
+IRONIC_VM_SPECS_DISK=10
+
+# Size of the ephemeral partition in GB. Use 0 for no ephemeral partition.
+IRONIC_VM_EPHEMERAL_DISK=0
+
+# To build your own IPA ramdisk from source, set this to True
+IRONIC_BUILD_DEPLOY_RAMDISK=False
+
+VIRT_DRIVER=ironic
+
+# By default, DevStack creates a 10.0.0.0/24 network for instances.
+# If this overlaps with the hosts network, you may adjust with the
+# following.
+NETWORK_GATEWAY=10.1.0.1
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+
+# Log all output to files
+LOGFILE=$HOME/temp/devstack.log
+LOGDIR=$HOME/temp/logs
+IRONIC_VM_LOG_DIR=$HOME/temp/ironic-bm-logs
+		\end{lstlisting}
+
+		\item[3.] 运行stack.sh:
+		\begin{lstlisting}
+	./stack.sh
+		\end{lstlisting}
+	\end{itemize}
+
+\subsection{第二种方法}
+	这里使用devstack在ubuntu14.04上部署ironic，首先到这个网站下载devstack.tar.gz文件：
+	\href{https://github.com/wwtalwtaw/unix-life/blob/master/openstack/ironic/使用devstack部署ironic/devstack.tar.gz}{下载devstack.tar.gz}\par
+
+	解压devstack.tar.gz以后进入devstack目录，运行如下命令：
+	\begin{lstlisting}
+	sudo ./tools/create-stack-user.sh
+	./stack.sh
+	\end{lstlisting}
+
+\end{document}

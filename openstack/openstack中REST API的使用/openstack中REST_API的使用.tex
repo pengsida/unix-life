@@ -1,0 +1,396 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{openstack中REST\_API的使用 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{openstack中REST\_API的使用}
+	如果我们想要使用REST API，首先需要认证，随后服务器将返回一个认证令牌。\par
+
+	有了认证令牌后，我们就可以使用API请求了。发送API请求时，令牌信息包含在“X-Auth-Token”的包头中，使用该令牌发送请求，直到请求的服务完成或者Unauthorized （401）错误出现。
+
+\subsection{认证}
+\subsubsection{设置环境变量}
+	我这里是使用devstack安装的openstack，我们可以直接在devstack目录下运行如下命令：
+	\begin{lstlisting}
+	source openrc
+	\end{lstlisting}
+
+	运行这个命令后，我们相当于设置了以下几个环境变量：
+	\begin{lstlisting}
+	$OS_AUTH_URL	$OS_IDENTITY_API_VERSION	$OS_PROJECT_NAME$OS_TOKEN	
+	$OS_VOLUME_API_VERSION	$OS_CACERT	
+	$OS_PASSWORD	$OS_REGION_NAME	$OS_USER_DOMAIN_ID        
+	$OS_PROJECT_DOMAIN_ID	$OS_TENANT_NAME	$OS_USERNAME
+	\end{lstlisting}
+
+\subsubsection{申请认证令牌}
+	运行curl命令去请求一个token：
+	\begin{lstlisting}
+	curl -s -X POST $OS_AUTH_URL/tokens \
+	-H "Content-Type: application/json" \
+	-d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
+	| python -m json.tool
+	\end{lstlisting}
+
+	如果发生错误，需要修改OS\_AUTH\_URL环境变量：
+	\begin{lstlisting}
+	# 首先查看OS_AUTH_URL值
+	echo $OS_AUTH_URL
+	# 设置OS_AUTH_URL的值，如果它原先的值为http://10.250.1.3:5000/v3
+	export OS_AUTH_URL=http://10.250.1.3:5000/v2.0
+	\end{lstlisting}
+
+	再次运行上述的curl命令来申请一个token，结果如下：
+	\begin{lstlisting}
+pengsida@pogba:~/devstack$ curl -s -X POST http://10.250.1.3:5000/v2.0/tokens -H "Content-Type: application/json" -d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' | python -m json.tool
+
+{
+    "access": {
+        "metadata": {
+            "is_admin": 0,
+            "roles": [
+                "4d20a1d8a1d64f2b8d521ccbccc9db1a",
+                "306b85cfe88e4df8b2477eda61a91b68",
+                "8abbd485a94d46c494ea63f37a2ad09e"
+            ]
+        },
+        "serviceCatalog": [
+            {
+                "endpoints": [
+                    {
+                        "id": "23496304dc7842639f92fc75faf31782",
+                        "publicURL": "http://10.250.1.3:8774/v2.1",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "nova",
+                "type": "compute"
+            },
+            {
+                "endpoints": [
+                    {
+                        "id": "750d704ed5474307b63a077b1cbeedd9",
+                        "publicURL": "http://10.250.1.3:9696/",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "neutron",
+                "type": "network"
+            },
+            {
+                "endpoints": [
+                    {
+                        "id": "e9a2852060eb4a329980d75c5baa55f2",
+                        "publicURL": "http://10.250.1.3:9292",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "glance",
+                "type": "image"
+            },
+            {
+                "endpoints": [
+                    {
+                        "id": "558f71f4a83a4729873f3ab350f642b2",
+                        "publicURL": "http://10.250.1.3:8774/v2/6c0fd7ee21d0497e8be5b4b2aacbab0e",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "nova_legacy",
+                "type": "compute_legacy"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://10.250.1.3:6385",
+                        "id": "4d4df5e62dc44b7a9baf6b33b5cb3e22",
+                        "internalURL": "http://10.250.1.3:6385",
+                        "publicURL": "http://10.250.1.3:6385",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "ironic",
+                "type": "baremetal"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://10.250.1.3:8080",
+                        "id": "2315c80d82f048488bc6b3d4b412b4ff",
+                        "publicURL": "http://10.250.1.3:8080/v1/AUTH_6c0fd7ee21d0497e8be5b4b2aacbab0e",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "swift",
+                "type": "object-store"
+            },
+            {
+                "endpoints": [
+                    {
+                        "id": "a1cef78d5a864105a2741daa7cf01c53",
+                        "publicURL": "http://10.250.1.3/placement",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "placement",
+                "type": "placement"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://10.250.1.3/identity_admin",
+                        "id": "0ddc9f95a90d4b6a8b01554c9e1edac0",
+                        "publicURL": "http://10.250.1.3/identity",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "keystone",
+                "type": "identity"
+            }
+        ],
+        "token": {
+            "audit_ids": [
+                "T4sMOKXkRWSiSDu_i6l2pA"
+            ],
+            "expires": "2017-03-24T07:55:24.000000Z",
+            "id": "gAAAAABY1MLceZlkbRVBXuCYU4pwXO9qUeJ6P1MXVpZpIpVPe0783hHgwXlFU_haDBkcFHln0qa4RMhvjxrQz-BOmPsW7WrB0qGd9WOEcDwEtCHTU3SzDKh6e_sThIwFqlDlXRgZaKZAJMaOEWusFnD4q85IbhhjGc_zRAYjkmuP53Sllkh3sUI",
+            "issued_at": "2017-03-24T06:55:24.000000Z",
+            "tenant": {
+                "description": "",
+                "enabled": true,
+                "id": "6c0fd7ee21d0497e8be5b4b2aacbab0e",
+                "name": "demo"
+            }
+        },
+        "user": {
+            "id": "9c3316565d4c41a8b272273763537e69",
+            "name": "demo",
+            "roles": [
+                {
+                    "name": "Member"
+                },
+                {
+                    "name": "baremetal_observer"
+                },
+                {
+                    "name": "anotherrole"
+                }
+            ],
+            "roles_links": [],
+            "username": "demo"
+        }
+    }
+}
+	\end{lstlisting}
+
+\subsection{使用API请求}
+\subsubsection{设置各个服务的环境变量}
+	我们从返回的结果中可以看到，“token”这个字典中的“id”词条的值为“gAAAAABY1MLceZlkbRVBXuCYU4pwXO9qUeJ6P1MXVpZpIpVPe0783hHgwXlFU_haDBkcFHln0qa4RMhvjxrQz-BOmPsW7WrB0qGd9WOEcDwEtCHTU3SzDKh6e_sThIwFqlDlXRgZaKZAJMaOEWusFnD4q85IbhhjGc_zRAYjkmuP53Sllkh3sUI”。\par
+
+	我们这里再设置一个OS\_TOKEN环境变量：
+	\begin{lstlisting}
+	export OS_TOKEN=gAAAAABY1MLceZlkbRVBXuCYU4pwXO9qUeJ6P1MXVpZpIpVPe0783hHgwXlFU_haDBkcFHln0qa4RMhvjxrQz-BOmPsW7WrB0qGd9WOEcDwEtCHTU3SzDKh6e_sThIwFqlDlXRgZaKZAJMaOEWusFnD4q85IbhhjGc_zRAYjkmuP53Sllkh3sUI
+	\end{lstlisting}
+
+	设置compute服务的环境变量：
+	\begin{lstlisting}
+	export OS_COMPUTE_API=http://10.250.1.3:8774/v2.1
+	\end{lstlisting}
+
+	设置image服务的环境变量：
+	\begin{lstlisting}
+	export OS_IMAGE_API=http://10.250.1.3:9292
+	\end{lstlisting}
+
+	设置baremetal服务的环境变量：
+	\begin{lstlisting}
+	export OS_BAREMETAL_API=http://10.250.1.3:6385
+	\end{lstlisting}
+
+\subsubsection{使用COMPUTE服务的API请求}
+	COMPUTE API的网站如下：\par
+	\url{https://developer.openstack.org/api-ref/compute/}\par
+
+	举一个使用REST API的例子，下图是与servers有关的API：
+	\fic{1.png}
+
+	如果我们想要列出所有server，就使用如下命令：
+	\begin{lstlisting}
+	curl -s -X GET -H "X-Auth-Token: $OS_TOKEN" $OS_COMPUTE_API/servers | python -m json.tool
+	\end{lstlisting}
+
+	如果我们想要创建一个server，就是用如下命令：
+	\begin{lstlisting}
+	curl -s -X POST  -H "X-Auth-Token: $OS_TOKEN" -H "Content-Type: application/json" $OS_COMPUTE_API/servers -d '{"server":{"name":"CURL","imageRef":"b3365982-4580-4412-96c0-45684e676960","flavorRef":"9f211e26-a3f8-4e6a-b3c3-d93b5f062bd7","adminPass":"p1111111"}}' | python -m json.tool
+	\end{lstlisting}
+
+	上述命令中，imageRef和flavorRef分别是image和flavor资源的id，可以使用如下命令查看：
+	\begin{lstlisting}
+	curl -s -X GET -H "X-Auth-Token: $OS_TOKEN" $OS_COMPUTE_API/images | python -m json.tool
+	curl -s -X GET -H "X-Auth-Token: $OS_TOKEN" $OS_COMPUTE_API/flavors | python -m json.tool
+	\end{lstlisting}
+
+\subsubsection{使用IRONIC服务的API请求}
+	IRONIC API的网站如下：\par
+	\url{https://developer.openstack.org/api-ref/baremetal/}
+
+	类似于使用COMPUTE服务的API请求，IRONIC中与nodes有关的API如下图：
+	\fic{2.png}
+
+	我们使用如下命令查看所有的物理机：
+	\begin{lstlisting}
+	curl -s -X GET -H "X-Auth-Token: $OS_TOKEN" $OS_BAREMETAL_API/nodes | python -m json.tool
+	\end{lstlisting}
+
+\end{document}

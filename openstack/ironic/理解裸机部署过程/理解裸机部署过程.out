@@ -1,0 +1,8 @@
+\BOOKMARK [1][-]{section.1}{linux系统启动过程}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{initrd的作用}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Ironic部署过程}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{文字描述}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{代码描述}{section.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.2.1}{PXE部署方式}{subsection.2.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.2}{使用agent驱动进行部署}{subsection.2.2}% 7
+\BOOKMARK [1][-]{section.3}{参考学习的网站}{}% 8
