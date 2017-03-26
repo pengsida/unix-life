@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {1}使用vncviewer从一台linux远程到另一台linux}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}客户端linux的配置}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}服务器端linux的配置}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}从客户端linux远程到服务器端linux}{2}{subsection.1.3}

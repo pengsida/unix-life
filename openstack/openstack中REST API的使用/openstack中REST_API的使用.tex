@@ -393,4 +393,9 @@ pengsida@pogba:~/devstack$ curl -s -X POST http://10.250.1.3:5000/v2.0/tokens -H
 	curl -s -X GET -H "X-Auth-Token: $OS_TOKEN" $OS_BAREMETAL_API/nodes | python -m json.tool
 	\end{lstlisting}
 
+	创建一个nodes的命令如下：
+	\begin{lstlisting}
+	curl -s -X POST -H "X-Auth-Token: $OS_TOKEN" -H "Content-Type: application/json" $OS_BAREMETAL_API/nodes -d '{"name":"test_node","driver":"agent_ipmitool","driver_info":{"ipmi_username":"demo","ipmi_password":"p1111111"}}' | python -m json.tool
+	\end{lstlisting}
+
 \end{document}

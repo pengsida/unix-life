@@ -1,0 +1,4 @@
+\BOOKMARK [1][-]{section.1}{使用vncviewer从一台linux远程到另一台linux}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{客户端linux的配置}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{服务器端linux的配置}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{从客户端linux远程到服务器端linux}{section.1}% 4
