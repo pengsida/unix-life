@@ -1,0 +1,328 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=java,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{fragment中传递数据的方式 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+% \clearpage
+
+\section{fragment中传递数据的方式}
+\subsection{从父fragment启动子fragment}
+	现在父fragment为CrimeListFragment，它启动CrimeActivity，随后CrimeActivity启动CrimeFragment。\par
+
+	步骤如下：
+	\begin{itemize}
+		\item[1.] 使用Intent对象和startActivity()从CrimeListFragment向CrimeActivity传递数据。
+		\item[2.] 在CrimeActivity中使用getIntent()获得Intent对象，从而获得其中的数据。
+		          随后使用Bundle对象附带数据，然后再将Bundle对象附加给fragment对象。
+		\item[3.] 在CrimeFragment中使用getArguments()方法获得Bundle对象，从而获得其中的数据。
+	\end{itemize}
+
+	首先从CrimeListFragment向CrimeActivity传递数据：
+	\begin{lstlisting}
+	// CrimeActivity.java
+	public class CrimeActivity extends SingleFragmentActivity
+	{
+		public static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
+
+		public static Intent newIntent(Context packageContext, UUID crimeId)
+		{
+			Intent intent = new Intent(packageContext, CrimeActivity.class);
+			intent.putExtra(EXTRA_CRIME_ID, crimeId);
+			return intent;
+		}
+	}
+
+	// CrimeListFragment.java
+	private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+	{
+		...
+		@Override
+		public void onClick(View v)
+		{
+			Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+			startActivity(intent);
+		}
+	}
+	\end{lstlisting}
+
+	在CrimeActivity中获得传递的数据，然后传递给CrimeFragment：
+	\begin{lstlisting}
+	// CrimeFragment.java
+	public class CrimeFragment extends Fragment
+	{
+		private static final String ARG_CRIME_ID = "crime_id";
+
+		public static CrimeFragment newInstance(UUID crimeId)
+		{
+			Bundle args = new Bundle();
+			args.putSerializable(ARG_CRIME_ID, crimeId);
+
+			CrimeFragment fragment = new CrimeFragment();
+			fragment.setArguments(args);
+			return fragment;
+		}
+	}
+
+	// CrimeActivity.java
+	public class CrimeActivity extends SingleFragmentActivity
+	{
+		private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
+		...
+		@Override
+		protected Fragment createFragment()
+		{
+			UUID crimeId = (UUID)getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+			return CrimeFragment.newInstance(crimeId);
+		}
+	}
+	\end{lstlisting}
+
+	在CrimeFragment中获取传递的数据：
+	\begin{lstlisting}
+	// CrimeFragment.java
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		UUID crimeId = (UUID)getArguments().getSerializable(ARG_CRIME_ID);
+		...
+	}
+	\end{lstlisting}
+
+\subsection{从子fragment返回到父fragment}
+	这里返回数据的方法和activity中返回数据的方法类似，步骤如下：
+	\begin{itemize}
+		\item[1.] 父fragment使用startActivity()启动子fragment。
+		\item[2.] 子fragment使用Activity.setResult()来设置返回的数据。
+		\item[3.] 从子fragment返回父fragment，父fragment的onActivityResult()方法将被自动调用。
+	\end{itemize}
+
+	需要注意的是，Fragment类只有startActivityForResult()和onActivityResult()，Fragment只能调用Activity.setResult()来设置返回的数据。\par
+
+	父fragment使用startActivity()启动子fragment：
+	\begin{lstlisting}
+	public class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+	{
+		private static final int REQUEST_CRIME = 1;
+		...
+		@Override
+		public void onClick(View v)
+		{
+			Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+			startActivityForResult(intent, REQUEST_CRIME);
+		}
+	}
+	\end{lstlisting}
+
+	子fragment使用Activity.setResult()来设置返回的数据：
+	\begin{lstlisting}
+	public class CrimeFragment extends Fragment
+	{
+		private static final String ARG_CRIME_ID = "crime_id";
+		public static final String TITLE = "crime_title";
+		public static final String CHECKBOX = "crime_checkbox";
+		private Intent data;
+
+		@Override
+		public void onCreate(Bundle savedInstancesState)
+		{
+			super.onCreate(savedInstancesState);
+			...
+			data = new Intent();
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState)
+		{
+			View v = inflater.inflate(R.layout.fragment_crime, container, false);
+			...
+			mTitleField.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					mCrime.setTitle(s.toString());
+					data.putExtra(TITLE, s.toString());
+					getActivity().setResult(ACTIVITY.RESULT_OK, data);
+				}
+
+				@Override
+				public void afterTextChanged(Editable s) {
+
+				}
+			});
+			...
+			mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+				{
+					mCrime.setSolved(isChecked);
+					data.putExtra(TITLE, isChecked);
+					getActivity().setResult(ACTIVITY.RESULT_OK, data);
+				}
+			});
+
+			return v;
+		}
+		...
+	}
+	\end{lstlisting}
+
+	从子fragment返回父fragment，父fragment的onActivityResult()方法将被自动调用。
+	我们覆盖onActivityResult()方法，来处理Intent对象：
+	\begin{lstlisting}
+	public class CrimeListFragment extends Fragment
+	{
+		...
+		@Override
+		public void onActivityResult(int requestCode, int resultCode, Intent data)
+		{
+			if(resultCode != ACTIVITY.RESULT_OK)
+				return;
+
+			if(requestCode == REQUEST_CRIME)
+			{
+				String title = data.getStringExtra(CrimeFragment.TITLE);
+				boolean isChecked = data.getBooleanExtra(CrimeFragment.CHECKBOX, false);
+				...
+			}
+		}
+	}
+	\end{lstlisting}
+
+\end{document}

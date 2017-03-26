@@ -481,4 +481,113 @@
 		\item[2.] IMAP允许用户代理获取报文组件的命令，也就是说，一个用户代理可以只读区一个报文的报文首部，或只是一个多部分MIME报文的一部分。
 	\end{itemize}
 
+\section{DNS:因特网的目录服务}
+\subsection{DNS提供的服务}
+	识别主机有两种方式：通过主机名或者IP地址。\par
+
+	域名系统DNS的作用：进行主机名到IP地址转换的目录服务。\par
+
+	DNS的组成：
+	\begin{itemize}
+		\item[1.] 一个由分层的DNS服务器实现的分布式数据库。
+		\item[2.] 一个使得主机能够查询分布式数据库的应用层协议。
+	\end{itemize}
+
+	DNS协议运行在UDP上，使用53号端口。\par
+
+	课本第88页上有一个DNS服务的例子。\par
+
+	DNS提供的服务：
+	\begin{itemize}
+		\item 主机别名，有着复杂主机名的主机能拥有一个或者多个别名。
+		\item 邮件服务器别名。电子邮件应用程序可以调用DNS，对提供的邮件服务器别名进行解析，以获得该主机的规范主机名及其IP地址。
+		\item 负载分配，一个IP地址集合与同一个规范主机名相联系。
+	\end{itemize}
+
+\subsection{DNS工作机理概述}
+\subsubsection{集中式DNS服务器}
+	集中式DNS服务器的缺点：
+	\begin{itemize}
+		\item 单点故障
+		\item 通信容量
+		\item 远距离的集中式数据库
+		\item 维护
+	\end{itemize}
+
+\subsubsection{分布式、层次DNS服务器}
+	域名DNS采用分布式、层次数据库，分为三层：
+	\begin{itemize}
+		\item[1.] 第一层是根DNS服务器，用于返回顶级域名DNS服务器的IP地址。
+		\item[2.] 第二层是顶级域DNS服务器，负责com、org、net等顶级域名，用于返回相应权威DNS服务器的IP地址。
+		\item[3.] 第三层是权威DNS服务器，用于返回一个组织机构的IP地址。
+	\end{itemize}
+
+	书本第91页有分布式、层次数据库工作的例子。
+
+\subsubsection{本地DNS服务器}
+	当主机发出DNS请求时，这个请求是发往本地DNS服务器，本地DNS服务器起着代理的作用，
+	并将请求转发到DNS服务器层次结构中，获得相应IP地址后，再返回给主机。\par
+
+	书本第92页有使用本地DNS服务器的例子。
+
+\subsubsection{DNS缓存}
+	在一个请求链中，当某DNS服务器接收一个DNS回答时，它能将该回答中的信息缓存在本地存储器中，这就是DNS缓存。\par
+
+	DNS服务器在一段时间后将丢弃缓存的信息。
+
+\subsection{DNS记录和报文}
+\subsubsection{DNS资源记录}
+	DNS服务器中存储了资源记录，用于提供主机名到IP地址的映射。\par
+
+	资源记录的数据结构是一个4元组：(Name, Value, Type, TTL)：
+	\begin{itemize}
+		\item TTL是这条记录的生存时间，决定了资源记录应当从缓存中删除的时间。
+		\item Name和Value取决于Type的值：
+		\begin{itemize}
+			\item 如果Type=A，则Name是主机名，Value是该主机名对应的IP地址。
+			\item 如果Type=NS，则Name是一个域名，Value是一个知道如何获得该域中主机IP地址的权威DNS服务器的主机名。
+			\item 如果Type=CNAME，则Name是一个主机别名，Value是一个规范主机名。
+			\item 如果Type=MX，则Name是一个邮件服务器别名，Value是一个邮件服务器的规范主机名。
+		\end{itemize}
+	\end{itemize}
+
+\subsubsection{DNS报文}
+	DNS有两种报文：DNS查询报文和DNS回答报文。\par
+
+	DNS报文格式如下：
+	\begin{itemize}
+		\item 前12个字节是首部区域，有6个字段：
+		\begin{itemize}
+			\item 标识符，用于标识该查询。
+			\item 标志字段，含有若干标志：“查询／回答”标志位、“希望递归”标志位等。
+			\item 其他4个有关数量的字段：问题数、回答RR数、权威RR数和附加RR数。这些字段指出了在首部后的4类数据区域出现的数量。
+		\end{itemize}
+
+		\item 问题区域，包含：名字字段，指出正在被查询的主机名字；类型字段，也就是资源记录中的Type值。
+
+		\item 回答区域，包含了对最初请求的名字的资源记录。
+
+		\item 权威区域，包含了其他权威服务器的记录。
+
+		\item 附加区域，包含了其他有帮助的记录。
+	\end{itemize}
+
+\subsection{在DNS数据库中插入记录}
+	注册域名机构用于将域名输入DNS数据库，也就是在DNS数据库中插入记录。\par
+
+	当某个机构向注册域名机构注册域名时，需要提供基本和辅助权威DNS服务器的主机名和IP地址。
+	随后注册登记机构将一个类型NS和一个类型A的记录输入相应的所有的TLD顶级域名DNS服务器中。
+
+\section{P2P应用}
+	P2P体系结构对总是打开的基础设施服务器有着最小的依赖。\par
+
+	有两种特别适合于P2P设计的应用：
+	\begin{itemize}
+		\item 文件分发，其中应用程序从单个源向大量的对等方分发一个文件。
+		\item 分布在大型对等方社区中的数据库。
+	\end{itemize}
+
+\subsection{P2P文件分发}
+	
+
 \end{document}

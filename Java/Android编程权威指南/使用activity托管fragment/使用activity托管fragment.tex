@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=[x86masm]Assembler,
+	language=java,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -128,76 +128,102 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{更换apt-get源 \qquad}
+\chead{使用activity托管fragment \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
 % \tableofcontents
 
-\clearpage
+% \clearpage
 
-\section{更换apt-get源}
-	首先复制原文件备份：
-	\begin{lstlisting}
-	sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+\section{使用activity托管fragment}
+	步骤如下：
+	\begin{itemize}
+		\item 创建一个fragment的视图页面。
+		\item 创建一个activity的视图页面。
+		\item 创建一个fragment的类，用于生成fragment视图。
+		\item 创建一个activity的类，用于托管fragment。
+	\end{itemize}
+
+	创建一个fragment的视图页面：
+	\begin{lstlisting}[language = xml]
+	<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<EditText
+			android:id="@+id/crime_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/crime_title_hint"
+			/>
+
+	</LinearLayout>
 	\end{lstlisting}
 
-	然后将/etc/apt/sources.list设置为如下内容：
-	\begin{lstlisting}
-## distribution.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
+	创建一个activity的视图页面：
+	\begin{lstlisting}[language = java]
+	<?xml version="1.0" encoding="utf-8"?>
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/fragment_container"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		>
 
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
-## team. Also, please note that software in universe WILL NOT receive any
-## review or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu 
-## team, and may not be under a free licence. Please satisfy yourself as to 
-## your rights to use the software. Also, please note that software in 
-## multiverse WILL NOT receive any review or updates from the Ubuntu
-## security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-
-## N.B. software from this repository may not have been tested as
-## extensively as that contained in the main release, although it includes
-## newer versions of some applications which may provide useful features.
-## Also, please note that software in backports WILL NOT receive any review
-## or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-
-## Uncomment the following two lines to add software from Canonical's
-## 'partner' repository.
-## This software is not part of Ubuntu, but is offered by Canonical and the
-## respective vendors as a service to Ubuntu users.
-# deb http://archive.canonical.com/ubuntu trusty partner
-# deb-src http://archive.canonical.com/ubuntu trusty partner
-
-## This software is not part of Ubuntu, but is offered by third-party
-## developers who want to ship their latest software.
-deb http://extras.ubuntu.com/ubuntu trusty main
-deb-src http://extras.ubuntu.com/ubuntu trusty main
+	</FrameLayout>
 	\end{lstlisting}
 
-	最后更新源：
+	创建一个fragment的类，用于生成fragment视图。这里面使用onCreate()方法创建模型层的对象，使用onCreateView()方法创建视图层对象：
 	\begin{lstlisting}
-	sudo apt-get clean
-	sudo apt-get update
+	public class CrimeFragment extends Fragment
+	{
+		private Crime mCrime;
+		private EditText mTitleField;
+
+		@Override
+		public void onCreate(Bundle savedInstancesState)
+		{
+			// 创建模型层的对象
+			super.onCreate(savedInstancesState);
+			mCrime = new Crime();
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState)
+		{
+			// 创建视图层的对象
+			View v = inflater.inflate(R.layout.fragment_crime, container, false);
+			return v;
+		}
+	}
+	\end{lstlisting}
+
+	创建一个activity的类，用于托管fragment。这里首先使用getSupportFragmentManager()方法获得FragmentManager对象，
+	然后新建一个fragment类，最后使用FragmentManager.beginTransaction().add(R.id.fragment\_container, fragment).commit()将
+	activity视图层中的fragment container与fragment关联起来，从而使得activity托管了fragment。\par
+
+	例子如下：
+	\begin{lstlisting}
+	public class CrimeActivity extends FragmentActivity 
+	{
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_crime);
+
+			FragmentManager fm = getSupportFragmentManager();
+			Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+			if(fragment == null)
+			{
+				fragment = new CrimeFragment();
+				fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+			}
+		}
+	}
 	\end{lstlisting}
 
 \end{document}

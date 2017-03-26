@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=[x86masm]Assembler,
+	language=java,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -128,76 +128,83 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{更换apt-get源 \qquad}
+\chead{使用ViewPager \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
 % \tableofcontents
 
-\clearpage
+% \clearpage
 
-\section{更换apt-get源}
-	首先复制原文件备份：
-	\begin{lstlisting}
-	sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+\section{使用ViewPager}
+	使用ViewPager的步骤如下：
+	\begin{itemize}
+		\item[1.] 创建一个包含ViewPager的视图。
+		\item[2.] 创建一个FragmentActivity类。
+		\item[3.] 在这个FragmentActivity类中使用ViewPager视图对象，并且设置ViewPager对象的Adapter。
+	\end{itemize}
+
+	ViewPager对象借助PagerAdapter类来实现划屏切换的功能，我们主要使用PagerAdapter的子类FragmentStatePagerAdapter，
+	它有两个虚函数：getCount()用于获得fragment对象的数量，getItem()用于根据所在位置获得相应的frament。\par
+
+	首先创建一个包含ViewPager的视图，文件名为activity\_crime\_pager.xml：
+	\begin{lstlisting}[language = xml]
+	<?xml version="1.0" encoding="utf-8"?>
+	<android.support.v4.view.ViewPager
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/activtiy_crime_pager_view_pager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		>
+
+	</android.support.v4.view.ViewPager>
 	\end{lstlisting}
 
-	然后将/etc/apt/sources.list设置为如下内容：
+	然后创建一个FragmentActivity类：
 	\begin{lstlisting}
-## distribution.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
-## team. Also, please note that software in universe WILL NOT receive any
-## review or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates universe
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu 
-## team, and may not be under a free licence. Please satisfy yourself as to 
-## your rights to use the software. Also, please note that software in 
-## multiverse WILL NOT receive any review or updates from the Ubuntu
-## security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty multiverse
-deb http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates multiverse
-
-## N.B. software from this repository may not have been tested as
-## extensively as that contained in the main release, although it includes
-## newer versions of some applications which may provide useful features.
-## Also, please note that software in backports WILL NOT receive any review
-## or updates from the Ubuntu security team.
-deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
-
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security universe
-deb http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security multiverse
-
-## Uncomment the following two lines to add software from Canonical's
-## 'partner' repository.
-## This software is not part of Ubuntu, but is offered by Canonical and the
-## respective vendors as a service to Ubuntu users.
-# deb http://archive.canonical.com/ubuntu trusty partner
-# deb-src http://archive.canonical.com/ubuntu trusty partner
-
-## This software is not part of Ubuntu, but is offered by third-party
-## developers who want to ship their latest software.
-deb http://extras.ubuntu.com/ubuntu trusty main
-deb-src http://extras.ubuntu.com/ubuntu trusty main
+	public class CrimePagerActivity extends FragmentActivity
+	{
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_crime_pager);
+		}
+	}
 	\end{lstlisting}
 
-	最后更新源：
+	在这个FragmentActivity类中使用ViewPager视图对象，并且设置ViewPager对象的Adapter：
 	\begin{lstlisting}
-	sudo apt-get clean
-	sudo apt-get update
+	public class CrimePagerActivity extends FragmentActivity
+	{
+		private ViewPager mViewPager;
+		private List<Crime> mCrimes;
+
+		@Override
+		protected void onCreate(Bundle savedInstanceState)
+		{
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_crime_pager);
+
+			mViewPager = (ViewPager)findViewById(R.id.activtiy_crime_pager_view_pager);
+
+			mCrimes = CrimeLab.get(this).getCrimes();
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			mViewPager.setAdapter(new FragmentPagerAdapter(fragmentManager) {
+				@Override
+				public Fragment getItem(int position) {
+					Crime crime = mCrimes.get(position);
+					return CrimeFragment.newInstance(crime.getId());
+				}
+
+				@Override
+				public int getCount()
+				{
+					return mCrimes.size();
+				}
+			});
+		}
+	}
 	\end{lstlisting}
 
 \end{document}
