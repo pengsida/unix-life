@@ -1,0 +1,336 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{使用ironic创建裸机实例 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{使用ironic创建裸机实例}
+\subsection{配置baremetal provisioning驱动}
+	可以修改配置文件/etc/ironic/ironic.conf来设置openstack启用对应驱动：
+	\begin{lstlisting}
+	# 可以用逗号分隔来指定多个驱动
+	enabled_drivers=pxe_ipmitool
+	\end{lstlisting}
+
+	修改后需要重启服务:
+	\begin{lstlisting}
+	systemctl restart openstack-ironic-conductor.service
+	\end{lstlisting}
+
+\subsection{创建需要的镜像}
+
+\subsection{上传镜像到glance服务器}
+	openstack要实现部署裸机需要用到的镜像有5个。
+	这5个镜像有两个是用作deploy，即被用来在安装操作系统前对裸机节点进行准备。
+	有两镜像个用作系统的启动引导，还有一个就是系统镜像。\par
+
+	命令如下：
+	\begin{lstlisting}
+	# 上传用于deploy的镜像
+	glance image-create --name deploy_kernel --is-public true \
+	--disk-format aki \
+	--file deploy.kernel
+	glance image-create --name deploy_initramfs --is-public true \
+	--disk-format ari \
+	--file deploy.initramfs
+
+	# 上传用于boot镜像
+	glance image-create --name boot_kernel --is-public true \
+	--disk-format aki \
+	--file boot.vmlinuz
+	glance image-create --name boot_initrd --is-public true \
+	--disk-format ari \
+	--file boot.initrd
+
+	# 上传系统镜像
+	glance image-create --name NAME --is-public true \
+	--disk-format qcow2 \
+	--container-format bare \
+	--property kernel_id=$boot_kernel_uuid \
+	--property ramdisk_id=$boot_initrd_uuid \
+	--property hypervisor_type=ironic \
+	--file image.qcow2
+	\end{lstlisting}
+
+\subsection{把物理机注册为裸机节点}
+	命令如下：
+	\begin{lstlisting}
+	# 创建新节点
+	ironic node-create -d pxe_ipmitool
+
+	# 创建逻辑名
+	ironic node-update <node-uuid> add name=<node-name>
+
+	# 可以通过下面的命令查看对于pxe_ipmitool，哪些驱动信息必须被添加
+	ironic driver-properties pxe_ipmitool
+
+	# 为主机添加IPMI驱动信息
+	ironic node-update <node-uuid> add \ 
+		driver_info/ipmi_username=<username> \ 
+		driver_info/ipmi_password=<password> \ 
+		driver_info/ipmi_address=<HOST-IP>
+
+	# 添加用于deploy的镜像的uuid
+	ironic node-update <node-uuid> add \ 
+		driver_info/pxe_deploy_kernel=<deploy-kernel-uuid> \ 
+		driver_info/pxe_deploy_ramdisk=<deploy-ramdisk-uuid>
+
+	# 设置裸机硬件的规格
+	ironic node-update <node-uuid> add \
+		properties/cpus=4 \ 
+		properties/memory_mb=98304 \ 
+		properties/local_gb=80 \ 
+		properties/cpu_arch=x86_64
+
+	#　配置为本地引导（pxe初始化实施后的引导方式,flavor也需要设置）
+	ironic node-update <node-uuid> add　\
+		properties/capabilities="boot_option:local"
+
+	# 添加mac port(需要分配ip的所有网卡都要添加)
+	ironic port-create -n <node-uuid> -a <mac-address>
+	
+	# 检验节点的设置
+	ironic node-validate <node-uuid>
+	\end{lstlisting}
+
+\subsection{创建物理机需要的flavor}
+	命令如下：
+	\begin{lstlisting}
+	nova flavor-create <flavor-name> auto 512 20 1
+	nova flavor-key <flavor-name> set cpu_arch="x86_64"
+	nova flavor-key <flavor-name> set capabilities:boot_option="local"
+	\end{lstlisting}
+
+	openstack通过指定实例的flavor来确定该实例生成在哪一个裸机中:
+	\begin{lstlisting}
+	ironic node-update $NODE_UUID add \ 
+		properties/capabilities='profile:baremetal,boot_option:local'
+	
+	nova flavor-key $FLAVOR_NAME set capabilities:profile="baremetal"
+	\end{lstlisting}
+
+\section{创建虚拟机}
+
+	设置网络的思路：
+	\begin{itemize}
+		\item[1.] 创建一个外部网络public和一个内部网络private。
+		\item[2.] 创建内部网络子网池。
+		\item[3.] 创建内部子网和外部子网。
+		\item[4.] 创建一个路由器，将内部子网连接到路由器，再将外部网络设置为路由器的外部网关。
+	\end{itemize}
+
+	\begin{lstlisting}
+	# 创建private网络
+	openstack --os-cloud devstack-admin --os-region RegionOne network create --project 6eaff7ecc1694fcd94532bad5f09e17f private
+	# 创建public网络
+	openstack --os-cloud devstack-admin --os-region RegionOne network create public --external --default --provider-network-type flat --provider-physical-network public
+	# 创建子网池
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 26 --pool-prefix 10.0.0.0/22 --share --default
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 64 --pool-prefix fd99:0295:1537::/56 --share --default
+	# 创建private子网
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 4 --gateway 10.1.0.1 --subnet-pool 700abf50-bd39-4e09-bbab-780d21cdde9b --network 056b7a85-726a-4d18-abef-59f2a43aa16d private-subnet
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 6 --subnet-pool 254e2198-20c0-46d1-830a-ddfeaa14d3f1 --ipv6-ra-mode slaac --ipv6-address-mode slaac --network 056b7a85-726a-4d18-abef-59f2a43aa16d ipv6-private-subnet
+	# 创建public子网
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 4 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 172.24.4.0/24 --no-dhcp public-subnet
+	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 6 --gateway 2001:db8::2 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 2001:db8::/64 --no-dhcp ipv6-public-subnet
+	# 创建路由器
+	openstack --os-cloud devstack-admin --os-region RegionOne router create --project 6eaff7ecc1694fcd94532bad5f09e17f router1
+	# 将private subnet加入router
+	openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc 26e240db-8cc9-4938-831a-5710d689426a
+	openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc ebd2af8f-3450-49f4-abff-2d4577bc9b40
+	# 设置外部网关，6b28596f-738f-4a0d-9864-0183801cdd49是public网络的uuid
+	openstack --os-cloud devstack-admin --os-region RegionOne router set --external-gateway 6b28596f-738f-4a0d-9864-0183801cdd49 ff71a343-a4fb-4a6a-b7fc-f013566b31cc
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n node-4 -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p 6234 -o 4 -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	sudo brctl addbr br-node-3
+	sudo ip link set br-node-3 up
+	sudo ovs-vsctl add-port brbm ovs-node-3 -- set Interface ovs-node-3 type=internal
+	sudo ip link set ovs-node-3 up
+	sudo brctl addif br-node-3 ovs-node-3
+
+	virsh pool-define-as --name default dir --target /var/lib/libvirt/images
+	virsh pool-autostart default
+	virsh pool-start default
+	virsh vol-create-as default node-3.qcow2 11G --format qcow2 --prealloc-metadata
+	/opt/stack/ironic/devstack/tools/ironic/scripts/configure-vm.py --bootdev network --name node-3 --image /var/lib/libvirt/images/node-3.qcow2 --arch x86_64 --cpus 1 --memory 1310720 --libvirt-nic-driver virtio --bridge br-node-3 --disk-format qcow2 --console-log /home/pengsida/temp/ironic-bm-logs/node-3_console.log --engine qemu --emulator /usr/bin/qemu-system-x86_64
+	
+	vbmc add node-3 --port 6233
+	vbmc start node-3
+
+	# 获得node-3的mac地址
+	virsh dumpxml node-3 | grep 'mac address' | head -1 | cut -d"'" -f2
+	# 获得bmrm地址
+	ip link show dev brbm | grep -E -o 'ether [A-Za-z0-9:]+' | sed 's/ether\ //'
+
+	# 获得内网的uuid
+	nova network-list | grep private | cut -d"|" -f2 | cut -d" " -f2
+
+	# 056b7a85-726a-4d18-abef-59f2a43aa16d是内网的uuid
+	neutron port-create 056b7a85-726a-4d18-abef-59f2a43aa16d
+	sudo ip netns exec qdhcp-056b7a85-726a-4d18-abef-59f2a43aa16d ip link list
+	sudo ovs-vsctl get port tap20f9e951-ec tag
+	sudo ip link show ovs-tap
+	sudo ip link show brbm-tap
+	sudo ip link add brbm-tap type veth peer name ovs-tap
+	sudo ip link set dev brbm-tap up
+	sudo ip link set dev ovs-tap up
+	sudo ovs-vsctl -- --if-exists del-port ovs-tap -- add-port br-int ovs-tap tag=1
+	sudo ovs-vsctl -- --if-exists del-port brbm-tap -- add-port brbm brbm-tap
+	openstack port delete f44258e5-8805-460e-9de7-a7cc1af501a8
+
+	# 将内网设置为可共享的
+	openstack network set 056b7a85-726a-4d18-abef-59f2a43aa16d --share
+
+	# ff71a343-a4fb-4a6a-b7fc-f013566b31cc是router1的uuid
+	openstack router show router1 -f value -c id
+	sudo ip netns exec qrouter-ff71a343-a4fb-4a6a-b7fc-f013566b31cc ip -4 route get 8.8.8.8
+	\end{lstlisting}
+
+\end{document}

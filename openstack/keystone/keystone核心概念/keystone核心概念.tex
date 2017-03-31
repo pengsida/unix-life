@@ -1,0 +1,304 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{keystone核心概念 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{keystone核心概念}
+\subsection{user}
+	user指代任何使用OpenStack的实体，可以是真正的用户，其他系统或者服务。
+	当user请求访问 OpenStack 时，Keystone 会对其进行验证。\par
+
+	除了 admin 和 demo，OpenStack 也为 nova、cinder、glance、neutron 服务创建了相应的user。 
+	admin 也可以管理这些 User。\par
+
+	查看所有的user的命令如下：
+	\begin{lstlisting}
+	openstack user list
+	\end{lstlisting}
+
+	如下图所示：
+	\fic{2.png}
+
+	创建相应的user的命令如下：
+	\begin{lstlisting}
+	openstack user create demo --password p1111111 --domain=default --email=demo@example.com
+	openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com
+	openstack user create nova --password p1111111 --domain=Default
+	openstack user create glance --password p1111111 --domain=Default
+	openstack user create glance-swift --password p1111111 --domain=Default
+	openstack user create neutron --password p1111111 --domain=Default
+	openstack user create swift --password p1111111 --domain=Default
+	openstack user create swiftusertest1 --password testing --domain=default --email=test@example.com
+	openstack user create swiftusertest3 --password testing3 --domain=default --email=test3@example.com
+	openstack user create swiftusertest2 --password testing2 --domain=default --email=test2@example.com
+	openstack user create swiftusertest4 --password testing4 --domain=7101c820856a4114bd3eb89a3b96cdae --email=test4@example.com --or-show -f value -c id
+	openstack user create placement --password p1111111 --domain=Default
+	openstack user create ironic --password p1111111 --domain=Default
+	\end{lstlisting}
+
+\subsection{credentials}
+
+\subsection{authentication}
+
+\subsection{token}
+
+\subsection{project}
+	Project 用于将 OpenStack 的资源（计算、存储和网络）进行分组和隔离。 
+	根据 OpenStack 服务的对象不同，Project 可以是一个客户（公有云，也叫租户）、部门或者项目组（私有云）。\par
+
+	需要注意的地方：
+	\begin{itemize}
+		\item 资源的所有权是属于 Project 的，而不是 User。
+		\item 在 OpenStack 的界面和文档中，Tenant / Project / Account 这几个术语是通用的，但长期看会倾向使用 Project。
+		\item 每个 User（包括 admin）必须挂在 Project 里才能访问该 Project 的资源。 一个User可以属于多个 Project。
+		\item admin 相当于 root 用户，具有最高权限。
+	\end{itemize}
+
+	查看所有的project的命令如下：
+	\begin{lstlisting}
+	openstack project list
+	\end{lstlisting}
+
+	如下图所示：
+	\fic{3.png}
+
+	创建相应的project的命令如下：
+	\begin{lstlisting}
+	openstack project create service --domain=Default
+	openstack project create invisible_to_admin --domain=default
+	openstack project create demo --domain=default
+	openstack project create alt_demo --domain=default
+	openstack project create swiftprojecttest1 --domain=default
+	openstack project create swiftprojecttest2 --domain=default
+	openstack project create swiftprojecttest4 --domain=7101c820856a4114bd3eb89a3b96cdae
+	openstack project create service --domain=default
+	\end{lstlisting}
+
+\subsection{service}
+	OpenStack 的 Service 包括 Compute (Nova)、Block Storage (Cinder)、Object Storage (Swift)、Image Service (Glance) 、Networking Service (Neutron) 等。\par
+
+	每个 Service 都会提供若干个 Endpoint，User 通过 Endpoint 访问资源和执行操作。\par
+
+	创建一个服务实体的例子如下：
+	\begin{lstlisting}
+	openstack service create network --name neutron '--description=Neutron Service' -f value -c id
+	\end{lstlisting}
+
+\subsection{endpoint}
+	Endpoint 是一个网络上可访问的地址，通常是一个 URL。
+	Service 通过 Endpoint 暴露自己的 API。 
+	Keystone 负责管理和维护每个 Service 的 Endpoint。\par
+
+	创建一个service的endpoint的例子如下：
+	\begin{lstlisting}
+	openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne
+	openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne
+	openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne
+	\end{lstlisting}
+
+	可以通过如下命令查看各个service的endpoint：
+	\begin{lstlisting}
+	openstack catalog list
+	\end{lstlisting}
+
+	如下图所示：
+	\fic{1.png}
+
+\subsection{role}
+	安全包含两部分：Authentication（认证）和 Authorization（鉴权）。
+	Authentication 解决的是“你是谁？”的问题，Authorization 解决的是“你能干什么？”的问题。
+	Keystone 是借助 Role 来实现 Authorization。
+	也就是说角色可以被指定给用户，使得该用户获得角色对应的操作权限。\par
+
+	查看所有的role的命令如下：
+	\begin{lstlisting}
+	openstack role list
+	\end{lstlisting}
+
+	创建相应的role的命令如下：
+	\begin{lstlisting}
+	openstack role create service
+	openstack role create ResellerAdmin
+	openstack role create Member
+	openstack role create member
+	openstack role create anotherrole
+	openstack role create anotherrole
+	openstack role create baremetal_admin
+	openstack role create baremetal_observer
+	\end{lstlisting}
+
+	Adds a role assignment to a user or group on a domain or project：
+	\begin{lstlisting}
+	openstack role add admin --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+	openstack role add admin --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	openstack role add service --user placement --project service --user-domain Default --project-domain Default
+	openstack role add admin --user placement --project service --user-domain Default --project-domain Default
+	openstack role add service --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add admin --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add baremetal_admin --user nova --project service
+	openstack role add baremetal_observer --user demo --project demo
+	\end{lstlisting}
+
+\section{domain}
+	keystone v3利用 Domain 实现真正的多租户（multi-tenancy）架构，Domain 担任 Project 的高层容器。
+	云服务的客户是 Domain 的所有者，他们可以在自己的 Domain 中创建多个 Projects、Users、Groups 和 Roles。通过引入 Domain，云服务客户可以对其拥有的多个 Project 进行统一管理，而不必再向过去那样对每一个 Project 进行单独管理。\par
+
+\section{group}
+	Group 是一组 Users 的容器，可以向 Group 中添加用户，并直接给 Group 分配角色，那么在这个 Group 中的所有用户就都拥有了 Group 所拥有的角色权限。通过引入 Group 的概念，Keystone V3 实现了对用户组的管理，达到了同时管理一组用户权限的目的。
+	这与 V2 中直接向 User/Project 指定 Role 不同，使得对云服务进行管理更加便捷。
+
+\subsection{Domain、Group、Project、User 和 Role 的关系图}
+	如图所示：
+	\fic{5.png}
+
+	在一个 Domain 中包含 3 个 Projects,可以通过 Group1 将 Role Sysadmin直接赋予 Domain,那么 Group1 中的所有用户将会对 Domain 中的所有 Projects 都拥有管理员权限。
+	也可以通过 Group2 将 Role Engineer 只赋予 Project3,这样 Group2 中的 User 就只拥有对 Project3 相应的权限，而不会影响其它 Projects。
+
+\section{参考资料}
+	上述的笔记来自于这个网站：
+	\href{https://www.ibm.com/developerworks/community/blogs/132cfa78-44b0-4376-85d0-d3096cd30d3f/entry/%E7%90%86%E8%A7%A3_Keystone_%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5_%E6%AF%8F%E5%A4%A95%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%AC_OpenStack_18?lang=en}{理解keystone核心概念}
+	
+\end{document}

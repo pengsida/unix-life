@@ -1,0 +1,255 @@
+2017-03-30 09:24:47.720 | ++[38;5;242mlib/keystone:create_keystone_accounts:384 (B[m openstack project show admin -f value -c id
+2017-03-30 09:24:59.170 | ++[38;5;242mlib/keystone:create_keystone_accounts:386 (B[m openstack user show admin -f value -c id
+2017-03-30 09:25:02.811 | ++[38;5;242mfunctions-common:get_or_add_user_domain_role:918 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+2017-03-30 09:25:04.031 | +[38;5;242mfunctions-common:get_or_add_user_domain_role:921 (B[m openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --domain default --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3
+2017-03-30 09:25:05.309 | ++[38;5;242mfunctions-common:get_or_add_user_domain_role:931 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+2017-03-30 09:25:06.526 | ++[38;5;242mfunctions-common:get_or_create_domain:777 (B[m openstack domain show Default -f value -c id
+2017-03-30 09:25:07.709 | ++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create service --domain=Default --or-show -f value -c id
+2017-03-30 09:25:09.100 | ++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create service --or-show -f value -c id
+2017-03-30 09:25:10.329 | ++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create ResellerAdmin --or-show -f value -c id
+2017-03-30 09:25:11.542 | ++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create Member --or-show -f value -c id
+2017-03-30 09:25:12.843 | ++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create member --or-show -f value -c id
+2017-03-30 09:25:14.055 | ++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create anotherrole --or-show -f value -c id
+2017-03-30 09:25:15.263 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create invisible_to_admin --domain=default --or-show -f value -c id
+2017-03-30 09:25:16.498 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create demo --domain=default --or-show -f value -c id
+2017-03-30 09:25:17.851 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create demo --password p1111111 --domain=default --email=demo@example.com --or-show -f value -c id
+2017-03-30 09:25:19.169 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:20.395 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add member --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:21.642 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:22.902 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:24.081 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:25.316 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:26.543 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:27.731 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add anotherrole --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:28.990 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:30.428 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+2017-03-30 09:25:31.628 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add member --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+2017-03-30 09:25:32.915 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+2017-03-30 09:25:34.140 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create alt_demo --domain=default --or-show -f value -c id
+2017-03-30 09:25:35.381 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com --or-show -f value -c id
+2017-03-30 09:25:36.625 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:37.826 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add member --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:39.048 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:40.358 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:41.582 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:42.894 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:44.214 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:45.425 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add anotherrole --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:46.726 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:47.955 | ++[38;5;242mlib/keystone:create_keystone_accounts:450 (B[m get_or_create_group admins default 'openstack admin group'
+2017-03-30 09:25:47.960 | ++[38;5;242mfunctions-common:get_or_create_group:782 (B[m local 'desc=openstack admin group'
+2017-03-30 09:25:47.970 | +++[38;5;242mfunctions-common:get_or_create_group:792 (B[m openstack group create admins --domain default --description 'openstack admin group' --or-show -f value -c id
+2017-03-30 09:25:49.316 | +++[38;5;242mfunctions-common:get_or_create_group:792 (B[m openstack group create nonadmins --domain default --description 'non-admin group' --or-show -f value -c id
+2017-03-30 09:25:50.617 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:944 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+2017-03-30 09:25:51.816 | +[38;5;242mfunctions-common:get_or_add_group_project_role:947 (B[m openstack role add member --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f
+2017-03-30 09:25:53.119 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:953 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+2017-03-30 09:25:54.380 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:944 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+2017-03-30 09:25:55.571 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:944 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+2017-03-30 09:25:56.752 | +[38;5;242mfunctions-common:get_or_add_group_project_role:947 (B[m openstack role add member --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686
+2017-03-30 09:25:57.986 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:953 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+2017-03-30 09:25:59.191 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:944 (B[m openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+2017-03-30 09:26:00.583 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:944 (B[m openstack role assignment list --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace -f value
+2017-03-30 09:26:01.841 | +[38;5;242mfunctions-common:get_or_add_group_project_role:947 (B[m openstack role add admin --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace
+2017-03-30 09:26:03.105 | ++[38;5;242mfunctions-common:get_or_add_group_project_role:953 (B[m openstack role assignment list --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace -f value
+2017-03-30 09:26:04.417 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create nova --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:26:05.708 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:07.009 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:08.496 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:10.035 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:11.395 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:12.858 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:14.209 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show compute_legacy -f value -c id
+2017-03-30 09:26:15.401 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create compute_legacy --name nova_legacy '--description=Nova Compute Service (Legacy 2.0)' -f value -c id
+2017-03-30 09:26:16.604 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service compute_legacy --interface public --region RegionOne -c ID -f value
+2017-03-30 09:26:17.869 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create compute_legacy public 'http://10.250.1.3:8774/v2/$(project_id)s' --region RegionOne -f value -c id
+2017-03-30 09:26:19.227 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show compute -f value -c id
+2017-03-30 09:26:20.418 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create compute --name nova '--description=Nova Compute Service' -f value -c id
+2017-03-30 09:26:21.631 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service compute --interface public --region RegionOne -c ID -f value
+2017-03-30 09:26:22.842 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create compute public http://10.250.1.3:8774/v2.1 --region RegionOne -f value -c id
+2017-03-30 09:26:24.244 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:25.558 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add ResellerAdmin --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:26.915 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:28.352 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create glance --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:26:29.624 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:30.985 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user glance --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:32.338 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:33.725 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create glance-swift --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:26:35.026 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:36.329 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:37.688 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:39.058 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:40.401 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add ResellerAdmin --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:41.927 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:43.276 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show image -f value -c id
+2017-03-30 09:26:44.470 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create image --name glance '--description=Glance Image Service' -f value -c id
+2017-03-30 09:26:45.664 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service image --interface public --region RegionOne -c ID -f value
+2017-03-30 09:26:46.863 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create image public http://10.250.1.3:9292 --region RegionOne -f value -c id
+2017-03-30 09:26:48.438 | +++[38;5;242mfunctions-common:get_or_create_domain:777 (B[m openstack domain show Default -f value -c id
+2017-03-30 09:26:49.796 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create neutron --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:26:51.135 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:52.530 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user neutron --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:53.907 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
+2017-03-30 09:26:55.248 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show network -f value -c id
+2017-03-30 09:26:56.428 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create network --name neutron '--description=Neutron Service' -f value -c id
+2017-03-30 09:26:57.634 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service network --interface public --region RegionOne -c ID -f value
+2017-03-30 09:26:58.825 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create network public http://10.250.1.3:9696/ --region RegionOne -f value -c id
+2017-03-30 09:27:00.233 | +++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create anotherrole --or-show -f value -c id
+2017-03-30 09:27:01.560 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create swift --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:27:02.842 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:04.507 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:05.996 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:07.499 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:08.853 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:10.500 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+2017-03-30 09:27:11.876 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show object-store -f value -c id
+2017-03-30 09:27:13.089 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create object-store --name swift '--description=Swift Service' -f value -c id
+2017-03-30 09:27:14.423 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service object-store --interface public --region RegionOne -c ID -f value
+2017-03-30 09:27:15.653 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create object-store public 'http://10.250.1.3:8080/v1/AUTH_$(project_id)s' --region RegionOne -f value -c id
+2017-03-30 09:27:16.898 | ++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service object-store --interface admin --region RegionOne -c ID -f value
+2017-03-30 09:27:18.193 | ++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create object-store admin http://10.250.1.3:8080 --region RegionOne -f value -c id
+2017-03-30 09:27:19.454 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create swiftprojecttest1 --domain=default --or-show -f value -c id
+2017-03-30 09:27:20.805 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create swiftusertest1 --password testing --domain=default --email=test@example.com --or-show -f value -c id
+2017-03-30 09:27:22.102 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:23.299 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:24.551 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:25.778 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create swiftusertest3 --password testing3 --domain=default --email=test3@example.com --or-show -f value -c id
+2017-03-30 09:27:27.084 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:28.277 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add b9cdcde910d9413bb2d46bcfc639ee98 --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:29.497 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+2017-03-30 09:27:30.745 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create swiftprojecttest2 --domain=default --or-show -f value -c id
+2017-03-30 09:27:32.018 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create swiftusertest2 --password testing2 --domain=default --email=test2@example.com --or-show -f value -c id
+2017-03-30 09:27:33.290 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+2017-03-30 09:27:34.534 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+2017-03-30 09:27:35.794 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+2017-03-30 09:27:37.049 | +++[38;5;242mfunctions-common:get_or_create_domain:777 (B[m openstack domain show swift_test -f value -c id
+2017-03-30 09:27:38.274 | +++[38;5;242mfunctions-common:get_or_create_domain:779 (B[m openstack domain create swift_test --description 'Used for swift functional testing' -f value -c id
+2017-03-30 09:27:39.582 | +++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create swiftprojecttest4 --domain=7101c820856a4114bd3eb89a3b96cdae --or-show -f value -c id
+2017-03-30 09:27:40.961 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create swiftusertest4 --password testing4 --domain=7101c820856a4114bd3eb89a3b96cdae --email=test4@example.com --or-show -f value -c id
+2017-03-30 09:27:42.445 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+2017-03-30 09:27:43.680 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+2017-03-30 09:27:44.933 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+2017-03-30 09:32:40.057 | ++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create placement --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:32:41.553 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:42.906 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:44.287 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:45.680 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:46.998 | +[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:48.394 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+2017-03-30 09:32:49.774 | ++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show placement -f value -c id
+2017-03-30 09:32:50.995 | ++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create placement --name placement '--description=Placement Service' -f value -c id
+2017-03-30 09:32:52.323 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service placement --interface public --region RegionOne -c ID -f value
+2017-03-30 09:32:53.587 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create placement public http://10.250.1.3/placement --region RegionOne -f value -c id
+2017-03-30 09:32:57.967 | ++++[38;5;242mfunctions-common:get_or_create_project:828 (B[m openstack project create service --domain=default --or-show -f value -c id
+2017-03-30 09:33:01.336 | +++[38;5;242mfunctions-common:get_or_create_service:974 (B[m openstack service show baremetal -f value -c id
+2017-03-30 09:33:02.509 | +++[38;5;242mfunctions-common:get_or_create_service:976 (B[m openstack service create baremetal --name ironic '--description=Ironic baremetal provisioning service' -f value -c id
+2017-03-30 09:33:03.723 | ++++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service baremetal --interface public --region RegionOne -c ID -f value
+2017-03-30 09:33:04.946 | ++++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne -f value -c id
+2017-03-30 09:33:06.215 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service baremetal --interface admin --region RegionOne -c ID -f value
+2017-03-30 09:33:07.446 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne -f value -c id
+2017-03-30 09:33:08.701 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:984 (B[m openstack endpoint list --service baremetal --interface internal --region RegionOne -c ID -f value
+2017-03-30 09:33:09.922 | +++[38;5;242mfunctions-common:_get_or_create_endpoint_with_interface:988 (B[m openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne -f value -c id
+2017-03-30 09:33:11.201 | +++[38;5;242mfunctions-common:get_or_create_user:815  (B[m openstack user create ironic --password p1111111 --domain=Default --or-show -f value -c id
+2017-03-30 09:33:12.584 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:13.908 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add service --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:15.330 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:16.739 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:18.718 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add admin --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:20.375 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+2017-03-30 09:33:21.734 | +++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create baremetal_admin --or-show -f value -c id
+2017-03-30 09:33:22.952 | +++[38;5;242mfunctions-common:get_or_create_role:840  (B[m openstack role create baremetal_observer --or-show -f value -c id
+2017-03-30 09:33:24.255 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user nova --project service
+2017-03-30 09:33:25.537 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add baremetal_admin --user nova --project service
+2017-03-30 09:33:26.867 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user nova --project service
+2017-03-30 09:33:28.195 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:870 (B[m openstack role assignment list --user demo --project demo
+2017-03-30 09:33:29.466 | ++[38;5;242mfunctions-common:get_or_add_user_project_role:873 (B[m openstack role add baremetal_observer --user demo --project demo
+2017-03-30 09:33:30.921 | +++[38;5;242mfunctions-common:get_or_add_user_project_role:881 (B[m openstack role assignment list --user demo --project demo
+2017-03-30 09:34:24.876 | +[38;5;242mlib/swift:swift_configure_tempurls:845   (B[m openstack object store account set --property Temp-URL-Key=p1111111
+2017-03-30 09:35:44.644 | ++[38;5;242mfunctions:upload_image:352               (B[m openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec-kernel --public --container-format aki --disk-format aki
+2017-03-30 09:35:54.537 | ++[38;5;242mfunctions:upload_image:355               (B[m openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec-ramdisk --public --container-format ari --disk-format ari
+2017-03-30 09:35:59.145 | +[38;5;242mfunctions:upload_image:357               (B[m openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec --public --container-format ami --disk-format ami --property kernel_id=f665ac30-d0ce-4728-a90b-d96be8c7f2d2 --property ramdisk_id=9e657b1b-50d0-41be-8563-c7d0830c0f23
+2017-03-30 09:36:01.825 | +[38;5;242mfunctions:upload_image:344               (B[m openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-disk --public --container-format=bare --disk-format qcow2
+2017-03-30 09:36:31.501 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:161 (B[m openstack project list
+2017-03-30 09:36:32.884 | ++[38;5;242mlib/neutron_plugins/services/l3:is_networking_extension_supported:430 (B[m openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+2017-03-30 09:36:34.414 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:172 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 26 --pool-prefix 10.0.0.0/22 --share --default
+2017-03-30 09:36:36.125 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:175 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 64 --pool-prefix fd99:0295:1537::/56 --share --default
+2017-03-30 09:36:37.827 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:210 (B[m openstack --os-cloud devstack-admin --os-region RegionOne network create --project 6eaff7ecc1694fcd94532bad5f09e17f private
+2017-03-30 09:36:39.454 | +++[38;5;242mlib/neutron_plugins/services/l3:_neutron_create_private_subnet_v4:275 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 4 --gateway 10.1.0.1 --subnet-pool 700abf50-bd39-4e09-bbab-780d21cdde9b --network 056b7a85-726a-4d18-abef-59f2a43aa16d private-subnet
+2017-03-30 09:36:41.746 | +++[38;5;242mlib/neutron_plugins/services/l3:_neutron_create_private_subnet_v6:298 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 6 --subnet-pool 254e2198-20c0-46d1-830a-ddfeaa14d3f1 --ipv6-ra-mode slaac --ipv6-address-mode slaac --network 056b7a85-726a-4d18-abef-59f2a43aa16d ipv6-private-subnet
+2017-03-30 09:36:45.055 | ++[38;5;242mlib/neutron_plugins/services/l3:is_networking_extension_supported:430 (B[m openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+2017-03-30 09:36:46.334 | ++[38;5;242mlib/neutron_plugins/services/l3:is_networking_extension_supported:430 (B[m openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+2017-03-30 09:36:47.577 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:228 (B[m openstack --os-cloud devstack-admin --os-region RegionOne router create --project 6eaff7ecc1694fcd94532bad5f09e17f router1
+2017-03-30 09:36:49.210 | ++[38;5;242mlib/neutron_plugins/services/l3:is_networking_extension_supported:430 (B[m openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+2017-03-30 09:36:50.463 | ++[38;5;242mlib/neutron_plugins/services/l3:create_neutron_initial_network:242 (B[m openstack --os-cloud devstack-admin --os-region RegionOne network create public --external --default --provider-network-type flat --provider-physical-network public
+2017-03-30 09:36:52.357 | +[38;5;242mlib/neutron_plugins/services/l3:_neutron_configure_router_v4:332 (B[m openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc 26e240db-8cc9-4938-831a-5710d689426a
+2017-03-30 09:36:54.925 | +++[38;5;242mlib/neutron_plugins/services/l3:_neutron_create_public_subnet_v4:313 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 4 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 172.24.4.0/24 --no-dhcp public-subnet
+2017-03-30 09:36:57.100 | +[38;5;242mlib/neutron_plugins/services/l3:_neutron_configure_router_v4:340 (B[m openstack --os-cloud devstack-admin --os-region RegionOne router set --external-gateway 6b28596f-738f-4a0d-9864-0183801cdd49 ff71a343-a4fb-4a6a-b7fc-f013566b31cc
+2017-03-30 09:37:00.042 | ++[38;5;242mlib/neutron_plugins/services/l3:_neutron_configure_router_v4:367 (B[m openstack --os-cloud devstack-admin --os-region RegionOne port list -c 'Fixed IP Addresses' --device-owner network:router_gateway
+2017-03-30 09:37:01.564 | +[38;5;242mlib/neutron_plugins/services/l3:_neutron_configure_router_v6:376 (B[m openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc ebd2af8f-3450-49f4-abff-2d4577bc9b40
+2017-03-30 09:37:04.953 | +++[38;5;242mlib/neutron_plugins/services/l3:_neutron_create_public_subnet_v6:325 (B[m openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 6 --gateway 2001:db8::2 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 2001:db8::/64 --no-dhcp ipv6-public-subnet
+2017-03-30 09:37:08.548 | ++[38;5;242mlib/neutron_plugins/services/l3:_neutron_configure_router_v6:407 (B[m openstack --os-cloud devstack-admin --os-region RegionOne port list -c 'Fixed IP Addresses'
+2017-03-30 09:37:26.334 | +[38;5;242mlib/nova:create_flavors:962              (B[m openstack --os-region-name=RegionOne flavor list
+2017-03-30 09:37:28.468 | +[38;5;242mlib/nova:create_flavors:964              (B[m openstack --os-region-name=RegionOne flavor create --id c1 --ram 256 --disk 0 --vcpus 1 cirros256
+2017-03-30 09:37:29.889 | +[38;5;242mlib/nova:create_flavors:965              (B[m openstack --os-region-name=RegionOne flavor create --id d1 --ram 512 --disk 5 --vcpus 1 ds512M
+2017-03-30 09:37:31.848 | +[38;5;242mlib/nova:create_flavors:966              (B[m openstack --os-region-name=RegionOne flavor create --id d2 --ram 1024 --disk 10 --vcpus 1 ds1G
+2017-03-30 09:37:33.134 | +[38;5;242mlib/nova:create_flavors:967              (B[m openstack --os-region-name=RegionOne flavor create --id d3 --ram 2048 --disk 10 --vcpus 2 ds2G
+2017-03-30 09:37:34.470 | +[38;5;242mlib/nova:create_flavors:968              (B[m openstack --os-region-name=RegionOne flavor create --id d4 --ram 4096 --disk 20 --vcpus 4 ds4G
+2017-03-30 09:37:35.771 | +[38;5;242mlib/nova:create_flavors:971              (B[m openstack --os-region-name=RegionOne flavor list
+2017-03-30 09:37:37.008 | +[38;5;242mlib/nova:create_flavors:972              (B[m openstack --os-region-name=RegionOne flavor create --id 1 --ram 512 --disk 1 --vcpus 1 m1.tiny
+2017-03-30 09:37:38.329 | +[38;5;242mlib/nova:create_flavors:973              (B[m openstack --os-region-name=RegionOne flavor create --id 2 --ram 2048 --disk 20 --vcpus 1 m1.small
+2017-03-30 09:37:39.628 | +[38;5;242mlib/nova:create_flavors:974              (B[m openstack --os-region-name=RegionOne flavor create --id 3 --ram 4096 --disk 40 --vcpus 2 m1.medium
+2017-03-30 09:37:41.034 | +[38;5;242mlib/nova:create_flavors:975              (B[m openstack --os-region-name=RegionOne flavor create --id 4 --ram 8192 --disk 80 --vcpus 4 m1.large
+2017-03-30 09:37:42.420 | +[38;5;242mlib/nova:create_flavors:976              (B[m openstack --os-region-name=RegionOne flavor create --id 5 --ram 16384 --disk 160 --vcpus 8 m1.xlarge
+2017-03-30 09:37:55.260 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:241 (B[m openstack project list --long --quote none -f csv
+2017-03-30 09:38:03.852 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 3b7952fbf71b43dabfc70008a5867ee8 --long --quote none -f csv
+2017-03-30 09:38:10.093 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 4ab2d9a426aa4ac19b49dee23aa40ace --long --quote none -f csv
+2017-03-30 09:38:11.500 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 554c828e8fd347e6be93c2e5e855fa1f --long --quote none -f csv
+2017-03-30 09:38:12.797 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 6965aef0648043b092b53506cc56a2fe --long --quote none -f csv
+2017-03-30 09:38:14.207 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 6eaff7ecc1694fcd94532bad5f09e17f --long --quote none -f csv
+2017-03-30 09:38:15.613 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project 9436af9b90df46a6a45d243a295f7686 --long --quote none -f csv
+2017-03-30 09:38:17.167 | +[38;5;242mhome/pengsida/devstack/tools/create_userrc.sh:main:242 (B[m openstack user list --project fe0c679d273a44ae9dc4f52fa3710416 --long --quote none -f csv
+2017-03-30 09:38:35.842 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:create_bridge_and_vms:1385 (B[m openstack network show private -c id -f value
+2017-03-30 09:38:37.766 | neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+2017-03-30 09:38:49.468 | ++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:create_ovs_taps:1303 (B[m openstack port delete f44258e5-8805-460e-9de7-a7cc1af501a8
+2017-03-30 09:38:51.209 | ++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:create_ovs_taps:1307 (B[m openstack network set 056b7a85-726a-4d18-abef-59f2a43aa16d --share
+2017-03-30 09:38:53.037 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:create_bridge_and_vms:1393 (B[m openstack router show router1 -f value -c id
+2017-03-30 09:39:13.332 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:upload_baremetal_ironic_deploy:1905 (B[m openstack image create ir-deploy-agent_ipmitool.kernel --public --disk-format=aki --container-format=aki
+2017-03-30 09:39:32.800 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:upload_baremetal_ironic_deploy:1913 (B[m openstack image create ir-deploy-agent_ipmitool.initramfs --public --disk-format=ari --container-format=ari
+2017-03-30 09:39:52.501 | ++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:enroll_nodes:1652 (B[m openstack flavor create --ephemeral 0 --ram 1280 --disk 10 --vcpus 1 baremetal
+2017-03-30 09:39:54.225 | ++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:enroll_nodes:1653 (B[m openstack flavor set baremetal --property cpu_arch=x86_64
+2017-03-30 09:40:00.861 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c count
+2017-03-30 09:40:03.247 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c count
+2017-03-30 09:40:04.687 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:06.954 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:09.308 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:11.585 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:13.885 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:16.161 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:18.497 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:20.770 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:23.041 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:25.333 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:27.695 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:30.003 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:32.428 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:34.674 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:36.911 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:39.133 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:41.433 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:43.767 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:46.082 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:48.376 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:50.613 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:52.880 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:55.213 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:57.582 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:40:59.814 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:41:02.472 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:wait_for_nova_resources:1416 (B[m openstack hypervisor stats show -f value -c vcpus
+2017-03-30 09:41:06.778 | +[38;5;242m./stack.sh:main:1388                     (B[m openstack complete
+2017-03-30 09:41:18.001 | +++[38;5;242mlib/tempest:configure_tempest:105        (B[m openstack image list --property status=active
+2017-03-30 09:41:19.451 | +++[38;5;242mlib/tempest:configure_tempest:184        (B[m openstack project list
+2017-03-30 09:41:22.731 | +++[38;5;242mlib/neutron_plugins/services/l3:is_networking_extension_supported:430 (B[m openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+2017-03-30 09:41:23.983 | +++[38;5;242mlib/tempest:configure_tempest:243        (B[m openstack network show -f value -c id public
+2017-03-30 09:43:17.406 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:ironic_configure_tempest:2001 (B[m openstack flavor show baremetal -f value -c id
+2017-03-30 09:43:19.683 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:ironic_configure_tempest:2024 (B[m openstack image show cirros-0.3.5-x86_64-disk -f value -c id
+2017-03-30 09:43:21.183 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:ironic_configure_tempest:2028 (B[m openstack image show cirros-0.3.5-x86_64-disk -f value -c id
+2017-03-30 09:43:22.533 | +++[38;5;242m/opt/stack/ironic/devstack/lib/ironic:ironic_configure_tempest:2030 (B[m openstack image show cirros-0.3.5-x86_64-uec -f value -c id

@@ -1,0 +1,289 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{openstack的常用操作 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{openstack endpoint}
+\subsection{查看所有的endpoint}
+	命令如下：
+	\begin{lstlisting}
+	openstack endpoint list
+	\end{lstlisting}
+
+\subsection{创建一个服务的endpoint}
+	命令如下：
+	\begin{lstlisting}
+	openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne
+	openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne
+	openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne
+	\end{lstlisting}
+
+\section{openstack network}
+
+\section{openstack project}
+\subsection{查看openstack中的project}
+	命令如下：
+	\begin{lstlisting}
+	openstack project list
+	\end{lstlisting}
+
+\subsection{创建一个project}
+	命令如下：
+	\begin{lstlisting}
+	openstack project create service --domain=Default
+	openstack project create invisible_to_admin --domain=default
+	openstack project create demo --domain=default
+	openstack project create alt_demo --domain=default
+	openstack project create swiftprojecttest1 --domain=default
+	openstack project create swiftprojecttest2 --domain=default
+	openstack project create swiftprojecttest4 --domain=7101c820856a4114bd3eb89a3b96cdae
+	openstack project create service --domain=default
+	\end{lstlisting}
+
+\section{openstack role}
+\subsection{查看openstack有哪些role}
+	命令如下：
+	\begin{lstlisting}
+	openstack role list
+	\end{lstlisting}
+
+\subsection{创建一个role}
+	命令如下：
+	\begin{lstlisting}
+	openstack role create service
+	openstack role create ResellerAdmin
+	openstack role create Member
+	openstack role create member
+	openstack role create anotherrole
+	openstack role create anotherrole
+	openstack role create baremetal_admin
+	openstack role create baremetal_observer
+	\end{lstlisting}
+
+\subsection{赋予用户操作权限}
+	命令如下：
+	\begin{lstlisting}
+	openstack role add admin --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+	openstack role add admin --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	openstack role add service --user placement --project service --user-domain Default --project-domain Default
+	openstack role add admin --user placement --project service --user-domain Default --project-domain Default
+	openstack role add service --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add admin --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add baremetal_admin --user nova --project service
+	openstack role add baremetal_observer --user demo --project demo
+	\end{lstlisting}
+
+\section{openstack router}
+\subsection{查看openstack中的router}
+	命令如下：
+	\begin{lstlisting}
+	openstack router list
+	\end{lstlisting}
+
+\subsection{创建一个router}
+	命令如下：
+	\begin{lstlisting}
+	openstack --os-cloud devstack-admin --os-region RegionOne router create --project 6eaff7ecc1694fcd94532bad5f09e17f router1
+	\end{lstlisting}
+
+\subsection{将一个subnet加入一个router}
+	命令如下：
+	\begin{lstlisting}
+	openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc 26e240db-8cc9-4938-831a-5710d689426a
+	\end{lstlisting}
+
+\section{openstack service}
+\subsection{查看openstack有哪些服务}
+	命令如下：
+	\begin{lstlisting}
+	openstack service list
+	\end{lstlisting}
+
+\subsection{创建服务实体}
+	命令如下：
+	\begin{lstlisting}
+	openstack service create network --name neutron '--description=Neutron Service'
+	\end{lstlisting}
+	
+\subsection{查看openstack中某个服务的信息}
+	命令如下：
+	\begin{lstlisting}
+	# 显示network的信息
+	openstack service show network
+	# 以某种形式显示这个信息
+	openstack service show network -f json
+	# 单独显示信息中的某个值
+	openstack service show network -c id
+	\end{lstlisting}
+
+\section{openstack user}
+\subsection{查看所有的user}
+	命令如下：
+	\begin{lstlisting}
+	openstack user list
+	\end{lstlisting}
+
+\subsection{创建相应的user}
+	命令如下：
+	\begin{lstlisting}
+	openstack user create demo --password p1111111 --domain=default --email=demo@example.com
+	openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com
+	openstack user create nova --password p1111111 --domain=Default
+	openstack user create glance --password p1111111 --domain=Default
+	openstack user create glance-swift --password p1111111 --domain=Default
+	openstack user create neutron --password p1111111 --domain=Default
+	openstack user create swift --password p1111111 --domain=Default
+	openstack user create swiftusertest1 --password testing --domain=default --email=test@example.com
+	openstack user create swiftusertest3 --password testing3 --domain=default --email=test3@example.com
+	openstack user create swiftusertest2 --password testing2 --domain=default --email=test2@example.com
+	openstack user create swiftusertest4 --password testing4 --domain=7101c820856a4114bd3eb89a3b96cdae --email=test4@example.com --or-show -f value -c id
+	openstack user create placement --password p1111111 --domain=Default
+	openstack user create ironic --password p1111111 --domain=Default
+	\end{lstlisting}
+
+\section{openstack subnet}
+
+\end{document}
