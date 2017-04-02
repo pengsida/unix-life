@@ -1,0 +1,597 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{openstack的常用操作 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{开启dstat}
+	命令如下：
+	\begin{lstlisting}
+	screen -S stack -X screen -t dstat
+	screen -S stack -p dstat -X logfile /home/pengsida/temp/logs/dstat.log.2017-03-30-172117
+	screen -S stack -p dstat -X log on
+	touch /home/pengsida/temp/logs/dstat.log.2017-03-30-172117
+	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''dstat.log.2017-03-30-172117'\'' dstat.log'
+	screen -S stack -p dstat -X stuff '/home/pengsida/devstack/tools/dstat.sh /home/pengsida/temp/logs & echo $! >/opt/stack/status/stack/dstat.pid; fg || echo "dstat failed to start. Exit code: $?" | tee "/opt/stack/status/stack/dstat.failure"^M'
+	\end{lstlisting}
+
+\section{开启keystone服务}
+	命令如下：
+	\begin{lstlisting}
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS keystone;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE keystone CHARACTER SET utf8;'
+	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf db_sync
+	rm -rf /etc/keystone/fernet-keys/
+	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf fernet_setup
+	rm -rf /etc/keystone/credential-keys/
+	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf credential_setup
+	sudo a2ensite keystone
+	sudo service apache2 stop
+	sudo service apache2 start
+
+	screen -S stack -X screen -t key
+	screen -S stack -p key -X logfile /home/pengsida/temp/logs/key.log.2017-03-30-172117
+	screen -S stack -p key -X log on
+	touch /home/pengsida/temp/logs/key.log.2017-03-30-172117
+	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''key.log.2017-03-30-172117'\'' key.log'
+	screen -S stack -p key -X stuff 'sudo tail -f /var/log/apache2/keystone.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key.pid; fg || echo "key failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key.failure"^M'
+
+	screen -S stack -X screen -t key-access
+	screen -S stack -p key-access -X logfile /home/pengsida/temp/logs/key-access.log.2017-03-30-172117
+	screen -S stack -p key-access -X log on
+	touch /home/pengsida/temp/logs/key-access.log.2017-03-30-172117
+	screen -S stack -p key-access -X stuff 'sudo tail -f /var/log/apache2/keystone_access.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key-access.pid; fg || echo "key-access failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key-access.failure"^M'
+
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://10.250.1.3/identity/v3/
+	sudo service memcached restart
+	/usr/local/bin/keystone-manage bootstrap --bootstrap-username admin --bootstrap-password p1111111 --bootstrap-project-name admin --bootstrap-role-name admin --bootstrap-service-name keystone --bootstrap-region-id RegionOne --bootstrap-admin-url http://10.250.1.3/identity_admin --bootstrap-public-url http://10.250.1.3/identity
+	\end{lstlisting}
+
+	测试keystone是否可以使用：
+	\begin{lstlisting}
+	openstack project show admin -f value -c id
+	openstack user show admin -f value -c id
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --domain default --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+	openstack domain show Default -f value -c id
+	openstack project create service --domain=Default --or-show -f value -c id
+	openstack role create service --or-show -f value -c id
+	openstack role create ResellerAdmin --or-show -f value -c id
+	openstack role create Member --or-show -f value -c id
+	openstack role create anotherrole --or-show -f value -c id
+	openstack project create invisible_to_admin --domain=default --or-show -f value -c id
+	openstack project create demo --domain=default --or-show -f value -c id
+	openstack user create demo --password p1111111 --domain=default --email=demo@example.com --or-show -f value -c id
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role add anotherrole --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+	openstack project create alt_demo --domain=default --or-show -f value -c id
+	openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com --or-show -f value -c id
+	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role add member --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role add anotherrole --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	openstack group create admins --domain default --description 'openstack admin group' --or-show -f value -c id
+	openstack group create nonadmins --domain default --description 'non-admin group' --or-show -f value -c id
+	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+	openstack role add member --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f
+	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+	openstack role add admin --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace
+	openstack role assignment list --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace -f value
+	\end{lstlisting}
+
+	创建nova账户：
+	\begin{lstlisting}
+	openstack user create nova --password p1111111 --domain=Default --or-show -f value -c id
+	
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	openstack role add service --user nova --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	openstack role add admin --user nova --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	
+	openstack service show compute_legacy -f value -c id
+	openstack service create compute_legacy --name nova_legacy '--description=Nova Compute Service (Legacy 2.0)' -f value -c id
+	openstack endpoint list --service compute_legacy --interface public --region RegionOne -c ID -f value
+	openstack endpoint create compute_legacy public 'http://10.250.1.3:8774/v2/$(project_id)s' --region RegionOne -f value -c id
+	
+	openstack service show compute -f value -c id
+	openstack service create compute --name nova '--description=Nova Compute Service' -f value -c id
+	openstack endpoint list --service compute --interface public --region RegionOne -c ID -f value
+	openstack endpoint create compute public http://10.250.1.3:8774/v2.1 --region RegionOne -f value -c id
+	
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	openstack role add ResellerAdmin --user nova --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	\end{lstlisting}
+
+	创建glance账户：
+	\begin{lstlisting}
+	openstack user create glance --password p1111111 --domain=Default --or-show -f value -c id
+	
+	openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
+	openstack role add service --user glance --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
+	
+	openstack user create glance-swift --password p1111111 --domain=Default --or-show -f value -c id
+	
+	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+	openstack role add service --user glance-swift --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+
+	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+	openstack role add ResellerAdmin --user glance-swift --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
+	
+	openstack service show image -f value -c id
+	openstack service create image --name glance '--description=Glance Image Service' -f value -c id
+	openstack endpoint list --service image --interface public --region RegionOne -c ID -f value
+	openstack endpoint create image public http://10.250.1.3:9292 --region RegionOne -f value -c id
+
+	openstack domain show Default -f value -c id
+	iniset /etc/glance/glance-swift-store.conf ref1 project_domain_id default
+	iniset /etc/glance/glance-swift-store.conf ref1 user_domain_id default
+	\end{lstlisting}
+
+	创建neutron账户：
+	\begin{lstlisting}
+	openstack user create neutron --password p1111111 --domain=Default --or-show -f value -c id
+
+	openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
+	openstack role add service --user neutron --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
+
+	openstack service show network -f value -c id
+	openstack service create network --name neutron '--description=Neutron Service' -f value -c id
+	openstack endpoint list --service network --interface public --region RegionOne -c ID -f value
+	openstack endpoint create network public http://10.250.1.3:9696/ --region RegionOne -f value -c id
+	\end{lstlisting}
+
+	创建swift账户：
+	\begin{lstlisting}
+	openstack role create anotherrole --or-show -f value -c id
+	
+	openstack user create swift --password p1111111 --domain=Default --or-show -f value -c id
+	
+	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+	openstack role add service --user swift --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+
+	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+	openstack role add admin --user swift --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
+
+	openstack service show object-store -f value -c id
+	openstack service create object-store --name swift '--description=Swift Service' -f value -c id
+	openstack endpoint list --service object-store --interface public --region RegionOne -c ID -f value
+	openstack endpoint create object-store public 'http://10.250.1.3:8080/v1/AUTH_$(project_id)s' --region RegionOne -f value -c id
+	openstack endpoint list --service object-store --interface admin --region RegionOne -c ID -f value
+	openstack endpoint create object-store admin http://10.250.1.3:8080 --region RegionOne -f value -c id
+
+	openstack project create swiftprojecttest1 --domain=default --or-show -f value -c id
+	openstack user create swiftusertest1 --password testing --domain=default --email=test@example.com --or-show -f value -c id
+	openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+	openstack role add admin --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+	openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
+
+	openstack project create swiftprojecttest2 --domain=default --or-show -f value -c id
+	openstack user create swiftusertest3 --password testing3 --domain=default --email=test3@example.com --or-show -f value -c id
+	openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+	openstack role add b9cdcde910d9413bb2d46bcfc639ee98 --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+	openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
+
+	openstack user create swiftusertest2 --password testing2 --domain=default --email=test2@example.com --or-show -f value -c id
+	openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+	openstack role add admin --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+	openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+
+	openstack project create swiftprojecttest4 --domain=7101c820856a4114bd3eb89a3b96cdae --or-show -f value -c id
+	openstack user create swiftusertest4 --password testing4 --domain=7101c820856a4114bd3eb89a3b96cdae --email=test4@example.com --or-show -f value -c id
+	openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	openstack role add admin --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	\end{lstlisting}
+
+	创建clouds.yaml账户：
+	\begin{lstlisting}
+	sudo mkdir -p /etc/openstack
+	sudo chown -R pengsida /etc/openstack
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username demo --os-password p1111111 --os-project-name demo
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-alt --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username alt_demo --os-password p1111111 --os-project-name alt_demo
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-admin --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username admin --os-password p1111111 --os-project-name admin
+	rm -f /home/pengsida/.config/openstack/clouds.yaml
+	\end{lstlisting}
+
+\section{开启glance服务}
+	命令如下：
+	\begin{lstlisting}
+	rm -rf /opt/stack/data/glance/images
+	mkdir -p /opt/stack/data/glance/images
+	rm -rf /opt/stack/data/glance/cache
+	mkdir -p /opt/stack/data/glance/cache
+
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS glance;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE glance CHARACTER SET utf8;'
+	/usr/local/bin/glance-manage --config-file /etc/glance/glance-api.conf db_sync
+
+	sudo install -d -o pengsida /var/cache/glance/api /var/cache/glance/registry /var/cache/glance/search /var/cache/glance/artifact
+	rm -f '/var/cache/glance/api/*' '/var/cache/glance/registry/*' '/var/cache/glance/search/*' '/var/cache/glance/artifact/*'
+	\end{lstlisting}
+
+\section{开启neutron服务}
+	命令如下：
+	\begin{lstlisting}
+	sudo install -d -o pengsida /etc/neutron
+	cd /opt/stack/neutron
+	exec ./tools/generate_config_file_samples.sh
+	cp /opt/stack/neutron/etc/neutron.conf.sample /etc/neutron/neutron.conf
+	cp /opt/stack/neutron/etc/policy.json /etc/neutron/policy.json
+	sed -i 's/"context_is_admin":  "role:admin"/"context_is_admin":  "role:admin or user_name:neutron"/g' /etc/neutron/policy.json
+	mkdir -p /etc/neutron/plugins/ml2
+	cp /opt/stack/neutron/etc/neutron/plugins/ml2/ml2_conf.ini.sample /etc/neutron/plugins/ml2/ml2_conf.ini
+	
+	iniset /etc/neutron/neutron.conf database connection 'mysql+pymysql://root:p1111111@127.0.0.1/neutron?charset=utf8'
+	iniset /etc/neutron/neutron.conf DEFAULT state_path /opt/stack/data/neutron
+	iniset /etc/neutron/neutron.conf DEFAULT use_syslog False
+	iniset /etc/neutron/neutron.conf DEFAULT bind_host 0.0.0.0
+	iniset /etc/neutron/neutron.conf oslo_concurrency lock_path /opt/stack/data/neutron/lock
+	iniset /etc/neutron/neutron.conf nova region_name RegionOne
+
+	iniset /etc/neutron/neutron.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [^[[01;36m%(request_id)s ^[[00;36m%(project_name)s %(user_name)s%(color)s] ^[[01;35m%(instance)s%(color)s%(message)s^[[00m'
+	iniset /etc/neutron/neutron.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [^[[00;36m-%(color)s] ^[[01;35m%(instance)s%(color)s%(message)s^[[00m'
+	iniset /etc/neutron/neutron.conf DEFAULT logging_debug_format_suffix '^[[00;33mfrom (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d^[[00m'
+	iniset /etc/neutron/neutron.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s ^[[01;35m%(instance)s^[[00m'
+
+	sudo install -d -o root -m 755 /etc/neutron/rootwrap.d
+	sudo install -o root -m 644 /opt/stack/neutron/etc/neutron/rootwrap.d/debug.filters /opt/stack/neutron/etc/neutron/rootwrap.d/dhcp.filters /opt/stack/neutron/etc/neutron/rootwrap.d/dibbler.filters /opt/stack/neutron/etc/neutron/rootwrap.d/ebtables.filters /opt/stack/neutron/etc/neutron/rootwrap.d/ipset-firewall.filters /opt/stack/neutron/etc/neutron/rootwrap.d/iptables-firewall.filters /opt/stack/neutron/etc/neutron/rootwrap.d/l3.filters /opt/stack/neutron/etc/neutron/rootwrap.d/linuxbridge-plugin.filters /opt/stack/neutron/etc/neutron/rootwrap.d/netns-cleanup.filters /opt/stack/neutron/etc/neutron/rootwrap.d/openvswitch-plugin.filters /opt/stack/neutron/etc/neutron/rootwrap.d/privsep.filters /etc/neutron/rootwrap.d/
+	test -r /opt/stack/neutron/etc/neutron/rootwrap.conf
+	sudo install -o root -g root -m 644 /opt/stack/neutron/etc/rootwrap.conf /etc/neutron/rootwrap.conf
+	sudo sed -e 's:^filters_path=.*$:filters_path=/etc/neutron/rootwrap.d:' -i /etc/neutron/rootwrap.conf
+	sudo sed -e 's:^exec_dirs=\(.*\)$:exec_dirs=\1,/usr/local/bin:' -i /etc/neutron/rootwrap.conf
+
+	mktemp
+	chmod 0440 /tmp/tmp.6pSxz3yhcd
+	sudo chown root:root /tmp/tmp.6pSxz3yhcd
+	sudo mv /tmp/tmp.6pSxz3yhcd /etc/sudoers.d/neutron-rootwrap
+	iniset /etc/neutron/neutron.conf agent root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/neutron.conf agent root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/neutron.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
+
+	cp /opt/stack/neutron/etc/api-paste.ini /etc/neutron/api-paste.ini
+	iniset /etc/neutron/neutron.conf DEFAULT core_plugin ml2
+	iniset /etc/neutron/neutron.conf DEFAULT service_plugins neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+	iniset /etc/neutron/neutron.conf DEFAULT debug True
+	iniset /etc/neutron/neutron.conf oslo_policy policy_file /etc/neutron/policy.json
+	iniset /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
+	iniset /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
+
+	sudo install -d -o pengsida /var/cache/neutron
+	rm -f '/var/cache/neutron/*'
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_type password
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
+	iniset /etc/neutron/neutron.conf keystone_authtoken username neutron
+	iniset /etc/neutron/neutron.conf keystone_authtoken password p1111111
+	iniset /etc/neutron/neutron.conf keystone_authtoken user_domain_name Default
+	iniset /etc/neutron/neutron.conf keystone_authtoken project_name service
+	iniset /etc/neutron/neutron.conf keystone_authtoken project_domain_name Default
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_uri http://10.250.1.3/identity
+	iniset /etc/neutron/neutron.conf keystone_authtoken cafile /opt/stack/data/ca-bundle.pem
+	iniset /etc/neutron/neutron.conf keystone_authtoken signing_dir /var/cache/neutron
+	iniset /etc/neutron/neutron.conf keystone_authtoken memcached_servers 10.250.1.3:11211
+	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_status_changes True
+	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_data_changes True
+
+	iniset /etc/neutron/neutron.conf nova auth_type password
+	iniset /etc/neutron/neutron.conf nova auth_url http://10.250.1.3/identity_admin
+	iniset /etc/neutron/neutron.conf nova username nova
+	iniset /etc/neutron/neutron.conf nova password p1111111
+	iniset /etc/neutron/neutron.conf nova user_domain_name Default
+	iniset /etc/neutron/neutron.conf nova project_name service
+	iniset /etc/neutron/neutron.conf nova project_domain_name Default
+	iniset /etc/neutron/neutron.conf nova auth_uri http://10.250.1.3/identity
+	iniset /etc/neutron/neutron.conf nova cafile /opt/stack/data/ca-bundle.pem
+	iniset /etc/neutron/neutron.conf nova signing_dir /var/cache/neutron
+	iniset /etc/neutron/neutron.conf nova memcached_servers 10.250.1.3:11211
+
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch,linuxbridge
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1:1000
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1:1000
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks public,
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges public
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_geneve vni_ranges 1:1000
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/neutron.conf DEFAULT debug True
+
+	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
+	sudo ovs-vsctl -- --may-exist add-br br-int
+	sudo ovs-vsctl --no-wait br-set-external-id br-int bridge-id br-int
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver iptables_hybrid
+	
+	sudo modprobe bridge
+	sudo modprobe br_netfilter
+	sudo sysctl -w net.bridge.bridge-nf-call-iptables=1
+	sudo sysctl -w net.bridge.bridge-nf-call-ip6tables=1
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip 10.250.1.3
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs tunnel_bridge br-tun
+
+	sudo ovs-vsctl -- --may-exist add-br br-ex
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings public:br-ex
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs datapath_type system
+
+	cp /opt/stack/neutron/etc/dhcp_agent.ini.sample /etc/neutron/dhcp_agent.ini
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT debug True
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT dnsmasq_local_resolv True
+	iniset /etc/neutron/dhcp_agent.ini AGENT root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/dhcp_agent.ini AGENT root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT ovs_use_veth False
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT interface_driver openvswitch
+
+	cp /opt/stack/neutron/etc/l3_agent.ini.sample /etc/neutron/l3_agent.ini
+	iniset /etc/neutron/l3_agent.ini DEFAULT debug True
+	iniset /etc/neutron/l3_agent.ini AGENT root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/l3_agent.ini AGENT root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/l3_agent.ini DEFAULT ovs_use_veth False
+	iniset /etc/neutron/l3_agent.ini DEFAULT interface_driver openvswitch
+
+	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
+
+	sudo ovs-vsctl -- --may-exist add-br br-ex
+	sudo ip link set mtu 1450 dev br-ex
+	sudo ovs-vsctl br-set-external-id br-ex bridge-id br-ex
+	sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.24.4.0/24 -j MASQUERADE
+
+	cp /opt/stack/neutron/etc/metadata_agent.ini.sample /etc/neutron/metadata_agent.ini
+	iniset /etc/neutron/metadata_agent.ini DEFAULT debug True
+	iniset /etc/neutron/metadata_agent.ini DEFAULT nova_metadata_ip 10.250.1.3
+	iniset /etc/neutron/metadata_agent.ini DEFAULT metadata_workers 2
+	iniset /etc/neutron/metadata_agent.ini AGENT root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/metadata_agent.ini AGENT root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+
+	iniset /etc/neutron/neutron.conf DEFAULT api_workers 2
+	iniset /etc/neutron/neutron.conf DEFAULT rpc_state_report_workers 0
+
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS neutron;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE neutron CHARACTER SET utf8;'
+	/usr/local/bin/neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+
+	clean_iptables
+	\end{lstlisting}
+
+\section{开启swift服务}
+	命令如下：
+	\begin{lstlisting}
+	swift-init --run-dir=/opt/stack/data/swift/run all stop
+	sudo install -d -o pengsida -g 1000 /opt/stack/data/swift/drives /opt/stack/data/swift/cache /opt/stack/data/swift/run /opt/stack/data/swift/logs
+	mkdir -p /opt/stack/data/swift/drives/images
+	sudo touch /opt/stack/data/swift/drives/images/swift.img
+	sudo chown pengsida: /opt/stack/data/swift/drives/images/swift.img
+	truncate -s 6G /opt/stack/data/swift/drives/images/swift.img
+	/sbin/mkfs.xfs -f -i size=1024 /opt/stack/data/swift/drives/images/swift.img
+	mkdir -p /opt/stack/data/swift/drives/sdb1
+	egrep -q /opt/stack/data/swift/drives/sdb1 /proc/mounts
+	sudo mount -t xfs -o loop,noatime,nodiratime,nobarrier,logbufs=8 /opt/stack/data/swift/drives/images/swift.img /opt/stack/data/swift/drives/sdb1
+	sudo ln -sf /opt/stack/data/swift/drives/sdb1/1 /opt/stack/data/swift/1
+	sudo install -o pengsida -g 1000 -d /opt/stack/data/swift/drives/sdb1/1
+	sudo install -o pengsida -g 1000 -d /opt/stack/data/swift/1/node/sdb1
+	sudo chown -R pengsida: /opt/stack/data/swift/1/node
+
+	pushd /etc/swift
+	rm -f '*.builder' '*.ring.gz' 'backups/*.builder' 'backups/*.ring.gz'
+	swift-ring-builder object.builder create 9 1 1
+	swift-ring-builder container.builder create 9 1 1
+	swift-ring-builder account.builder create 9 1 1
+	swift-ring-builder object.builder add z1-127.0.0.1:6613/sdb1 1
+	swift-ring-builder container.builder add z1-127.0.0.1:6611/sdb1 1
+	swift-ring-builder account.builder add z1-127.0.0.1:6612/sdb1 1
+	swift-ring-builder object.builder rebalance 42
+	swift-ring-builder container.builder rebalance 42
+	swift-ring-builder account.builder rebalance 42
+	popd
+
+	sudo install -d -o pengsida /var/cache/swift
+	rm -f '/var/cache/swift/*'
+	\end{lstlisting}
+
+\section{开启nova服务}
+	命令如下：
+	\begin{lstlisting}
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova_api;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova_api CHARACTER SET utf8;'
+	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf api_db sync
+	
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova CHARACTER SET utf8;'
+
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova_cell0;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova_cell0 CHARACTER SET utf8;'
+	
+	nova-manage cell_v2 map_cell0 --database_connection 'mysql+pymysql://root:p1111111@127.0.0.1/nova_cell0?charset=utf8'
+	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf db sync
+
+	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf db online_data_migrations
+
+	nova-manage cell_v2 create_cell --transport-url rabbit://stackrabbit:p1111111@10.250.1.3:5672/ --name cell1
+	sudo install -d -o pengsida /var/cache/nova
+	sudo install -d -o pengsida /var/cache/nova
+	sudo install -d -o pengsida /opt/stack/data/nova /opt/stack/data/nova/keys
+
+	iniset /etc/nova/nova.conf DEFAULT use_neutron True
+	iniset /etc/nova/nova.conf neutron auth_type password
+	iniset /etc/nova/nova.conf neutron auth_url http://10.250.1.3/identity_admin/v3
+	iniset /etc/nova/nova.conf neutron username neutron
+	iniset /etc/nova/nova.conf neutron password p1111111
+	iniset /etc/nova/nova.conf neutron user_domain_name Default
+	iniset /etc/nova/nova.conf neutron project_name service
+	iniset /etc/nova/nova.conf neutron project_domain_name Default
+	iniset /etc/nova/nova.conf neutron auth_strategy keystone
+	iniset /etc/nova/nova.conf neutron region_name RegionOne
+	iniset /etc/nova/nova.conf neutron url http://10.250.1.3:9696
+	12114
+	\end{lstlisting}
+
+\end{document}

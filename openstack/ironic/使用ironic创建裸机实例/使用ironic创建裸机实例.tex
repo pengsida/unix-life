@@ -251,7 +251,7 @@
 	nova flavor-key $FLAVOR_NAME set capabilities:profile="baremetal"
 	\end{lstlisting}
 
-\section{创建虚拟机}
+\section{设置网络}
 
 	设置网络的思路：
 	\begin{itemize}
@@ -284,6 +284,8 @@
 	openstack --os-cloud devstack-admin --os-region RegionOne router set --external-gateway 6b28596f-738f-4a0d-9864-0183801cdd49 ff71a343-a4fb-4a6a-b7fc-f013566b31cc
 	\end{lstlisting}
 
+\section{创建虚拟机}
+
 	\begin{lstlisting}
 	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n node-4 -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p 6234 -o 4 -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
 	\end{lstlisting}
@@ -308,7 +310,12 @@
 	virsh dumpxml node-3 | grep 'mac address' | head -1 | cut -d"'" -f2
 	# 获得bmrm地址
 	ip link show dev brbm | grep -E -o 'ether [A-Za-z0-9:]+' | sed 's/ether\ //'
+	\end{lstlisting}
 
+
+\section{配置ironic网络}
+
+	\begin{lstlisting}
 	# 获得内网的uuid
 	nova network-list | grep private | cut -d"|" -f2 | cut -d" " -f2
 
@@ -325,12 +332,117 @@
 	sudo ovs-vsctl -- --if-exists del-port brbm-tap -- add-port brbm brbm-tap
 	openstack port delete f44258e5-8805-460e-9de7-a7cc1af501a8
 
+	# 建立网桥
 	# 将内网设置为可共享的
 	openstack network set 056b7a85-726a-4d18-abef-59f2a43aa16d --share
 
 	# ff71a343-a4fb-4a6a-b7fc-f013566b31cc是router1的uuid
 	openstack router show router1 -f value -c id
+	# 获得网关地址
 	sudo ip netns exec qrouter-ff71a343-a4fb-4a6a-b7fc-f013566b31cc ip -4 route get 8.8.8.8
+	ip route replace 10.0.0.0/22 via 172.24.4.5
+
+	# configure_ironic_networks
+	iniset /etc/ironic/ironic.conf neutron cleaning_network private
+	\end{lstlisting}
+
+\section{启动ironic}
+
+	\begin{lstlisting}
+	# 启动ironic
+	# run_process ir-api '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf'
+	screen -S stack -X screen -t ir-api
+	screen -S stack -p ir-api -X logfile /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
+	screen -S stack -p ir-api -X log on
+	touch /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
+	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-api.log.2017-03-30-172117'\'' ir-api.log'
+	screen -S stack -p ir-api -X stuff '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-api.pid; fg || echo "ir-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-api.failure"^M'
+
+	# run_process ir-cond '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf'
+	screen -S stack -X screen -t ir-cond
+	screen -S stack -p ir-cond -X logfile /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
+	screen -S stack -p ir-cond -X log on
+	touch /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
+	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-cond.log.2017-03-30-172117'\'' ir-cond.log'
+	screen -S stack -p ir-cond -X stuff '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-cond.pid; fg || echo "ir-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-cond.failure"^M'
+
+	# restart_apache_server
+	sudo service apache2 stop
+	sudo service apache2 start
+
+	# configure_ironic_ssh_keypair
+	mkdir -p /opt/stack/data/ironic/ssh_keys
+	ssh-keygen -q -t rsa -P '' -f /opt/stack/data/ironic/ssh_keys/ironic_key
+	cat /opt/stack/data/ironic/ssh_keys/ironic_key.pub
+	sort -u -o /home/pengsida/.ssh/authorized_keys /home/pengsida/.ssh/authorized_keys
+	ssh -p 22 -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no -i /opt/stack/data/ironic/ssh_keys/ironic_key pengsida@10.250.1.3 exit
+	\end{lstlisting}
+
+\section{创建物理机需要的镜像}
+	
+	\begin{lstlisting}
+	# upload_baremetal_ironic_deploy
+	openstack image create ir-deploy-agent_ipmitool.kernel --public --disk-format=aki --container-format=aki
+	openstack image create ir-deploy-agent_ipmitool.initramfs --public --disk-format=ari --container-format=ari
+	\end{lstlisting}
+	
+\section{注册物理机}
+	\begin{lstlisting}
+	# 创建chassis
+	ironic chassis-create -d 'ironic test chassis'
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	# enroll_nodes
+	ironic node-create --uuid 10de0c70-05a7-416a-bee8-e6743464db9e --chassis_uuid b03df9b6-5880-4e89-912e-fc28b38a03f1 --driver agent_ipmitool --name node-0 -p cpus=1 -p memory_mb=1280 -p local_gb=10 -p cpu_arch=x86_64 -i ipmi_address=10.250.1.3 -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=04aa51bc-9578-487d-bfe4-1f1f77d0960f -i deploy_ramdisk=5bd740a6-4bb8-4805-8788-a14e746e3675 -i ipmi_port=6230
+	ironic port-create --address 52:54:00:a1:64:c0 --node 10de0c70-05a7-416a-bee8-e6743464db9e
+	\end{lstlisting}
+	
+\section{创建物理机需要的flavor}
+	\begin{lstlisting}
+	openstack flavor create --ephemeral 0 --ram 1280 --disk 10 --vcpus 1 baremetal
+	openstack flavor set baremetal --property cpu_arch=x86_64	
+	\end{lstlisting}
+
+\section{重启nova服务}
+	\begin{lstlisting}
+	# stop_nova_compute
+	# stop_process n-cpu
+	cat /opt/stack/status/stack/n-cpu.pid | pkill -g
+	screen -S stack -p n-cpu -X kill
+	# start_nova_compute
+	# run_process n-cpu '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf'
+	screen -S stack -X screen -t n-cpu
+	screen -S stack -p n-cpu -X logfile /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+	screen -S stack -p n-cpu -X log on
+	touch /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cpu.log.2017-03-30-172117'\'' n-cpu.log'
+	screen -S stack -p n-cpu -X stuff '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cpu.failure"^M'	
+	\end{lstlisting}
+
+\section{配置tftpd}
+	\begin{lstlisting}
+	# configure_tftpd
+	sudo service tftpd-hpa stop
+	sudo tee /etc/init/tftpd-hpa.override
+	sudo cp /opt/stack/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template /etc/xinetd.d/tftp
+	sudo sed -e 's|%TFTPBOOT_DIR%|/opt/stack/data/ironic/tftpboot|g' -i /etc/xinetd.d/tftp
+	chmod -R 0755 /opt/stack/data/ironic/tftpboot
+	
+	sudo service xinetd restart
+	\end{lstlisting}
+
+\section{配置iptable}
+	\begin{lstlisting}
+	# configure_iptables
+	sudo modprobe nf_conntrack_tftp
+	sudo modprobe nf_nat_tftp
+	sudo iptables -I INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT
+	sudo iptables -I INPUT -d 10.250.1.3 -p udp --dport 69 -j ACCEPT
+	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 6385 -j ACCEPT
+	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 8080 -j ACCEPT
+	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 9292 -j ACCEPT
+	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 3928 -j ACCEPT
 	\end{lstlisting}
 
 \end{document}

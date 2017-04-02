@@ -1599,12 +1599,13 @@ GS.TTF(0)/m/n/10.95 的 \EU1/lmr/m/n/10.95 provision_state \EU1/STZHONGS.TTF(0)/
  []
 
 
-Overfull \hbox (169.86348pt too wide) in paragraph at lines 280--281
-[]\EU1/lmr/m/n/10.95 ironic/ api/ controllers/ v1/ node/ NodeStatesController \
-EU1/STZHONGS.TTF(0)/m/n/10.95 的 \EU1/lmr/m/n/10.95 provision() \EU1/STZHONGS.TT
+Overfull \hbox (169.86348pt too wide) in paragraph at lines 28ZHONGS.TTF(0)/m/n/10.95 的 \EU1/lmr/m/n/10.95 provision() \EU1/STZHONGS.TT
 F(0)/m/n/10.95 注 册 了 \EU1/lmr/m/n/10.95 ironic.api.app.VersionSelectorApplicati
 on\EU1/STZHONGS.TTF(0)/m/n/10.95 ，|
  []
+
+
+LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 288.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1613,29 +1614,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.296 ^^I^^I\item[5.] RPC调用do_
+                                  node_deploy()方法，方法的代码思�...
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.296 ^^I^^I\item[5.] RPC调用do_
+                                  node_deploy()方法，方法的代码思�...
+End of file on the terminal!
 
-[6]
-Overfull \hbox (27.49336pt too wide) in paragraph at lines 377--378
-[]\EU1/STZHONGS.TTF(0)/m/n/10.95 调 用 \EU1/lmr/m/n/10.95 ironic \EU1/STZHONGS.TT
-F(0)/m/n/10.95 的 \EU1/lmr/m/n/10.95 api\EU1/STZHONGS.TTF(0)/m/n/10.95 ，|  发 送  
-|“\EU1/lmr/m/n/10.95 POST v1/ nodes/node-id/ vendor_passthru/ pass_deploy_info\
-EU1/STZHONGS.TTF(0)/m/n/10.95 ”，|
- []
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[7]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ 
+Here is how much of TeX's memory you used:
+ 29961 strings out of 493638
+ 529834 string characters out of 6146796
+ 703907 words of memory out of 5000000
+ 33080 multiletter control sequences out of 15000+600000
+ 4460 words of font info for 36 fonts, out of 8000000 for 9000
+ 1328 hyphenation exceptions out of 8191
+ 48i,13n,72p,10365b,1903s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on 理解裸机部署过程.pdf (5 pages).
+r Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
@@ -1648,30 +1651,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [9]
-Overfull \hbox (24.21942pt too wide) in paragraph at lines 493--495
-[]\EU1/lmr/m/n/10.95 init \EU1/STZHONGS.TTF(0)/m/n/10.95 脚 本 调 用 了 \EU1/lmr/m/n
-/10.95 ironic.drivers.modules.iscsi_deploy.AgentDeployMixin.continue_deploy()
- []
+! Missing $ inserted.
+<inserted text> 
+                $
+l.493 ...本调用了ironic.drivers.modules.iscsi_
+                                                  deploy.AgentDeployMixin.co...
 
+? 
+! Emergency stop.
+<inserted text> 
+                $
+l.493 ...本调用了ironic.drivers.modules.iscsi_
+                                                  deploy.AgentDeployMixin.co...
+End of file on the terminal!
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[10]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+ 
+Here is how much of TeX's memory you used:
+ 30150 strings out of 493638
+ 533216 string characters out of 6146796
+ 737907 words of memory out of 5000000
+ 33226 multiletter control sequences out of 15000+600000
+ 10748 words of font info for 66 fonts, out of 8000000 for 9000
+ 1328 hyphenation exceptions out of 8191
+ 48i,12n,72p,10365b,1905s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on 理解裸机部署过程.pdf (9 pages).
+ inconsistent, however.
 
 [12]
 

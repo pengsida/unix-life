@@ -1469,7 +1469,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 \AtBeginShipoutBox=\box67
 Package hyperref Info: Link coloring OFF on input line 143.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+Package: nameref 2012/10/27 v2.43 Cross-oss-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
@@ -1479,13 +1479,14 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 143.
 LaTeX Info: Redefining \pageref on input line 143.
 LaTeX Info: Redefining \nameref on input line 143.
-
-(./使用devstack部署ironic.out) (./使用devstack部署ironic.out)
 \@outlinefile=\write3
 \openout3 = `使用devstack部署ironic.out'.
 
-\c@lstlisting=\count277
 
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+\c@lstlisting=\count277
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1532,20 +1533,11 @@ Overfull \hbox (4.32pt too wide) in paragraph at lines 145--145
 | []| 
  []
 
-(./使用devstack部署ironic.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 2.
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 2.
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
 \tf@toc=\write4
 \openout4 = `使用devstack部署ironic.toc'.
 
+
+LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 147.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1560,6 +1552,18 @@ File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 [1
 
 ]
+LaTeX Font Info:    Try loading font information for U+msa on input line 155.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 155.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 203.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1568,30 +1572,32 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [2
 
-] 
-AED: lastpage setting LastPage
+]
+Runaway argument?
+! Paragraph ended before \@@hyperref was complete.
+<to be read again> 
+                   \par 
+l.256 
+      
+? 
+! Emergency stop.
+<to be read again> 
+                   \par 
+l.256 
+      
+End of file on the terminal!
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[3]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 257.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 257.
- (./使用devstack部署ironic.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 257.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 257.
-
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+ 
+Here is how much of TeX's memory you used:
+ 29973 strings out of 493638
+ 527920 string characters out of 6146796
+ 711917 words of memory out of 5000000
+ 33067 multiletter control sequences out of 15000+600000
+ 9163 words of font info for 56 fonts, out of 8000000 for 9000
+ 1328 hyphenation exceptions out of 8191
+ 48i,13n,72p,10375b,1830s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on 使用devstack部署ironic.pdf (2 pages).
+ Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:

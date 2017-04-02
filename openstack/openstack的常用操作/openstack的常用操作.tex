@@ -146,6 +146,13 @@
 
 \clearpage
 
+\section{openstack baremetal}
+\subsection{查看所有chassis}
+	命令如下：
+	\begin{lstlisting}
+	openstack baremetal chassis list
+	\end{lstlisting}
+
 \section{openstack endpoint}
 \subsection{查看所有的endpoint}
 	命令如下：
@@ -159,6 +166,32 @@
 	openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne
 	openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne
 	openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne
+	\end{lstlisting}
+
+\section{openstack hypervisor}
+\subsection{列出所有的hypervisor}
+	命令如下：
+	\begin{lstlisting}
+	openstack hypervisor list
+	\end{lstlisting}
+
+\subsection{查看某个hypervisor的信息}
+	命令如下：
+	\begin{lstlisting}
+	openstack hypervisor show <hypervisor-uuid>
+	\end{lstlisting}
+
+\subsection{查看hypervisor的整体状态}
+	命令如下：
+	\begin{lstlisting}
+	openstack hypervisor stats show
+	\end{lstlisting}
+
+\section{openstack image}
+\subsection{列出所有镜像文件}
+	命令如下：
+	\begin{lstlisting}
+	openstack image list
 	\end{lstlisting}
 
 \section{openstack network}
