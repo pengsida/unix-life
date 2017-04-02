@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=[x86masm]Assembler,
+	language=bash,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -128,44 +128,77 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{linux中的vmlinuz文件 \qquad}
+\chead{运输层 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
 % \tableofcontents
 
-\clearpage
+% \clearpage
 
-\section{linux中的vmlinuz文件}
-	vmlinuz是可引导的、压缩的内核。
+\section{概述和运输层服务}
+	报文段：在发送端中运输层将从发送应用程序进程接收到的报文转换为运输层分组，这个分组成为报文段。
 
-\subsection{解压vmlinuz}
-	vmlinuz文件是采用gzip压缩的，不过vmlinuz的开头部分内嵌有gzip解压缩代码，所以不能用gunzip命令解压vmlinuz，应该使用如下步骤：
-	\begin{lstlisting}
-	pengsida@scholes:~/temp$ file vmlinuz 
-	vmlinuz: Linux kernel x86 boot executable bzImage, version 4.4.0-66-generic (buildd@lgw01-28) #87-Ubuntu SMP Fri Mar 3 15:, RO-rootFS, swap_dev 0x6, Normal VGA
-	pengsida@scholes:~/temp$ od -t x1 -A d vmlinuz | grep "1f 8b 08"
-	0018864 ac fe ff ff 1f 8b 08 00 00 00 00 00 02 03 ec fd
-	# 计算bizip压缩内容开始处的offset，为：18864 + 4 = 18868  （4是从0018864起到"if 8b 08"之间的字节数）
-	# 解压出被压缩的kernel中的内容
-	pengsida@scholes:~/temp$ dd if=vmlinuz bs=1 skip=18868 | zcat > vmlinuz-test
+\subsection{运输层和网络层的关系}
+	网络层提供了主机之间的逻辑通信，而运输层为运行在不同主机上的进程之间提供了逻辑通信，运输层刚好位于网络层之上。\par
 
-	gzip: stdin: decompression OK, trailing garbage ignored
-	pengsida@scholes:~/temp$ file vmlinuz-test 
-	vmlinuz-test: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=0d5c16d890fd8e36ad100fc60cdb28c426532d0b, stripped
-	pengsida@scholes:~/temp$ strings vmlinuz-test | grep 'Linux version'
-	Linux version 4.4.0-66-generic (buildd@lgw01-28) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #87-Ubuntu SMP Fri Mar 3 15:29:05 UTC 2017 (Ubuntu 4.4.0-66.87-generic 4.4.44)
-	pengsida@scholes:~/temp$ strings vmlinuz-test | grep '/sbin'
-	/sbin/reboot
-	/sbin/init
-	PATH=/sbin:/usr/sbin:/bin:/usr/bin
-	PATH=/sbin:/bin:/usr/sbin:/usr/bin
-	/sbin/request-key
-	/sbin/tomoyo-init
-	/sbin/modprobe
-	/sbin/poweroff
-	initialize_domain /sbin/modprobe from any
-	initialize_domain /sbin/hotplug from any
-	\end{lstlisting}
+	运输层提供的服务受制于网络层所能提供的服务。不过即使底层网络协议不能在网络层提供相应的服务，运输层协议也能提供某些服务。
+	比如即使底层网络协议是不可靠的，运输层协议也能为应用程序提供可靠的数据传输服务。
+
+\subsection{因特网运输层概述}
+	因特网为应用层提供了两种运输层协议：用户数据报协议UDP和传输控制协议TCP。\par
+
+	UDP提供的服务：
+	\begin{itemize}
+		\item 进程到进程的数据交付。
+		\item 进程到进程的数据差错检查。
+	\end{itemize}
+
+	TCP提供的服务：
+	\begin{itemize}
+		\item 进程到进程的数据交付。
+		\item 进程到进程的数据差错检查。
+		\item 可靠数据传输。
+		\item 拥塞控制。
+	\end{itemize}
+
+\section{多路复用与多路分解}
+	课本第127页有运输层工作的例子。\par
+
+	多路复用：在源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息，从而生成报文段，然后将报文段传递到网络层。\par
+
+	多路分解：将运输层报文段中的数据交付到正确的套接字。\par
+
+	运输层多路复用的要求：
+	\begin{itemize}
+		\item[1.] 套接字有唯一标识符。
+		\item[2.] 每个报文段有特殊字段来指示该报文段所要交付到的套接字。这些特殊字段包括源端口号字段和目的端口号字段。
+	\end{itemize}
+
+	端口号：一个16比特的数，大小在0～65535之间。其中0～1023的端口号称为周知端口号，用于保留给周知的应用层协议。
+
+\subsection{无连接的多路复用与多路分解}
+	一个UDP套接字由一个二元组来标识：(目的IP地址，目的端口号)。\par
+
+	一般来说，运输层自动地为应用程序的客户端分配唯一的端口号，为服务器端分配一个特定的端口号。\par
+
+	课本第129页有UDP复用与分解的例子。
+
+\subsection{面向连接的多路复用与多路分解}
+	一个TCP套接字由一个四元组来标识：(源IP地址，源端口号，目的IP地址，目的端口号)。\par
+
+	也就是说，两个具有不同源IP地址或源端口号的到达TCP报文段将被定向到两个不同的套接字。\par
+
+	课本第130页有TCP复用与分解的例子。
+
+\section{无连接运输：UDP}
+\subsection{UDP报文段结构}
+\subsection{UDP检验和}
+
+\section{可靠数据传输原理}
+\subsection{构造可靠数据传输协议}
+\subsubsection{经完全可靠信道的可靠数据传输：rdt1.0}
+\subsubsection{经具有比特差错信道的可靠数据传输：rdt2.0}
+\subsubsection{经具有比特差错信道的丢包信道的可靠数据传输：rdt3.0}
 
 \end{document}
