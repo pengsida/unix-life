@@ -137,7 +137,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{ironic的常用操作 \qquad}
+\chead{vbmc的常用操作 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
@@ -146,58 +146,58 @@
 
 \clearpage
 
-\section{ironic的常用操作}
-	首先设置环境变量：
+\section{vbmc的常用操作}
+	A virtual BMC for controlling virtual instances。\par
+
+	格式：
 	\begin{lstlisting}
-	export OS_PROJECT_DOMAIN_ID=default
-	export OS_REGION_NAME=RegionOne
-	export OS_USER_DOMAIN_ID=default
-	export OS_PROJECT_NAME=admin
-	export OS_IDENTITY_API_VERSION=3
-	export OS_PASSWORD=p1111111
-	export OS_AUTH_URL=http://10.250.1.3:5000/v3
-	export OS_USERNAME=admin
-	export OS_TENANT_NAME=admin
-	export OS_VOLUME_API_VERSION=2
+	Virtual BMC [-h] [--version] {add,delete,start,stop,list,show}
+
+	positional arguments:
+	{add,delete,start,stop,list,show}
+		add                 Add a new virtual BMC
+		delete              Delete a virtual BMC
+		start               Start a virtual BMC
+		stop                Stop a virtual BMC
+		list                list all virtual BMCs
+		show                Show a virtual BMC
 	\end{lstlisting}
 
-\subsection{查看node列表}
-	命令如下：
+\subsection{add操作}
+	格式：
 	\begin{lstlisting}
-	ironic node-list
+usage: Virtual BMC add [-h] [--username USERNAME] [--password PASSWORD]
+					[--port PORT] [--address ADDRESS]
+					[--libvirt-uri LIBVIRT_URI]
+					[--libvirt-sasl-username LIBVIRT_SASL_USERNAME]
+					[--libvirt-sasl-password LIBVIRT_SASL_PASSWORD]
+					domain_name
+
+positional arguments:
+  domain_name           The name of the virtual machine
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --username USERNAME   The BMC username; defaults to "admin"
+  --password PASSWORD   The BMC password; defaults to "password"
+  --port PORT           Port to listen on; defaults to 623
+  --address ADDRESS     The address to bind to (IPv4 and IPv6 are supported);
+                        defaults to ::
+  --libvirt-uri LIBVIRT_URI
+                        The libvirt URI; defaults to "qemu:///system"
+  --libvirt-sasl-username LIBVIRT_SASL_USERNAME
+                        The libvirt SASL username; defaults to None
+  --libvirt-sasl-password LIBVIRT_SASL_PASSWORD
+                        The libvirt SASL password; defaults to None
 	\end{lstlisting}
 
-\subsection{查看所注册的node的mac地址列表}
-	命令如下：
+\subsection{start操作}
+	格式：
 	\begin{lstlisting}
-	ironic port-list
-	\end{lstlisting}
+usage: Virtual BMC start [-h] domain_name
 
-\subsection{为物理节点创建网络端口}
-	命令如下：
-	\begin{lstlisting}
-	# mac-address是物理节点的mac地址
-	# node-uuid是注册的节点的uuid
-	ironic port-create -a <mac-address> -n <node-uuid>
-	\end{lstlisting}
-
-\subsection{检查一个节点的设置}
-	命令如下：
-	\begin{lstlisting}
-	ironic node-validate <node-uuid>
-	\end{lstlisting}
-
-\subsection{删除node注册信息}
-	命令如下：
-	\begin{lstlisting}
-	ironic node-delete <node-name>
-	\end{lstlisting}
-
-\subsection{设置与某个flavor相关联}
-	命令如下：
-	\begin{lstlisting}
-	nova flavor-key <flavor-name> set capabilities:profile="key"
-	ironic node-update <node-name> add properties/capabilities='profile:key'
+positional arguments:
+  domain_name  The name of the virtual machine
 	\end{lstlisting}
 	
 \end{document}

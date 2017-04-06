@@ -73,7 +73,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=python,
+	language=bash,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -137,7 +137,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{ironic的常用操作 \qquad}
+\chead{部署ironic \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 
 \begin{document}
@@ -146,58 +146,11 @@
 
 \clearpage
 
-\section{ironic的常用操作}
-	首先设置环境变量：
-	\begin{lstlisting}
-	export OS_PROJECT_DOMAIN_ID=default
-	export OS_REGION_NAME=RegionOne
-	export OS_USER_DOMAIN_ID=default
-	export OS_PROJECT_NAME=admin
-	export OS_IDENTITY_API_VERSION=3
-	export OS_PASSWORD=p1111111
-	export OS_AUTH_URL=http://10.250.1.3:5000/v3
-	export OS_USERNAME=admin
-	export OS_TENANT_NAME=admin
-	export OS_VOLUME_API_VERSION=2
-	\end{lstlisting}
-
-\subsection{查看node列表}
+\section{neutron的常用操作}
+\subsection{列出所有port}
 	命令如下：
 	\begin{lstlisting}
-	ironic node-list
-	\end{lstlisting}
-
-\subsection{查看所注册的node的mac地址列表}
-	命令如下：
-	\begin{lstlisting}
-	ironic port-list
-	\end{lstlisting}
-
-\subsection{为物理节点创建网络端口}
-	命令如下：
-	\begin{lstlisting}
-	# mac-address是物理节点的mac地址
-	# node-uuid是注册的节点的uuid
-	ironic port-create -a <mac-address> -n <node-uuid>
-	\end{lstlisting}
-
-\subsection{检查一个节点的设置}
-	命令如下：
-	\begin{lstlisting}
-	ironic node-validate <node-uuid>
-	\end{lstlisting}
-
-\subsection{删除node注册信息}
-	命令如下：
-	\begin{lstlisting}
-	ironic node-delete <node-name>
-	\end{lstlisting}
-
-\subsection{设置与某个flavor相关联}
-	命令如下：
-	\begin{lstlisting}
-	nova flavor-key <flavor-name> set capabilities:profile="key"
-	ironic node-update <node-name> add properties/capabilities='profile:key'
+	neutron port-list
 	\end{lstlisting}
 	
 \end{document}

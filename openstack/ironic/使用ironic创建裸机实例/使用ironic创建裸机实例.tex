@@ -146,7 +146,7 @@
 
 \clearpage
 
-\section{使用ironic创建裸机实例}
+\section{第一个例子}
 \subsection{配置baremetal provisioning驱动}
 	可以修改配置文件/etc/ironic/ironic.conf来设置openstack启用对应驱动：
 	\begin{lstlisting}
@@ -158,8 +158,6 @@
 	\begin{lstlisting}
 	systemctl restart openstack-ironic-conductor.service
 	\end{lstlisting}
-
-\subsection{创建需要的镜像}
 
 \subsection{上传镜像到glance服务器}
 	openstack要实现部署裸机需要用到的镜像有5个。
@@ -251,196 +249,77 @@
 	nova flavor-key $FLAVOR_NAME set capabilities:profile="baremetal"
 	\end{lstlisting}
 
-\section{设置网络}
-
-	设置网络的思路：
-	\begin{itemize}
-		\item[1.] 创建一个外部网络public和一个内部网络private。
-		\item[2.] 创建内部网络子网池。
-		\item[3.] 创建内部子网和外部子网。
-		\item[4.] 创建一个路由器，将内部子网连接到路由器，再将外部网络设置为路由器的外部网关。
-	\end{itemize}
+\section{第二个例子}
+\subsection{创建虚拟机}
 
 	\begin{lstlisting}
-	# 创建private网络
-	openstack --os-cloud devstack-admin --os-region RegionOne network create --project 6eaff7ecc1694fcd94532bad5f09e17f private
-	# 创建public网络
-	openstack --os-cloud devstack-admin --os-region RegionOne network create public --external --default --provider-network-type flat --provider-physical-network public
-	# 创建子网池
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 26 --pool-prefix 10.0.0.0/22 --share --default
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet pool create shared-default-subnetpool --default-prefix-length 64 --pool-prefix fd99:0295:1537::/56 --share --default
-	# 创建private子网
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 4 --gateway 10.1.0.1 --subnet-pool 700abf50-bd39-4e09-bbab-780d21cdde9b --network 056b7a85-726a-4d18-abef-59f2a43aa16d private-subnet
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --project 6eaff7ecc1694fcd94532bad5f09e17f --ip-version 6 --subnet-pool 254e2198-20c0-46d1-830a-ddfeaa14d3f1 --ipv6-ra-mode slaac --ipv6-address-mode slaac --network 056b7a85-726a-4d18-abef-59f2a43aa16d ipv6-private-subnet
-	# 创建public子网
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 4 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 172.24.4.0/24 --no-dhcp public-subnet
-	openstack --os-cloud devstack-admin --os-region RegionOne subnet create --ip-version 6 --gateway 2001:db8::2 --network 6b28596f-738f-4a0d-9864-0183801cdd49 --subnet-range 2001:db8::/64 --no-dhcp ipv6-public-subnet
-	# 创建路由器
-	openstack --os-cloud devstack-admin --os-region RegionOne router create --project 6eaff7ecc1694fcd94532bad5f09e17f router1
-	# 将private subnet加入router
-	openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc 26e240db-8cc9-4938-831a-5710d689426a
-	openstack --os-cloud devstack-admin --os-region RegionOne router add subnet ff71a343-a4fb-4a6a-b7fc-f013566b31cc ebd2af8f-3450-49f4-abff-2d4577bc9b40
-	# 设置外部网关，6b28596f-738f-4a0d-9864-0183801cdd49是public网络的uuid
-	openstack --os-cloud devstack-admin --os-region RegionOne router set --external-gateway 6b28596f-738f-4a0d-9864-0183801cdd49 ff71a343-a4fb-4a6a-b7fc-f013566b31cc
-	\end{lstlisting}
-
-\section{创建虚拟机}
-
-	\begin{lstlisting}
-	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n node-4 -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p 6234 -o 4 -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
+	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n node-4 -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p 6233 -o 4 -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
 	\end{lstlisting}
 
 	\begin{lstlisting}
-	sudo brctl addbr br-node-3
-	sudo ip link set br-node-3 up
-	sudo ovs-vsctl add-port brbm ovs-node-3 -- set Interface ovs-node-3 type=internal
-	sudo ip link set ovs-node-3 up
-	sudo brctl addif br-node-3 ovs-node-3
-
+	# 设置虚拟机的存储池
 	virsh pool-define-as --name default dir --target /var/lib/libvirt/images
 	virsh pool-autostart default
 	virsh pool-start default
-	virsh vol-create-as default node-3.qcow2 11G --format qcow2 --prealloc-metadata
-	/opt/stack/ironic/devstack/tools/ironic/scripts/configure-vm.py --bootdev network --name node-3 --image /var/lib/libvirt/images/node-3.qcow2 --arch x86_64 --cpus 1 --memory 1310720 --libvirt-nic-driver virtio --bridge br-node-3 --disk-format qcow2 --console-log /home/pengsida/temp/ironic-bm-logs/node-3_console.log --engine qemu --emulator /usr/bin/qemu-system-x86_64
+	\end{lstlisting}
+
+	\begin{lstlisting}
+	domain_name="node-4"
+	# 创建虚拟机使用的网桥
+	brctl addbr br-$domain_name
+	ip link set br-$domain_name up
+
+	# 在网桥brbm上创建新的端口
+	ovs-vsctl add-port brbm ovs-$domain_name -- set Interface ovs-$domain_name type=internal
+	ip link set ovs-$domain_name up
+
+	# 将ovs-node端口加入br-node这个网桥
+	brctl addif br-$domain_name ovs-$domain_name
+
+	# 创建虚拟机的磁盘镜像文件
+	virsh vol-create-as default $domain_name.qcow2 11G --format qcow2 --prealloc-metadata
+	virsh vol-path --pool default $domain_name.qcow2
+	touch /var/lib/libvirt/images/$domain_name.qcow2
+	chattr +C /var/lib/libvirt/images/$domain_name.qcow2
+	/opt/stack/ironic/devstack/tools/ironic/scripts/configure-vm.py --bootdev network --name $domain_name --image /var/lib/libvirt/images/$domain_name.qcow2 --arch x86_64 --cpus 1 --memory 1310720 --libvirt-nic-driver virtio --bridge br-$domain_name --disk-format qcow2 --console-log /home/pengsida/temp/ironic-bm-logs/"$domain_name"_console.log --engine qemu --emulator /usr/bin/qemu-system-x86_64
 	
-	vbmc add node-3 --port 6233
-	vbmc start node-3
-
-	# 获得node-3的mac地址
-	virsh dumpxml node-3 | grep 'mac address' | head -1 | cut -d"'" -f2
-	# 获得bmrm地址
-	ip link show dev brbm | grep -E -o 'ether [A-Za-z0-9:]+' | sed 's/ether\ //'
-	\end{lstlisting}
-
-
-\section{配置ironic网络}
-
-	\begin{lstlisting}
-	# 获得内网的uuid
-	nova network-list | grep private | cut -d"|" -f2 | cut -d" " -f2
-
-	# 056b7a85-726a-4d18-abef-59f2a43aa16d是内网的uuid
-	neutron port-create 056b7a85-726a-4d18-abef-59f2a43aa16d
-	sudo ip netns exec qdhcp-056b7a85-726a-4d18-abef-59f2a43aa16d ip link list
-	sudo ovs-vsctl get port tap20f9e951-ec tag
-	sudo ip link show ovs-tap
-	sudo ip link show brbm-tap
-	sudo ip link add brbm-tap type veth peer name ovs-tap
-	sudo ip link set dev brbm-tap up
-	sudo ip link set dev ovs-tap up
-	sudo ovs-vsctl -- --if-exists del-port ovs-tap -- add-port br-int ovs-tap tag=1
-	sudo ovs-vsctl -- --if-exists del-port brbm-tap -- add-port brbm brbm-tap
-	openstack port delete f44258e5-8805-460e-9de7-a7cc1af501a8
-
-	# 建立网桥
-	# 将内网设置为可共享的
-	openstack network set 056b7a85-726a-4d18-abef-59f2a43aa16d --share
-
-	# ff71a343-a4fb-4a6a-b7fc-f013566b31cc是router1的uuid
-	openstack router show router1 -f value -c id
-	# 获得网关地址
-	sudo ip netns exec qrouter-ff71a343-a4fb-4a6a-b7fc-f013566b31cc ip -4 route get 8.8.8.8
-	ip route replace 10.0.0.0/22 via 172.24.4.5
-
-	# configure_ironic_networks
-	iniset /etc/ironic/ironic.conf neutron cleaning_network private
-	\end{lstlisting}
-
-\section{启动ironic}
-	\begin{lstlisting}
-	# 启动ironic
-	# run_process ir-api '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf'
-	screen -S stack -X screen -t ir-api
-	screen -S stack -p ir-api -X logfile /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
-	screen -S stack -p ir-api -X log on
-	touch /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
-	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-api.log.2017-03-30-172117'\'' ir-api.log'
-	screen -S stack -p ir-api -X stuff '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-api.pid; fg || echo "ir-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-api.failure"^M'
-
-	# run_process ir-cond '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf'
-	screen -S stack -X screen -t ir-cond
-	screen -S stack -p ir-cond -X logfile /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
-	screen -S stack -p ir-cond -X log on
-	touch /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
-	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-cond.log.2017-03-30-172117'\'' ir-cond.log'
-	screen -S stack -p ir-cond -X stuff '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-cond.pid; fg || echo "ir-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-cond.failure"^M'
-
-	# restart_apache_server
-	sudo service apache2 stop
-	sudo service apache2 start
-
-	# configure_ironic_ssh_keypair
-	mkdir -p /opt/stack/data/ironic/ssh_keys
-	ssh-keygen -q -t rsa -P '' -f /opt/stack/data/ironic/ssh_keys/ironic_key
-	cat /opt/stack/data/ironic/ssh_keys/ironic_key.pub
-	sort -u -o /home/pengsida/.ssh/authorized_keys /home/pengsida/.ssh/authorized_keys
-	ssh -p 22 -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no -i /opt/stack/data/ironic/ssh_keys/ironic_key pengsida@10.250.1.3 exit
-	\end{lstlisting}
-
-\section{创建物理机需要的镜像}
-	\begin{lstlisting}
-	# upload_baremetal_ironic_deploy
-	openstack image create ir-deploy-agent_ipmitool.kernel --public --disk-format=aki --container-format=aki
-	openstack image create ir-deploy-agent_ipmitool.initramfs --public --disk-format=ari --container-format=ari
+	# 设置虚拟机的监听端口
+	vbmc add $domain_name --port 6234
+	# 启动虚拟机
+	vbmc start $domain_name
 	\end{lstlisting}
 	
-\section{注册物理机}
+\subsection{注册物理机}
 	\begin{lstlisting}
-	# 创建chassis
-	ironic chassis-create -d 'ironic test chassis'
+	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n node-3 -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p 6233 -o 3 -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
 	\end{lstlisting}
 
 	\begin{lstlisting}
-	# enroll_nodes
-	ironic node-create --uuid 10de0c70-05a7-416a-bee8-e6743464db9e --chassis_uuid b03df9b6-5880-4e89-912e-fc28b38a03f1 --driver agent_ipmitool --name node-0 -p cpus=1 -p memory_mb=1280 -p local_gb=10 -p cpu_arch=x86_64 -i ipmi_address=10.250.1.3 -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=04aa51bc-9578-487d-bfe4-1f1f77d0960f -i deploy_ramdisk=5bd740a6-4bb8-4805-8788-a14e746e3675 -i ipmi_port=6230
-	ironic port-create --address 52:54:00:a1:64:c0 --node 10de0c70-05a7-416a-bee8-e6743464db9e
-	\end{lstlisting}
-	
-\section{创建物理机需要的flavor}
-	\begin{lstlisting}
-	openstack flavor create --ephemeral 0 --ram 1280 --disk 10 --vcpus 1 baremetal
-	openstack flavor set baremetal --property cpu_arch=x86_64	
-	\end{lstlisting}
+	# 注册物理机
+	domain_name="node-4"
+	node_uuid=`uuidgen`
+	first_chassis_uuid=`openstack baremetal chassis list -f value | head -1 | cut -d" " -f1`
+	ramdisk_uuid=`openstack image list | grep "\.initramfs" | cut -d"|" -f2 | cut -d" " -f2`
+	kernel_uuid=`openstack image list | grep "\.kernel" | cut -d"|" -f2 | cut -d" " -f2`
+	port_num=`vbmc list | grep $domain_name | egrep -o "| [0-9]+ |" | cut -d" " -f2`
+	vcpu_num=`virsh dumpxml $domain_name | grep vcpu | cut -d">" -f2 | cut -d"<" -f1`
+	memory=$(echo "`virsh dumpxml $domain_name | grep "memory" | cut -d">" -f2 | cut -d"<" -f1`/1024" | bc)
+	arch=`virsh dumpxml $domain_name | grep arch | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_path=`virsh dumpxml $domain_name | grep "source file" | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_size=`qemu-img info $disk_path | grep "virtual size" | egrep -o "[0-9]+G" | cut -d"G" -f1`
+	local_size=$[ $disk_size-1 ]
+	driver_address=`openstack endpoint list | grep ironic | grep admin | cut -d"/" -f3 | cut -d":" -f1`
+	domain_address=`virsh dumpxml $domain_name | grep 'mac address' | head -1 | cut -d"'" -f2`
 
-\section{重启nova服务}
-	\begin{lstlisting}
-	# stop_nova_compute
-	# stop_process n-cpu
-	cat /opt/stack/status/stack/n-cpu.pid | pkill -g
-	screen -S stack -p n-cpu -X kill
-	# start_nova_compute
-	# run_process n-cpu '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf'
-	screen -S stack -X screen -t n-cpu
-	screen -S stack -p n-cpu -X logfile /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
-	screen -S stack -p n-cpu -X log on
-	touch /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
-	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cpu.log.2017-03-30-172117'\'' n-cpu.log'
-	screen -S stack -p n-cpu -X stuff '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cpu.failure"^M'	
-	\end{lstlisting}
+	openstack flavor create --ephemeral 0 --ram $memory --disk $local_size --vcpus $vcpu_num $domain_name
+	openstack flavor set $domain_name --property cpu_arch=$arch
+	# 设置与domain关联
+	nova flavor-key $domain_name set capabilities:profile="$domain_name"
 
-\section{配置tftpd}
-	\begin{lstlisting}
-	# configure_tftpd
-	sudo service tftpd-hpa stop
-	sudo tee /etc/init/tftpd-hpa.override
-	sudo cp /opt/stack/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template /etc/xinetd.d/tftp
-	sudo sed -e 's|%TFTPBOOT_DIR%|/opt/stack/data/ironic/tftpboot|g' -i /etc/xinetd.d/tftp
-	chmod -R 0755 /opt/stack/data/ironic/tftpboot
-	
-	sudo service xinetd restart
-	\end{lstlisting}
-
-\section{配置iptable}
-	\begin{lstlisting}
-	# configure_iptables
-	sudo modprobe nf_conntrack_tftp
-	sudo modprobe nf_nat_tftp
-	sudo iptables -I INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT
-	sudo iptables -I INPUT -d 10.250.1.3 -p udp --dport 69 -j ACCEPT
-	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 6385 -j ACCEPT
-	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 8080 -j ACCEPT
-	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 9292 -j ACCEPT
-	sudo iptables -I INPUT -d 10.250.1.3 -p tcp --dport 3928 -j ACCEPT
+	ironic node-create --uuid $node_uuid --chassis_uuid $first_chassis_uuid --driver agent_ipmitool --name $domain_name -p cpus=$vcpu_num -p memory_mb=$memory -p local_gb=$local_size -p cpu_arch=$arch -i ipmi_address=$driver_address -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=$kernel_uuid -i deploy_ramdisk=$ramdisk_uuid -i ipmi_port=$port_num
+	ironic port-create --address $domain_address --node $node_uuid
+	# 设置与flavor关联
+	ironic node-update $NODE_UUID add properties/capabilities='profile:$domain_name'
 	\end{lstlisting}
 
 \end{document}
