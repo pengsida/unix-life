@@ -145,6 +145,41 @@
 
 \clearpage
 
+\section{brctl}
+	命令参数：
+	\begin{lstlisting}
+Usage: brctl [commands]
+commands:
+	addbr           <bridge>                add bridge
+	delbr           <bridge>                delete bridge
+	addif           <bridge> <device>       add interface to bridge
+	delif           <bridge> <device>       delete interface from bridge
+	setageing       <bridge> <time>         set ageing time
+	setbridgeprio   <bridge> <prio>         set bridge priority
+	setfd           <bridge> <time>         set bridge forward delay
+	sethello        <bridge> <time>         set hello time
+	setmaxage       <bridge> <time>         set max message age
+	sethashel       <bridge> <int>          set hash elasticity
+	sethashmax      <bridge> <int>          set hash max
+	setmclmc        <bridge> <int>          set multicast last member count
+	setmcrouter     <bridge> <int>          set multicast router
+	setmcsnoop      <bridge> <int>          set multicast snooping
+	setmcsqc        <bridge> <int>          set multicast startup query count
+	setmclmi        <bridge> <time>         set multicast last member interval
+	setmcmi         <bridge> <time>         set multicast membership interval
+	setmcqpi        <bridge> <time>         set multicast querier interval
+	setmcqi         <bridge> <time>         set multicast query interval
+	setmcqri        <bridge> <time>         set multicast query response interval
+	setmcqri        <bridge> <time>         set multicast startup query interval
+	setpathcost     <bridge> <port> <cost>  set path cost
+	setportprio     <bridge> <port> <prio>  set port priority
+	setportmcrouter <bridge> <port> <int>   set port multicast router
+	show            [ <bridge> ]            show a list of bridges
+	showmacs        <bridge>                show a list of mac addrs
+	showstp         <bridge>                show bridge stp info
+	stp             <bridge> {on|off}       turn stp on/off
+	\end{lstlisting}
+
 \section{chattr}
 	chattr命令用来改变文件属性。这项指令可改变存放在ext2文件系统上的文件或目录属性，这些属性共有以下8种模式：
 	\begin{lstlisting}
@@ -605,6 +640,16 @@
 	mroute:多播路由缓冲区条目
 	tunnel:IP上的通道
 	netns:manage network namespaces.
+	\end{lstlisting}
+
+	常用操作：
+	\begin{lstlisting}
+	ip link set [device] [动作与参数]
+	参数：
+		up|down ：启动 (up) 或关闭 (down) 某个设备，其他参数使用预设的以太网路；
+		address ：如果这个装置可以更改 MAC 的话，用这个参数修改！
+		name     ：给予这个装置一个特殊的名字；
+		mtu      ：就是最大传输单元啊！
 	\end{lstlisting}
 
 \section{mount}
