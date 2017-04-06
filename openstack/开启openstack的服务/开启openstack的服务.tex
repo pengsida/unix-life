@@ -192,50 +192,64 @@
 	测试keystone是否可以使用：
 	\begin{lstlisting}
 	openstack project show admin -f value -c id
+
 	openstack user show admin -f value -c id
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
 	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --domain default --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+	
 	openstack domain show Default -f value -c id
 	openstack project create service --domain=Default --or-show -f value -c id
 	openstack role create service --or-show -f value -c id
 	openstack role create ResellerAdmin --or-show -f value -c id
 	openstack role create Member --or-show -f value -c id
 	openstack role create anotherrole --or-show -f value -c id
+	
 	openstack project create invisible_to_admin --domain=default --or-show -f value -c id
 	openstack project create demo --domain=default --or-show -f value -c id
 	openstack user create demo --password p1111111 --domain=default --email=demo@example.com --or-show -f value -c id
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+	
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role add anotherrole --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
 	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
 	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+	
 	openstack project create alt_demo --domain=default --or-show -f value -c id
 	openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com --or-show -f value -c id
+	
 	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role add member --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
+	
 	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role add anotherrole --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
 	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
+	
 	openstack group create admins --domain default --description 'openstack admin group' --or-show -f value -c id
 	openstack group create nonadmins --domain default --description 'non-admin group' --or-show -f value -c id
+	
 	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
 	openstack role add member --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f
 	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
+	
 	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
 	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
 	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
+	
 	openstack role add admin --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace
 	openstack role assignment list --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace -f value
 	\end{lstlisting}
@@ -364,7 +378,7 @@
 	rm -f /home/pengsida/.config/openstack/clouds.yaml
 	\end{lstlisting}
 
-\section{开启glance服务}
+\section{配置glance服务}
 	命令如下：
 	\begin{lstlisting}
 	rm -rf /opt/stack/data/glance/images
@@ -380,7 +394,7 @@
 	rm -f '/var/cache/glance/api/*' '/var/cache/glance/registry/*' '/var/cache/glance/search/*' '/var/cache/glance/artifact/*'
 	\end{lstlisting}
 
-\section{开启neutron服务}
+\section{配置neutron服务}
 	命令如下：
 	\begin{lstlisting}
 	sudo install -d -o pengsida /etc/neutron
@@ -522,7 +536,7 @@
 	clean_iptables
 	\end{lstlisting}
 
-\section{开启swift服务}
+\section{配置swift服务}
 	命令如下：
 	\begin{lstlisting}
 	swift-init --run-dir=/opt/stack/data/swift/run all stop
@@ -557,7 +571,7 @@
 	rm -f '/var/cache/swift/*'
 	\end{lstlisting}
 
-\section{开启nova服务}
+\section{配置nova服务}
 	命令如下：
 	\begin{lstlisting}
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova_api;'
@@ -591,7 +605,213 @@
 	iniset /etc/nova/nova.conf neutron auth_strategy keystone
 	iniset /etc/nova/nova.conf neutron region_name RegionOne
 	iniset /etc/nova/nova.conf neutron url http://10.250.1.3:9696
-	12114
+	
+	iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
+	iniset /etc/nova/nova.conf neutron service_metadata_proxy True
+	iniset /etc/nova/nova.conf DEFAULT vif_plugging_is_fatal True
+	iniset /etc/nova/nova.conf DEFAULT vif_plugging_timeout 300
+
+	openstack user create placement --password p1111111 --domain=Default --or-show -f value -c id
+	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+	openstack role add service --user placement --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+
+	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+	openstack role add admin --user placement --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
+
+	openstack service show placement -f value -c id
+	openstack service create placement --name placement '--description=Placement Service' -f value -c id
+	openstack endpoint list --service placement --interface public --region RegionOne -c ID -f value
+	openstack endpoint create placement public http://10.250.1.3/placement --region RegionOne -f value -c id
 	\end{lstlisting}
+
+\section{配置ironic服务}
+	命令如下：
+	\begin{lstlisting}
+	sudo install -d -o pengsida /etc/ironic pengsida /opt/stack/data/ironic /var/lib/ironic /opt/stack/data/ironic/tftpboot /opt/stack/data/ironic/tftpboot/pxelinux.cfg
+	sudo chown -R pengsida:libvirtd /opt/stack/data/ironic/tftpboot
+	sudo install -d -o pengsida -g libvirtd /opt/stack/data/ironic/httpboot
+	cp /usr/lib/ipxe/undionly.kpxe /opt/stack/data/ironic/tftpboot
+	
+	install -d -o pengsida /home/pengsida/temp/ironic-bm-logs/deploy_logs
+	cp /opt/stack/ironic/etc/ironic/ironic.conf.sample /etc/ironic/ironic.conf
+	iniset /etc/ironic/ironic.conf DEFAULT debug True
+	inicomment /etc/ironic/ironic.conf DEFAULT log_file
+
+	# database_connection_url_mysql ironic
+	iniset /etc/ironic/ironic.conf database connection 'mysql+pymysql://root:p1111111@127.0.0.1/ironic?charset=utf8'
+	iniset /etc/ironic/ironic.conf DEFAULT state_path /var/lib/ironic
+	iniset /etc/ironic/ironic.conf DEFAULT use_syslog False
+	iniset /etc/ironic/ironic.conf DEFAULT host pogba
+	iniset /etc/ironic/ironic.conf agent deploy_logs_collect always
+	iniset /etc/ironic/ironic.conf agent deploy_logs_storage_backend local
+	iniset /etc/ironic/ironic.conf agent deploy_logs_local_path /home/pengsida/temp/ironic-bm-logs/deploy_logs
+
+	# configure_ironic_conductor
+	# ==========================
+
+	iniset /etc/ironic/ironic.conf keystone region_name RegionOne
+	iniset /etc/ironic/ironic.conf neutron auth_type password
+	iniset /etc/ironic/ironic.conf neutron auth_url http://10.250.1.3/identity
+	iniset /etc/ironic/ironic.conf neutron username ironic
+	iniset /etc/ironic/ironic.conf neutron password p1111111
+	iniset /etc/ironic/ironic.conf neutron project_name service
+	iniset /etc/ironic/ironic.conf neutron user_domain_id default
+	iniset /etc/ironic/ironic.conf neutron project_domain_id default
+	iniset /etc/ironic/ironic.conf neutron cafile /opt/stack/data/ca-bundle.pem
+
+	# configure_auth_for swift
+	iniset /etc/ironic/ironic.conf swift auth_type password
+	iniset /etc/ironic/ironic.conf swift auth_url http://10.250.1.3/identity
+	iniset /etc/ironic/ironic.conf swift username ironic
+	iniset /etc/ironic/ironic.conf swift password p1111111
+	iniset /etc/ironic/ironic.conf swift project_name service
+	iniset /etc/ironic/ironic.conf swift user_domain_id default
+	iniset /etc/ironic/ironic.conf swift project_domain_id default
+	iniset /etc/ironic/ironic.conf swift cafile /opt/stack/data/ca-bundle.pem
+
+    # configure_auth_for glance
+	iniset /etc/ironic/ironic.conf glance auth_type password
+    iniset /etc/ironic/ironic.conf glance auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf glance username ironic
+    iniset /etc/ironic/ironic.conf glance password p1111111
+    iniset /etc/ironic/ironic.conf glance project_name service
+    iniset /etc/ironic/ironic.conf glance user_domain_id default
+    iniset /etc/ironic/ironic.conf glance project_domain_id default
+    iniset /etc/ironic/ironic.conf glance cafile /opt/stack/data/ca-bundle.pem
+
+	# configure_auth_for inspector
+	iniset /etc/ironic/ironic.conf inspector auth_type password
+    iniset /etc/ironic/ironic.conf inspector auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf inspector username ironic
+    iniset /etc/ironic/ironic.conf inspector password p1111111
+    iniset /etc/ironic/ironic.conf inspector project_name service
+    iniset /etc/ironic/ironic.conf inspector user_domain_id default
+    iniset /etc/ironic/ironic.conf inspector project_domain_id default
+    iniset /etc/ironic/ironic.conf inspector cafile /opt/stack/data/ca-bundle.pem
+
+	# configure_auth_for service_catalog
+	iniset /etc/ironic/ironic.conf service_catalog auth_type password
+    iniset /etc/ironic/ironic.conf service_catalog auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf service_catalog username ironic
+    iniset /etc/ironic/ironic.conf service_catalog password p1111111
+    iniset /etc/ironic/ironic.conf service_catalog project_name service
+    iniset /etc/ironic/ironic.conf service_catalog user_domain_id default
+    iniset /etc/ironic/ironic.conf service_catalog project_domain_id default
+    iniset /etc/ironic/ironic.conf service_catalog cafile /opt/stack/data/ca-bundle.pem
+    cp /opt/stack/ironic/etc/ironic/rootwrap.conf /etc/ironic/rootwrap.conf
+    cp -r /opt/stack/ironic/etc/ironic/rootwrap.d /etc/ironic
+
+	mktemp
+    tempfile=/tmp/tmp.zjUddafm6h
+	chmod 0440 /tmp/tmp.zjUddafm6h
+    sudo chown root:root /tmp/tmp.zjUddafm6h
+    sudo mv /tmp/tmp.zjUddafm6h /etc/sudoers.d/ironic-rootwrap
+    iniset /etc/ironic/ironic.conf DEFAULT enabled_drivers fake,agent_ssh,agent_ipmitool,pxe_ssh,pxe_ipmitool
+    iniset /etc/ironic/ironic.conf DEFAULT enabled_hardware_types ipmi
+    iniset /etc/ironic/ironic.conf DEFAULT rootwrap_config /etc/ironic/rootwrap.conf
+    iniset /etc/ironic/ironic.conf conductor api_url http://10.250.1.3:6385
+
+	iniset /etc/ironic/ironic.conf pxe tftp_server 10.250.1.3
+    iniset /etc/ironic/ironic.conf pxe tftp_root /opt/stack/data/ironic/tftpboot
+    iniset /etc/ironic/ironic.conf pxe tftp_master_path /opt/stack/data/ironic/tftpboot/master_images
+
+	iniset /etc/ironic/ironic.conf pxe pxe_append_params 'nofb nomodeset vga=normal console=ttyS0 systemd.journald.forward_to_console=yes '
+
+	iniset /etc/ironic/ironic.conf glance swift_temp_url_key p1111111
+    iniset /etc/ironic/ironic.conf glance swift_endpoint_url http://10.250.1.3:8080
+    iniset /etc/ironic/ironic.conf glance swift_api_version v1
+
+	# get_or_create_project service default
+	openstack project create service --domain=default --or-show -f value -c id
+	iniset /etc/ironic/ironic.conf glance swift_account AUTH_e9cbf8ccd797481da71c55ce704b5861
+    iniset /etc/ironic/ironic.conf glance swift_container glance
+    iniset /etc/ironic/ironic.conf glance swift_temp_url_duration 3600
+    iniset /etc/ironic/ironic.conf glance glance_protocol http
+    iniset /etc/ironic/ironic.conf glance glance_host 10.250.1.3
+    iniset /etc/ironic/ironic.conf glance glance_port 9292
+	iniset /etc/ironic/ironic.conf api ramdisk_heartbeat_timeout 30
+	iniset /etc/ironic/ironic.conf deploy erase_devices_priority 0
+
+	# get_uefi_ipxe_boot_file
+	iniset /etc/ironic/ironic.conf pxe ipxe_enabled True
+    iniset /etc/ironic/ironic.conf pxe pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
+    iniset /etc/ironic/ironic.conf pxe pxe_bootfile_name undionly.kpxe
+    iniset /etc/ironic/ironic.conf pxe uefi_pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
+    iniset /etc/ironic/ironic.conf pxe uefi_pxe_bootfile_name ipxe.efi
+    iniset /etc/ironic/ironic.conf deploy http_root /opt/stack/data/ironic/httpboot
+    iniset /etc/ironic/ironic.conf deploy http_url http://10.250.1.3:3928
+	iniset /etc/ironic/ironic.conf neutron port_setup_delay 15
+	iniset /etc/ironic/ironic.conf dhcp dhcp_provider neutron
+    iniset /etc/ironic/ironic.conf deploy default_boot_option netboot
+
+
+	# configure_ironic_api
+	# ====================
+
+	iniset /etc/ironic/ironic.conf DEFAULT auth_strategy keystone
+	iniset /etc/ironic/ironic.conf keystone_authtoken auth_type password
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
+    iniset /etc/ironic/ironic.conf keystone_authtoken username ironic
+    iniset /etc/ironic/ironic.conf keystone_authtoken password p1111111
+    iniset /etc/ironic/ironic.conf keystone_authtoken user_domain_name Default
+    iniset /etc/ironic/ironic.conf keystone_authtoken project_name service
+    iniset /etc/ironic/ironic.conf keystone_authtoken project_domain_name Default
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_uri http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf keystone_authtoken cafile /opt/stack/data/ca-bundle.pem
+    iniset /etc/ironic/ironic.conf keystone_authtoken signing_dir /var/cache/ironic/api
+    iniset /etc/ironic/ironic.conf keystone_authtoken memcached_servers 10.250.1.3:11211
+    iniset /etc/ironic/ironic.conf oslo_policy policy_file /etc/ironic/policy.json
+
+	iniset /etc/ironic/ironic.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
+	iniset /etc/ironic/ironic.conf api port 6385
+    iniset /etc/ironic/ironic.conf conductor automated_clean True
+	cp -p /opt/stack/ironic/etc/ironic/policy.json /etc/ironic/policy.json
+
+	iniset /etc/ironic/ironic.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%(project_name)s %(user_name)s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
+    iniset /etc/ironic/ironic.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
+	iniset /etc/ironic/ironic.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m'
+
+	sudo /usr/sbin/apache2ctl -v
+	sudo cp /opt/stack/ironic/devstack/files/apache-ipxe-ironic.template /etc/apache2/sites-available/ipxe-ironic.conf
+
+	sudo a2ensite ipxe-ironic
+
+	# create_ironic_accounts
+	openstack service show baremetal -f value -c id
+    openstack service create baremetal --name ironic '--description=Ironic baremetal provisioning service' -f value -c id
+	openstack endpoint list --service baremetal --interface public --region RegionOne -c ID -f value
+	openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne -f value -c id
+	openstack endpoint list --service baremetal --interface admin --region RegionOne -c ID -f value
+	openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne -f value -c id
+	openstack endpoint list --service baremetal --interface internal --region RegionOne -c ID -f value
+	openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne -f value -c id
+	
+	# create_service_user
+	openstack user create ironic --password p1111111 --domain=Default --or-show -f value -c id
+	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add service --user ironic --project service --user-domain Default --project-domain Default
+    openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+
+	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+	openstack role add admin --user ironic --project service --user-domain Default --project-domain Default
+	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
+
+	# get_or_create_role
+	openstack role create baremetal_admin --or-show -f value -c id
+	openstack role create baremetal_observer --or-show -f value -c id
+
+	# get_or_add_user_project_role
+	openstack role assignment list --user nova --project service
+	openstack role add baremetal_admin --user nova --project service
+	openstack role assignment list --user nova --project service
+
+	openstack role assignment list --user demo --project demo
+	openstack role add baremetal_observer --user demo --project demo
+	openstack role assignment list --user demo --project demo
+	\end{lstlisting}
+
+	12760
 
 \end{document}

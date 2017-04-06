@@ -347,7 +347,6 @@
 	\end{lstlisting}
 
 \section{启动ironic}
-
 	\begin{lstlisting}
 	# 启动ironic
 	# run_process ir-api '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf'
@@ -379,7 +378,6 @@
 	\end{lstlisting}
 
 \section{创建物理机需要的镜像}
-	
 	\begin{lstlisting}
 	# upload_baremetal_ironic_deploy
 	openstack image create ir-deploy-agent_ipmitool.kernel --public --disk-format=aki --container-format=aki
