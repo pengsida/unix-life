@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">arrival</string>
+
+    <string-array name="identity_array">
+        <item>游客</item>
+        <item>导游</item>
+    </string-array>
+</resources>
