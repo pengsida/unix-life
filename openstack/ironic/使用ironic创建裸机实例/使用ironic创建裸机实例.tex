@@ -285,7 +285,7 @@
 	
 	# 设置虚拟机的监听端口
 	vbmc add $domain_name --port 6234
-	# 启动虚拟机
+	# 启动虚拟机的监听端口
 	vbmc start $domain_name
 	\end{lstlisting}
 	
@@ -319,7 +319,12 @@
 	ironic node-create --uuid $node_uuid --chassis_uuid $first_chassis_uuid --driver agent_ipmitool --name $domain_name -p cpus=$vcpu_num -p memory_mb=$memory -p local_gb=$local_size -p cpu_arch=$arch -i ipmi_address=$driver_address -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=$kernel_uuid -i deploy_ramdisk=$ramdisk_uuid -i ipmi_port=$port_num
 	ironic port-create --address $domain_address --node $node_uuid
 	# 设置与flavor关联
-	ironic node-update $NODE_UUID add properties/capabilities='profile:$domain_name'
+	ironic node-update $NODE_UUID add properties/capabilities="profile:$domain_name"
+	\end{lstlisting}
+
+\subsection{启动虚拟机}
+	\begin{lstlisting}
+	openstack server create --flavor node-0 --image cirros-0.3.5-x86_64-disk --nic net-id=fc9b7451-6757-40b3-8954-3e8c7a442316 node-0
 	\end{lstlisting}
 
 \end{document}

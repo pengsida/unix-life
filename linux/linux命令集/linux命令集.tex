@@ -615,33 +615,27 @@ commands:
 	find /home -name "*.txt"
 	\end{lstlisting}
 
-\section{gunzip}
-	gunzip命令用来解压缩文件。gunzip是个使用广泛的解压缩程序，它用于解开被gzip压缩过的文件，这些压缩文件预设最后的扩展名为.gz。事实上gunzip就是gzip的硬连接，因此不论是压缩或解压缩，都可通过gzip指令单独完成。\par
+\section{getent}
+	从管理数据库取得条目。
 
-	gunzip参数选项如下;
+	用法： 
 	\begin{lstlisting}
-	-a或——ascii：使用ASCII文字模式； 
-	-c或--stdout或--to-stdout：把解压后的文件输出到标准输出设备； 
-	-f或-force：强行解开压缩文件，不理会文件名称或硬连接是否存在以及该文件是否为符号连接； 
-	-h或——help：在线帮助； 
-	-l或——list：列出压缩文件的相关信息； 
-	-L或——license：显示版本与版权信息； 
-	-n或--no-name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其忽略不予处理； 
-	-N或——name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其回存到解开的文件上； 
-	-q或——quiet：不显示警告信息； 
-	-r或——recursive：递归处理，将指定目录下的所有文件及子目录一并处理； 
-	-S或<压缩字尾字符串>或----suffix<压缩字尾字符串>：更改压缩字尾字符串； 
-	-t或——test：测试压缩文件是否正确无误； 
-	-v或——verbose：显示指令执行过程； 
-	-V或——version：显示版本信息；
+	getent [选项...] 数据库 [键 ...]
+	\end{lstlisting}
+	
+	参数选项：
+	\begin{lstlisting}
+	-i, --no-idn               停用 IDN 编码
+	-s, --service=组态       要使用的服务配置
+	-?, --help                 给出此帮助列表
+		--usage                给出简要的用法信息
+	-V, --version              打印程序版本号
 	\end{lstlisting}
 
-	使用例子如下：
+	支持的数据库：
 	\begin{lstlisting}
-	# 解压etc.zip.gz文件
-	gunzip /opt/etc.zip.gz
-	# 查看etc.zip.gz文件的压缩信息
-	gunzip -l /opt/etc.zip.gz
+	ahosts ahostsv4 ahostsv6 aliases ethers group gshadow hosts initgroups
+	netgroup networks passwd protocols rpc services shadow
 	\end{lstlisting}
 
 \section{grep}
@@ -676,6 +670,51 @@ commands:
 	-o 只输出文件中匹配到的部分。
 	\end{lstlisting}
 
+\section{groupadd}
+	groupadd命令用于创建一个新的工作组，新工作组的信息将被添加到系统文件中。\par
+
+	格式：
+	\begin{lstlisting}
+	groupadd 组名
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-g：指定新建工作组的id； 
+	-r：创建系统工作组，系统工作组的组ID小于500； 
+	-K：覆盖配置文件“/ect/login.defs”； 
+	-o：允许添加组ID号不唯一的工作组。
+	\end{lstlisting}
+
+\section{gunzip}
+	gunzip命令用来解压缩文件。gunzip是个使用广泛的解压缩程序，它用于解开被gzip压缩过的文件，这些压缩文件预设最后的扩展名为.gz。事实上gunzip就是gzip的硬连接，因此不论是压缩或解压缩，都可通过gzip指令单独完成。\par
+
+	gunzip参数选项如下;
+	\begin{lstlisting}
+	-a或——ascii：使用ASCII文字模式； 
+	-c或--stdout或--to-stdout：把解压后的文件输出到标准输出设备； 
+	-f或-force：强行解开压缩文件，不理会文件名称或硬连接是否存在以及该文件是否为符号连接； 
+	-h或——help：在线帮助； 
+	-l或——list：列出压缩文件的相关信息； 
+	-L或——license：显示版本与版权信息； 
+	-n或--no-name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其忽略不予处理； 
+	-N或——name：解压缩时，若压缩文件内含有原来的文件名称及时间戳记，则将其回存到解开的文件上； 
+	-q或——quiet：不显示警告信息； 
+	-r或——recursive：递归处理，将指定目录下的所有文件及子目录一并处理； 
+	-S或<压缩字尾字符串>或----suffix<压缩字尾字符串>：更改压缩字尾字符串； 
+	-t或——test：测试压缩文件是否正确无误； 
+	-v或——verbose：显示指令执行过程； 
+	-V或——version：显示版本信息；
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 解压etc.zip.gz文件
+	gunzip /opt/etc.zip.gz
+	# 查看etc.zip.gz文件的压缩信息
+	gunzip -l /opt/etc.zip.gz
+	\end{lstlisting}
+
 \section{head}
 	head命令用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。\par
 
@@ -688,7 +727,10 @@ commands:
 	\end{lstlisting}
 
 \section{install}
-	install命令的作用是安装或升级软件或备份数据，它的使用权限是所有用户。install命令和cp命令类似，都可以将文件/目录拷贝到指定的地点。但是，install允许你控制目标文件的属性。install通常用于程序的makefile，使用它来将程序拷贝到目标（安装）目录。\par
+	install命令的作用是安装或升级软件或备份数据，它的使用权限是所有用户。
+	install命令和cp命令类似，都可以将文件/目录拷贝到指定的地点。
+	但是，install允许你控制目标文件的属性。
+	install通常用于程序的makefile，使用它来将程序拷贝到目标（安装）目录。\par
 
 	格式：
 	\begin{lstlisting}
@@ -917,6 +959,31 @@ commands:
 	od -w2 -c tmp
 	\end{lstlisting}
 
+\section{pop}
+	popd命令用于删除目录栈中的记录；如果popd命令不加任何参数，则会先删除目录栈最上面的记录，然后切换到删除过后的目录栈中的最上面的目录。\par
+
+	格式：
+	\begin{lstlisting}
+	+N：将第N个目录删除（从左边数起，数字从0开始）； 
+	-N：将第N个目录删除（从右边数起，数字从0开始）； 
+	-n：将目录出栈时，不切换目录。
+	\end{lstlisting}
+
+\section{pushd}
+	pushd命令是将目录加入命令堆叠中。如果指令没有指定目录名称，则会将当前的工作目录置入目录堆叠的最顶端。置入目录如果没有指定堆叠的位置，也会置入目录堆叠的最顶端，同时工作目录会自动切换到目录堆叠最顶端的目录去。\par
+
+	格式：
+	\begin{lstlisting}
+	pushd 目录
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-n：只加入目录到堆叠中，不进行cd操作； 
+	+n：删除从左到右的第n个目录，数字从0开始； 
+	-n：删除从右到左的第n个目录，数字从0开始；
+	\end{lstlisting}
+
 \section{readlink}
 	readlink是linux系统中一个常用工具，主要用来找出符号链接所指向的位置。\par
 
@@ -956,6 +1023,101 @@ commands:
 	# 上传本地目录到远程机器指定目录
 	scp -r ~/devstack pengsida@172.16.19.223:/home/pengsida/devstack
 	\end{lstlisting}
+
+\section{screen}
+	screen screen命令常用工具命令 Screen是一款由GNU计划开发的用于命令行终端切换的自由软件。用户可以通过该软件同时连接多个本地或远程的命令行会话，并在其间自由切换。GNU Screen可以看作是窗口管理器的命令行界面版本。它提供了统一的管理多个会话的界面和相应的功能。
+
+\subsection{会话恢复}
+	只要Screen本身没有终止，在其内部运行的会话都可以恢复。
+	这一点对于远程登录的用户特别有用——即使网络连接中断，用户也不会失去对已经打开的命令行会话的控制。
+	只要再次登录到主机上执行screen -r就可以恢复会话的运行。
+	同样在暂时离开的时候，也可以执行分离命令detach，在保证里面的程序正常运行的情况下让Screen挂起（切换到后台）。
+	这一点和图形界面下的VNC很相似。
+
+\subsection{多窗口}
+	在Screen环境下，所有的会话都独立的运行，并拥有各自的编号、输入、输出和窗口缓存。
+	用户可以通过快捷键在不同的窗口下切换，并可以自由的重定向各个窗口的输入和输出。
+	Screen实现了基本的文本操作，如复制粘贴等；还提供了类似滚动条的功能，可以查看窗口状况的历史记录。
+	窗口还可以被分区和命名，还可以监视后台窗口的活动。 
+	会话共享 Screen可以让一个或多个用户从不同终端多次登录一个会话，
+	并共享会话的所有特性（比如可以看到完全相同的输出）。
+	它同时提供了窗口访问权限的机制，可以对窗口进行密码保护。
+
+\subsection{使用}
+	格式：
+	\begin{lstlisting}
+	screen [-AmRvx -ls -wipe][-d <作业名称>][-h <行数>][-r <作业名称>][-s ][-S <作业名称>]
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-A 　将所有的视窗都调整为目前终端机的大小。 
+	-d <作业名称> 　将指定的screen作业离线。 
+	-h <行数> 　指定视窗的缓冲区行数。 
+	-m 　即使目前已在作业中的screen作业，仍强制建立新的screen作业。 
+	-r <作业名称> 　恢复离线的screen作业。 
+	-R 　先试图恢复离线的作业。若找不到离线的作业，即建立新的screen作业。 
+	-s 　指定建立新视窗时，所要执行的shell。 
+	-S <作业名称> 　指定screen作业的名称。 
+	-v 　显示版本信息。 
+	-x 　恢复之前离线的screen作业。 
+	-X   Execute <cmd> as a screen command in the specified session.
+	-t title  Set title. (window's name).
+	-ls或--list 　显示目前所有的screen作业。 
+	-wipe 　检查目前所有的screen作业，并删除已经无法使用的screen作业。
+	setenv [var [string]] Set the environment variable var to value string
+	hardstatus string [string] 	根据字符串设置状态栏的样式
+	-p number_or_name|-|=|+		 Preselect  a window. This is useful when you want to reattach to a specific window or you want to send a command via the "-X"  option to a specific window.
+	logfile filename	 Defines the name the log files will get.
+	log [on|off]	Start/stop writing output of the current window to its log file
+	stuff [string]	Stuff the string string in the input  buffer  of  the  current  window. This  is like the "paste" command but with much less overhead.
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	screen -S yourname -> 新建一个叫yourname的session 
+	screen -ls -> 列出当前所有的session 
+	screen -r yourname -> 回到yourname这个session 
+	screen -d yourname -> 远程detach某个session 
+	screen -d -r yourname -> 结束当前session并回到yourname这个session
+	\end{lstlisting}
+
+	在每个screen session下，所有命令都以ctrl+a开始：
+	\begin{lstlisting}
+	C-a ? -> 显示所有键绑定信息 
+	C-a c -> 创建一个新的运行shell的窗口并切换到该窗口 
+	C-a n -> Next，切换到下一个 window 
+	C-a p -> Previous，切换到前一个 window 
+	C-a 0..9 -> 切换到第 0..9 个 window 
+	Ctrl+a [Space] -> 由视窗0循序切换到视窗9 
+	C-a C-a -> 在两个最近使用的 window 间切换 
+	C-a x -> 锁住当前的 window，需用用户密码解锁 
+	C-a d -> detach，暂时离开当前session，将目前的 screen session (可能含有多个 windows) 丢到后台执行，并会回到还没进 screen 时的状态，此时在 screen session 里，每个 window 内运行的 process (无论是前台/后台)都在继续执行，即使 logout 也不影响。 
+	C-a z -> 把当前session放到后台执行，用 shell 的 fg 命令则可回去。 
+	C-a w -> 显示所有窗口列表 
+	C-a t -> time，显示当前时间，和系统的 load 
+	C-a k -> kill window，强行关闭当前的 window 
+	C-a [ -> 进入 copy mode，在 copy mode 下可以回滚、搜索、复制就像用使用 vi 一样 
+	C-b Backward，PageUp 
+	C-f Forward，PageDown 
+	H(大写) High，将光标移至左上角 
+	L Low，将光标移至左下角 
+	0 移到行首 
+	$ 行末 \
+	w forward one word，以字为单位往前移 
+	b backward one word，以字为单位往后移 
+	Space 第一次按为标记区起点，第二次按为终点 
+	Esc 结束 copy mode 
+	C-a ] -> paste，把刚刚在 copy mode 选定的内容贴上
+	\end{lstlisting}
+
+\subsection{设置hardstatus}
+	具体字符串的意思可以在“man screen”中的“STRING ESCAPES”找到。\par
+
+	参考网站：\par
+	\url{https://havee.me/linux/2011-08/screen-status-bar.html}\par
+	\url{http://www.gnu.org/software/screen/manual/screen.html#Message-Line}\par
+	\url{https://www.zhangguangtong.cn/?p=66}
 
 \section{set}
 	格式：

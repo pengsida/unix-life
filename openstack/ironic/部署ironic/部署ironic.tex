@@ -574,6 +574,7 @@ EOF
     iniset /etc/glance/glance-registry.conf DEFAULT use_syslog False
     iniset /etc/glance/glance-registry.conf DEFAULT workers 2
     iniset /etc/glance/glance-registry.conf paste_deploy flavor keystone
+	
 	# 配置auth-token的middleware
 	iniset /etc/glance/glance-registry.conf keystone_authtoken auth_type password
     iniset /etc/glance/glance-registry.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
@@ -587,7 +588,8 @@ EOF
     iniset /etc/glance/glance-registry.conf keystone_authtoken signing_dir /var/cache/glance/registry
     iniset /etc/glance/glance-registry.conf keystone_authtoken memcached_servers 10.250.1.3:11211
     iniset /etc/glance/glance-registry.conf oslo_messaging_notifications driver messagingv2
-    # 配置rpc-backend
+    
+	# 配置rpc-backend
 	iniset /etc/glance/glance-registry.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
 	iniset /etc/glance/glance-registry.conf DEFAULT graceful_shutdown_timeout 5
 
@@ -600,6 +602,7 @@ EOF
     iniset /etc/glance/glance-api.conf DEFAULT use_syslog False
     iniset /etc/glance/glance-api.conf DEFAULT image_cache_dir /opt/stack/data/glance/cache/
     iniset /etc/glance/glance-api.conf paste_deploy flavor keystone+cachemanagement
+	
 	# 配置auth-token的middleware
 	iniset /etc/glance/glance-api.conf keystone_authtoken auth_type password
     iniset /etc/glance/glance-api.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
@@ -613,6 +616,7 @@ EOF
     iniset /etc/glance/glance-api.conf keystone_authtoken signing_dir /var/cache/glance/api
     iniset /etc/glance/glance-api.conf keystone_authtoken memcached_servers 10.250.1.3:11211
     iniset /etc/glance/glance-api.conf oslo_messaging_notifications driver messagingv2
+	
 	# 配置rpc-backend
 	iniset /etc/glance/glance-api.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
 	iniset /etc/glance/glance-api.conf DEFAULT enable_v1_api False
@@ -633,6 +637,7 @@ EOF
     inicomment /etc/glance/glance-api.conf glance_store swift_store_user
     inicomment /etc/glance/glance-api.conf glance_store swift_store_key
     inicomment /etc/glance/glance-api.conf glance_store swift_store_auth_address
+	
 	# Format logging
 	iniset /etc/glance/glance-api.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%(project_name)s %(user_name)s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
     iniset /etc/glance/glance-api.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
@@ -642,6 +647,8 @@ EOF
     iniset /etc/glance/glance-registry.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
 	iniset /etc/glance/glance-registry.conf DEFAULT logging_debug_format_suffix '[00;33mfrom (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d[00m'
 	iniset /etc/glance/glance-registry.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m'
+	
+	# 配置glance-cache
 	cp -p /opt/stack/glance/etc/glance-registry-paste.ini /etc/glance/glance-registry-paste.ini
     cp -p /opt/stack/glance/etc/glance-api-paste.ini /etc/glance/glance-api-paste.ini
     cp /opt/stack/glance/etc/glance-cache.conf /etc/glance/glance-cache.conf
@@ -658,6 +665,7 @@ EOF
     iniuncomment /etc/glance/glance-cache.conf DEFAULT auth_password
     iniset /etc/glance/glance-cache.conf DEFAULT admin_password p1111111
     iniset /etc/glance/glance-cache.conf DEFAULT registry_host 10.250.1.3
+	
 	# Store specific confs
     iniset /etc/glance/glance-cache.conf glance_store filesystem_store_datadir /opt/stack/data/glance/images/
 	cp -p /opt/stack/glance/etc/policy.json /etc/glance/policy.json
@@ -743,6 +751,284 @@ EOF
 	chmod 0440 $tempfile
     sudo chown root:root $tempfile
     sudo mv $tempfile /etc/sudoers.d/${project}-rootwrap
+
+	# Put config files in ``/etc/nova`` for everyone to find
+	cp /opt/stack/nova/etc/nova/api-paste.ini /etc/nova
+	# Force IP forwarding on, just on case
+	sudo sysctl -w net.ipv4.ip_forward=1
+
+	# 设置Instance Storage
+	sudo install -d -o pengsida /opt/stack/data/nova/instances
+
+	# 配置nova的相关设置
+	rm -f /opt/stack/nova/bin/nova.conf
+	rm -f /etc/nova/nova.conf
+	iniset /etc/nova/nova.conf DEFAULT debug True
+    iniset /etc/nova/nova.conf DEFAULT allow_resize_to_same_host True
+    iniset /etc/nova/nova.conf wsgi api_paste_config /etc/nova/api-paste.ini
+    iniset /etc/nova/nova.conf DEFAULT rootwrap_config /etc/nova/rootwrap.conf
+    iniset /etc/nova/nova.conf DEFAULT scheduler_driver filter_scheduler
+    iniset /etc/nova/nova.conf DEFAULT scheduler_default_filters RetryFilter,AvailabilityZoneFilter,RamFilter,DiskFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,SameHostFilter,DifferentHostFilter
+    iniset /etc/nova/nova.conf DEFAULT default_floating_pool public
+	iniset /etc/nova/nova.conf DEFAULT my_ip 10.250.1.3
+    iniset /etc/nova/nova.conf DEFAULT instance_name_template instance-%08x
+    iniset /etc/nova/nova.conf DEFAULT osapi_compute_listen 0.0.0.0
+    iniset /etc/nova/nova.conf DEFAULT metadata_listen 0.0.0.0
+	iniset /etc/nova/nova.conf database connection 'mysql+pymysql://root:p1111111@127.0.0.1/nova?charset=utf8'
+	iniset /etc/nova/nova.conf api_database connection 'mysql+pymysql://root:p1111111@127.0.0.1/nova_api?charset=utf8'
+	iniset /etc/nova/nova.conf DEFAULT enabled_apis osapi_compute,metadata
+
+	# 配置auth-token的middleware
+	iniset /etc/nova/nova.conf keystone_authtoken auth_type password
+    iniset /etc/nova/nova.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
+    iniset /etc/nova/nova.conf keystone_authtoken username nova
+    iniset /etc/nova/nova.conf keystone_authtoken password p1111111
+    iniset /etc/nova/nova.conf keystone_authtoken user_domain_name Default
+    iniset /etc/nova/nova.conf keystone_authtoken project_name service
+    iniset /etc/nova/nova.conf keystone_authtoken project_domain_name Default
+    iniset /etc/nova/nova.conf keystone_authtoken auth_uri http://10.250.1.3/identity
+    iniset /etc/nova/nova.conf keystone_authtoken cafile /opt/stack/data/ca-bundle.pem
+    iniset /etc/nova/nova.conf keystone_authtoken signing_dir /var/cache/nova
+    iniset /etc/nova/nova.conf keystone_authtoken memcached_servers 10.250.1.3:11211
+	iniset /etc/nova/nova.conf DEFAULT state_path /opt/stack/data/nova
+    iniset /etc/nova/nova.conf oslo_concurrency lock_path /opt/stack/data/nova
+	iniset /etc/nova/nova.conf DEFAULT instances_path /opt/stack/data/nova/instances
+
+	# Format logging
+	iniset /etc/nova/nova.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%(project_name)s %(user_name)s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
+    iniset /etc/nova/nova.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
+    iniset /etc/nova/nova.conf DEFAULT logging_debug_format_suffix '[00;33mfrom (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d[00m'
+    iniset /etc/nova/nova.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m'
+
+	# 配置n-cpu
+	NOVNCPROXY_URL=${NOVNCPROXY_URL:-"http://$SERVICE_HOST:6080/vnc_auto.html"}
+	iniset $NOVA_CONF vnc novncproxy_base_url "$NOVNCPROXY_URL"
+	XVPVNCPROXY_URL=${XVPVNCPROXY_URL:-"http://$SERVICE_HOST:6081/console"}
+	iniset $NOVA_CONF vnc xvpvncproxy_base_url "$XVPVNCPROXY_URL"
+	SPICEHTML5PROXY_URL=${SPICEHTML5PROXY_URL:-"http://$SERVICE_HOST:6082/spice_auto.html"}
+	iniset $NOVA_CONF spice html5proxy_base_url "$SPICEHTML5PROXY_URL"
+
+	# 配置vnc
+	iniset /etc/nova/nova.conf vnc enabled false
+
+	# 配置oslo-messaging-driver
+	iniset /etc/nova/nova.conf oslo_messaging_notifications driver messagingv2
+
+	# 配置rpc-backend
+	iniset /etc/nova/nova.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
+
+	# 配置nova的相关设置
+	iniset /etc/nova/nova.conf glance api_servers http://10.250.1.3:9292
+    iniset /etc/nova/nova.conf DEFAULT osapi_compute_workers 2
+    iniset /etc/nova/nova.conf DEFAULT metadata_workers 2
+    iniset /etc/nova/nova.conf conductor workers 2
+    iniset /etc/nova/nova.conf cinder os_region_name RegionOne
+	iniset /etc/nova/nova.conf DEFAULT graceful_shutdown_timeout 5
+	 
+	# Setup logging for nova-dhcpbridge command line
+    sudo cp /etc/nova/nova.conf /etc/nova/nova-dhcpbridge.conf
+	TIMESTAMP_FORMAT=${TIMESTAMP_FORMAT:-"%F-%H%M%S"}
+	CURRENT_LOG_TIME=$(date "+$TIMESTAMP_FORMAT")
+	LOGDIR="/home/pengsida/temp/logs"
+	local service="n-dhcp"
+    local logfile="${service}.log.${CURRENT_LOG_TIME}"
+    local real_logfile="${LOGDIR}/${logfile}"
+	if [[ -n ${LOGDIR} ]]; then
+        bash -c "cd '$LOGDIR' && ln -sf '$logfile' ${service}.log"
+        iniset "$NOVA_CONF_DIR/nova-dhcpbridge.conf" DEFAULT log_file "$real_logfile"
+    fi
+	iniset /etc/nova/nova.conf DEFAULT dhcpbridge_flagfile /etc/nova/nova-dhcpbridge.conf
+
+	# 配置nova-hypervisor
+	QEMU_CONF="/etc/libvirt/qemu.conf"
+	if ! sudo grep -q '^cgroup_device_acl' $QEMU_CONF; then
+        # Add /dev/net/tun to cgroup_device_acls, needed for type=ethernet interfaces
+        cat <<EOF | sudo tee -a $QEMU_CONF
+cgroup_device_acl = [
+    "/dev/null", "/dev/full", "/dev/zero",
+    "/dev/random", "/dev/urandom",
+    "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
+    "/dev/rtc", "/dev/hpet","/dev/net/tun",
+    "/dev/vfio/vfio",
+]
+EOF
+    fi
+	
+	# The user that nova runs as needs to be member of **libvirtd** group otherwise
+    # nova-compute will be unable to use libvirt.
+	LIBVIRT_GROUP="libvirtd"
+    if ! getent group $LIBVIRT_GROUP >/dev/null; then
+        sudo groupadd $LIBVIRT_GROUP
+    fi
+	sudo usermod -a -G $LIBVIRT_GROUP pengsida
+
+	# Enable server side traces for libvirtd
+	local log_filters="1:libvirt.c 1:qemu 1:conf 1:security 3:object 3:event 3:json 3:file 1:util 1:cpu"
+	local log_outputs="1:file:/var/log/libvirt/libvirtd.log"
+	if ! sudo grep -q "^log_filters=\"$log_filters\"" /etc/libvirt/libvirtd.conf; then
+		echo "log_filters=\"$log_filters\"" | sudo tee -a /etc/libvirt/libvirtd.conf
+	fi
+	if ! sudo grep -q "^log_outputs=\"$log_outputs\"" /etc/libvirt/libvirtd.conf; then
+		echo "log_outputs=\"$log_outputs\"" | sudo tee -a /etc/libvirt/libvirtd.conf
+	fi
+
+	# 重启libvirt服务
+	sudo service libvirt-bin restart || true
+	sudo service virtlogd restart || true
+
+	# 配置nova-hypervisor
+	iniset /etc/nova/nova.conf DEFAULT compute_driver ironic.IronicDriver
+    iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
+    iniset /etc/nova/nova.conf DEFAULT scheduler_host_manager ironic_host_manager
+    iniset /etc/nova/nova.conf DEFAULT ram_allocation_ratio 1.0
+    iniset /etc/nova/nova.conf DEFAULT reserved_host_memory_mb 0
+    iniset /etc/nova/nova.conf ironic auth_type password
+    iniset /etc/nova/nova.conf ironic username admin
+    iniset /etc/nova/nova.conf ironic password p1111111
+    iniset /etc/nova/nova.conf ironic auth_url http://10.250.1.3/identity_admin/v3
+    iniset /etc/nova/nova.conf ironic project_domain_id default
+    iniset /etc/nova/nova.conf ironic user_domain_id default
+    iniset /etc/nova/nova.conf ironic project_name demo
+
+	# 安装并配置placement
+	# ==================
+
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install apache2
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install libapache2-mod-wsgi
+
+	# 启动wsgi
+	mod="wsgi"
+	if ! a2query -m $mod ; then
+		sudo a2enmod $mod
+		sudo service apache2 stop
+		sudo service apache2 start
+	fi
+
+	# 清理placement
+	sudo rm -f /etc/apache2/sites-available/placement-api.conf
+
+	# 配置placement
+	sudo cp /home/pengsida/devstack/files/apache-placement-api.template /etc/apache2/sites-available/placement-api.conf
+	sudo sed -e '
+		s|%APACHE_NAME%|apache2|g;
+		s|%PUBLICWSGI%|/usr/local/bin/nova-placement-api|g;
+		s|%SSLENGINE%||g;
+		s|%SSLCERTFILE%||g;
+		s|%SSLKEYFILE%||g;
+		s|%USER%|pengsida|g;
+		s|%VIRTUALENV%||g
+		s|%APIWORKERS%|2|g
+	' -i /etc/apache2/sites-available/placement-api.conf
+
+	# 配置placement-nova-compute
+	iniset /etc/nova/nova.conf placement auth_type password
+    iniset /etc/nova/nova.conf placement auth_url http://10.250.1.3/identity/v3
+    iniset /etc/nova/nova.conf placement username placement
+    iniset /etc/nova/nova.conf placement password p1111111
+    iniset /etc/nova/nova.conf placement user_domain_name Default
+    iniset /etc/nova/nova.conf placement project_name service
+    iniset /etc/nova/nova.conf placement project_domain_name Default
+    iniset /etc/nova/nova.conf placement os_region_name RegionOne
+
+	# 其他的安装
+	# =============
+
+	# source /home/pengsida/devstack/extras.d/80-tempest.sh stack install
+	git clone http://git.trystack.cn/openstack/tempest.git /opt/stack/tempest
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= SETUPTOOLS_SYS_PATH_TECHNIQUE=rewrite /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt tox
+	pushd /opt/stack/tempest
+	tox --notest -efull
+	/opt/stack/tempest/.tox/tempest/bin/pip install -c /opt/stack/requirements/upper-constraints.txt -r requirements.txt	
+	PROJECT_VENV["tempest"]=/opt/stack/tempest/.tox/tempest
+	popd
+
+	# 安装ironic
+	# =============
+
+	# 如果要安装ironic，就需要预先安装keystone、nova、glance、neutron
+	/opt/stack/requirements/.venv/bin/edit-constraints /opt/stack/requirements/upper-constraints.txt -- ironic '-e file:///opt/stack/ironic#egg=ironic'
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= SETUPTOOLS_SYS_PATH_TECHNIQUE=rewrite /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt -e /opt/stack/ironic
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt -r /opt/stack/ironic/test-requirements.txt
+	sudo chown -R pengsida /opt/stack/ironic/ironic.egg-info
+
+	# 安装apache、wsgi
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install apache2
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install libapache2-mod-wsgi
+
+	# 启动wsgi
+	mod="wsgi"
+	if ! a2query -m $mod ; then
+		sudo a2enmod $mod
+		sudo service apache2 stop
+		sudo service apache2 start
+	fi
+
+	# 安装virtualbmc的包
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= SETUPTOOLS_SYS_PATH_TECHNIQUE=rewrite /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt 'virtualbmc>=1.0.0'
+
+	# 配置virtualbmc
+	IRONIC_VBMC_CONFIG_FILE="/home/pengsida/.vbmc/virtualbmc.conf"
+	if [[ ! -d $(dirname $IRONIC_VBMC_CONFIG_FILE) ]]; then
+        mkdir -p $(dirname $IRONIC_VBMC_CONFIG_FILE)
+    fi
+	iniset /home/pengsida/.vbmc/virtualbmc.conf log debug True
+    iniset /home/pengsida/.vbmc/virtualbmc.conf log logfile /home/pengsida/temp/ironic-bm-logs/virtualbmc.log
+
+	# 安装ironic-client
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= SETUPTOOLS_SYS_PATH_TECHNIQUE=rewrite /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt 'python-ironicclient>=1.11.0'
+
+	# 清理ironic的配置文件
+	sudo rm -rf /var/cache/ironic /etc/ironic
+	sudo rm -rf '/home/pengsida/temp/ironic-bm-logs/*'
+
+	# 安装openstack-client
+	# =============
+	sudo -H http_proxy= https_proxy= no_proxy= PIP_FIND_LINKS= SETUPTOOLS_SYS_PATH_TECHNIQUE=rewrite /usr/local/bin/pip2.7 install -c /opt/stack/requirements/upper-constraints.txt 'python-openstackclient>=3.3.0'
+
+	# 配置database
+	# =============
+
+	my_conf=/etc/mysql/my.cnf
+    mysql=mysql
+	DATABASE_PASSWORD="p1111111"
+	sudo mysqladmin -u root password $DATABASE_PASSWORD || true
+    sudo mysql -uroot -p$DATABASE_PASSWORD -h127.0.0.1 -e "GRANT ALL PRIVILEGES ON *.* TO '$DATABASE_USER'@'%' identified by '$DATABASE_PASSWORD';"
+    iniset -sudo $my_conf mysqld bind-address "$SERVICE_LISTEN_ADDRESS"
+    iniset -sudo $my_conf mysqld sql_mode TRADITIONAL
+    iniset -sudo $my_conf mysqld default-storage-engine InnoDB
+    iniset -sudo $my_conf mysqld max_connections 1024
+    iniset -sudo $my_conf mysqld query_cache_type OFF
+    iniset -sudo $my_conf mysqld query_cache_size 0
+
+	# 重启mysql服务
+	sudo service mysql restart
+
+	# 配置screen
+	# =============
+	
+	SCREEN_NAME="stack"
+	# 建立SCREEN_NAME的screen，指定建立新视窗时，所要执行的shell为/bin/bash，同时detach这个视窗
+	screen -d -m -S $SCREEN_NAME -t shell -s /bin/bash
+    sleep 1
+
+    # Set a reasonable status bar
+    SCREEN_HARDSTATUS=${SCREEN_HARDSTATUS:-}
+    if [ -z "$SCREEN_HARDSTATUS" ]; then
+        SCREEN_HARDSTATUS='%{= .} %-Lw%{= .}%> %n%f %t*%{= .}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+    fi
+    screen -r $SCREEN_NAME -X hardstatus alwayslastline "$SCREEN_HARDSTATUS"
+    screen -r $SCREEN_NAME -X setenv PROMPT_COMMAND /bin/true
+
+	# 删除screenrc文件
+	rm -f /home/pengsida/devstack/stack-screenrc
+
+	# Initialize the directory for service status check
+	SCREEN_NAME=${SCREEN_NAME:-stack}
+    SERVICE_DIR=${SERVICE_DIR:-"/opt/stack/status"}
+    if [[ ! -d "$SERVICE_DIR/$SCREEN_NAME" ]]; then
+        mkdir -p "$SERVICE_DIR/$SCREEN_NAME"
+    fi
+    rm -f "$SERVICE_DIR/$SCREEN_NAME"/*.failure
 	\end{lstlisting}
 	
 \end{document}
