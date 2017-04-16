@@ -146,250 +146,371 @@
 
 \clearpage
 
+\section{配置screen}
+	\begin{lstlisting}
+	# 配置screen
+	# =============
+	
+	SCREEN_NAME="stack"
+	# 建立SCREEN_NAME的screen，创建一个叫shell的窗口，窗口中所要执行的shell为/bin/bash，同时detach这个视窗
+	screen -d -m -S $SCREEN_NAME -t shell -s /bin/bash
+    sleep 1
+
+    # Set a reasonable status bar
+    SCREEN_HARDSTATUS=${SCREEN_HARDSTATUS:-}
+    if [ -z "$SCREEN_HARDSTATUS" ]; then
+        SCREEN_HARDSTATUS='%{= .} %-Lw%{= .}%> %n%f %t*%{= .}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+    fi
+	# 恢复离线的screen作业stack，并且设置状态栏的样式
+    screen -r $SCREEN_NAME -X hardstatus alwayslastline "$SCREEN_HARDSTATUS"
+	# 将PROMPT_COMMAND的值设为“/bin/true”
+    screen -r $SCREEN_NAME -X setenv PROMPT_COMMAND /bin/true
+
+	# 删除screenrc文件
+	rm -f /home/pengsida/devstack/stack-screenrc
+
+	# Initialize the directory for service status check
+	SCREEN_NAME=${SCREEN_NAME:-stack}
+    SERVICE_DIR=${SERVICE_DIR:-"/opt/stack/status"}
+    if [[ ! -d "$SERVICE_DIR/$SCREEN_NAME" ]]; then
+        mkdir -p "$SERVICE_DIR/$SCREEN_NAME"
+    fi
+    rm -f "$SERVICE_DIR/$SCREEN_NAME"/*.failure
+	\end{lstlisting}
+
 \section{开启dstat}
 	命令如下：
 	\begin{lstlisting}
+	# 配置dstat的screen窗口
+	# ================
+
+	# 指定stack这个screen，在其中创建一个叫dstat的窗口
 	screen -S stack -X screen -t dstat
-	screen -S stack -p dstat -X logfile /home/pengsida/temp/logs/dstat.log.2017-03-30-172117
+	# 指定dstat窗口的logfile
+	screen -S stack -p dstat -X logfile /home/pengsida/log/dstat.log.2017-03-30-172117
 	screen -S stack -p dstat -X log on
+	# 创建dstat.log.2017-03-30-172117这个文件
 	touch /home/pengsida/temp/logs/dstat.log.2017-03-30-172117
+	# 为dstat.log.2017-03-30-172117这个文件创建一个符号链接dstat.log
 	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''dstat.log.2017-03-30-172117'\'' dstat.log'
+	# 在dstat窗口中执行这条命令
 	screen -S stack -p dstat -X stuff '/home/pengsida/devstack/tools/dstat.sh /home/pengsida/temp/logs & echo $! >/opt/stack/status/stack/dstat.pid; fg || echo "dstat failed to start. Exit code: $?" | tee "/opt/stack/status/stack/dstat.failure"^M'
+	\end{lstlisting}
+
+\section{配置环境变量}
+	\begin{lstlisting}
+	export OS_IDENTITY_API_VERSION=3
+    export OS_AUTH_URL=http://10.250.1.4/identity_admin
+    export OS_USERNAME=admin
+    export OS_USER_DOMAIN_ID=default
+    export OS_PASSWORD=p1111111
+    export OS_PROJECT_NAME=admin
+    export OS_PROJECT_DOMAIN_ID=default
+    export OS_REGION_NAME=RegionOne
 	\end{lstlisting}
 
 \section{开启keystone服务}
 	命令如下：
 	\begin{lstlisting}
+	# 配置keystone
+	# ================
+
+	# 检查之前是否存在数据库keystone，如果有就将其删除
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS keystone;'
+	# 创建数据库keystone，并且将其CHARACTER设置为utf8
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE keystone CHARACTER SET utf8;'
+	# 同步数据库
 	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf db_sync
+	# 删除之前可能创建的fernet令牌
 	rm -rf /etc/keystone/fernet-keys/
+	# 创建fernet令牌
 	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf fernet_setup
+	# 删除之前创建的credential密钥
 	rm -rf /etc/keystone/credential-keys/
+	# 创建credential密钥
 	/usr/local/bin/keystone-manage --config-file /etc/keystone/keystone.conf credential_setup
+	# enable apache-site keystone
 	sudo a2ensite keystone
+	# 重启apache2
+	service apache2 reload
 	sudo service apache2 stop
 	sudo service apache2 start
 
+	# 配置keystone的screen窗口
+	# ================
+
+	# 新建key窗口
 	screen -S stack -X screen -t key
+	# 设置key窗口的log file
 	screen -S stack -p key -X logfile /home/pengsida/temp/logs/key.log.2017-03-30-172117
 	screen -S stack -p key -X log on
 	touch /home/pengsida/temp/logs/key.log.2017-03-30-172117
 	bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''key.log.2017-03-30-172117'\'' key.log'
+	# 在key窗口执行下列命令
 	screen -S stack -p key -X stuff 'sudo tail -f /var/log/apache2/keystone.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key.pid; fg || echo "key failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key.failure"^M'
 
+	# 新建key-access窗口并指定key-access窗口的log file
 	screen -S stack -X screen -t key-access
 	screen -S stack -p key-access -X logfile /home/pengsida/temp/logs/key-access.log.2017-03-30-172117
 	screen -S stack -p key-access -X log on
 	touch /home/pengsida/temp/logs/key-access.log.2017-03-30-172117
+
+	# 在key-access窗口执行下列命令
 	screen -S stack -p key-access -X stuff 'sudo tail -f /var/log/apache2/keystone_access.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key-access.pid; fg || echo "key-access failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key-access.failure"^M'
 
-	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://10.250.1.3/identity/v3/
+	# 开启keystone服务
+	# ================
+
+	KEYSTONE_SERVICE_URI=http://10.250.1.4/identity/v3/
+	KEYSTONE_AUTH_URI=http://10.250.1.4/identity_admin
+	ADMIN_PASSWORD=p1111111
+	REGION_NAME=RegionOne
+
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' $KEYSTONE_SERVICE_URI
 	sudo service memcached restart
-	/usr/local/bin/keystone-manage bootstrap --bootstrap-username admin --bootstrap-password p1111111 --bootstrap-project-name admin --bootstrap-role-name admin --bootstrap-service-name keystone --bootstrap-region-id RegionOne --bootstrap-admin-url http://10.250.1.3/identity_admin --bootstrap-public-url http://10.250.1.3/identity
+	
+	# 创建default这个domain
+	# 创建admin这个project、admin这个user、admin这个role、keystone这个服务、RegionOne这个region
+	# 并且创建了keystone服务的admin的endpoint和public的endpoint
+	/usr/local/bin/keystone-manage bootstrap --bootstrap-username admin --bootstrap-password $ADMIN_PASSWORD --bootstrap-project-name admin --bootstrap-role-name admin --bootstrap-service-name keystone --bootstrap-region-id $REGION_NAME --bootstrap-admin-url $KEYSTONE_AUTH_URI --bootstrap-public-url $KEYSTONE_SERVICE_URI
 	\end{lstlisting}
 
-	测试keystone是否可以使用：
+	创建keystone的账户：
 	\begin{lstlisting}
-	openstack project show admin -f value -c id
+	# 设置环境变量
+	# ================
 
-	openstack user show admin -f value -c id
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
-	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --domain default --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --os-url=http://10.250.1.3/identity/v3 --os-identity-api-version=3 --domain default
+	KEYSTONE_SERVICE_URI=http://10.250.1.4/identity/v3/
+	KEYSTONE_VERSION=$(echo $KEYSTONE_SERVICE_URI | egrep "v.*" -o | egrep -o "[0-9]*")
+	ADMIN_PASSWORD=p1111111
+	domain_name="Default"
+
+	# 创建keystone账户
+	# ================
+
+	admin_project=$(openstack project show admin -f value -c id)
+	admin_user=$(openstack user show admin -f value -c id)
+
+	# 在default这个domain上把admin角色指定给admin用户，使得该用户获得角色对应的操作权限
+	user_role_id=$(openstack role assignment list --user $admin_user --os-url=$KEYSTONE_SERVICE_URI --os-identity-api-version=$KEYSTONE_VERSION --domain default)
+	if [[ -z "$user_role_id" ]]; then
+		openstack role add admin --user $admin_user --domain default --os-url=$KEYSTONE_SERVICE_URI --os-identity-api-version=$KEYSTONE_VERSION
+		user_role_id=$(openstack role assignment list --user $admin_user --os-url=$KEYSTONE_SERVICE_URI --os-identity-api-version=$KEYSTONE_VERSION --domain default)
+	fi
 	
-	openstack domain show Default -f value -c id
-	openstack project create service --domain=Default --or-show -f value -c id
+	# get Default domain id
+	domain_id=$(openstack domain show Default -f value -c id)
+	if [[ -z "$domain_id" ]]; then
+		openstack domain create $domain_name --description "The default domain" -f value -c id
+		domain_id=$(openstack domain show Default -f value -c id)
+	fi
+
+	# 创建service这个project
+	project_id=$(openstack project create service --domain=$domain_name --or-show -f value -c id)
+
+	# 创建service这个role、ResellerAdmin这个role、Member这个role和anotherrole这个role
 	openstack role create service --or-show -f value -c id
 	openstack role create ResellerAdmin --or-show -f value -c id
 	openstack role create Member --or-show -f value -c id
 	openstack role create anotherrole --or-show -f value -c id
 	
-	openstack project create invisible_to_admin --domain=default --or-show -f value -c id
-	openstack project create demo --domain=default --or-show -f value -c id
-	openstack user create demo --password p1111111 --domain=default --email=demo@example.com --or-show -f value -c id
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	# 创建invisible_to_admin、demo这些project
+	invis_project=$(openstack project create invisible_to_admin --domain=$domain_id --or-show -f value -c id)
+	demo_project=$(openstack project create demo --domain=$domain_id --or-show -f value -c id)
+
+	# 创建demo用户
+	demo_user=$(openstack user create demo --password $ADMIN_PASSWORD --domain=$domain_id --email=291277604@qq.com --or-show -f value -c id)
+
+	# 把角色指定给相应的用户
+	openstack role add member --user $demo_user --project $demo_project
+	openstack role add admin --user $admin_user --project $demo_project
+	openstack role add anotherrole --user $demo_user --project $demo_project
+	openstack role add member --user $demo_user --project $invis_project
 	
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 6eaff7ecc1694fcd94532bad5f09e17f
+	# 创建alt_demo项目
+	alt_demo_project=$(openstack project create alt_demo --domain=$domain_id --or-show -f value -c id)
+	alt_demo_user=$(openstack user create alt_demo --password $ADMIN_PASSWORD --domain=$domain_id --email=291277604@qq.com --or-show -f value -c id)
 	
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role add anotherrole --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project 6eaff7ecc1694fcd94532bad5f09e17f
+	# 把角色指定给相应的用户
+	openstack role add member --user $alt_demo_user --project $alt_demo_project
+	openstack role add admin --user $admin_user --project $alt_demo_project
+	openstack role add anotherrole --user $alt_demo_user --project $alt_demo_project
 	
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
-	openstack role add member --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
-	openstack role assignment list --user af4405d931584f2d95512466dabb3cdc --project fe0c679d273a44ae9dc4f52fa3710416
+	# 创建groups
+	admin_group=$(openstack group create admins --domain $domain_id --description 'openstack admin group' --or-show -f value -c id)
+	non_admin_group=$(openstack group create nonadmins --domain $domain_id --description 'non-admin group' --or-show -f value -c id)
 	
-	openstack project create alt_demo --domain=default --or-show -f value -c id
-	openstack user create alt_demo --password p1111111 --domain=default --email=alt_demo@example.com --or-show -f value -c id
-	
-	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role add member --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role add admin --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role assignment list --user 8222d08bd9244dd1a55a52020103c5d3 --project 9436af9b90df46a6a45d243a295f7686
-	
-	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role add anotherrole --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	openstack role assignment list --user 73065fa94ae64c6eb9d74ac1a3b3bda1 --project 9436af9b90df46a6a45d243a295f7686
-	
-	openstack group create admins --domain default --description 'openstack admin group' --or-show -f value -c id
-	openstack group create nonadmins --domain default --description 'non-admin group' --or-show -f value -c id
-	
-	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
-	openstack role add member --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f
-	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
-	
-	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 6eaff7ecc1694fcd94532bad5f09e17f -f value
-	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
-	openstack role assignment list --group 5c0860270f95475b82ee7ff488a1c05a --project 9436af9b90df46a6a45d243a295f7686 -f value
-	
-	openstack role add admin --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace
-	openstack role assignment list --group ee2c095c0f934a66b5b35c1cb6787a5f --project 4ab2d9a426aa4ac19b49dee23aa40ace -f value
+	# 把角色指定给相应的group
+	openstack role add member --group $non_admin_group --project $demo_project
+	openstack role add anotherrole --group $non_admin_group --project $demo_project
+	openstack role add member --group $non_admin_group --project $alt_demo_project
+	openstack role add anotherrole --group $non_admin_group --project $alt_demo_project	
+	openstack role add admin --group $admin_group --project $admin_project
 	\end{lstlisting}
 
 	创建nova账户：
 	\begin{lstlisting}
-	openstack user create nova --password p1111111 --domain=Default --or-show -f value -c id
+	# 设置环境变量
+	# ================
+
+	ADMIN_PASSWORD=p1111111
+	domain_name="Default"
+	nova_api_url=http://10.250.1.4:8774
+
+	# 创建nova账户
+	# ================
+
+	# 创建nova用户
+	nova_user=$(openstack user create nova --password $ADMIN_PASSWORD --domain=$domain_name --or-show -f value -c id)
 	
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
-	openstack role add service --user nova --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	# 把service、admin角色授权给nova用户
+	openstack role add service --user nova --project service --user-domain $domain_name --project-domain $domain_name
+	openstack role add admin --user nova --project service --user-domain $domain_name --project-domain $domain_name
 	
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
-	openstack role add admin --user nova --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	# 创建compute_legacy这个service
+	compute_legacy_service=$(openstack service create compute_legacy --name nova_legacy '--description=Nova Compute Service (Legacy 2.0)' -f value -c id)
+	openstack endpoint create compute_legacy public "$nova_api_url/v2/\$(project_id)s" --region RegionOne -f value -c id
 	
-	openstack service show compute_legacy -f value -c id
-	openstack service create compute_legacy --name nova_legacy '--description=Nova Compute Service (Legacy 2.0)' -f value -c id
-	openstack endpoint list --service compute_legacy --interface public --region RegionOne -c ID -f value
-	openstack endpoint create compute_legacy public 'http://10.250.1.3:8774/v2/$(project_id)s' --region RegionOne -f value -c id
+	# 创建compute这个service
+	compute_service=$(openstack service create compute --name nova '--description=Nova Compute Service' -f value -c id)
+	openstack endpoint create compute public $nova_api_url/v2.1 --region RegionOne -f value -c id
 	
-	openstack service show compute -f value -c id
-	openstack service create compute --name nova '--description=Nova Compute Service' -f value -c id
-	openstack endpoint list --service compute --interface public --region RegionOne -c ID -f value
-	openstack endpoint create compute public http://10.250.1.3:8774/v2.1 --region RegionOne -f value -c id
-	
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
+	# 把ResellerAdmin角色授权给nova用户
 	openstack role add ResellerAdmin --user nova --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user nova --project service --user-domain Default --project-domain Default
 	\end{lstlisting}
 
 	创建glance账户：
 	\begin{lstlisting}
-	openstack user create glance --password p1111111 --domain=Default --or-show -f value -c id
+	# 设置环境变量
+	# ================
+
+	ADMIN_PASSWORD=p1111111
+	domain_name="Default"
+	glance_api_url=http://10.250.1.4:9292
+
+	# 创建glance用户
+	glance_user=$(openstack user create glance --password $ADMIN_PASSWORD --domain=$domain_name --or-show -f value -c id)
 	
-	openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
-	openstack role add service --user glance --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user glance --project service --user-domain Default --project-domain Default
+	openstack role add service --user glance --project service --user-domain $domain_name --project-domain $domain_name
 	
-	openstack user create glance-swift --password p1111111 --domain=Default --or-show -f value -c id
+	# 创建glance-swift用户
+	glance_swift_user=$(openstack user create glance-swift --password p1111111 --domain=Default --or-show -f value -c id)
 	
-	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
 	openstack role add service --user glance-swift --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
-
-	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
 	openstack role add ResellerAdmin --user glance-swift --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user glance-swift --project service --user-domain Default --project-domain Default
 	
-	openstack service show image -f value -c id
-	openstack service create image --name glance '--description=Glance Image Service' -f value -c id
-	openstack endpoint list --service image --interface public --region RegionOne -c ID -f value
-	openstack endpoint create image public http://10.250.1.3:9292 --region RegionOne -f value -c id
+	# 创建image这个service
+	image_service=$(openstack service create image --name glance '--description=Glance Image Service' -f value -c id)
+	openstack endpoint create image public $glance_api_url --region RegionOne -f value -c id
 
-	openstack domain show Default -f value -c id
-	iniset /etc/glance/glance-swift-store.conf ref1 project_domain_id default
-	iniset /etc/glance/glance-swift-store.conf ref1 user_domain_id default
+	# 配置glance-swift
+	iniset /etc/glance/glance-swift-store.conf ref1 project_domain_id $domain_id
+	iniset /etc/glance/glance-swift-store.conf ref1 user_domain_id $domain_id
 	\end{lstlisting}
 
 	创建neutron账户：
 	\begin{lstlisting}
-	openstack user create neutron --password p1111111 --domain=Default --or-show -f value -c id
+	# 设置环境变量
+	# ================
 
-	openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
+	ADMIN_PASSWORD=p1111111
+	domain_name="Default"
+	neutron_api_url=http://10.250.1.4:9696
+
+	# 创建neutron用户
+	neutron_user=$(openstack user create neutron --password $ADMIN_PASSWORD --domain=$domain_name --or-show -f value -c id)
+
 	openstack role add service --user neutron --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user neutron --project service --user-domain Default --project-domain Default
 
-	openstack service show network -f value -c id
-	openstack service create network --name neutron '--description=Neutron Service' -f value -c id
-	openstack endpoint list --service network --interface public --region RegionOne -c ID -f value
-	openstack endpoint create network public http://10.250.1.3:9696/ --region RegionOne -f value -c id
+	# 创建network这个service
+	neutron_service=$(openstack service create network --name neutron '--description=Neutron Service' -f value -c id)
+	openstack endpoint create network public $neutron_api_url --region RegionOne -f value -c id
 	\end{lstlisting}
 
 	创建swift账户：
 	\begin{lstlisting}
+	# 设置环境变量
+	# ================
+
+	ADMIN_PASSWORD=p1111111
+	domain_name="Default"
+	swift_api_url=http://10.250.1.4:8080
+
+	# 创建anotherrole角色
 	openstack role create anotherrole --or-show -f value -c id
 	
-	openstack user create swift --password p1111111 --domain=Default --or-show -f value -c id
+	# 创建swift用户
+	openstack user create swift --password $ADMIN_PASSWORD --domain=Default --or-show -f value -c id
 	
-	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
 	openstack role add service --user swift --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
-
-	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
 	openstack role add admin --user swift --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user swift --project service --user-domain Default --project-domain Default
 
-	openstack service show object-store -f value -c id
+	# 创建object-store这个service
 	openstack service create object-store --name swift '--description=Swift Service' -f value -c id
-	openstack endpoint list --service object-store --interface public --region RegionOne -c ID -f value
-	openstack endpoint create object-store public 'http://10.250.1.3:8080/v1/AUTH_$(project_id)s' --region RegionOne -f value -c id
-	openstack endpoint list --service object-store --interface admin --region RegionOne -c ID -f value
-	openstack endpoint create object-store admin http://10.250.1.3:8080 --region RegionOne -f value -c id
+	openstack endpoint create object-store public "$swift_api_url/v1/AUTH_\$(project_id)s" --region RegionOne -f value -c id
+	openstack endpoint create object-store admin $swift_api_url --region RegionOne -f value -c id
 
+	# 创建swiftprojecttest1项目
 	openstack project create swiftprojecttest1 --domain=default --or-show -f value -c id
-	openstack user create swiftusertest1 --password testing --domain=default --email=test@example.com --or-show -f value -c id
-	openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
-	openstack role add admin --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
-	openstack role assignment list --user fec41f753a184631a38e2e3230d39085 --project 6965aef0648043b092b53506cc56a2fe
 
+	# 创建swiftprojecttest1项目	
+	openstack user create swiftusertest1 --password testing --domain=default --email=291277604@qq.com --or-show -f value -c id
+	openstack role add admin --user swiftusertest1 --project swiftprojecttest1
+
+	# 创建swiftusertest3项目
+	openstack user create swiftusertest3 --password testing3 --domain=default --email=291277604@qq.com --or-show -f value -c id
+	openstack role add anotherrole --user swiftusertest3 --project swiftprojecttest1
+
+	# 创建swiftprojecttest2项目
 	openstack project create swiftprojecttest2 --domain=default --or-show -f value -c id
-	openstack user create swiftusertest3 --password testing3 --domain=default --email=test3@example.com --or-show -f value -c id
-	openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
-	openstack role add b9cdcde910d9413bb2d46bcfc639ee98 --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
-	openstack role assignment list --user 2b529cc25ace4ec18e80f0cd879b691b --project 6965aef0648043b092b53506cc56a2fe
 
-	openstack user create swiftusertest2 --password testing2 --domain=default --email=test2@example.com --or-show -f value -c id
-	openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
-	openstack role add admin --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
-	openstack role assignment list --user 10ec861de94c473ab6051644891c48da --project 554c828e8fd347e6be93c2e5e855fa1f
+	# 创建swiftusertest2项目
+	openstack user create swiftusertest2 --password testing2 --domain=default --email=291277604@qq.com --or-show -f value -c id
+	openstack role add admin --user swiftusertest2 --project swiftprojecttest2
 
-	openstack project create swiftprojecttest4 --domain=7101c820856a4114bd3eb89a3b96cdae --or-show -f value -c id
-	openstack user create swiftusertest4 --password testing4 --domain=7101c820856a4114bd3eb89a3b96cdae --email=test4@example.com --or-show -f value -c id
-	openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
-	openstack role add admin --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
-	openstack role assignment list --user 34ee1ff9a328464987c2229dfa1ac3e5 --project 3b7952fbf71b43dabfc70008a5867ee8
+	# 创建swift_test域	
+	openstack domain create swift_test --description 'Used for swift functional testing' -f value -c id
+
+	# 创建swiftprojecttest4项目
+	openstack project create swiftprojecttest4 --domain=swift_test --or-show -f value -c id
+
+	# 创建swiftusertest4项目	
+	openstack user create swiftusertest4 --password testing4 --domain=swift_test --email=291277604@qq.com --or-show -f value -c id
+	openstack role add admin --user swiftusertest4 --project swiftprojecttest4
 	\end{lstlisting}
 
 	创建clouds.yaml账户：
 	\begin{lstlisting}
+	# 设置环境变量
+	# ================
+
+	export OS_IDENTITY_API_VERSION=3
+    export OS_AUTH_URL=http://10.250.1.4/identity_admin
+
 	sudo mkdir -p /etc/openstack
 	sudo chown -R pengsida /etc/openstack
-	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username demo --os-password p1111111 --os-project-name demo
-	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-alt --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username alt_demo --os-password p1111111 --os-project-name alt_demo
-	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-admin --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url http://10.250.1.3/identity_admin --os-username admin --os-password p1111111 --os-project-name admin
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url $OS_AUTH_URL --os-username demo --os-password p1111111 --os-project-name demo
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-alt --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url $OS_AUTH_URL --os-username alt_demo --os-password p1111111 --os-project-name alt_demo
+	/usr/bin/python /home/pengsida/devstack/tools/update_clouds_yaml.py --file /etc/openstack/clouds.yaml --os-cloud devstack-admin --os-region-name RegionOne --os-identity-api-version 3 --os-auth-url $OS_AUTH_URL --os-username admin --os-password p1111111 --os-project-name admin
 	rm -f /home/pengsida/.config/openstack/clouds.yaml
 	\end{lstlisting}
 
 \section{配置glance服务}
 	命令如下：
 	\begin{lstlisting}
+	# 创建相应的文件夹
 	rm -rf /opt/stack/data/glance/images
 	mkdir -p /opt/stack/data/glance/images
 	rm -rf /opt/stack/data/glance/cache
 	mkdir -p /opt/stack/data/glance/cache
 
+	# 创建相应的数据库
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS glance;'
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE glance CHARACTER SET utf8;'
+	# 同步数据库
 	/usr/local/bin/glance-manage --config-file /etc/glance/glance-api.conf db_sync
 
+	# 创建相应的文件夹
 	sudo install -d -o pengsida /var/cache/glance/api /var/cache/glance/registry /var/cache/glance/search /var/cache/glance/artifact
 	rm -f '/var/cache/glance/api/*' '/var/cache/glance/registry/*' '/var/cache/glance/search/*' '/var/cache/glance/artifact/*'
 	\end{lstlisting}
@@ -397,15 +518,20 @@
 \section{配置neutron服务}
 	命令如下：
 	\begin{lstlisting}
+	# 创建相应的文件夹
 	sudo install -d -o pengsida /etc/neutron
-	cd /opt/stack/neutron
-	exec ./tools/generate_config_file_samples.sh
+
+	# 使用generate_config_file_samples.sh生成配置文件的样本
+	(cd /opt/stack/neutron && exec ./tools/generate_config_file_samples.sh)
+
+	# 创建配置文件
 	cp /opt/stack/neutron/etc/neutron.conf.sample /etc/neutron/neutron.conf
 	cp /opt/stack/neutron/etc/policy.json /etc/neutron/policy.json
 	sed -i 's/"context_is_admin":  "role:admin"/"context_is_admin":  "role:admin or user_name:neutron"/g' /etc/neutron/policy.json
 	mkdir -p /etc/neutron/plugins/ml2
 	cp /opt/stack/neutron/etc/neutron/plugins/ml2/ml2_conf.ini.sample /etc/neutron/plugins/ml2/ml2_conf.ini
 	
+	# 配置neutron服务
 	iniset /etc/neutron/neutron.conf database connection 'mysql+pymysql://root:p1111111@127.0.0.1/neutron?charset=utf8'
 	iniset /etc/neutron/neutron.conf DEFAULT state_path /opt/stack/data/neutron
 	iniset /etc/neutron/neutron.conf DEFAULT use_syslog False
@@ -413,26 +539,39 @@
 	iniset /etc/neutron/neutron.conf oslo_concurrency lock_path /opt/stack/data/neutron/lock
 	iniset /etc/neutron/neutron.conf nova region_name RegionOne
 
-	iniset /etc/neutron/neutron.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [^[[01;36m%(request_id)s ^[[00;36m%(project_name)s %(user_name)s%(color)s] ^[[01;35m%(instance)s%(color)s%(message)s^[[00m'
-	iniset /etc/neutron/neutron.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [^[[00;36m-%(color)s] ^[[01;35m%(instance)s%(color)s%(message)s^[[00m'
-	iniset /etc/neutron/neutron.conf DEFAULT logging_debug_format_suffix '^[[00;33mfrom (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d^[[00m'
-	iniset /etc/neutron/neutron.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s ^[[01;35m%(instance)s^[[00m'
+	# Format logging
+	iniset /etc/neutron/neutron.conf DEFAULT logging_context_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%("$project_var")s %("$user_var")s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_default_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_debug_format_suffix "[00;33mfrom (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d[00m"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_exception_prefix "%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m"
 
+	# 创建相应文件夹
 	sudo install -d -o root -m 755 /etc/neutron/rootwrap.d
+	# 创建相应文件
 	sudo install -o root -m 644 /opt/stack/neutron/etc/neutron/rootwrap.d/debug.filters /opt/stack/neutron/etc/neutron/rootwrap.d/dhcp.filters /opt/stack/neutron/etc/neutron/rootwrap.d/dibbler.filters /opt/stack/neutron/etc/neutron/rootwrap.d/ebtables.filters /opt/stack/neutron/etc/neutron/rootwrap.d/ipset-firewall.filters /opt/stack/neutron/etc/neutron/rootwrap.d/iptables-firewall.filters /opt/stack/neutron/etc/neutron/rootwrap.d/l3.filters /opt/stack/neutron/etc/neutron/rootwrap.d/linuxbridge-plugin.filters /opt/stack/neutron/etc/neutron/rootwrap.d/netns-cleanup.filters /opt/stack/neutron/etc/neutron/rootwrap.d/openvswitch-plugin.filters /opt/stack/neutron/etc/neutron/rootwrap.d/privsep.filters /etc/neutron/rootwrap.d/
-	test -r /opt/stack/neutron/etc/neutron/rootwrap.conf
+	
+	# 创建相应文件
 	sudo install -o root -g root -m 644 /opt/stack/neutron/etc/rootwrap.conf /etc/neutron/rootwrap.conf
 	sudo sed -e 's:^filters_path=.*$:filters_path=/etc/neutron/rootwrap.d:' -i /etc/neutron/rootwrap.conf
 	sudo sed -e 's:^exec_dirs=\(.*\)$:exec_dirs=\1,/usr/local/bin:' -i /etc/neutron/rootwrap.conf
 
-	mktemp
-	chmod 0440 /tmp/tmp.6pSxz3yhcd
-	sudo chown root:root /tmp/tmp.6pSxz3yhcd
-	sudo mv /tmp/tmp.6pSxz3yhcd /etc/sudoers.d/neutron-rootwrap
+	# Set up the rootwrap sudoers for neutron
+	TEMPFILE=`mktemp`
+	ROOTWRAP_SUDOER_CMD='/usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf *'
+	ROOTWRAP_DAEMON_SUDOER_CMD='/usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	STACK_USER="pengsida"
+	echo "$STACK_USER ALL=(root) NOPASSWD: $ROOTWRAP_SUDOER_CMD" >$TEMPFILE
+    echo "$STACK_USER ALL=(root) NOPASSWD: $ROOTWRAP_DAEMON_SUDOER_CMD" >>$TEMPFILE
+    chmod 0440 $TEMPFILE
+    sudo chown root:root $TEMPFILE
+    sudo mv $TEMPFILE /etc/sudoers.d/neutron-rootwrap
 	iniset /etc/neutron/neutron.conf agent root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/neutron.conf agent root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
-	iniset /etc/neutron/neutron.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
 
+	# iniset-rpc-backend
+	iniset /etc/neutron/neutron.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.4:5672/
+
+	# configure neutron service
 	cp /opt/stack/neutron/etc/api-paste.ini /etc/neutron/api-paste.ini
 	iniset /etc/neutron/neutron.conf DEFAULT core_plugin ml2
 	iniset /etc/neutron/neutron.conf DEFAULT service_plugins neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
@@ -441,34 +580,39 @@
 	iniset /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
 	iniset /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
 
+	# neutron-setup-keystone
 	sudo install -d -o pengsida /var/cache/neutron
 	rm -f '/var/cache/neutron/*'
+
+	# configure_auth_token_middleware
 	iniset /etc/neutron/neutron.conf keystone_authtoken auth_type password
-	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://10.250.1.4/identity_admin
 	iniset /etc/neutron/neutron.conf keystone_authtoken username neutron
 	iniset /etc/neutron/neutron.conf keystone_authtoken password p1111111
 	iniset /etc/neutron/neutron.conf keystone_authtoken user_domain_name Default
 	iniset /etc/neutron/neutron.conf keystone_authtoken project_name service
 	iniset /etc/neutron/neutron.conf keystone_authtoken project_domain_name Default
-	iniset /etc/neutron/neutron.conf keystone_authtoken auth_uri http://10.250.1.3/identity
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_uri http://10.250.1.4/identity
 	iniset /etc/neutron/neutron.conf keystone_authtoken cafile /opt/stack/data/ca-bundle.pem
 	iniset /etc/neutron/neutron.conf keystone_authtoken signing_dir /var/cache/neutron
-	iniset /etc/neutron/neutron.conf keystone_authtoken memcached_servers 10.250.1.3:11211
+	iniset /etc/neutron/neutron.conf keystone_authtoken memcached_servers 10.250.1.4:11211
 	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_status_changes True
 	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_data_changes True
 
+	# configure_auth_token_middleware
 	iniset /etc/neutron/neutron.conf nova auth_type password
-	iniset /etc/neutron/neutron.conf nova auth_url http://10.250.1.3/identity_admin
+	iniset /etc/neutron/neutron.conf nova auth_url http://10.250.1.4/identity_admin
 	iniset /etc/neutron/neutron.conf nova username nova
 	iniset /etc/neutron/neutron.conf nova password p1111111
 	iniset /etc/neutron/neutron.conf nova user_domain_name Default
 	iniset /etc/neutron/neutron.conf nova project_name service
 	iniset /etc/neutron/neutron.conf nova project_domain_name Default
-	iniset /etc/neutron/neutron.conf nova auth_uri http://10.250.1.3/identity
+	iniset /etc/neutron/neutron.conf nova auth_uri http://10.250.1.4/identity
 	iniset /etc/neutron/neutron.conf nova cafile /opt/stack/data/ca-bundle.pem
 	iniset /etc/neutron/neutron.conf nova signing_dir /var/cache/neutron
-	iniset /etc/neutron/neutron.conf nova memcached_servers 10.250.1.3:11211
+	iniset /etc/neutron/neutron.conf nova memcached_servers 10.250.1.4:11211
 
+	# neutron_plugin_configure_service
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch,linuxbridge
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
@@ -477,26 +621,40 @@
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks public,
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges public
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_geneve vni_ranges 1:1000
+
+	# configure_neutron_plugin_agent
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/neutron.conf DEFAULT debug True
 
+	# neutron_plugin_configure_plugin_agent
+	# ======================================
+
+	# neutron_ovs_base_setup_bridge
 	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
 	sudo ovs-vsctl -- --may-exist add-br br-int
 	sudo ovs-vsctl --no-wait br-set-external-id br-int bridge-id br-int
+	
+	# neutron_ovs_base_configure_firewall_driver
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver iptables_hybrid
 	
+	# enable_kernel_bridge_firewall
 	sudo modprobe bridge
 	sudo modprobe br_netfilter
 	sudo sysctl -w net.bridge.bridge-nf-call-iptables=1
 	sudo sysctl -w net.bridge.bridge-nf-call-ip6tables=1
-	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip 10.250.1.3
+
+	# 配置neutron
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip 10.250.1.4
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs tunnel_bridge br-tun
 
+	# neutron_ovs_base_add_bridge
 	sudo ovs-vsctl -- --may-exist add-br br-ex
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings public:br-ex
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
 	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs datapath_type system
 
+	# configure_neutron_dhcp_agent
 	cp /opt/stack/neutron/etc/dhcp_agent.ini.sample /etc/neutron/dhcp_agent.ini
 	iniset /etc/neutron/dhcp_agent.ini DEFAULT debug True
 	iniset /etc/neutron/dhcp_agent.ini DEFAULT dnsmasq_local_resolv True
@@ -505,41 +663,81 @@
 	iniset /etc/neutron/dhcp_agent.ini DEFAULT ovs_use_veth False
 	iniset /etc/neutron/dhcp_agent.ini DEFAULT interface_driver openvswitch
 
+	# configure_neutron_l3_agent
 	cp /opt/stack/neutron/etc/l3_agent.ini.sample /etc/neutron/l3_agent.ini
 	iniset /etc/neutron/l3_agent.ini DEFAULT debug True
 	iniset /etc/neutron/l3_agent.ini AGENT root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/l3_agent.ini AGENT root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/l3_agent.ini DEFAULT ovs_use_veth False
 	iniset /etc/neutron/l3_agent.ini DEFAULT interface_driver openvswitch
-
+	
+	# neutron_ovs_base_configure_l3_agent
 	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
-
 	sudo ovs-vsctl -- --may-exist add-br br-ex
 	sudo ip link set mtu 1450 dev br-ex
 	sudo ovs-vsctl br-set-external-id br-ex bridge-id br-ex
+
+	# setup NAT so that fixed guests can get out
 	sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.24.4.0/24 -j MASQUERADE
 
+	# configure_neutron_metadata_agent
 	cp /opt/stack/neutron/etc/metadata_agent.ini.sample /etc/neutron/metadata_agent.ini
 	iniset /etc/neutron/metadata_agent.ini DEFAULT debug True
-	iniset /etc/neutron/metadata_agent.ini DEFAULT nova_metadata_ip 10.250.1.3
+	iniset /etc/neutron/metadata_agent.ini DEFAULT nova_metadata_ip 10.250.1.4
 	iniset /etc/neutron/metadata_agent.ini DEFAULT metadata_workers 2
 	iniset /etc/neutron/metadata_agent.ini AGENT root_helper 'sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/metadata_agent.ini AGENT root_helper_daemon 'sudo /usr/local/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
 
+	# configure_mutnauq
 	iniset /etc/neutron/neutron.conf DEFAULT api_workers 2
 	iniset /etc/neutron/neutron.conf DEFAULT rpc_state_report_workers 0
 
+	# 创建neutron的数据库
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS neutron;'
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE neutron CHARACTER SET utf8;'
+	
+	# 同步neutron的数据库
 	/usr/local/bin/neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+	\end{lstlisting}
 
-	clean_iptables
+\section{配置nova服务}
+	命令如下：
+	\begin{lstlisting}
+	# Delete traces of nova networks from prior runs
+    # Do not kill any dnsmasq instance spawned by NetworkManager
+	# ==========================================================
+
+	netman_pid=$(pidof NetworkManager || true)
+	if [ -z "$netman_pid" ]; then
+        sudo killall dnsmasq || true
+    else
+        sudo ps h -o pid,ppid -C dnsmasq | grep -v $netman_pid | awk '{print $1}' | sudo xargs kill || true
+    fi
+
+	# clean_iptables
+	# ================
+
+	# Delete rules
+    sudo iptables -S -v | sed "s/-c [0-9]* [0-9]* //g" | grep "nova" | grep "\-A" |  sed "s/-A/-D/g" | awk '{print "sudo iptables",$0}' | bash
+    # Delete nat rules
+    sudo iptables -S -v -t nat | sed "s/-c [0-9]* [0-9]* //g" | grep "nova" |  grep "\-A" | sed "s/-A/-D/g" | awk '{print "sudo iptables -t nat",$0}' | bash
+    # Delete chains
+    sudo iptables -S -v | sed "s/-c [0-9]* [0-9]* //g" | grep "nova" | grep "\-N" |  sed "s/-N/-X/g" | awk '{print "sudo iptables",$0}' | bash
+    # Delete nat chains
+    sudo iptables -S -v -t nat | sed "s/-c [0-9]* [0-9]* //g" | grep "nova" |  grep "\-N" | sed "s/-N/-X/g" | awk '{print "sudo iptables -t nat",$0}' | bash
+
+	# Force IP forwarding on, just in case
+    sudo sysctl -w net.ipv4.ip_forward=1
 	\end{lstlisting}
 
 \section{配置swift服务}
 	命令如下：
 	\begin{lstlisting}
+	# init swift
+	# =============
+
 	swift-init --run-dir=/opt/stack/data/swift/run all stop
+	# create_swift_disk
 	sudo install -d -o pengsida -g 1000 /opt/stack/data/swift/drives /opt/stack/data/swift/cache /opt/stack/data/swift/run /opt/stack/data/swift/logs
 	mkdir -p /opt/stack/data/swift/drives/images
 	sudo touch /opt/stack/data/swift/drives/images/swift.img
@@ -554,6 +752,7 @@
 	sudo install -o pengsida -g 1000 -d /opt/stack/data/swift/1/node/sdb1
 	sudo chown -R pengsida: /opt/stack/data/swift/1/node
 
+	# init swift
 	pushd /etc/swift
 	rm -f '*.builder' '*.ring.gz' 'backups/*.builder' 'backups/*.ring.gz'
 	swift-ring-builder object.builder create 9 1 1
@@ -567,6 +766,7 @@
 	swift-ring-builder account.builder rebalance 42
 	popd
 
+	# Create cache dir
 	sudo install -d -o pengsida /var/cache/swift
 	rm -f '/var/cache/swift/*'
 	\end{lstlisting}
@@ -574,29 +774,42 @@
 \section{配置nova服务}
 	命令如下：
 	\begin{lstlisting}
+	# 创建nova-api的数据库
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova_api;'
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova_api CHARACTER SET utf8;'
+	# 进行数据库的同步
 	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf api_db sync
 	
+	# 创建nova的数据库	
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova;'
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova CHARACTER SET utf8;'
 
+	# 创建nova-cell0的数据库	
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS nova_cell0;'
 	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE nova_cell0 CHARACTER SET utf8;'
-	
 	nova-manage cell_v2 map_cell0 --database_connection 'mysql+pymysql://root:p1111111@127.0.0.1/nova_cell0?charset=utf8'
+	
+	# 进行数据库的同步
 	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf db sync
 
+	# map_cell0 will create the cell mapping record in the nova_api DB
 	/usr/local/bin/nova-manage --config-file /etc/nova/nova.conf db online_data_migrations
+	
+	# create the cell1 cell for the main nova db where the hosts live
+	nova-manage cell_v2 create_cell --transport-url rabbit://stackrabbit:p1111111@10.250.1.4:5672/ --name cell1
 
-	nova-manage cell_v2 create_cell --transport-url rabbit://stackrabbit:p1111111@10.250.1.3:5672/ --name cell1
+	# create_nova_cache_dir
 	sudo install -d -o pengsida /var/cache/nova
 	sudo install -d -o pengsida /var/cache/nova
 	sudo install -d -o pengsida /opt/stack/data/nova /opt/stack/data/nova/keys
+	
+	# configure_neutron_nova
+	# =======================
 
+	# create_nova_conf_neutron
 	iniset /etc/nova/nova.conf DEFAULT use_neutron True
 	iniset /etc/nova/nova.conf neutron auth_type password
-	iniset /etc/nova/nova.conf neutron auth_url http://10.250.1.3/identity_admin/v3
+	iniset /etc/nova/nova.conf neutron auth_url http://10.250.1.4/identity_admin/v3
 	iniset /etc/nova/nova.conf neutron username neutron
 	iniset /etc/nova/nova.conf neutron password p1111111
 	iniset /etc/nova/nova.conf neutron user_domain_name Default
@@ -604,42 +817,48 @@
 	iniset /etc/nova/nova.conf neutron project_domain_name Default
 	iniset /etc/nova/nova.conf neutron auth_strategy keystone
 	iniset /etc/nova/nova.conf neutron region_name RegionOne
-	iniset /etc/nova/nova.conf neutron url http://10.250.1.3:9696
-	
+	iniset /etc/nova/nova.conf neutron url http://10.250.1.4:9696
 	iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 	iniset /etc/nova/nova.conf neutron service_metadata_proxy True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_is_fatal True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_timeout 300
-
-	openstack user create placement --password p1111111 --domain=Default --or-show -f value -c id
-	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
-	openstack role add service --user placement --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
-
-	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
-	openstack role add admin --user placement --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user placement --project service --user-domain Default --project-domain Default
-
-	openstack service show placement -f value -c id
-	openstack service create placement --name placement '--description=Placement Service' -f value -c id
-	openstack endpoint list --service placement --interface public --region RegionOne -c ID -f value
-	openstack endpoint create placement public http://10.250.1.3/placement --region RegionOne -f value -c id
 	\end{lstlisting}
 
-\section{配置ironic服务}
+\section{配置placement}
 	命令如下：
 	\begin{lstlisting}
+	# create_placement_accounts
+	# ===========================
+
+	# 创建placement用户
+	openstack user create placement --password p1111111 --domain=Default --or-show -f value -c id
+	
+	openstack role add service --user placement --project service --user-domain Default --project-domain Default
+	openstack role add admin --user placement --project service --user-domain Default --project-domain Default
+
+	# 创建placement这个service
+	openstack service create placement --name placement '--description=Placement Service' -f value -c id
+	openstack endpoint list --service placement --interface public --region RegionOne -c ID -f value
+	openstack endpoint create placement public http://10.250.1.4/placement --region RegionOne -f value -c id
+	\end{lstlisting}
+
+\section{其他的配置}
+	命令如下：
+	\begin{lstlisting}
+	# 配置ironic服务
+	# ================
+
+	# configure_ironic_dirs
 	sudo install -d -o pengsida /etc/ironic pengsida /opt/stack/data/ironic /var/lib/ironic /opt/stack/data/ironic/tftpboot /opt/stack/data/ironic/tftpboot/pxelinux.cfg
 	sudo chown -R pengsida:libvirtd /opt/stack/data/ironic/tftpboot
 	sudo install -d -o pengsida -g libvirtd /opt/stack/data/ironic/httpboot
 	cp /usr/lib/ipxe/undionly.kpxe /opt/stack/data/ironic/tftpboot
-	
 	install -d -o pengsida /home/pengsida/temp/ironic-bm-logs/deploy_logs
+
+	# configure_ironic
 	cp /opt/stack/ironic/etc/ironic/ironic.conf.sample /etc/ironic/ironic.conf
 	iniset /etc/ironic/ironic.conf DEFAULT debug True
 	inicomment /etc/ironic/ironic.conf DEFAULT log_file
-
-	# database_connection_url_mysql ironic
 	iniset /etc/ironic/ironic.conf database connection 'mysql+pymysql://root:p1111111@127.0.0.1/ironic?charset=utf8'
 	iniset /etc/ironic/ironic.conf DEFAULT state_path /var/lib/ironic
 	iniset /etc/ironic/ironic.conf DEFAULT use_syslog False
@@ -649,11 +868,13 @@
 	iniset /etc/ironic/ironic.conf agent deploy_logs_local_path /home/pengsida/temp/ironic-bm-logs/deploy_logs
 
 	# configure_ironic_conductor
-	# ==========================
+	# =============================
 
 	iniset /etc/ironic/ironic.conf keystone region_name RegionOne
+
+	# configure_auth_for neutron
 	iniset /etc/ironic/ironic.conf neutron auth_type password
-	iniset /etc/ironic/ironic.conf neutron auth_url http://10.250.1.3/identity
+	iniset /etc/ironic/ironic.conf neutron auth_url http://10.250.1.4/identity
 	iniset /etc/ironic/ironic.conf neutron username ironic
 	iniset /etc/ironic/ironic.conf neutron password p1111111
 	iniset /etc/ironic/ironic.conf neutron project_name service
@@ -663,7 +884,7 @@
 
 	# configure_auth_for swift
 	iniset /etc/ironic/ironic.conf swift auth_type password
-	iniset /etc/ironic/ironic.conf swift auth_url http://10.250.1.3/identity
+	iniset /etc/ironic/ironic.conf swift auth_url http://10.250.1.4/identity
 	iniset /etc/ironic/ironic.conf swift username ironic
 	iniset /etc/ironic/ironic.conf swift password p1111111
 	iniset /etc/ironic/ironic.conf swift project_name service
@@ -673,7 +894,7 @@
 
     # configure_auth_for glance
 	iniset /etc/ironic/ironic.conf glance auth_type password
-    iniset /etc/ironic/ironic.conf glance auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf glance auth_url http://10.250.1.4/identity
     iniset /etc/ironic/ironic.conf glance username ironic
     iniset /etc/ironic/ironic.conf glance password p1111111
     iniset /etc/ironic/ironic.conf glance project_name service
@@ -683,7 +904,7 @@
 
 	# configure_auth_for inspector
 	iniset /etc/ironic/ironic.conf inspector auth_type password
-    iniset /etc/ironic/ironic.conf inspector auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf inspector auth_url http://10.250.1.4/identity
     iniset /etc/ironic/ironic.conf inspector username ironic
     iniset /etc/ironic/ironic.conf inspector password p1111111
     iniset /etc/ironic/ironic.conf inspector project_name service
@@ -693,55 +914,66 @@
 
 	# configure_auth_for service_catalog
 	iniset /etc/ironic/ironic.conf service_catalog auth_type password
-    iniset /etc/ironic/ironic.conf service_catalog auth_url http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf service_catalog auth_url http://10.250.1.4/identity
     iniset /etc/ironic/ironic.conf service_catalog username ironic
     iniset /etc/ironic/ironic.conf service_catalog password p1111111
     iniset /etc/ironic/ironic.conf service_catalog project_name service
     iniset /etc/ironic/ironic.conf service_catalog user_domain_id default
     iniset /etc/ironic/ironic.conf service_catalog project_domain_id default
     iniset /etc/ironic/ironic.conf service_catalog cafile /opt/stack/data/ca-bundle.pem
+
+	# configure_ironic_conductor
     cp /opt/stack/ironic/etc/ironic/rootwrap.conf /etc/ironic/rootwrap.conf
     cp -r /opt/stack/ironic/etc/ironic/rootwrap.d /etc/ironic
 
-	mktemp
-    tempfile=/tmp/tmp.zjUddafm6h
-	chmod 0440 /tmp/tmp.zjUddafm6h
-    sudo chown root:root /tmp/tmp.zjUddafm6h
-    sudo mv /tmp/tmp.zjUddafm6h /etc/sudoers.d/ironic-rootwrap
+	tempfile=`mktemp`
+	STACK_USER="pengsida"
+	rootwrap_isudoer_cmd="/usr/local/bin/ironic-rootwrap /etc/ironic/rootwrap.conf *"
+	echo "$STACK_USER ALL=(root) NOPASSWD: $rootwrap_isudoer_cmd" >$tempfile
+    chmod 0440 $tempfile
+    sudo chown root:root $tempfile
+    sudo mv $tempfile /etc/sudoers.d/ironic-rootwrap
+
+	# set up drivers / hardware types
     iniset /etc/ironic/ironic.conf DEFAULT enabled_drivers fake,agent_ssh,agent_ipmitool,pxe_ssh,pxe_ipmitool
     iniset /etc/ironic/ironic.conf DEFAULT enabled_hardware_types ipmi
     iniset /etc/ironic/ironic.conf DEFAULT rootwrap_config /etc/ironic/rootwrap.conf
-    iniset /etc/ironic/ironic.conf conductor api_url http://10.250.1.3:6385
-
-	iniset /etc/ironic/ironic.conf pxe tftp_server 10.250.1.3
+    iniset /etc/ironic/ironic.conf conductor api_url http://10.250.1.4:6385
+	iniset /etc/ironic/ironic.conf pxe tftp_server 10.250.1.4
     iniset /etc/ironic/ironic.conf pxe tftp_root /opt/stack/data/ironic/tftpboot
     iniset /etc/ironic/ironic.conf pxe tftp_master_path /opt/stack/data/ironic/tftpboot/master_images
-
 	iniset /etc/ironic/ironic.conf pxe pxe_append_params 'nofb nomodeset vga=normal console=ttyS0 systemd.journald.forward_to_console=yes '
 
+	# Set these options for scenarios in which the agent fetches the image
+    # directly from glance, and don't set them where the image is pushed
+    # over iSCSI.
 	iniset /etc/ironic/ironic.conf glance swift_temp_url_key p1111111
-    iniset /etc/ironic/ironic.conf glance swift_endpoint_url http://10.250.1.3:8080
+    iniset /etc/ironic/ironic.conf glance swift_endpoint_url http://10.250.1.4:8080
     iniset /etc/ironic/ironic.conf glance swift_api_version v1
-
-	# get_or_create_project service default
-	openstack project create service --domain=default --or-show -f value -c id
-	iniset /etc/ironic/ironic.conf glance swift_account AUTH_e9cbf8ccd797481da71c55ce704b5861
+	tenant_id=$(openstack project create service --domain=default --or-show -f value -c id)
+	iniset /etc/ironic/ironic.conf glance swift_account AUTH_${tenant_id}
     iniset /etc/ironic/ironic.conf glance swift_container glance
     iniset /etc/ironic/ironic.conf glance swift_temp_url_duration 3600
     iniset /etc/ironic/ironic.conf glance glance_protocol http
-    iniset /etc/ironic/ironic.conf glance glance_host 10.250.1.3
+    iniset /etc/ironic/ironic.conf glance glance_host 10.250.1.4
     iniset /etc/ironic/ironic.conf glance glance_port 9292
+
+	# is_deployed_by_agent
 	iniset /etc/ironic/ironic.conf api ramdisk_heartbeat_timeout 30
+
+	# FIXME: this really needs to be tested in the gate.  For now, any
+    # test using the agent ramdisk should skip the erase_devices clean
+    # step  because it is too slow to run in the gate.
 	iniset /etc/ironic/ironic.conf deploy erase_devices_priority 0
 
-	# get_uefi_ipxe_boot_file
+	# IRONIC_IPXE_ENABLED
 	iniset /etc/ironic/ironic.conf pxe ipxe_enabled True
     iniset /etc/ironic/ironic.conf pxe pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
     iniset /etc/ironic/ironic.conf pxe pxe_bootfile_name undionly.kpxe
     iniset /etc/ironic/ironic.conf pxe uefi_pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
     iniset /etc/ironic/ironic.conf pxe uefi_pxe_bootfile_name ipxe.efi
     iniset /etc/ironic/ironic.conf deploy http_root /opt/stack/data/ironic/httpboot
-    iniset /etc/ironic/ironic.conf deploy http_url http://10.250.1.3:3928
+    iniset /etc/ironic/ironic.conf deploy http_url http://10.250.1.4:3928
 	iniset /etc/ironic/ironic.conf neutron port_setup_delay 15
 	iniset /etc/ironic/ironic.conf dhcp dhcp_provider neutron
     iniset /etc/ironic/ironic.conf deploy default_boot_option netboot
@@ -750,68 +982,712 @@
 	# configure_ironic_api
 	# ====================
 
+	# configure_auth_token_middleware
 	iniset /etc/ironic/ironic.conf DEFAULT auth_strategy keystone
 	iniset /etc/ironic/ironic.conf keystone_authtoken auth_type password
-    iniset /etc/ironic/ironic.conf keystone_authtoken auth_url http://10.250.1.3/identity_admin
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_url http://10.250.1.4/identity_admin
     iniset /etc/ironic/ironic.conf keystone_authtoken username ironic
     iniset /etc/ironic/ironic.conf keystone_authtoken password p1111111
     iniset /etc/ironic/ironic.conf keystone_authtoken user_domain_name Default
     iniset /etc/ironic/ironic.conf keystone_authtoken project_name service
     iniset /etc/ironic/ironic.conf keystone_authtoken project_domain_name Default
-    iniset /etc/ironic/ironic.conf keystone_authtoken auth_uri http://10.250.1.3/identity
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_uri http://10.250.1.4/identity
     iniset /etc/ironic/ironic.conf keystone_authtoken cafile /opt/stack/data/ca-bundle.pem
     iniset /etc/ironic/ironic.conf keystone_authtoken signing_dir /var/cache/ironic/api
-    iniset /etc/ironic/ironic.conf keystone_authtoken memcached_servers 10.250.1.3:11211
+    iniset /etc/ironic/ironic.conf keystone_authtoken memcached_servers 10.250.1.4:11211
     iniset /etc/ironic/ironic.conf oslo_policy policy_file /etc/ironic/policy.json
 
-	iniset /etc/ironic/ironic.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.3:5672/
+	# iniset_rpc_backend
+	iniset /etc/ironic/ironic.conf DEFAULT transport_url rabbit://stackrabbit:p1111111@10.250.1.4:5672/
+
+	# configure_ironic_api
 	iniset /etc/ironic/ironic.conf api port 6385
     iniset /etc/ironic/ironic.conf conductor automated_clean True
 	cp -p /opt/stack/ironic/etc/ironic/policy.json /etc/ironic/policy.json
-
+	
+	# setup_colorized_logging
 	iniset /etc/ironic/ironic.conf DEFAULT logging_context_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%(project_name)s %(user_name)s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
     iniset /etc/ironic/ironic.conf DEFAULT logging_default_format_string '%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m'
 	iniset /etc/ironic/ironic.conf DEFAULT logging_exception_prefix '%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m'
 
-	sudo /usr/sbin/apache2ctl -v
+	ipxe_apache_conf=/etc/apache2/sites-available/ipxe-ironic.conf
 	sudo cp /opt/stack/ironic/devstack/files/apache-ipxe-ironic.template /etc/apache2/sites-available/ipxe-ironic.conf
-
+	sudo sed -e "
+	s|%PUBLICPORT%|3928|g;
+	s|%HTTPROOT%|/opt/stack/data/ironic/httpboot|g;
+" -i $ipxe_apache_conf
 	sudo a2ensite ipxe-ironic
+	service apache2 reload
 
 	# create_ironic_accounts
-	openstack service show baremetal -f value -c id
+	# ========================
+
+	# 创建baremetal服务
     openstack service create baremetal --name ironic '--description=Ironic baremetal provisioning service' -f value -c id
-	openstack endpoint list --service baremetal --interface public --region RegionOne -c ID -f value
-	openstack endpoint create baremetal public http://10.250.1.3:6385 --region RegionOne -f value -c id
-	openstack endpoint list --service baremetal --interface admin --region RegionOne -c ID -f value
-	openstack endpoint create baremetal admin http://10.250.1.3:6385 --region RegionOne -f value -c id
-	openstack endpoint list --service baremetal --interface internal --region RegionOne -c ID -f value
-	openstack endpoint create baremetal internal http://10.250.1.3:6385 --region RegionOne -f value -c id
+	openstack endpoint create baremetal public http://10.250.1.4:6385 --region RegionOne -f value -c id
+	openstack endpoint create baremetal admin http://10.250.1.4:6385 --region RegionOne -f value -c id
+	openstack endpoint create baremetal internal http://10.250.1.4:6385 --region RegionOne -f value -c id
 	
-	# create_service_user
+	# 创建ironic用户
 	openstack user create ironic --password p1111111 --domain=Default --or-show -f value -c id
-	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
 	openstack role add service --user ironic --project service --user-domain Default --project-domain Default
-    openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
-
-	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
 	openstack role add admin --user ironic --project service --user-domain Default --project-domain Default
-	openstack role assignment list --user ironic --project service --user-domain Default --project-domain Default
 
-	# get_or_create_role
+	# 创建baremetal_admin和baremetal_observer角色
 	openstack role create baremetal_admin --or-show -f value -c id
 	openstack role create baremetal_observer --or-show -f value -c id
 
-	# get_or_add_user_project_role
-	openstack role assignment list --user nova --project service
+	# 将角色授权给相应的用户
 	openstack role add baremetal_admin --user nova --project service
-	openstack role assignment list --user nova --project service
-
-	openstack role assignment list --user demo --project demo
 	openstack role add baremetal_observer --user demo --project demo
-	openstack role assignment list --user demo --project demo
 	\end{lstlisting}
 
-	12760
+\section{合并配置文件}
+	\begin{lstlisting}
+	# Merge the contents of a meta-config file into its destination config file
+	# If configfile does not exist it will be created.
+	# merge_config_file infile group configfile
+
+awk -v matchgroup=post-config '
+	/^\[\[.+\|.*\]\]/ {
+            gsub("[][]", "", $1);
+            split($1, a, "|");
+            if (a[1] == matchgroup)
+                print a[2]
+        }
+' /home/pengsida/devstack/local.conf
+	\end{lstlisting}
+
+\section{开启swift服务}
+	\begin{lstlisting}
+	sudo service memcached restart
+	sudo /etc/init.d/rsync restart
+    swift-init --run-dir=/opt/stack/data/swift/run all restart
+	swift-init --run-dir=/opt/stack/data/swift/run proxy stop
+	swift-init --run-dir=/opt/stack/data/swift/run object stop
+	swift-init --run-dir=/opt/stack/data/swift/run container stop
+	swift-init --run-dir=/opt/stack/data/swift/run account stop
+
+	# 配置screen窗口
+	# ==================
+
+	# 指定stack这个screen，在其中创建一个叫s-proxy的窗口
+	screen -S stack -X screen -t s-proxy
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-proxy -X logfile /home/pengsida/temp/logs/s-proxy.log.2017-03-30-172117
+    screen -S stack -p s-proxy -X log on
+	touch /home/pengsida/temp/logs/s-proxy.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''s-proxy.log.2017-03-30-172117'\'' s-proxy.log'
+
+	# 在s-proxy窗口中执行这条命令
+	screen -S stack -p s-proxy -X stuff 'swift-proxy-server /etc/swift/proxy-server.conf -v & echo $! >/opt/stack/status/stack/s-proxy.pid; fg || echo "s-proxy failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-proxy.failure"^M'
+
+
+	# 指定stack这个screen，在其中创建一个叫s-object的窗口
+	screen -S stack -X screen -t s-object
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-object -X logfile /home/pengsida/temp/logs/s-object.log.2017-03-30-172117
+    screen -S stack -p s-object -X log on
+	touch /home/pengsida/temp/logs/s-object.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''s-object.log.2017-03-30-172117'\'' s-object.log'
+
+	# 在s-object窗口中执行这条命令
+	screen -S stack -p s-object -X stuff 'swift-object-server /etc/swift/object-server/1.conf -v & echo $! >/opt/stack/status/stack/s-object.pid; fg || echo "s-object failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-object.failure"^M'
+
+
+	# 指定stack这个screen，在其中创建一个叫s-container的窗口
+	screen -S stack -X screen -t s-container
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-container -X logfile /home/pengsida/temp/logs/s-container.log.2017-03-30-172117
+    screen -S stack -p s-container -X log on
+	touch /home/pengsida/temp/logs/s-container.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''s-container.log.2017-03-30-172117'\'' s-container.log'
+
+	# 在s-container窗口中执行这条命令
+	screen -S stack -p s-container -X stuff 'swift-container-server /etc/swift/container-server/1.conf -v & echo $! >/opt/stack/status/stack/s-container.pid; fg || echo "s-container failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-container.failure"^M'
+
+	
+	# 指定stack这个screen，在其中创建一个叫s-account的窗口
+	screen -S stack -X screen -t s-account
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-account -X logfile /home/pengsida/temp/logs/s-account.log.2017-03-30-172117
+    screen -S stack -p s-account -X log on
+	touch /home/pengsida/temp/logs/s-account.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''s-account.log.2017-03-30-172117'\'' s-account.log'
+
+	# 在s-account窗口中执行这条命令
+	screen -S stack -p s-account -X stuff 'swift-account-server /etc/swift/account-server/1.conf -v & echo $! >/opt/stack/status/stack/s-account.pid; fg || echo "s-account failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-account.failure"^M'
+
+	# swift_configure_tempurls
+	openstack object store account set --property Temp-URL-Key=p1111111
+	\end{lstlisting}
+
+\section{开启glance服务}
+	\begin{lstlisting}
+	screen -S stack -X screen -t g-reg
+	screen -S stack -p g-reg -X logfile /home/pengsida/temp/logs/g-reg.log.2017-03-30-172117
+    screen -S stack -p g-reg -X log on
+	touch /home/pengsida/temp/logs/g-reg.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''g-reg.log.2017-03-30-172117'\'' g-reg.log'
+	screen -S stack -p g-reg -X stuff '/usr/local/bin/glance-registry --config-file=/etc/glance/glance-registry.conf & echo $! >/opt/stack/status/stack/g-reg.pid; fg || echo "g-reg failed to start. Exit code: $?" | tee "/opt/stack/status/stack/g-reg.failure"^M'
+
+	
+	screen -S stack -X screen -t g-api
+	screen -S stack -p g-api -X logfile /home/pengsida/temp/logs/g-api.log.2017-03-30-172117
+    screen -S stack -p g-api -X log on
+	touch /home/pengsida/temp/logs/g-api.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''g-api.log.2017-03-30-172117'\'' g-api.log'
+	screen -S stack -p g-api -X stuff '/usr/local/bin/glance-api --config-file=/etc/glance/glance-api.conf & echo $! >/opt/stack/status/stack/g-api.pid; fg || echo "g-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/g-api.failure"^M'
+
+	# 检查服务是否启动
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://10.250.1.4:9292
+
+	# 下载镜像文件
+	wget --progress=dot:giga -c http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-uec.tar.gz -O /home/pengsida/devstack/files/cirros-0.3.5-x86_64-uec.tar.gz
+
+	rm -Rf /home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec
+	mkdir /home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec
+    tar -zxf /home/pengsida/devstack/files/cirros-0.3.5-x86_64-uec.tar.gz -C /home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec
+
+	kernel="/home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec/cirros-0.3.5-x86_64-vmlinuz"
+	ramdisk="/home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec/cirros-0.3.5-x86_64-initrd"
+	kernel_id=$(openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec-kernel --public --container-format aki --disk-format aki < "$kernel" | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	ramdisk_id=$(openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec-ramdisk --public --container-format ari --disk-format ari < "$ramdisk" | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-uec --public --container-format ami --disk-format ami --property kernel_id=$kernel_id --property ramdisk_id=$ramdisk_id
+	
+	image="/home/pengsida/devstack/files/images/cirros-0.3.5-x86_64-uec/cirros-0.3.5-x86_64-blank.img"
+	openstack --os-cloud=devstack-admin --os-region-name="$REGION_NAME" image create cirros-0.3.5-x86_64-uec --public --container-format ami --disk-format ami ${kernel_id:+--property kernel_id=$kernel_id} ${ramdisk_id:+--property ramdisk_id=$ramdisk_id} < "${image}"
+
+	image="/home/pengsida/devstack/files/cirros-0.3.5-x86_64-disk.img"
+	openstack --os-cloud=devstack-admin --os-region-name=RegionOne image create cirros-0.3.5-x86_64-disk --public --container-format=bare --disk-format qcow2 < "${image}"
+	\end{lstlisting}
+
+\section{开启nova服务}
+	\begin{lstlisting}
+	# Create a randomized default value for the key manager's fixed_key
+	iniset /etc/nova/nova.conf key_manager fixed_key $(hexdump -n 32 -v -e '/1 "%02x"' /dev/urandom)
+
+	# 开启nova-api服务
+	screen -S stack -X screen -t n-api
+	screen -S stack -p n-api -X logfile /home/pengsida/temp/logs/n-api.log.2017-03-30-172117
+    screen -S stack -p n-api -X log on
+	touch /home/pengsida/temp/logs/n-api.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-api.log.2017-03-30-172117'\'' n-api.log'
+	screen -S stack -p n-api -X stuff '/usr/local/bin/nova-api & echo $! >/opt/stack/status/stack/n-api.pid; fg || echo "n-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-api.failure"^M'
+
+	# 监测nova-api是否启动
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://10.250.1.4:8774
+	\end{lstlisting}
+
+\section{开启neutron服务}
+	\begin{lstlisting}
+	# 开启neutron-server服务
+	screen -S stack -X screen -t q-svc
+	screen -S stack -p q-svc -X logfile /home/pengsida/temp/logs/q-svc.log.2017-03-30-172117
+    screen -S stack -p q-svc -X log on
+	touch /home/pengsida/temp/logs/q-svc.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''q-svc.log.2017-03-30-172117'\'' q-svc.log'
+	screen -S stack -p q-svc -X stuff '/usr/local/bin/neutron-server --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/opt/stack/status/stack/q-svc.pid; fg || echo "q-svc failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-svc.failure"^M'
+
+	# 监测neutron-server服务是否启动
+	timeout 60 sh -c 'while ! wget  --no-proxy -q -O- http://10.250.1.4:9696; do sleep 0.5; done'
+
+	# 开启neutron-openvswitch-agent服务
+	screen -S stack -X screen -t q-agt
+	screen -S stack -p q-agt -X logfile /home/pengsida/temp/logs/q-agt.log.2017-03-30-172117
+    screen -S stack -p q-agt -X log on
+	touch /home/pengsida/temp/logs/q-agt.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''q-agt.log.2017-03-30-172117'\'' q-agt.log'
+	screen -S stack -p q-agt -X stuff '/usr/local/bin/neutron-openvswitch-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/opt/stack/status/stack/q-agt.pid; fg || echo "q-agt failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-agt.failure"^M'
+
+	# 开启neutron-dhcp-agent服务
+	screen -S stack -X screen -t q-dhcp
+	screen -S stack -p q-dhcp -X logfile /home/pengsida/temp/logs/q-dhcp.log.2017-03-30-172117
+    screen -S stack -p q-dhcp -X log on
+	touch /home/pengsida/temp/logs/q-dhcp.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''q-dhcp.log.2017-03-30-172117'\'' q-dhcp.log'
+	screen -S stack -p q-dhcp -X stuff '/usr/local/bin/neutron-dhcp-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini & echo $! >/opt/stack/status/stack/q-dhcp.pid; fg || echo "q-dhcp failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-dhcp.failure"^M'
+
+	# 开启neutron-l3-agent服务
+	screen -S stack -X screen -t q-l3
+	screen -S stack -p q-l3 -X logfile /home/pengsida/temp/logs/q-l3.log.2017-03-30-172117
+    screen -S stack -p q-l3 -X log on
+	touch /home/pengsida/temp/logs/q-l3.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''q-l3.log.2017-03-30-172117'\'' q-l3.log'
+	screen -S stack -p q-l3 -X stuff '/usr/local/bin/neutron-l3-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini & echo $! >/opt/stack/status/stack/q-l3.pid; fg || echo "q-l3 failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-l3.failure"^M'
+
+	# 开启neutron-metadata-agent服务
+	screen -S stack -X screen -t q-meta
+	screen -S stack -p q-meta -X logfile /home/pengsida/temp/logs/q-meta.log.2017-03-30-172117
+    screen -S stack -p q-meta -X log on
+	touch /home/pengsida/temp/logs/q-meta.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''q-meta.log.2017-03-30-172117'\'' q-meta.log'
+	screen -S stack -p q-meta -X stuff '/usr/local/bin/neutron-metadata-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini & echo $! >/opt/stack/status/stack/q-meta.pid; fg || echo "q-meta failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-meta.failure"^M'
+
+	# setup initial network elements
+	# ===============================
+
+	# 设置环境变量
+	project_id=$(openstack project list | grep " demo " | awk '-F[ \t]*\\|[ \t]*' '{print $2}')
+	REGION_NAME="RegionOne"
+	PRIVATE_NETWORK_NAME="private"
+	PUBLIC_NETWORK_NAME="public"
+	PRIVATE_SUBNET_NAME="private-subnet"
+	IPV6_PRIVATE_SUBNET_NAME="ipv6-private-subnet"
+	ipv6_modes="--ipv6-ra-mode slaac --ipv6-address-mode slaac"
+	Q_ROUTER_NAME="router1"
+	EXTERNAL_NETWORK_FLAGS='--external --default'
+	PUBLIC_PHYSICAL_NETWORK="public"
+	FLOATING_RANGE="172.24.4.0/24"
+	PUBLIC_SUBNET_NAME="public-subnet"
+	IPV6_PUBLIC_SUBNET_NAME="ipv6-public-subnet"
+	SUBNETPOOL_NAME="shared-default-subnetpool"
+
+	# 创建IPV4和IPV6的子网池
+	SUBNETPOOL_V4_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet pool create $SUBNETPOOL_NAME --default-prefix-length 26 --pool-prefix 10.0.0.0/22 --share --default | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	SUBNETPOOL_V6_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet pool create $SUBNETPOOL_NAME --default-prefix-length 64 --pool-prefix fd99:0295:1537::/56 --share --default | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# 创建private网络
+	NET_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" network create --project $project_id "$PRIVATE_NETWORK_NAME" | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	
+	# 创建IPV4子网
+	subnet_params="--project $project_id "
+	subnet_params+="--ip-version 4 "
+	subnet_params+='--gateway 10.1.0.1 '
+	subnet_params+="${SUBNETPOOL_V4_ID:+--subnet-pool $SUBNETPOOL_V4_ID} "
+    subnet_params+="--network $NET_ID $PRIVATE_SUBNET_NAME"
+	SUBNET_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet create $subnet_params | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# 创建IPV6子网
+	subnet_params="--project $project_id "
+	subnet_params+="--ip-version 6 "
+	subnet_params+="${SUBNETPOOL_V6_ID:+--subnet-pool $SUBNETPOOL_V6_ID} "
+    subnet_params+="$ipv6_modes --network $NET_ID $IPV6_PRIVATE_SUBNET_NAME "
+	IPV6_SUBNET_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet create $subnet_params | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# 创建路由器
+	ROUTER_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" router create --project $project_id $Q_ROUTER_NAME | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# 创建public网络
+	EXT_NET_ID=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" network create "$PUBLIC_NETWORK_NAME" $EXTERNAL_NETWORK_FLAGS --provider-network-type flat --provider-physical-network ${PUBLIC_PHYSICAL_NETWORK} | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# Configure neutron router for IPv4 public access
+	# ===============================================
+
+	# 将IPV4子网接入路由器
+	openstack --os-cloud devstack-admin --os-region "$REGION_NAME" router add subnet $ROUTER_ID $SUBNET_ID
+
+	subnet_params="--ip-version 4 "
+	subnet_params+="--network $EXT_NET_ID --subnet-range $FLOATING_RANGE --no-dhcp "
+    subnet_params+="$PUBLIC_SUBNET_NAME"
+	id_and_ext_gw_ip=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet create $subnet_params | grep -e 'gateway_ip' -e ' id ')
+	ext_gw_ip=$(echo $id_and_ext_gw_ip  | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+    PUB_SUBNET_ID=$(echo $id_and_ext_gw_ip | awk '-F[ \t]*\\|[ \t]*' '{print $6}')
+
+	# 设置路由器的外部网关
+	openstack --os-cloud devstack-admin --os-region "$REGION_NAME" router set --external-gateway $EXT_NET_ID $ROUTER_ID
+
+	sudo ovs-vsctl set Bridge br-ex other_config:disable-in-band=true
+	ext_gw_interface=br-ex
+	timeout 10 sh -c 'while ! ip -o link | grep -q br-ex; do sleep 0.5; done'
+
+	sudo ip addr add 172.24.4.1/24 dev br-ex
+    sudo ip link set br-ex up
+
+	ROUTER_GW_IP=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" port list -c 'Fixed IP Addresses' --device-owner network:router_gateway | awk -F'ip_address'  '{ print $2 }' | cut -f2 -d\' | tr '\n' ' ')
+
+	# Configure router for IPv6 public access
+	# =========================================
+
+	# 将IPV6子网接入路由器	
+	openstack --os-cloud devstack-admin --os-region "$REGION_NAME" router add subnet $ROUTER_ID $IPV6_SUBNET_ID
+	
+	subnet_params="--ip-version 6 "
+    subnet_params+="--gateway 2001:db8::2 "
+    subnet_params+="--network $EXT_NET_ID --subnet-range 2001:db8::/64 --no-dhcp "
+    subnet_params+="$IPV6_PUBLIC_SUBNET_NAME"
+	ipv6_id_and_ext_gw_ip=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" subnet create $subnet_params | grep -e 'gateway_ip' -e ' id ')
+	ipv6_ext_gw_ip=$(echo $ipv6_id_and_ext_gw_ip | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+    ipv6_pub_subnet_id=$(echo $ipv6_id_and_ext_gw_ip | awk '-F[ \t]*\\|[ \t]*' '{print $6}')
+
+	sudo sysctl -w net.ipv6.conf.all.forwarding=1
+
+	IPV6_ROUTER_GW_IP=$(openstack --os-cloud devstack-admin --os-region "$REGION_NAME" port list -c 'Fixed IP Addresses' | grep $ipv6_pub_subnet_id | awk -F'ip_address' '{ print $2 }' | cut -f2 -d\' | tr '\n' ' ')
+
+	sudo ovs-vsctl set Bridge br-ex other_config:disable-in-band=true
+	ext_gw_interface=br-ex
+
+	# sudo ip -6 addr replace $ipv6_ext_gw_ip/$ipv6_cidr_len dev $ext_gw_interface
+	sudo ip -6 addr replace 2001:db8::2/64 dev $ext_gw_interface
+	# sudo ip -6 route replace $replace_range via $IPV6_ROUTER_GW_IP dev $ext_gw_interface
+	sudo ip -6 route replace fd99:0295:1537::/56 via $IPV6_ROUTER_GW_IP dev $ext_gw_interface
+	\end{lstlisting}
+
+\section{开启nova服务}
+	\begin{lstlisting}
+	# 开启nova-conductor服务
+	screen -S stack -X screen -t n-cond
+	screen -S stack -p n-cond -X logfile /home/pengsida/temp/logs/n-cond.log.2017-03-30-172117
+    screen -S stack -p n-cond -X log on
+	touch /home/pengsida/temp/logs/n-cond.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cond.log.2017-03-30-172117'\'' n-cond.log'
+	screen -S stack -p n-cond -X stuff '/usr/local/bin/nova-conductor --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cond.pid; fg || echo "n-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cond.failure"^M'
+
+	# 开启nova-scheduler服务
+	screen -S stack -X screen -t n-sch
+	screen -S stack -p n-sch -X logfile /home/pengsida/temp/logs/n-sch.log.2017-03-30-172117
+    screen -S stack -p n-sch -X log on
+	touch /home/pengsida/temp/logs/n-sch.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-sch.log.2017-03-30-172117'\'' n-sch.log'
+	screen -S stack -p n-sch -X stuff '/usr/local/bin/nova-scheduler --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-sch.pid; fg || echo "n-sch failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-sch.failure"^M'
+
+	# 开启nova-consoleauth服务
+	screen -S stack -X screen -t n-cauth
+	screen -S stack -p n-cauth -X logfile /home/pengsida/temp/logs/n-cauth.log.2017-03-30-172117
+    screen -S stack -p n-cauth -X log on
+	touch /home/pengsida/temp/logs/n-cauth.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cauth.log.2017-03-30-172117'\'' n-cauth.log'
+	screen -S stack -p n-cauth -X stuff '/usr/local/bin/nova-consoleauth --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cauth.pid; fg || echo "n-cauth failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cauth.failure"^M'
+
+	# 开启nova-compute服务
+	screen -S stack -X screen -t n-cpu
+	screen -S stack -p n-cpu -X logfile /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+    screen -S stack -p n-cpu -X log on
+	touch /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cpu.log.2017-03-30-172117'\'' n-cpu.log'
+	screen -S stack -p n-cpu -X stuff '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cpu.failure"^M'
+	\end{lstlisting}
+
+	创建flavors：
+	\begin{lstlisting}
+	openstack --os-region-name=RegionOne flavor create --id c1 --ram 256 --disk 0 --vcpus 1 cirros256
+	openstack --os-region-name=RegionOne flavor create --id d1 --ram 512 --disk 5 --vcpus 1 ds512M
+	openstack --os-region-name=RegionOne flavor create --id d2 --ram 1024 --disk 10 --vcpus 1 ds1G
+	openstack --os-region-name=RegionOne flavor create --id d3 --ram 2048 --disk 10 --vcpus 2 ds2G
+	openstack --os-region-name=RegionOne flavor create --id d4 --ram 4096 --disk 20 --vcpus 4 ds4G
+	openstack --os-region-name=RegionOne flavor create --id 1 --ram 512 --disk 1 --vcpus 1 m1.tiny
+	openstack --os-region-name=RegionOne flavor create --id 2 --ram 2048 --disk 20 --vcpus 1 m1.small
+	openstack --os-region-name=RegionOne flavor create --id 3 --ram 4096 --disk 40 --vcpus 2 m1.medium
+	openstack --os-region-name=RegionOne flavor create --id 4 --ram 8192 --disk 80 --vcpus 4 m1.large
+	openstack --os-region-name=RegionOne flavor create --id 5 --ram 16384 --disk 160 --vcpus 8 m1.xlarge
+	\end{lstlisting}
+
+\section{开启placement服务}
+	\begin{lstlisting}
+	# start_placement_api
+	sudo a2ensite placement-api
+	service apache2 reload
+	sudo service apache2 stop
+	sudo service apache2 start
+
+	# 开启placement-api服务
+	screen -S stack -X screen -t placement-api
+	screen -S stack -p placement-api -X logfile /home/pengsida/temp/logs/placement-api.log.2017-03-30-172117
+    screen -S stack -p placement-api -X log on
+	touch /home/pengsida/temp/logs/placement-api.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''placement-api.log.2017-03-30-172117'\'' placement-api.log'
+	screen -S stack -p placement-api -X stuff 'sudo tail -f /var/log/apache2/placement-api.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/placement-api.pid; fg || echo "placement-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/placement-api.failure"^M'
+
+	# 检测placement-api服务是否开启
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://10.250.1.4/placement
+	\end{lstlisting}
+
+\section{保存openstack的账户信息}
+	\begin{lstlisting}
+	# Create account rc files
+	# =======================
+
+	USERRC_PARAMS='-PA --target-dir /home/pengsida/devstack/accrc'
+	/home/pengsida/devstack/tools/create_userrc.sh -PA --target-dir /home/pengsida/devstack/accrc
+	\end{lstlisting}
+
+\section{开启ironic服务}
+	\begin{lstlisting}
+	# 创建ironic的数据库
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS ironic;'
+	mysql -uroot -pp1111111 -h127.0.0.1 -e 'CREATE DATABASE ironic CHARACTER SET utf8;'
+	# 同步数据库
+	/usr/local/bin/ironic-dbsync --config-file=/etc/ironic/ironic.conf
+
+	# create ironic cache dir
+	sudo mkdir -p /var/cache/ironic/api
+    sudo chown pengsida /var/cache/ironic/api
+    rm -f '/var/cache/ironic/api/*'
+    sudo mkdir -p /var/cache/ironic/registry
+    sudo chown pengsida /var/cache/ironic/registry
+    rm -f '/var/cache/ironic/registry/*'
+
+	# 创建ironic需要的网桥
+	# ===================
+
+	LIBVIRT_CONNECT_URI=${LIBVIRT_CONNECT_URI:-"qemu:///system"}
+	BRIDGE_NAME="brbm"
+	PUBLIC_BRIDGE_MTU="1500"
+	export VIRSH_DEFAULT_CONNECT_URI="$LIBVIRT_CONNECT_URI"
+	IRONIC_VM_NETWORK_BRIDGE="brbm"
+
+	# 创建网桥brbm
+	(sudo ovs-vsctl list-br | grep ${BRIDGE_NAME}$) || sudo ovs-vsctl add-br ${BRIDGE_NAME}
+	sudo ip link set dev ${BRIDGE_NAME} up
+
+	# 删除brbm虚拟网桥
+	(virsh net-list | grep "${BRIDGE_NAME} ") && virsh net-destroy ${BRIDGE_NAME}
+	(virsh net-list --inactive  | grep "${BRIDGE_NAME} ") && virsh net-undefine ${BRIDGE_NAME}
+
+	# 建立brbm虚拟网桥
+	sudo virsh net-define <(sed s/brbm/$BRIDGE_NAME/ /opt/stack/ironic/devstack/tools/ironic/templates/brbm.xml)
+	sudo virsh net-autostart ${BRIDGE_NAME}
+	sudo virsh net-start ${BRIDGE_NAME}
+
+	sudo ip link set dev ${BRIDGE_NAME} mtu $PUBLIC_BRIDGE_MTU
+	
+	# setup_qemu_log_hook
+	sudo mkdir -p /etc/libvirt/hooks/
+    sudo cp /opt/stack/ironic/devstack/files/hooks/qemu.py /etc/libvirt/hooks//qemu
+    sudo chmod -v +x /etc/libvirt/hooks//qemu
+	sudo sed -e "
+        s|%LOG_DIR%|$IRONIC_VM_LOG_DIR|g;
+    " -i /etc/libvirt/hooks//qemu
+	sudo service libvirt-bin restart
+	IRONIC_VM_LOG_DIR="/home/pengsida/temp/ironic-bm-logs"
+    mkdir -p $IRONIC_VM_LOG_DIR
+    cat >${IRONIC_VM_LOG_DIR}/README << EOF
+This directory contains the serial console log files from the virtual Ironic
+bare-metal nodes. The *_console_* log files are the original log files and
+include ANSI control codes which can make the output difficult to read. The
+*_no_ansi_* log files have had ANSI control codes removed from the file and are
+easier to read.
+
+On some occasions there won't be a corresponding *_no_ansi_* log file, for
+example if the job failed due to a time-out. You may see a log file without a
+date/time in the file name. In that case you can display the logfile in your
+console by doing:
+   $ curl URL_TO_LOGFILE
+
+This will have your terminal process the ANSI escape codes.
+
+Another option, if you have the 'pv' executable installed, is to simulate a
+low-speed connection.  In this example simulate a 300 Bytes/second connection.
+   $ curl URL_TO_LOGFILE | pv -q -L 300
+
+This can allow you to see some of the content before the screen is cleared by
+an ANSI escape sequence.
+
+EOF
+
+	# 创建虚拟机
+	# ========================
+
+	# 设置虚拟机的存储池
+	sudo virsh pool-define-as --name default dir --target /var/lib/libvirt/images
+	sudo virsh pool-autostart default
+	sudo virsh pool-start default
+
+	domain_name="node-0"
+	port="6230"
+	# 创建虚拟机使用的网桥
+	sudo brctl addbr br-$domain_name
+	sudo ip link set br-$domain_name up
+
+	# 在网桥brbm上创建新的端口
+	sudo ovs-vsctl add-port brbm ovs-$domain_name -- set Interface ovs-$domain_name type=internal
+	sudo ip link set ovs-$domain_name up
+
+	# 将ovs-node端口加入这个网桥
+	sudo brctl addif br-$domain_name ovs-$domain_name
+
+	# 创建虚拟机的磁盘镜像文件
+	sudo virsh vol-create-as default $domain_name.qcow2 11G --format qcow2 --prealloc-metadata
+	sudo virsh vol-path --pool default $domain_name.qcow2
+	sudo touch /var/lib/libvirt/images/$domain_name.qcow2
+	sudo chattr +C /var/lib/libvirt/images/$domain_name.qcow2
+	sudo /opt/stack/ironic/devstack/tools/ironic/scripts/configure-vm.py --bootdev network --name $domain_name --image /var/lib/libvirt/images/$domain_name.qcow2 --arch x86_64 --cpus 1 --memory 1310720 --libvirt-nic-driver virtio --bridge br-$domain_name --disk-format qcow2 --console-log /home/pengsida/temp/ironic-bm-logs/"$domain_name"_console.log --engine qemu --emulator /usr/bin/qemu-system-x86_64
+	
+	# 设置虚拟机的监听端口
+	vbmc add $domain_name --port $port
+	# 启动虚拟机的监听端口
+	vbmc start $domain_name
+
+	# 配置ironic网络
+	# ========================
+
+	# create_ovs_taps
+	ironic_net_id=$(openstack network show "$PRIVATE_NETWORK_NAME" -c id -f value)
+	port_id=$(neutron port-create ${ironic_net_id} | grep " id " | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	tapdev=$(sudo ip netns exec qdhcp-${ironic_net_id} ip link list | grep " tap" | cut -d':' -f2 | cut -d'@' -f1 | cut -b2-)
+	tag_id=$(sudo ovs-vsctl get port ${tapdev} tag)
+	ovs_tap="ovs-tap"
+    brbm_tap="brbm-tap"
+    sudo ip link show $ovs_tap && sudo ip link delete $ovs_tap
+    sudo ip link show $brbm_tap && sudo ip link delete $brbm_tap
+    sudo ip link add $brbm_tap type veth peer name $ovs_tap
+    sudo ip link set dev $brbm_tap up
+    sudo ip link set dev $ovs_tap up
+    sudo ovs-vsctl -- --if-exists del-port $ovs_tap -- add-port br-int $ovs_tap tag=$tag_id
+    sudo ovs-vsctl -- --if-exists del-port $brbm_tap -- add-port $IRONIC_VM_NETWORK_BRIDGE $brbm_tap
+	openstack port delete $port_id
+
+	# 将内网设置为可共享的
+	openstack network set $ironic_net_id --share
+
+	# 获得router的uuid
+	pub_router_id=$(openstack router show $Q_ROUTER_NAME -f value -c id)
+	# 获得网关地址
+	r_net_gateway=$(sudo ip netns exec qrouter-$pub_router_id ip -4 route get 8.8.8.8 |grep dev | awk '{print $7}')
+	sudo ip route replace 10.0.0.0/22 via $r_net_gateway
+
+	# configure_ironic_networks
+	iniset /etc/ironic/ironic.conf neutron cleaning_network private
+
+	# 开启ironic服务
+	# ====================
+
+	# 开启ironic-api服务
+	screen -S stack -X screen -t ir-api
+	screen -S stack -p ir-api -X logfile /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
+    screen -S stack -p ir-api -X log on
+	touch /home/pengsida/temp/logs/ir-api.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-api.log.2017-03-30-172117'\'' ir-api.log'
+	screen -S stack -p ir-api -X stuff '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-api.pid; fg || echo "ir-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-api.failure"^M'
+
+	# 开启ironic-conductor服务
+	screen -S stack -X screen -t ir-cond
+	screen -S stack -p ir-cond -X logfile /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
+    screen -S stack -p ir-cond -X log on
+	touch /home/pengsida/temp/logs/ir-cond.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''ir-cond.log.2017-03-30-172117'\'' ir-cond.log'
+	screen -S stack -p ir-cond -X stuff '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-cond.pid; fg || echo "ir-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-cond.failure"^M'
+
+	# restart_apache_server
+	sudo service apache2 stop
+	sudo service apache2 start
+
+	# configure_ironic_ssh_keypair
+	# =============================
+	
+	# 设置环境变量
+	IRONIC_KEY_FILE="/opt/stack/data/ironic/ssh_keys/ironic_key"
+	IRONIC_AUTHORIZED_KEYS_FILE="/home/pengsida/.ssh/authorized_keys"
+
+	# 创建ssh keypair
+	mkdir -p /opt/stack/data/ironic/ssh_keys
+	rm -f /opt/stack/data/ironic/ssh_keys/*
+	echo -e 'n\n' | ssh-keygen -q -t rsa -P '' -f $IRONIC_KEY_FILE
+	ssh-keygen -q -t rsa -P '' -f /opt/stack/data/ironic/ssh_keys/ironic_key
+	echo "" >> $IRONIC_AUTHORIZED_KEYS_FILE
+	cat $IRONIC_KEY_FILE.pub | tee -a $IRONIC_AUTHORIZED_KEYS_FILE
+	sort -u -o $IRONIC_AUTHORIZED_KEYS_FILE $IRONIC_AUTHORIZED_KEYS_FILE
+	
+	# 检测是否可以连接虚拟机
+	ssh -p 22 -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no -i /opt/stack/data/ironic/ssh_keys/ironic_key pengsida@10.250.1.4 exit
+
+	# 创建ironic需要的镜像文件
+	# ====================
+
+	IRONIC_DEPLOY_KERNEL="/home/pengsida/devstack/files/ir-deploy-agent_ipmitool.kernel"
+	IRONIC_DEPLOY_RAMDISK="/home/pengsida/devstack/files/ir-deploy-agent_ipmitool.initramfs"
+	IRONIC_DEPLOY_KERNEL_ID=$(openstack image create ir-deploy-agent_ipmitool.kernel --public --disk-format=aki --container-format=aki < $IRONIC_DEPLOY_KERNEL  | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+	IRONIC_DEPLOY_RAMDISK_ID=$(openstack image create ir-deploy-agent_ipmitool.initramfs --public --disk-format=ari --container-format=ari < $IRONIC_DEPLOY_RAMDISK  | grep ' id ' | awk '-F[ \t]*\\|[ \t]*' '{print $3}')
+
+	# 注册虚拟机
+	# ====================
+
+	node_uuid=`uuidgen`
+	ironic chassis-create -d 'ironic test chassis'
+	first_chassis_uuid=`openstack baremetal chassis list -f value | head -1 | cut -d" " -f1`
+	ramdisk_uuid=`openstack image list | grep "\.initramfs" | cut -d"|" -f2 | cut -d" " -f2`
+	kernel_uuid=`openstack image list | grep "\.kernel" | cut -d"|" -f2 | cut -d" " -f2`
+	port_num=`vbmc list | grep $domain_name | egrep -o "| [0-9]+ |" | cut -d" " -f2`
+	vcpu_num=`virsh dumpxml $domain_name | grep vcpu | cut -d">" -f2 | cut -d"<" -f1`
+	memory=$(echo "`virsh dumpxml $domain_name | grep "memory" | cut -d">" -f2 | cut -d"<" -f1`/1024" | bc)
+	arch=`virsh dumpxml $domain_name | grep arch | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_path=`virsh dumpxml $domain_name | grep "source file" | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_size=`sudo qemu-img info $disk_path | grep "virtual size" | egrep -o "[0-9]+G" | cut -d"G" -f1`
+	local_size=$[ $disk_size-1 ]
+	driver_address=`openstack endpoint list | grep ironic | grep admin | cut -d"/" -f3 | cut -d":" -f1`
+	domain_address=`virsh dumpxml $domain_name | grep 'mac address' | head -1 | cut -d"'" -f2`
+
+	# 创建相应的flavor
+	openstack flavor create --ephemeral 0 --ram $memory --disk $local_size --vcpus $vcpu_num $domain_name
+	openstack flavor set $domain_name --property cpu_arch=$arch
+
+	# 设置flavor与domain关联
+	nova flavor-key $domain_name set capabilities:profile="$domain_name"
+
+	ironic node-create --uuid $node_uuid --chassis_uuid $first_chassis_uuid --driver agent_ipmitool --name $domain_name -p cpus=$vcpu_num -p memory_mb=$memory -p local_gb=$local_size -p cpu_arch=$arch -i ipmi_address=$driver_address -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=$kernel_uuid -i deploy_ramdisk=$ramdisk_uuid -i ipmi_port=$port_num
+	ironic port-create --address $domain_address --node $node_uuid
+	# 设置与flavor关联
+	ironic node-update $node_uuid add properties/capabilities="profile:$domain_name"
+
+	# 重启nova-compute服务
+	# ====================
+
+	# 关闭nova-compute服务
+	cat /opt/stack/status/stack/n-cpu.pid | pkill -g
+	screen -S stack -p n-cpu -X kill
+
+	# 启动nova-compute服务
+	screen -S stack -X screen -t n-cpu
+	screen -S stack -p n-cpu -X logfile /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+    screen -S stack -p n-cpu -X log on
+	touch /home/pengsida/temp/logs/n-cpu.log.2017-03-30-172117
+    bash -c 'cd '\''/home/pengsida/temp/logs'\'' && ln -sf '\''n-cpu.log.2017-03-30-172117'\'' n-cpu.log'
+	screen -S stack -p n-cpu -X stuff '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cpu.failure"^M'
+
+	# 配置tftpd服务
+	# ===================
+
+	IRONIC_TFTPBOOT_DIR="/opt/stack/data/ironic/tftpboot"
+	sudo service tftpd-hpa stop
+	[ -f /etc/init/tftpd-hpa.conf ] && echo "manual" | sudo tee /etc/init/tftpd-hpa.override
+	sudo cp /opt/stack/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template /etc/xinetd.d/tftp
+	sudo sed -e 's|%TFTPBOOT_DIR%|/opt/stack/data/ironic/tftpboot|g' -i /etc/xinetd.d/tftp
+	echo "r ^([^/]) $IRONIC_TFTPBOOT_DIR/\1" >$IRONIC_TFTPBOOT_DIR/map-file
+	echo "r ^(/tftpboot/) $IRONIC_TFTPBOOT_DIR/\2" >>$IRONIC_TFTPBOOT_DIR/map-file
+	chmod -R 0755 /opt/stack/data/ironic/tftpboot
+	sudo service xinetd restart
+
+	# 配置iptables
+	# ===================
+
+	# 设置环境变量
+	IRONIC_TFTPSERVER_IP="10.250.1.4"
+	HOST_IP="10.250.1.4"
+	IRONIC_HTTP_SERVER="10.250.1.4"
+	IRONIC_SERVICE_PORT="6385"
+	GLANCE_SERVICE_PORT="9292"
+	IRONIC_HTTP_PORT="3928"
+
+	# 配置iptables
+	sudo modprobe nf_conntrack_tftp
+	sudo modprobe nf_nat_tftp
+	sudo iptables -I INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT || true
+    sudo iptables -I INPUT -d $IRONIC_TFTPSERVER_IP -p udp --dport 69 -j ACCEPT || true
+    sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
+	sudo iptables -I INPUT -d $HOST_IP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
+	sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $GLANCE_SERVICE_PORT -j ACCEPT || true
+	sudo iptables -I INPUT -d $IRONIC_HTTP_SERVER -p tcp --dport $IRONIC_HTTP_PORT -j ACCEPT || true
+	\end{lstlisting}
+
+\section{合并配置文件}
+	\begin{lstlisting}
+awk -v matchgroup=extra '
+	/^\[\[.+\|.*\]\]/ {
+            gsub("[][]", "", $1);
+            split($1, a, "|");
+            if (a[1] == matchgroup)
+                print a[2]
+        }
+' /home/pengsida/devstack/local.conf
+
+awk -v matchgroup=post-extra '
+	/^\[\[.+\|.*\]\]/ {
+            gsub("[][]", "", $1);
+            split($1, a, "|");
+            if (a[1] == matchgroup)
+                print a[2]
+        }
+' /home/pengsida/devstack/local.conf
+	\end{lstlisting}
 
 \end{document}

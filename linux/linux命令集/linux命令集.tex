@@ -250,6 +250,62 @@ commands:
 		\item[3.] chkconfig --level 35 mysqld on修改服务的默认启动等级。 
 	\end{itemize}
 
+\section{chmod}
+	chmod命令用来变更文件或目录的权限。在UNIX系统家族里，文件或目录权限的控制分别以读取、写入、执行3种一般权限来区分，另有3种特殊权限可供运用。用户可以使用chmod指令去变更文件与目录的权限，设置方式采用文字或数字代号皆可。符号连接的权限无法变更，如果用户对符号连接修改权限，其改变会作用在被连接的原始文件。\par
+
+	格式：
+	\begin{lstlisting}
+	chmod 权限模式 文件
+	\end{lstlisting}
+
+	权限如下：
+	\begin{lstlisting}
+	u User，即文件或目录的拥有者； 
+	g Group，即文件或目录的所属群组； 
+	o Other，除了文件或目录拥有者或所属群组之外，其他用户皆属于这个范围； 
+	a All，即全部的用户，包含拥有者，所属群组以及其他用户； 
+	r 读取权限，数字代号为“4”; 
+	w 写入权限，数字代号为“2”； 
+	x 执行或切换权限，数字代号为“1”； 
+	- 不具任何权限，数字代号为“0”； 
+	s 特殊功能说明：变更文件或目录的权限。
+	\end{lstlisting}
+
+	参数选项：
+	\begin{lstlisting}
+	-c或——changes：效果类似“-v”参数，但仅回报更改的部分； 
+	-f或--quiet或——silent：不显示错误信息； 
+	-R或——recursive：递归处理，将指令目录下的所有文件及子目录一并处理； 
+	-v或——verbose：显示指令执行过程； 
+	--reference=<参考文件或目录>：把指定文件或目录的所属群组全部设成和参考文件或目录的所属群组相同； 
+	<权限范围>+<权限设置>：开启权限范围的文件或目录的该选项权限设置； 
+	<权限范围>-<权限设置>：关闭权限范围的文件或目录的该选项权限设置； 
+	<权限范围>=<权限设置>：指定权限范围的文件或目录的该选项权限设置；
+	\end{lstlisting}
+
+\section{chown}
+	chown命令改变某个文件或目录的所有者和所属的组，该命令可以向某个用户授权，使该用户变成指定文件的所有者或者改变文件所属的组。用户可以是用户或者是用户D，用户组可以是组名或组id。文件名可以使由空格分开的文件列表，在文件名中可以包含通配符。\par
+	只有文件主和超级用户才可以便用该命令。\par
+
+	格式：
+	\begin{lstlisting}
+	# 如果省略组，就只改变文件所有者
+	chown 用户:组 文件
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-c或——changes：效果类似“-v”参数，但仅回报更改的部分； 
+	-f或--quite或——silent：不显示错误信息； 
+	-h或--no-dereference：只对符号连接的文件作修改，而不更改其他任何相关文件； 
+	-R或——recursive：递归处理，将指定目录下的所有文件及子目录一并处理； 
+	-v或——version：显示指令执行过程； 
+	--dereference：效果和“-h”参数相同； 
+	--help：在线帮助； 
+	--reference=<参考文件或目录>：把指定文件或目录的拥有者与所属群组全部设成和参考文件或目录的拥有者与所属群组相同； 
+	--version：显示版本信息。
+	\end{lstlisting}
+
 \section{cpio}
 	cpio命令主要是用来建立或者还原备份档的工具程序，cpio命令可以复制文件到归档包中，或者从归档包中复制文件。\par
 
@@ -446,6 +502,36 @@ commands:
 	# alex
 	\end{lstlisting}
 
+\section{debconf-set-selections}
+	在debconf database中插入默认值。\par
+
+	格式：
+	\begin{lstlisting}
+	debconf-set-selections [-vcu] [file]
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-v, --verbose     显示运行过程信息
+	-c, --checkonly   只检查输入文件的格式
+	-u, --unseen      在预置参数时，不设置'seen'标识
+	\end{lstlisting}
+
+	使用例子：
+	\begin{lstlisting}
+	# 命令行输入设置参数
+	sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password your_password'
+	sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password your_password'
+	sudo apt-get -y install mysql-server
+
+	# 先输入文件，再一次性添入设置参数
+	echo "mysql-server-5.5 mysql-server/root_password password $MYSQL_ROOT_PASS" > /tmp/mysql.preseed
+	echo "mysql-server-5.5 mysql-server/root_password_again password $MYSQL_ROOT_PASS" >> /tmp/mysql.preseed
+	cat /tmp/mysql.preseed | sudo debconf-set-selections
+	rm /tmp/mysql.preseed
+	sudo apt-get install -y mysql-server
+	\end{lstlisting}
+
 \section{egrep}
 	egrep命令用于在文件内查找指定的字符串。egrep执行效果与grep -E相似，使用的语法及参数可参照grep指令，与grep的不同点在于解读字符串的方法。egrep是用extended regular expression语法来解读的，而grep则用basic regular expression 语法解读，extended regular expression比basic regular expression的表达更规范。
 
@@ -529,6 +615,77 @@ commands:
 	find /home -name "*.txt"
 	\end{lstlisting}
 
+\section{getent}
+	从管理数据库取得条目。
+
+	用法： 
+	\begin{lstlisting}
+	getent [选项...] 数据库 [键 ...]
+	\end{lstlisting}
+	
+	参数选项：
+	\begin{lstlisting}
+	-i, --no-idn               停用 IDN 编码
+	-s, --service=组态       要使用的服务配置
+	-?, --help                 给出此帮助列表
+		--usage                给出简要的用法信息
+	-V, --version              打印程序版本号
+	\end{lstlisting}
+
+	支持的数据库：
+	\begin{lstlisting}
+	ahosts ahostsv4 ahostsv6 aliases ethers group gshadow hosts initgroups
+	netgroup networks passwd protocols rpc services shadow
+	\end{lstlisting}
+
+\section{grep}
+	grep（global search regular expression(RE) and print out the line，全面搜索正则表达式并把行打印出来）是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。
+
+	grep参数选项如下：
+	\begin{lstlisting}
+	-a 不要忽略二进制数据。 
+	-A<显示列数> 除了显示符合范本样式的那一行之外，并显示该行之后的内容。 
+	-b 在显示符合范本样式的那一行之外，并显示该行之前的内容。 
+	-c 计算符合范本样式的列数。 
+	-C<显示列数>或-<显示列数> 除了显示符合范本样式的那一列之外，并显示该列之前后的内容。 
+	-d<进行动作> 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep命令将回报信息并停止动作。 
+	-e<范本样式> 指定字符串作为查找文件内容的范本样式。 
+	-E 将范本样式为延伸的普通表示法来使用，意味着使用能使用扩展正则表达式。 
+	-f<范本文件> 指定范本文件，其内容有一个或多个范本样式，让grep查找符合范本条件的文件内容，格式为每一列的范本样式。 
+	-F 将范本样式视为固定字符串的列表。 
+	-G 将范本样式视为普通的表示法来使用。 
+	-h 在显示符合范本样式的那一列之前，不标示该列所属的文件名称。 
+	-H 在显示符合范本样式的那一列之前，标示该列的文件名称。 
+	-i 忽略字符大小写的差别。 
+	-l 列出文件内容符合指定的范本样式的文件名称。 
+	-L 列出文件内容不符合指定的范本样式的文件名称。 
+	-n 在显示符合范本样式的那一列之前，标示出该列的编号。 
+	-q 不显示任何信息。 
+	-R/-r 此参数的效果和指定“-d recurse”参数相同。 
+	-s 不显示错误信息。 
+	-v 反转查找。 
+	-w 只显示全字符合的列。 
+	-x 只显示全列符合的列。 
+	-y 此参数效果跟“-i”相同。 
+	-o 只输出文件中匹配到的部分。
+	\end{lstlisting}
+
+\section{groupadd}
+	groupadd命令用于创建一个新的工作组，新工作组的信息将被添加到系统文件中。\par
+
+	格式：
+	\begin{lstlisting}
+	groupadd 组名
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-g：指定新建工作组的id； 
+	-r：创建系统工作组，系统工作组的组ID小于500； 
+	-K：覆盖配置文件“/ect/login.defs”； 
+	-o：允许添加组ID号不唯一的工作组。
+	\end{lstlisting}
+
 \section{gunzip}
 	gunzip命令用来解压缩文件。gunzip是个使用广泛的解压缩程序，它用于解开被gzip压缩过的文件，这些压缩文件预设最后的扩展名为.gz。事实上gunzip就是gzip的硬连接，因此不论是压缩或解压缩，都可通过gzip指令单独完成。\par
 
@@ -558,38 +715,6 @@ commands:
 	gunzip -l /opt/etc.zip.gz
 	\end{lstlisting}
 
-\section{grep}
-	grep（global search regular expression(RE) and print out the line，全面搜索正则表达式并把行打印出来）是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。
-
-	grep参数选项如下：
-	\begin{lstlisting}
-	-a 不要忽略二进制数据。 
-	-A<显示列数> 除了显示符合范本样式的那一行之外，并显示该行之后的内容。 
-	-b 在显示符合范本样式的那一行之外，并显示该行之前的内容。 
-	-c 计算符合范本样式的列数。 
-	-C<显示列数>或-<显示列数> 除了显示符合范本样式的那一列之外，并显示该列之前后的内容。 
-	-d<进行动作> 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep命令将回报信息并停止动作。 
-	-e<范本样式> 指定字符串作为查找文件内容的范本样式。 
-	-E 将范本样式为延伸的普通表示法来使用，意味着使用能使用扩展正则表达式。 
-	-f<范本文件> 指定范本文件，其内容有一个或多个范本样式，让grep查找符合范本条件的文件内容，格式为每一列的范本样式。 
-	-F 将范本样式视为固定字符串的列表。 
-	-G 将范本样式视为普通的表示法来使用。 
-	-h 在显示符合范本样式的那一列之前，不标示该列所属的文件名称。 
-	-H 在显示符合范本样式的那一列之前，标示该列的文件名称。 
-	-i 胡列字符大小写的差别。 
-	-l 列出文件内容符合指定的范本样式的文件名称。 
-	-L 列出文件内容不符合指定的范本样式的文件名称。 
-	-n 在显示符合范本样式的那一列之前，标示出该列的编号。 
-	-q 不显示任何信息。 
-	-R/-r 此参数的效果和指定“-d recurse”参数相同。 
-	-s 不显示错误信息。 
-	-v 反转查找。 
-	-w 只显示全字符合的列。 
-	-x 只显示全列符合的列。 
-	-y 此参数效果跟“-i”相同。 
-	-o 只输出文件中匹配到的部分。
-	\end{lstlisting}
-
 \section{head}
 	head命令用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。\par
 
@@ -599,6 +724,45 @@ commands:
 	-c<字符数>：指定显示头部内容的字符数； 
 	-v：总是显示文件名的头信息； 
 	-q：不显示文件名的头信息。
+	\end{lstlisting}
+
+\section{install}
+	install命令的作用是安装或升级软件或备份数据，它的使用权限是所有用户。
+	install命令和cp命令类似，都可以将文件/目录拷贝到指定的地点。
+	但是，install允许你控制目标文件的属性。
+	install通常用于程序的makefile，使用它来将程序拷贝到目标（安装）目录。\par
+
+	格式：
+	\begin{lstlisting}
+	install [OPTION]... [-T] SOURCE DEST 
+	install [OPTION]... SOURCE... DIRECTORY 
+	install [OPTION]... -t DIRECTORY SOURCE... 
+	install [OPTION]... -d DIRECTORY...
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	--backup[=CONTROL]：为每个已存在的目的地文件进行备份。 
+	-b：类似 --backup，但不接受任何参数。 
+	-c：(此选项不作处理)。 
+	-d，--directory：所有参数都作为目录处理，而且会创建指定目录的所有主目录。 
+	-D：创建<目的地>前的所有主目录，然后将<来源>复制至 <目的地>；在第一种使用格式中有用。 
+	-g，--group=组：自行设定所属组，而不是进程目前的所属组。 
+	-m，--mode=模式：自行设定权限模式 (像chmod)，而不是rwxr-xr-x。 
+	-o，--owner=所有者：自行设定所有者 (只适用于超级用户)。 
+	-p，--preserve-timestamps：以<来源>文件的访问/修改时间作为相应的目的地文件的时间属性。 
+	-s，--strip：用strip命令删除symbol table，只适用于第一及第二种使用格式。 
+	-S，--suffix=后缀：自行指定备份文件的<后缀>。 
+	-v，--verbose：处理每个文件/目录时印出名称。 
+	--help：显示此帮助信息并离开。 
+	--version：显示版本信息并离开。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	install -d a/b/c e/f # 类似于mkdir -p a/b/c e/f
+	install a/e c # 类似于cp a/e c
+	install -D x a/b/c # 类似于mkdir -p a/b && cp x a/b/c
 	\end{lstlisting}
 
 \section{ip}
@@ -650,6 +814,37 @@ commands:
 		address ：如果这个装置可以更改 MAC 的话，用这个参数修改！
 		name     ：给予这个装置一个特殊的名字；
 		mtu      ：就是最大传输单元啊！
+	\end{lstlisting}
+
+\section{ln}
+	ln命令用来为文件创件连接，连接类型分为硬连接和符号连接两种，默认的连接类型是硬连接。如果要创建符号连接必须使用"-s"选项。 \par
+	注意：符号链接文件不是一个独立的文件，它的许多属性依赖于源文件，所以给符号链接文件设置存取权限是没有意义的。\par
+
+	格式：
+	\begin{lstlisting}
+	ln 源文件 目标文件
+	\end{lstlisting}
+
+	ln参数选项如下：
+	\begin{lstlisting}
+	-b或--backup：删除，覆盖目标文件之前的备份； 
+	-d或-F或——directory：建立目录的硬连接； 
+	-f或——force：强行建立文件或目录的连接，不论文件或目录是否存在； 
+	-i或——interactive：覆盖既有文件之前先询问用户； 
+	-n或--no-dereference：把符号连接的目的目录视为一般文件； 
+	-s或——symbolic：对源文件建立符号连接，而非硬连接； 
+	-S<字尾备份字符串>或--suffix=<字尾备份字符串>：用"-b"参数备份目标文件后，备份文件的字尾会被加上一个备份字符串，预设的备份字符串是符号“~”，用户可通过“-S”参数来改变它； 
+	-v或——verbose：显示指令执行过程； 
+	-V<备份方式>或--version-control=<备份方式>：用“-b”参数备份目标文件后，备份文件的字尾会被加上一个备份字符串，这个字符串不仅可用“-S”参数变更，当使用“-V”参数<备份方式>指定不同备份方式时，也会产生不同字尾的备份字符串； 
+	--help：在线帮助； 
+	--version：显示版本信息。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 将目录/usr/mengqc/mub1下的文件m2.c链接到目录/usr/liu下的文件a2.c
+	ln /mub1/m2.c /usr/liu/a2.c
+	# 在执行ln命令之前，目录/usr/liu中不存在a2.c文件。执行ln之后，在/usr/liu目录中才有a2.c这一项，表明m2.c和a2.c链接起来（注意，二者在物理上是同一文件），利用ls -l命令可以看到链接数的变化
 	\end{lstlisting}
 
 \section{mount}
@@ -764,6 +959,41 @@ commands:
 	od -w2 -c tmp
 	\end{lstlisting}
 
+\section{pop}
+	popd命令用于删除目录栈中的记录；如果popd命令不加任何参数，则会先删除目录栈最上面的记录，然后切换到删除过后的目录栈中的最上面的目录。\par
+
+	格式：
+	\begin{lstlisting}
+	+N：将第N个目录删除（从左边数起，数字从0开始）； 
+	-N：将第N个目录删除（从右边数起，数字从0开始）； 
+	-n：将目录出栈时，不切换目录。
+	\end{lstlisting}
+
+\section{pushd}
+	pushd命令是将目录加入命令堆叠中。如果指令没有指定目录名称，则会将当前的工作目录置入目录堆叠的最顶端。置入目录如果没有指定堆叠的位置，也会置入目录堆叠的最顶端，同时工作目录会自动切换到目录堆叠最顶端的目录去。\par
+
+	格式：
+	\begin{lstlisting}
+	pushd 目录
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-n：只加入目录到堆叠中，不进行cd操作； 
+	+n：删除从左到右的第n个目录，数字从0开始； 
+	-n：删除从右到左的第n个目录，数字从0开始；
+	\end{lstlisting}
+
+\section{readlink}
+	readlink是linux系统中一个常用工具，主要用来找出符号链接所指向的位置。\par
+
+	参数选项：
+	\begin{lstlisting}
+	-f 选项：
+	-f 选项可以递归跟随给出文件名的所有符号链接以标准化，除最后一个外所有组件必须存在。
+	简单地说，就是一直跟随符号链接，直到直到非符号链接的文件位置，限制是最后必须存在一个非符号链接的文件。
+	\end{lstlisting}
+
 \section{scp}
 	scp命令用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。可能会稍微影响一下速度。当你服务器硬盘变为只读read only system时，用scp可以帮你把文件移出来。另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，rsync就远远不及它了。虽然 rsync比scp会快一点，但当小文件众多的情况下，rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用。\par
 
@@ -792,6 +1022,134 @@ commands:
 	scp ~/local.conf pengsida@172.16.19.223:/home/pengsida/devstack/local.conf
 	# 上传本地目录到远程机器指定目录
 	scp -r ~/devstack pengsida@172.16.19.223:/home/pengsida/devstack
+	\end{lstlisting}
+
+\section{screen}
+	screen screen命令常用工具命令 Screen是一款由GNU计划开发的用于命令行终端切换的自由软件。用户可以通过该软件同时连接多个本地或远程的命令行会话，并在其间自由切换。GNU Screen可以看作是窗口管理器的命令行界面版本。它提供了统一的管理多个会话的界面和相应的功能。
+
+\subsection{会话恢复}
+	只要Screen本身没有终止，在其内部运行的会话都可以恢复。
+	这一点对于远程登录的用户特别有用——即使网络连接中断，用户也不会失去对已经打开的命令行会话的控制。
+	只要再次登录到主机上执行screen -r就可以恢复会话的运行。
+	同样在暂时离开的时候，也可以执行分离命令detach，在保证里面的程序正常运行的情况下让Screen挂起（切换到后台）。
+	这一点和图形界面下的VNC很相似。
+
+\subsection{多窗口}
+	在Screen环境下，所有的会话都独立的运行，并拥有各自的编号、输入、输出和窗口缓存。
+	用户可以通过快捷键在不同的窗口下切换，并可以自由的重定向各个窗口的输入和输出。
+	Screen实现了基本的文本操作，如复制粘贴等；还提供了类似滚动条的功能，可以查看窗口状况的历史记录。
+	窗口还可以被分区和命名，还可以监视后台窗口的活动。 
+	会话共享 Screen可以让一个或多个用户从不同终端多次登录一个会话，
+	并共享会话的所有特性（比如可以看到完全相同的输出）。
+	它同时提供了窗口访问权限的机制，可以对窗口进行密码保护。
+
+\subsection{使用}
+	格式：
+	\begin{lstlisting}
+	screen [-AmRvx -ls -wipe][-d <作业名称>][-h <行数>][-r <作业名称>][-s ][-S <作业名称>]
+	\end{lstlisting}
+
+	参数选项如下：
+	\begin{lstlisting}
+	-A 　将所有的视窗都调整为目前终端机的大小。 
+	-d <作业名称> 　将指定的screen作业离线。 
+	-h <行数> 　指定视窗的缓冲区行数。 
+	-m 　即使目前已在作业中的screen作业，仍强制建立新的screen作业。 
+	-r <作业名称> 　恢复离线的screen作业。 
+	-R 　先试图恢复离线的作业。若找不到离线的作业，即建立新的screen作业。 
+	-s 　指定建立新视窗时，所要执行的shell。 
+	-S <作业名称> 　指定screen作业的名称。 
+	-v 　显示版本信息。 
+	-x 　恢复之前离线的screen作业。 
+	-X   Execute <cmd> as a screen command in the specified session.
+	-t title  Set title. (window's name).
+	-ls或--list 　显示目前所有的screen作业。 
+	-wipe 　检查目前所有的screen作业，并删除已经无法使用的screen作业。
+	setenv [var [string]] Set the environment variable var to value string
+	hardstatus string [string] 	根据字符串设置状态栏的样式
+	-p number_or_name|-|=|+		 Preselect  a window. This is useful when you want to reattach to a specific window or you want to send a command via the "-X"  option to a specific window.
+	logfile filename	 Defines the name the log files will get.
+	log [on|off]	Start/stop writing output of the current window to its log file
+	stuff [string]	Stuff the string string in the input  buffer  of  the  current  window. This  is like the "paste" command but with much less overhead.
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	screen -S yourname -> 新建一个叫yourname的session 
+	screen -ls -> 列出当前所有的session 
+	screen -r yourname -> 回到yourname这个session 
+	screen -d yourname -> 远程detach某个session 
+	screen -d -r yourname -> 结束当前session并回到yourname这个session
+	\end{lstlisting}
+
+	在每个screen session下，所有命令都以ctrl+a开始：
+	\begin{lstlisting}
+	C-a ? -> 显示所有键绑定信息 
+	C-a c -> 创建一个新的运行shell的窗口并切换到该窗口 
+	C-a n -> Next，切换到下一个 window 
+	C-a p -> Previous，切换到前一个 window 
+	C-a 0..9 -> 切换到第 0..9 个 window 
+	Ctrl+a [Space] -> 由视窗0循序切换到视窗9 
+	C-a C-a -> 在两个最近使用的 window 间切换 
+	C-a x -> 锁住当前的 window，需用用户密码解锁 
+	C-a d -> detach，暂时离开当前session，将目前的 screen session (可能含有多个 windows) 丢到后台执行，并会回到还没进 screen 时的状态，此时在 screen session 里，每个 window 内运行的 process (无论是前台/后台)都在继续执行，即使 logout 也不影响。 
+	C-a z -> 把当前session放到后台执行，用 shell 的 fg 命令则可回去。 
+	C-a w -> 显示所有窗口列表 
+	C-a t -> time，显示当前时间，和系统的 load 
+	C-a k -> kill window，强行关闭当前的 window 
+	C-a [ -> 进入 copy mode，在 copy mode 下可以回滚、搜索、复制就像用使用 vi 一样 
+	C-b Backward，PageUp 
+	C-f Forward，PageDown 
+	H(大写) High，将光标移至左上角 
+	L Low，将光标移至左下角 
+	0 移到行首 
+	$ 行末 \
+	w forward one word，以字为单位往前移 
+	b backward one word，以字为单位往后移 
+	Space 第一次按为标记区起点，第二次按为终点 
+	Esc 结束 copy mode 
+	C-a ] -> paste，把刚刚在 copy mode 选定的内容贴上
+	\end{lstlisting}
+
+\subsection{设置hardstatus}
+	具体字符串的意思可以在“man screen”中的“STRING ESCAPES”找到。\par
+
+	参考网站：\par
+	\url{https://havee.me/linux/2011-08/screen-status-bar.html}\par
+	\url{http://www.gnu.org/software/screen/manual/screen.html#Message-Line}\par
+	\url{https://www.zhangguangtong.cn/?p=66}
+
+\section{set}
+	格式：
+	\begin{lstlisting}
+	set: 用法: set [--abefhkmnptuvxBCHP] [-o 选项名] [--] [参数 ...]
+	\end{lstlisting}
+
+\section{stat}
+	stat命令用于显示文件的状态信息。stat命令的输出信息比ls命令的输出信息要更详细。\par
+
+	格式：
+	\begin{lstlisting}
+	stat 文件
+	\end{lstlisting}
+
+	stat参数选项如下：
+	\begin{lstlisting}
+	-L：支持符号连接； 
+	-f：显示文件系统状态而非文件状态； 
+	-t：以简洁方式输出信息； 
+	--help：显示指令的帮助信息； 
+	--version：显示指令的版本信息。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	[root@localhost ~]# ls -l myfile 
+	-rw-r--r-- 1 root root 0 2010-10-09 myfile 
+
+	[root@localhost ~]# stat myfile 
+	
+	[root@localhost ~]# stat -t myfile 
 	\end{lstlisting}
 
 \section{strings}
@@ -845,6 +1203,33 @@ commands:
 	-V ：显示版本信息。
 	\end{lstlisting}
 
+\section{sysctl}
+	sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。\par
+
+	参数选项如下：
+	\begin{lstlisting}
+	-n：打印值时不打印关键字； 
+	-e：忽略未知关键字错误； 
+	-N：仅打印名称； 
+	-w：当改变sysctl设置时使用此项； 
+	-p：从配置文件“/etc/sysctl.conf”加载内核参数设置； 
+	-a：打印当前所有可用的内核参数变量和值； 
+	-A：以表格方式打印当前所有可用的内核参数变量和值。
+	\end{lstlisting}
+
+	使用例子如下：
+	\begin{lstlisting}
+	# 读取一个变量
+	sysctl vm.zone_reclaim_mode
+	# 设置一个变量
+	sysctl -w vm.zone_reclaim_mode=1
+	\end{lstlisting}
+
+	除了使用sysctl修改系统变量，也可以通过编辑/etc/sysctl.conf文件来修改系统变量，然后再使用以下命令：
+	\begin{lstlisting}
+	/sbin/sysctl -p
+	\end{lstlisting}
+
 \section{tar}
 	使用例子如下：
 	\begin{lstlisting}
@@ -860,6 +1245,31 @@ commands:
 	命令形式如下：
 	\begin{lstlisting}
 	telnet host [port]
+	\end{lstlisting}
+
+\section{trap}
+	trap命令用于指定在接收到信号后将要采取的动作，常见的用途是在脚本程序被中断时完成清理工作。当shell接收到sigspec指定的信号时，arg参数（命令）将会被读取，并被执行。\par
+
+	格式：
+	\begin{lstlisting}
+	trap commands signal
+	\end{lstlisting}
+
+\section{uname}
+	uname命令用于打印当前系统相关信息（内核版本号、硬件架构、主机名称和操作系统类型等）。\par
+
+	参数选项如下：
+	\begin{lstlisting}
+	-a或--all：显示全部的信息； 
+	-m或--machine：显示电脑类型； 
+	-n或-nodename：显示在网络上的主机名称； 
+	-r或--release：显示操作系统的发行编号； 
+	-s或--sysname：显示操作系统名称； 
+	-v：显示操作系统的版本； 
+	-p或--processor：输出处理器类型或"unknown"； 
+	-i或--hardware-platform：输出硬件平台或"unknown"； 
+	-o或--operating-system：输出操作系统名称； 
+	--help：显示帮助； --version：显示版本信息。
 	\end{lstlisting}
 
 \section{wc}

@@ -264,6 +264,7 @@
 	# stop_process n-cpu
 	cat /opt/stack/status/stack/n-cpu.pid | pkill -g
 	screen -S stack -p n-cpu -X kill
+	
 	# start_nova_compute
 	# run_process n-cpu '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf'
 	screen -S stack -X screen -t n-cpu
