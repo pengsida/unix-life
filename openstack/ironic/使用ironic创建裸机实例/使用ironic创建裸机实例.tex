@@ -324,7 +324,64 @@
 
 \subsection{启动虚拟机}
 	\begin{lstlisting}
-	openstack server create --flavor node-0 --image cirros-0.3.5-x86_64-disk --nic net-id=fc9b7451-6757-40b3-8954-3e8c7a442316 node-0
+	private_network=$(openstack network list -f value -c ID --name private)
+	domain_name="node-0"
+	openstack server create --flavor $domain_name --image cirros-0.3.5-x86_64-disk --nic net-id=$private_network $domain_name
+	\end{lstlisting}
+
+\section{第三个例子}
+	\begin{lstlisting}
+	# 创建虚拟机
+	export domain_name="node-0"
+	export port="6230"
+	export num=$(echo $domain_name | cut -d"-" -f2)
+	export port=$[ $port + $num ]
+	export outlet=$[ $num + 1 ]
+	sudo vbmc delete $domain_name
+	sudo virsh vol-delete $domain_name.qcow2 default
+	sudo virsh undefine $domain_name
+	sudo ip link set br-$domain_name down
+	sudo brctl delbr br-$domain_name
+	sudo ovs-vsctl del-port brbm ovs-$domain_name
+	sudo -E su pengsida -c '/opt/stack/ironic/devstack/tools/ironic/scripts/create-node.sh -n $domain_name -c 1 -m 1280 -d 10 -a x86_64 -b brbm -e /usr/bin/qemu-system-x86_64 -E qemu -p $port -o $outlet -f qcow2 -l /home/pengsida/temp/ironic-bm-logs'
+
+	# 注册虚拟机
+	node_uuid=`uuidgen`
+	# ironic chassis-create -d 'ironic test chassis'
+	first_chassis_uuid=`openstack baremetal chassis list -f value | head -1 | cut -d" " -f1`
+	if [ -z $first_chassis_uuid ]; then ironic chassis-create -d 'ironic test chassis'; first_chassis_uuid=`openstack baremetal chassis list -f value | head -1 | cut -d" " -f1`; fi
+	ramdisk_uuid=`openstack image list | grep "\.initramfs" | cut -d"|" -f2 | cut -d" " -f2`
+	kernel_uuid=`openstack image list | grep "\.kernel" | cut -d"|" -f2 | cut -d" " -f2`
+	port_num=`vbmc list | grep $domain_name | egrep -o "| [0-9]+ |" | cut -d" " -f2`
+	vcpu_num=`sudo virsh dumpxml $domain_name | grep vcpu | cut -d">" -f2 | cut -d"<" -f1`
+	memory=$(echo "`sudo virsh dumpxml $domain_name | grep "memory" | cut -d">" -f2 | cut -d"<" -f1`/1024" | bc)
+	arch=`sudo virsh dumpxml $domain_name | grep arch | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_path=`sudo virsh dumpxml $domain_name | grep "source file" | cut -d"'" -f2 | cut -d"'" -f1`
+	disk_size=`sudo qemu-img info $disk_path | grep "virtual size" | egrep -o "[0-9]+G" | cut -d"G" -f1`
+	local_size=$[ $disk_size-1 ]
+	driver_address=`openstack endpoint list | grep ironic | grep admin | cut -d"/" -f3 | cut -d":" -f1`
+	domain_address=`sudo virsh dumpxml $domain_name | grep 'mac address' | head -1 | cut -d"'" -f2`
+
+	# 创建相应的flavor
+	openstack flavor delete $domain_name
+	openstack flavor create --ephemeral 0 --ram $memory --disk $local_size --vcpus $vcpu_num $domain_name
+	openstack flavor set $domain_name --property cpu_arch=$arch
+
+	# 设置flavor与domain关联
+	nova flavor-key $domain_name set capabilities:profile="$domain_name"
+
+	ironic node-delete $domain_name
+
+	ironic node-create --uuid $node_uuid --chassis_uuid $first_chassis_uuid --driver agent_ipmitool --name $domain_name -p cpus=$vcpu_num -p memory_mb=$memory -p local_gb=$local_size -p cpu_arch=$arch -i ipmi_address=$driver_address -i ipmi_username=admin -i ipmi_password=password -i deploy_kernel=$kernel_uuid -i deploy_ramdisk=$ramdisk_uuid -i ipmi_port=$port_num
+	ironic port-create --address $domain_address --node $node_uuid
+	# 设置与flavor关联
+	ironic node-update $node_uuid add properties/capabilities="profile:$domain_name"
+
+	# 远程在裸机上安装操作系统
+	nova-manage cell_v2 discover_hosts --verbose
+	PRIVATE_NETWORK_NAME="private"
+	net_id=$(openstack network list | egrep "$PRIVATE_NETWORK_NAME"'[^-]' | awk '{ print $2 }')
+	openstack server create --flavor $domain_name --nic net-id=$net_id --image cirros-0.3.5-x86_64-disk testing
 	\end{lstlisting}
 
 \end{document}

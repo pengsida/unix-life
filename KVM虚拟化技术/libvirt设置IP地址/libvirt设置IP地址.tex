@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -9,14 +9,7 @@
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \usepackage{titlesec}
-\usepackage{etoolbox}%
-\makeatletter
-\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
-\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
-\makeatother
-\usepackage{hyperref}
 \usepackage{longtable}
-\usepackage{empheq}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{rotating}
@@ -30,24 +23,35 @@
 \usepackage{xcolor}
 \usepackage{geometry}
 \setcounter{secnumdepth}{4}
-%\titleformat*{\section}{\LARGE}
-%\renewcommand\refname{参考文献}
-%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
-\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
 \titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
-\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
-\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
-%\setCJKfamilyfont{cjkhwxk}{华文行楷}
-%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
-%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
 \newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
-%\newfontfamily\wryh{Microsoft YaHei}
-%\newfontfamily\hwzs{华文中宋}
-%\newfontfamily\hwst{华文宋体}
-%\newfontfamily\hwfs{华文仿宋}
-%\newfontfamily\jljt{方正静蕾简体}
-%\newfontfamily\hwxk{华文行楷}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
 \newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
 \newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
 \newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
@@ -73,38 +77,34 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=python,
+	language=xml,
 	numbers=left,
-	numberstyle=\tiny\color{black},
+	numberstyle=\tiny\color{white},
 	showspaces=false,
 	showstringspaces=false,
 	basicstyle=\scriptsize,
 	keywordstyle=\color{purple},
-	commentstyle=\color{cgreen},
+	commentstyle=\itshape\color{cgreen},
 	stringstyle=\color{blue},
 	frame=lines,
 	% escapeinside=``,
 	extendedchars=true, 
-	xleftmargin=1em,
-	xrightmargin=1em, 
+	xleftmargin=0em,
+	xrightmargin=0em, 
 	backgroundcolor=\color{cred},
 	aboveskip=1em,
 	breaklines=true,
 	tabsize=4
 } 
 
-%\newfontfamily{\consolas}{Consolas}
-%\newfontfamily{\monaco}{Monaco}
-%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
-%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
-%\setmainfont{Times New Roman}
-%\setCJKmainfont{STZHONGS.TTF}
-%\setmonofont{Consolas}
-% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
-\newfontfamily{\monaco}{MONACO.TTF}
-\setCJKmainfont{STZHONGS.TTF}
-%\setmainfont{MONACO.TTF}
-%\setsansfont{MONACO.TTF}
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
 
 \newcommand{\fic}[1]{\begin{figure}[H]
 		\center
@@ -137,55 +137,15 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{openvswitch常用的操作 \qquad}
+\chead{libvirt设置IP地址 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
-
 \begin{document}
 
 \tableofcontents
 
 \clearpage
 
-\section{openvswitch常用的操作}
-\subsection{查询主机上已有的 OVS bridge}
-	\begin{lstlisting}
-	ovs-vsctl show
-	\end{lstlisting}
+\section{libvirt设置IP地址}
+	\url{https://huataihuang.gitbooks.io/cloud-atlas/content/virtual/kvm/startup/in_action/kvm_libvirt_static_ip_for_dhcp_and_port_forwarding.html}
 
-\subsection{创建一台OVS交换机}
-	命令如下：
-	\begin{lstlisting}
-	ovs-vsctl add-br ovs-switch
-	\end{lstlisting}
-
-\subsection{创建一个端口}
-	命令如下：
-	\begin{lstlisting}
-	ovs-vsctl add-port bridge port [column[:key]=value]...
-	# Creates on bridge a new port named port from the network device of the same name.
-	\end{lstlisting}
-
-	例子如下：
-	\begin{lstlisting}
-	sudo ovs-vsctl add-port brbm ovs-node-3 -- set Interface ovs-node-3 type=internal
-	\end{lstlisting}
-
-\subsection{删除一个端口}
-	\begin{lstlisting}
-	ovs-vsctl del-port [BRIDGE] PORT
-	\end{lstlisting}
-
-\subsection{设置网络接口设备的类型为“internal”}
-	\begin{lstlisting}
-	ovs-vsctl set Interface p0 type=internal
-	\end{lstlisting}
-
-	对于 internal 类型的的网络接口，OVS 会同时在 Linux 系统中创建一个可以用来收发数据的模拟网络设备。
-	我们可以为这个网络设备配置 IP 地址、进行数据监听等等。
-
-\subsection{参考网站}
-	\url{http://www.rendoumi.com/open-vswitchde-ovs-vsctlming-ling-xiang-jie/}\par
-
-	\url{http://fishcried.com/2016-02-09/openvswitch-ops-guide/}
-	
 \end{document}

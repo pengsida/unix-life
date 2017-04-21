@@ -1,0 +1,497 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{openstack的常用操作 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{完整的服务}
+	包含ironic完整的服务如下图所示：
+	\fic{1.png}
+
+\section{设置环境变量}
+	\begin{lstlisting}
+	export HOST_IP=$(ifconfig -a | grep -C 1 eth0 | grep "inet addr" | cut -d":" -f2 | cut -d" " -f1)
+	export OS_AUTH_URL=http://$HOST_IP:5000/v3
+	export OS_PROJECT_DOMAIN_ID=default         
+	export OS_PROJECT_NAME=admin     
+	export OS_USER_DOMAIN_ID=default
+	export OS_IDENTITY_API_VERSION=3
+	export OS_REGION_NAME=RegionOne
+	export OS_USERNAME=admin
+	export OS_PASSWORD=p1111111        
+	export OS_TENANT_NAME=admin     
+	export OS_VOLUME_API_VERSION=2
+	\end{lstlisting}
+
+\section{打开各个网桥}
+	\begin{lstlisting}
+	sudo ip link set br-ex up
+	sudo ip link set br-int up
+	sudo ip link set br-tun up
+	sudo ip link set brbm up
+	\end{lstlisting}
+
+\section{配置screen}
+	\begin{lstlisting}
+	# 配置screen
+	# =============
+	
+	SCREEN_NAME="stack"
+	# 建立SCREEN_NAME的screen，创建一个叫shell的窗口，窗口中所要执行的shell为/bin/bash，同时detach这个视窗
+	screen -d -m -S $SCREEN_NAME -t shell -s /bin/bash
+    sleep 1
+
+    # Set a reasonable status bar
+    SCREEN_HARDSTATUS=${SCREEN_HARDSTATUS:-}
+    if [ -z "$SCREEN_HARDSTATUS" ]; then
+        SCREEN_HARDSTATUS='%{= .} %-Lw%{= .}%> %n%f %t*%{= .}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+    fi
+	# 恢复离线的screen作业stack，并且设置状态栏的样式
+    screen -r $SCREEN_NAME -X hardstatus alwayslastline "$SCREEN_HARDSTATUS"
+	# 将PROMPT_COMMAND的值设为“/bin/true”
+    screen -r $SCREEN_NAME -X setenv PROMPT_COMMAND /bin/true
+
+	# 删除screenrc文件
+	rm -f /home/pengsida/devstack/stack-screenrc
+
+	# Initialize the directory for service status check
+	SCREEN_NAME=${SCREEN_NAME:-stack}
+    SERVICE_DIR=${SERVICE_DIR:-"/opt/stack/status"}
+    if [[ ! -d "$SERVICE_DIR/$SCREEN_NAME" ]]; then
+        mkdir -p "$SERVICE_DIR/$SCREEN_NAME"
+    fi
+    rm -f "$SERVICE_DIR/$SCREEN_NAME"/*.failure
+	\end{lstlisting}
+
+\section{开启dstat}
+	命令如下：
+	\begin{lstlisting}
+	# 配置dstat的screen窗口
+	# ================
+
+	# 指定stack这个screen，在其中创建一个叫dstat的窗口
+	screen -S stack -X screen -t dstat
+	# 指定dstat窗口的logfile
+	screen -S stack -p dstat -X logfile /home/pengsida/LOGFILE/dstat.log
+	screen -S stack -p dstat -X log on
+	# 创建dstat.log这个文件
+	touch /home/pengsida/LOGFILE/dstat.log
+	# 为dstat.log这个文件创建一个符号链接dstat.log
+	# bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''dstat.log'\'' dstat.log'
+	# 在dstat窗口中执行这条命令
+	screen -S stack -p dstat -X stuff 'sudo /home/pengsida/dstat.sh /home/pengsida/LOGFILE/logs & sudo echo $! >/opt/stack/status/stack/dstat.pid; fg || echo "dstat failed to start. Exit code: $?" | tee "/opt/stack/status/stack/dstat.failure"^M'
+	\end{lstlisting}
+
+\section{配置环境变量}
+	\begin{lstlisting}
+	HOST_IP="192.168.122.65"
+	export OS_IDENTITY_API_VERSION=3
+    export OS_AUTH_URL=http://$HOST_IP/identity_admin
+    export OS_USERNAME=admin
+    export OS_USER_DOMAIN_ID=default
+    export OS_PASSWORD=p1111111
+    export OS_PROJECT_NAME=admin
+    export OS_PROJECT_DOMAIN_ID=default
+    export OS_REGION_NAME=RegionOne
+	\end{lstlisting}
+
+\section{开启keystone服务}
+	命令如下：
+	\begin{lstlisting}
+	# 开启keystone服务
+	# ================
+
+	# 新建key窗口
+	screen -S stack -X screen -t key
+	# 设置key窗口的log file
+	screen -S stack -p key -X logfile /home/pengsida/LOGFILE/logs/key.log
+	screen -S stack -p key -X log on
+	touch /home/pengsida/LOGFILE/logs/key.log
+	# bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''key.log'\'' key.log'
+	# 在key窗口执行下列命令
+	screen -S stack -p key -X stuff 'sudo tail -f /var/log/apache2/keystone.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key.pid; fg || echo "key failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key.failure"^M'
+
+	# 新建key-access窗口并指定key-access窗口的log file
+	screen -S stack -X screen -t key-access
+	screen -S stack -p key-access -X logfile /home/pengsida/LOGFILE/key-access.log
+	screen -S stack -p key-access -X log on
+	touch /home/pengsida/LOGFILE/key-access.log
+
+	# 在key-access窗口执行下列命令
+	screen -S stack -p key-access -X stuff 'sudo tail -f /var/log/apache2/keystone_access.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/key-access.pid; fg || echo "key-access failed to start. Exit code: $?" | tee "/opt/stack/status/stack/key-access.failure"^M'
+
+	KEYSTONE_SERVICE_URI=http://$HOST_IP/identity/v3/
+	KEYSTONE_AUTH_URI=http://$HOST_IP/identity_admin
+	ADMIN_PASSWORD=p1111111
+	REGION_NAME=RegionOne
+
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' $KEYSTONE_SERVICE_URI
+	sudo service memcached restart
+	\end{lstlisting}
+
+\section{开启swift服务}
+	\begin{lstlisting}
+	sudo service memcached restart
+	sudo /etc/init.d/rsync restart
+    swift-init --run-dir=/opt/stack/data/swift/run all restart
+	swift-init --run-dir=/opt/stack/data/swift/run proxy stop
+	swift-init --run-dir=/opt/stack/data/swift/run object stop
+	swift-init --run-dir=/opt/stack/data/swift/run container stop
+	swift-init --run-dir=/opt/stack/data/swift/run account stop
+
+	# 配置screen窗口
+	# ==================
+
+	# 指定stack这个screen，在其中创建一个叫s-proxy的窗口
+	screen -S stack -X screen -t s-proxy
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-proxy -X logfile /home/pengsida/LOGFILE/logs/s-proxy.log
+    screen -S stack -p s-proxy -X log on
+	# touch /home/pengsida/LOGFILE/s-proxy.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''s-proxy.log'\'' s-proxy.log'
+
+	# 在s-proxy窗口中执行这条命令
+	screen -S stack -p s-proxy -X stuff 'swift-proxy-server /etc/swift/proxy-server.conf -v & echo $! >/opt/stack/status/stack/s-proxy.pid; fg || echo "s-proxy failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-proxy.failure"^M'
+
+
+	# 指定stack这个screen，在其中创建一个叫s-object的窗口
+	screen -S stack -X screen -t s-object
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-object -X logfile /home/pengsida/LOGFILE/logs/s-object.log
+    screen -S stack -p s-object -X log on
+	# touch /home/pengsida/LOGFILE/s-object.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''s-object.log'\'' s-object.log'
+
+	# 在s-object窗口中执行这条命令
+	screen -S stack -p s-object -X stuff 'swift-object-server /etc/swift/object-server/1.conf -v & echo $! >/opt/stack/status/stack/s-object.pid; fg || echo "s-object failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-object.failure"^M'
+
+
+	# 指定stack这个screen，在其中创建一个叫s-container的窗口
+	screen -S stack -X screen -t s-container
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-container -X logfile /home/pengsida/LOGFILE/logs/s-container.log
+    screen -S stack -p s-container -X log on
+	# touch /home/pengsida/LOGFILE/s-container.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''s-container.log'\'' s-container.log'
+
+	# 在s-container窗口中执行这条命令
+	screen -S stack -p s-container -X stuff 'swift-container-server /etc/swift/container-server/1.conf -v & echo $! >/opt/stack/status/stack/s-container.pid; fg || echo "s-container failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-container.failure"^M'
+
+	
+	# 指定stack这个screen，在其中创建一个叫s-account的窗口
+	screen -S stack -X screen -t s-account
+	# 指定dstat窗口的logfile
+	screen -S stack -p s-account -X logfile /home/pengsida/LOGFILE/logs/s-account.log
+    screen -S stack -p s-account -X log on
+	touch /home/pengsida/LOGFILE/logs/s-account.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''s-account.log'\'' s-account.log'
+
+	# 在s-account窗口中执行这条命令
+	screen -S stack -p s-account -X stuff 'swift-account-server /etc/swift/account-server/1.conf -v & echo $! >/opt/stack/status/stack/s-account.pid; fg || echo "s-account failed to start. Exit code: $?" | tee "/opt/stack/status/stack/s-account.failure"^M'
+
+	# swift_configure_tempurls
+	# openstack object store account set --property Temp-URL-Key=p1111111
+	\end{lstlisting}
+
+\section{开启glance服务}
+	\begin{lstlisting}
+	screen -S stack -X screen -t g-reg
+	screen -S stack -p g-reg -X logfile /home/pengsida/LOGFILE/logs/g-reg.log
+    screen -S stack -p g-reg -X log on
+	touch /home/pengsida/LOGFILE/g-reg.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''g-reg.log'\'' g-reg.log'
+	screen -S stack -p g-reg -X stuff 'sudo /usr/local/bin/glance-registry --config-file=/etc/glance/glance-registry.conf & echo $! >/opt/stack/status/stack/g-reg.pid; fg || echo "g-reg failed to start. Exit code: $?" | tee "/opt/stack/status/stack/g-reg.failure"^M'
+
+	
+	screen -S stack -X screen -t g-api
+	screen -S stack -p g-api -X logfile /home/pengsida/LOGFILE/g-api.log
+    screen -S stack -p g-api -X log on
+	touch /home/pengsida/LOGFILE/g-api.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''g-api.log'\'' g-api.log'
+	screen -S stack -p g-api -X stuff 'sudo /usr/local/bin/glance-api --config-file=/etc/glance/glance-api.conf & echo $! >/opt/stack/status/stack/g-api.pid; fg || echo "g-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/g-api.failure"^M'
+
+	# 检查服务是否启动
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://$HOST_IP:9292
+	\end{lstlisting}
+
+\section{开启nova服务}
+	\begin{lstlisting}
+	# Create a randomized default value for the key manager's fixed_key
+	iniset /etc/nova/nova.conf key_manager fixed_key $(hexdump -n 32 -v -e '/1 "%02x"' /dev/urandom)
+
+	# 开启nova-api服务
+	screen -S stack -X screen -t n-api
+	screen -S stack -p n-api -X logfile /home/pengsida/LOGFILE/n-api.log
+    screen -S stack -p n-api -X log on
+	touch /home/pengsida/LOGFILE/n-api.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''n-api.log'\'' n-api.log'
+	screen -S stack -p n-api -X stuff '/usr/local/bin/nova-api & echo $! >/opt/stack/status/stack/n-api.pid; fg || echo "n-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-api.failure"^M'
+
+	# 监测nova-api是否启动
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://$HOST_IP:8774
+	\end{lstlisting}
+
+\section{开启neutron服务}
+	\begin{lstlisting}
+	# 开启neutron-server服务
+	screen -S stack -X screen -t q-svc
+	screen -S stack -p q-svc -X logfile /home/pengsida/LOGFILE/q-svc.log
+    screen -S stack -p q-svc -X log on
+	touch /home/pengsida/LOGFILE/q-svc.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''q-svc.log'\'' q-svc.log'
+	screen -S stack -p q-svc -X stuff 'sudo /usr/local/bin/neutron-server --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/opt/stack/status/stack/q-svc.pid; fg || echo "q-svc failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-svc.failure"^M'
+
+	# 监测neutron-server服务是否启动
+	# timeout 60 sh -c 'while ! wget  --no-proxy -q -O- http://$HOST_IP:9696; do sleep 0.5; done'
+
+	# 开启neutron-openvswitch-agent服务
+	screen -S stack -X screen -t q-agt
+	screen -S stack -p q-agt -X logfile /home/pengsida/LOGFILE/q-agt.log
+    screen -S stack -p q-agt -X log on
+	touch /home/pengsida/LOGFILE/q-agt.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''q-agt.log'\'' q-agt.log'
+	screen -S stack -p q-agt -X stuff 'sudo /usr/local/bin/neutron-openvswitch-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/opt/stack/status/stack/q-agt.pid; fg || echo "q-agt failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-agt.failure"^M'
+
+	# 开启neutron-dhcp-agent服务
+	screen -S stack -X screen -t q-dhcp
+	screen -S stack -p q-dhcp -X logfile /home/pengsida/LOGFILE/q-dhcp.log
+    screen -S stack -p q-dhcp -X log on
+	touch /home/pengsida/LOGFILE/q-dhcp.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''q-dhcp.log'\'' q-dhcp.log'
+	screen -S stack -p q-dhcp -X stuff 'sudo /usr/local/bin/neutron-dhcp-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini & echo $! >/opt/stack/status/stack/q-dhcp.pid; fg || echo "q-dhcp failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-dhcp.failure"^M'
+
+	# 开启neutron-l3-agent服务
+	screen -S stack -X screen -t q-l3
+	screen -S stack -p q-l3 -X logfile /home/pengsida/LOGFILE/q-l3.log
+    screen -S stack -p q-l3 -X log on
+	touch /home/pengsida/LOGFILE/q-l3.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''q-l3.log'\'' q-l3.log'
+	screen -S stack -p q-l3 -X stuff 'sudo /usr/local/bin/neutron-l3-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini & echo $! >/opt/stack/status/stack/q-l3.pid; fg || echo "q-l3 failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-l3.failure"^M'
+
+	# 开启neutron-metadata-agent服务
+	screen -S stack -X screen -t q-meta
+	screen -S stack -p q-meta -X logfile /home/pengsida/LOGFILE/q-meta.log
+    screen -S stack -p q-meta -X log on
+	touch /home/pengsida/LOGFILE/q-meta.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''q-meta.log'\'' q-meta.log'
+	screen -S stack -p q-meta -X stuff 'sudo /usr/local/bin/neutron-metadata-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini & echo $! >/opt/stack/status/stack/q-meta.pid; fg || echo "q-meta failed to start. Exit code: $?" | tee "/opt/stack/status/stack/q-meta.failure"^M'
+	\end{lstlisting}
+
+\section{开启nova服务}
+	\begin{lstlisting}
+	# 开启nova-conductor服务
+	screen -S stack -X screen -t n-cond
+	screen -S stack -p n-cond -X logfile /home/pengsida/LOGFILE/n-cond.log
+    screen -S stack -p n-cond -X log on
+	touch /home/pengsida/LOGFILE/n-cond.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''n-cond.log'\'' n-cond.log'
+	screen -S stack -p n-cond -X stuff '/usr/local/bin/nova-conductor --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cond.pid; fg || echo "n-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cond.failure"^M'
+
+	# 开启nova-scheduler服务
+	screen -S stack -X screen -t n-sch
+	screen -S stack -p n-sch -X logfile /home/pengsida/LOGFILE/n-sch.log
+    screen -S stack -p n-sch -X log on
+	touch /home/pengsida/LOGFILE/n-sch.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''n-sch.log'\'' n-sch.log'
+	screen -S stack -p n-sch -X stuff '/usr/local/bin/nova-scheduler --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-sch.pid; fg || echo "n-sch failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-sch.failure"^M'
+
+	# 开启nova-consoleauth服务
+	screen -S stack -X screen -t n-cauth
+	screen -S stack -p n-cauth -X logfile /home/pengsida/LOGFILE/n-cauth.log
+    screen -S stack -p n-cauth -X log on
+	touch /home/pengsida/LOGFILE/n-cauth.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''n-cauth.log'\'' n-cauth.log'
+	screen -S stack -p n-cauth -X stuff '/usr/local/bin/nova-consoleauth --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cauth.pid; fg || echo "n-cauth failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cauth.failure"^M'
+
+	# 开启nova-compute服务
+	screen -S stack -X screen -t n-cpu
+	screen -S stack -p n-cpu -X logfile /home/pengsida/LOGFILE/n-cpu.log
+    screen -S stack -p n-cpu -X log on
+	touch /home/pengsida/LOGFILE/n-cpu.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''n-cpu.log'\'' n-cpu.log'
+	screen -S stack -p n-cpu -X stuff '/usr/local/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/opt/stack/status/stack/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/opt/stack/status/stack/n-cpu.failure"^M'
+	\end{lstlisting}
+
+\section{开启placement服务}
+	\begin{lstlisting}
+	# 开启placement-api服务
+	screen -S stack -X screen -t placement-api
+	screen -S stack -p placement-api -X logfile /home/pengsida/LOGFILE/placement-api.log
+    screen -S stack -p placement-api -X log on
+	touch /home/pengsida/LOGFILE/placement-api.log
+    bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''placement-api.log'\'' placement-api.log'
+	screen -S stack -p placement-api -X stuff 'sudo tail -f /var/log/apache2/placement-api.log | sed -u '\''s/\\\\x1b/\o033/g'\'' & echo $! >/opt/stack/status/stack/placement-api.pid; fg || echo "placement-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/placement-api.failure"^M'
+
+	# 检测placement-api服务是否开启
+	curl -g -k --noproxy '*' -s -o /dev/null -w '%{http_code}' http://$HOST_IP/placement
+	\end{lstlisting}
+
+\section{开启ironic服务}
+	\begin{lstlisting}
+	# 开启ironic服务
+	# ====================
+
+	# 开启ironic-api服务
+	screen -S stack -X screen -t ir-api
+	screen -S stack -p ir-api -X logfile /home/pengsida/LOGFILE/ir-api.log
+    screen -S stack -p ir-api -X log on
+	touch /home/pengsida/LOGFILE/ir-api.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''ir-api.log'\'' ir-api.log'
+	screen -S stack -p ir-api -X stuff '/usr/local/bin/ironic-api --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-api.pid; fg || echo "ir-api failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-api.failure"^M'
+
+	# 开启ironic-conductor服务
+	screen -S stack -X screen -t ir-cond
+	screen -S stack -p ir-cond -X logfile /home/pengsida/LOGFILE/ir-cond.log
+    screen -S stack -p ir-cond -X log on
+	touch /home/pengsida/LOGFILE/ir-cond.log
+    # bash -c 'cd '\''/home/pengsida/LOGFILE'\'' && ln -sf '\''ir-cond.log'\'' ir-cond.log'
+	screen -S stack -p ir-cond -X stuff '/usr/local/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf & echo $! >/opt/stack/status/stack/ir-cond.pid; fg || echo "ir-cond failed to start. Exit code: $?" | tee "/opt/stack/status/stack/ir-cond.failure"^M'
+
+	# restart_apache_server
+	sudo service apache2 stop
+	sudo service apache2 start
+	\end{lstlisting}
+
+\end{document}
