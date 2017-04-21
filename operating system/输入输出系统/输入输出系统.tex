@@ -1,0 +1,922 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=c,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{输入输出系统 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{键盘}
+	对于处理键盘输入，我们本能是想用中断去处理。在此之前，我们先学习计算机响应键盘的过程。\par
+
+\subsection{键盘敲击的过程}
+	在键盘中存在一枚叫做键盘编码器的芯片Intel 8048，
+	在计算机中有一个键盘控制器，是intel 8042芯片。\par
+
+	过程如下：
+	\begin{itemize}
+		\item[1.] 8048芯片检测到一个键的动作，将相应的扫描码发送给8042。
+		\item[2.] 8042讲扫描码转换成相应的Scan code set1扫描码，然后放置在输入缓冲区中。
+		\item[3.] 此后8042告诉8259A产生中断，如果此时键盘又有新的键被按下，8042将不再接收，一直到缓冲区被清空，8042才能收到更多的扫描码。
+	\end{itemize}
+
+\subsection{读取键盘输入}
+	8042的输出缓冲区的端口是0x60，我们可以直接去通过in\_byte()函数去读取。\par
+
+	但为了真正处理键盘输入，我们还需要了解键盘编码：
+	\begin{lstlisting}
+	敲击键盘产生的编码被称为扫描码:
+		当一个键被按下时，将产生Make Code，
+		当一个键弹起时，产生Break Code。
+	除了Pause键之外，每一个按键都对应一个Make Code和一个Break Code。
+	\end{lstlisting}
+
+	在代码中，为了处理Break Code和Make Code，可以创建一个数组：
+	\begin{lstlisting}
+u32 keymap[NR_SCAN_CODES * MAP_COLS] = {
+
+/* scan-code			!Shift		Shift		E0 XX	*/
+/* ==================================================================== */
+/* 0x00 - none		*/	0,		0,		0,
+/* 0x01 - ESC		*/	ESC,		ESC,		0,
+/* 0x02 - '1'		*/	'1',		'!',		0,
+/* 0x03 - '2'		*/	'2',		'@',		0,
+/* 0x04 - '3'		*/	'3',		'#',		0,
+/* 0x05 - '4'		*/	'4',		'$',		0,
+/* 0x06 - '5'		*/	'5',		'%',		0,
+/* 0x07 - '6'		*/	'6',		'^',		0,
+/* 0x08 - '7'		*/	'7',		'&',		0,
+/* 0x09 - '8'		*/	'8',		'*',		0,
+/* 0x0A - '9'		*/	'9',		'(',		0,
+/* 0x0B - '0'		*/	'0',		')',		0,
+/* 0x0C - '-'		*/	'-',		'_',		0,
+/* 0x0D - '='		*/	'=',		'+',		0,
+/* 0x0E - BS		*/	BACKSPACE,	BACKSPACE,	0,
+/* 0x0F - TAB		*/	TAB,		TAB,		0,
+/* 0x10 - 'q'		*/	'q',		'Q',		0,
+/* 0x11 - 'w'		*/	'w',		'W',		0,
+/* 0x12 - 'e'		*/	'e',		'E',		0,
+/* 0x13 - 'r'		*/	'r',		'R',		0,
+/* 0x14 - 't'		*/	't',		'T',		0,
+/* 0x15 - 'y'		*/	'y',		'Y',		0,
+/* 0x16 - 'u'		*/	'u',		'U',		0,
+/* 0x17 - 'i'		*/	'i',		'I',		0,
+/* 0x18 - 'o'		*/	'o',		'O',		0,
+/* 0x19 - 'p'		*/	'p',		'P',		0,
+/* 0x1A - '['		*/	'[',		'{',		0,
+/* 0x1B - ']'		*/	']',		'}',		0,
+/* 0x1C - CR/LF		*/	ENTER,		ENTER,		PAD_ENTER,
+/* 0x1D - l. Ctrl	*/	CTRL_L,		CTRL_L,		CTRL_R,
+/* 0x1E - 'a'		*/	'a',		'A',		0,
+/* 0x1F - 's'		*/	's',		'S',		0,
+/* 0x20 - 'd'		*/	'd',		'D',		0,
+/* 0x21 - 'f'		*/	'f',		'F',		0,
+/* 0x22 - 'g'		*/	'g',		'G',		0,
+/* 0x23 - 'h'		*/	'h',		'H',		0,
+/* 0x24 - 'j'		*/	'j',		'J',		0,
+/* 0x25 - 'k'		*/	'k',		'K',		0,
+/* 0x26 - 'l'		*/	'l',		'L',		0,
+/* 0x27 - ';'		*/	';',		':',		0,
+/* 0x28 - '\''		*/	'\'',		'"',		0,
+/* 0x29 - '`'		*/	'`',		'~',		0,
+/* 0x2A - l. SHIFT	*/	SHIFT_L,	SHIFT_L,	0,
+/* 0x2B - '\'		*/	'\\',		'|',		0,
+/* 0x2C - 'z'		*/	'z',		'Z',		0,
+/* 0x2D - 'x'		*/	'x',		'X',		0,
+/* 0x2E - 'c'		*/	'c',		'C',		0,
+/* 0x2F - 'v'		*/	'v',		'V',		0,
+/* 0x30 - 'b'		*/	'b',		'B',		0,
+/* 0x31 - 'n'		*/	'n',		'N',		0,
+/* 0x32 - 'm'		*/	'm',		'M',		0,
+/* 0x33 - ','		*/	',',		'<',		0,
+/* 0x34 - '.'		*/	'.',		'>',		0,
+/* 0x35 - '/'		*/	'/',		'?',		PAD_SLASH,
+/* 0x36 - r. SHIFT	*/	SHIFT_R,	SHIFT_R,	0,
+/* 0x37 - '*'		*/	'*',		'*',    	0,
+/* 0x38 - ALT		*/	ALT_L,		ALT_L,  	ALT_R,
+/* 0x39 - ' '		*/	' ',		' ',		0,
+/* 0x3A - CapsLock	*/	CAPS_LOCK,	CAPS_LOCK,	0,
+/* 0x3B - F1		*/	F1,		F1,		0,
+/* 0x3C - F2		*/	F2,		F2,		0,
+/* 0x3D - F3		*/	F3,		F3,		0,
+/* 0x3E - F4		*/	F4,		F4,		0,
+/* 0x3F - F5		*/	F5,		F5,		0,
+/* 0x40 - F6		*/	F6,		F6,		0,
+/* 0x41 - F7		*/	F7,		F7,		0,
+/* 0x42 - F8		*/	F8,		F8,		0,
+/* 0x43 - F9		*/	F9,		F9,		0,
+/* 0x44 - F10		*/	F10,		F10,		0,
+/* 0x45 - NumLock	*/	NUM_LOCK,	NUM_LOCK,	0,
+/* 0x46 - ScrLock	*/	SCROLL_LOCK,	SCROLL_LOCK,	0,
+/* 0x47 - Home		*/	PAD_HOME,	'7',		HOME,
+/* 0x48 - CurUp		*/	PAD_UP,		'8',		UP,
+/* 0x49 - PgUp		*/	PAD_PAGEUP,	'9',		PAGEUP,
+/* 0x4A - '-'		*/	PAD_MINUS,	'-',		0,
+/* 0x4B - Left		*/	PAD_LEFT,	'4',		LEFT,
+/* 0x4C - MID		*/	PAD_MID,	'5',		0,
+/* 0x4D - Right		*/	PAD_RIGHT,	'6',		RIGHT,
+/* 0x4E - '+'		*/	PAD_PLUS,	'+',		0,
+/* 0x4F - End		*/	PAD_END,	'1',		END,
+/* 0x50 - Down		*/	PAD_DOWN,	'2',		DOWN,
+/* 0x51 - PgDown	*/	PAD_PAGEDOWN,	'3',		PAGEDOWN,
+/* 0x52 - Insert	*/	PAD_INS,	'0',		INSERT,
+/* 0x53 - Delete	*/	PAD_DOT,	'.',		DELETE,
+/* 0x54 - Enter		*/	0,		0,		0,
+/* 0x55 - ???		*/	0,		0,		0,
+/* 0x56 - ???		*/	0,		0,		0,
+/* 0x57 - F11		*/	F11,		F11,		0,	
+/* 0x58 - F12		*/	F12,		F12,		0,	
+/* 0x59 - ???		*/	0,		0,		0,	
+/* 0x5A - ???		*/	0,		0,		0,	
+/* 0x5B - ???		*/	0,		0,		GUI_L,	
+/* 0x5C - ???		*/	0,		0,		GUI_R,	
+/* 0x5D - ???		*/	0,		0,		APPS,	
+/* 0x5E - ???		*/	0,		0,		0,	
+/* 0x5F - ???		*/	0,		0,		0,
+/* 0x60 - ???		*/	0,		0,		0,
+/* 0x61 - ???		*/	0,		0,		0,	
+/* 0x62 - ???		*/	0,		0,		0,	
+/* 0x63 - ???		*/	0,		0,		0,	
+/* 0x64 - ???		*/	0,		0,		0,	
+/* 0x65 - ???		*/	0,		0,		0,	
+/* 0x66 - ???		*/	0,		0,		0,	
+/* 0x67 - ???		*/	0,		0,		0,	
+/* 0x68 - ???		*/	0,		0,		0,	
+/* 0x69 - ???		*/	0,		0,		0,	
+/* 0x6A - ???		*/	0,		0,		0,	
+/* 0x6B - ???		*/	0,		0,		0,	
+/* 0x6C - ???		*/	0,		0,		0,	
+/* 0x6D - ???		*/	0,		0,		0,	
+/* 0x6E - ???		*/	0,		0,		0,	
+/* 0x6F - ???		*/	0,		0,		0,	
+/* 0x70 - ???		*/	0,		0,		0,	
+/* 0x71 - ???		*/	0,		0,		0,	
+/* 0x72 - ???		*/	0,		0,		0,	
+/* 0x73 - ???		*/	0,		0,		0,	
+/* 0x74 - ???		*/	0,		0,		0,	
+/* 0x75 - ???		*/	0,		0,		0,	
+/* 0x76 - ???		*/	0,		0,		0,	
+/* 0x77 - ???		*/	0,		0,		0,	
+/* 0x78 - ???		*/	0,		0,		0,	
+/* 0x78 - ???		*/	0,		0,		0,	
+/* 0x7A - ???		*/	0,		0,		0,	
+/* 0x7B - ???		*/	0,		0,		0,	
+/* 0x7C - ???		*/	0,		0,		0,	
+/* 0x7D - ???		*/	0,		0,		0,	
+/* 0x7E - ???		*/	0,		0,		0,
+/* 0x7F - ???		*/	0,		0,		0
+};
+	\end{lstlisting}
+
+	建立这个数组以后，我们就可以通过扫描码直接对应到真正的字母了。\par
+
+	这个数组还考虑到了按住shift键时的字母对应关系。
+
+\subsection{建立键盘输入缓冲区}
+	因为我们输入键盘时可以会同时按住几个键，所以我们要在中断处理程序中处理这种情况。\par
+
+	考虑到因为扫描码的值和长度不一样，如果直接处理扫描码，可能会搞得代码很冗长。
+	在这里建立一个键盘输入的缓冲区，让中断处理程序将每次收到的扫描码放入这个缓冲区，然后建立一个新的任务专门用来解析这些扫描码并做相应的处理。\par
+
+	键盘缓冲区如下：
+	\begin{lstlisting}
+	typedef struct s_kb
+	{
+		char* p_head;
+		char* p_tail;
+		int count;
+		char buf[KB_IN_BYTES];
+	}KB_INPUT;	
+	\end{lstlisting}
+
+	创建对应的键盘中断处理程序：
+	\begin{lstlisting}
+	PRIVATE KB_INPUT kb_in;
+
+	PUBLIC void keyboard_handler(int irq)
+	{
+		u8 scan_code = in_byte(0x60);
+		if(kb_in.count < KB_IN_BYTES)
+		{
+			*(kv_in.p_head) = scan_code;
+			kb_in.p_head++;
+			if(kv_in.p_head == kb_in.buf + KB_IN_BYTES)
+				kb_in.p_head = kb_in.buf;
+			kb_in.count++;
+		}
+	}
+
+	// 初始化键盘中断处理程序
+	PUBLIC void init_keyboard()
+	{
+		kb_in.count = 0;
+		kb_in.p_head = kb_in.p_tail = kb_in.buf;
+
+		put_irq_handler(KEYBOARD_IRQ, keyboard_handler);
+		enable_irq(KEYBOARD_IRQ);
+	}
+
+	// 打开键盘中断
+	PUBLIC int kernel_main()
+	{
+		...
+		init_keyboard();
+		...
+	}
+	\end{lstlisting}
+
+\subsection{添加新的进程处理缓冲区}
+\subsubsection{读取缓冲区}
+	函数体如下：
+	\begin{lstlisting}
+	PUBLIC void task_tty()
+	{
+		while(1)
+		{
+			keyboard_read();
+		}
+	}
+
+	PUBLIC void keyboard_read()
+	{
+		u8 scan_code;
+		if(kb_in.count > 0)
+		{
+			disable_int();
+			scan_code = *(kb_in.p_tail);
+			kb_in.p_tail++;
+			if(kb_in.p_tail == kb_in.buf + KB_IN_BYTES)
+				kb_in.p_tail = kb_in.buf;
+			kb_in.count--;
+			enable_int();
+			disp_int(scan_code);
+		}
+	}
+	\end{lstlisting}
+
+\subsection{解析扫描码}
+\subsubsection{显示普通的字符}
+	查看扫描码，会知道以0xE0和0xE1开头的扫描码对应的按键一般比较特殊，我们先跳过处理。\par
+
+	下面先进行最基本的字符显示：
+	\begin{lstlisting}
+	PUBLIC void keyboard_read()
+	{
+		char output[2];
+		int make;
+
+		memset(output, 0, 2);
+
+		if(kb_in.count > 0)
+		{
+			...
+			// 扫描码已经读入scan_code
+			if(scan_code == 0xE1)
+			{
+
+			}
+			else if(scan_code == 0xE0)
+			{
+
+			}
+			else
+			{
+				// 如果make是FALSE，代表这个码是break code，否则就是make code
+				make = (scan_code & FLAG_BREAK ? FALSE : TRUE);
+				output[0] = keymap[(scan_code&0x7F)*MAP_COLS];
+
+				if(make)
+				{
+					disp_str(output);
+				}
+			}
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{处理shift、alt和ctrl}
+	处理这些组合按键的算法如下：
+	\begin{itemize}
+		\item[1.] 首先判断是否是shift、alt或者ctrl。这里对这些按键都声明一个标识符，如果按下就为1，没按下就为0，可以直接用make这个标识符来对它们赋值。此外，还另外标记一个key标识符，如果是这些特殊字符或者break code，key就为0，否则为按键实际值。
+		\item[2.] 还记得我们定义keymap数组时，定义了三列数据。第二列数据就是shift按下时的字符显示情况。如果在处理中，遇到上述shift标识符为1的情况，就对列进行相应的操作。如果是其他标识符，就进行其他的操作。
+		\item[3.] 检查key标识符，如果是1就显示字符。
+	\end{itemize}
+
+	代码如下：
+	\begin{lstlisting}
+	PRIVATE int shift_l;
+	PRIVATE int shift_r;
+	PRIVATE int alt_l;
+	PRIVATE int alt_r;
+	PRIVATE int ctrl_l;
+	PRIVATE int ctrl_r;
+	PRIVATE int caps_lock;
+	PRIVATE int num_lock;
+	PRIVATE int scroll_lock;
+	PRIVATE int column;
+
+	PUBLIC void keyboard_read()
+	{
+		u32 key = 0;
+		u32* keyrow;
+
+		if(kb_in.count > 0)
+		{
+			...
+			if(scan_code == 0xE1)
+			{
+
+			}
+			else if(scan_code == 0xE0)
+			{
+
+			}
+			else
+			{
+				// 得到扫描码对应的那一行数据
+				keyrow = &keymap[(scan_code & 0x7F) * MAP_COLS];
+				column = 0;
+
+				if(shift_l || shift_r)
+					column = 1;
+				
+				key = keyrow[column];
+
+				switch(key)
+				{
+					case SHIFT_L:
+						shift_l = make;
+						key = 0;
+						break;
+					case SHIFT_R:
+						shift_r = make;
+						key = 0;
+						break;
+					case CTRL_L:
+						ctrl_l = make;
+						key = 0;
+						break;
+					case CTRL_R:
+						ctrl_r = make;
+						key = 0;
+						break;
+					case ALT_L:
+						alt_l = make;
+						key = 0;
+						break;
+					case ALT_R:
+						alt_r = make;
+						key = 0;
+						break;
+					default:
+						if(!make)
+							key = 0;
+						break;
+				}
+
+				if(key)
+				{
+					output[0] = key;
+					disp_str(output);
+				}
+			}
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{处理不可打印的字符}
+	这里我们将keyboard\_read()函数再做一个处理，将它变成单纯读取键盘缓冲区的函数，然后增加一个in\_process()函数，用于专门处理读出的字符。\par
+
+	注意，我们还处理了不可打印的字符，算法如下：
+	\begin{itemize}
+		\item[1.] 为每一个不可打印的按键定义一个宏，键值key在传入in\_process()函数之前先根据实际情况选择是否与这些宏相或。
+		\item[2.] 在in\_process()函数中，再与一个宏相与，从而决定是否打印该字符。
+	\end{itemize}
+
+	代码如下：
+	\begin{lstlisting}
+	#define SHIFT_L (0x08 + FLAG_EXT)
+	#define SHIFT_R (0x09 + FLAG_EXT)
+	#define CTRL_L (0x0A + FLAG_EXT)
+	#define CTRL_R (0x0B + FLAG_EXT)
+	#define ALT_L (0x0C + FLAG_EXT)
+	#define ALT_R (0x0D + FLAG_EXT)
+
+	PUBLIC void keyboard_read()
+	{
+		...
+		// 键值key在传入in_process()函数之前先根据实际情况选择是否与这些宏相或
+		if(make)
+		{
+			key |= (shift_l ? FLAG_SHIFT_L : 0);
+			key |= (shift_r ? FLAG_SHIFT_R : 0);
+			key |= (ctrl_l ? FLAG_CTRL_L : 0);
+			key |= (ctrl_r ? FLAG_CTRL_R : 0);
+			key |= (alt_l ? FLAG_ALT_L : 0);
+			key |= (alt_r ? FLAG_ALT_R : 0);
+
+			in_process(key);
+		}
+	}
+
+	PUBLIC void in_process(u32 key)
+	{
+		char output[2];
+		memset(output, 0, 2);
+
+		// 在in_process()函数中，再与一个宏相与，从而决定是否打印该字符
+		if(!(key & FLAG_EXT))
+		{
+			output[0] = key & 0xFF;
+			disp_str(output);
+		}
+	}
+	\end{lstlisting}
+
+\section{TTY任务}
+	我们接下来要实现TTY，首先需要知道一些基本框架：
+	\begin{itemize}
+		\item[1.] 每一个TTY都有自己读和写的动作，所以在keyboard\_read()函数中需要知道当前是在哪个TTY下，所以我们需要为这个函数传入一个参数。
+		\item[2.] TTY任务应该自己负责自己的显示工作，所以in\_process()函数不再负责显示任务，而是交给TTY来完成。
+		\item[3.] 每个TTY回显字符时操作的console是不同的，所以需要有一个成员来记载其对应的console信息。
+	\end{itemize}
+
+\subsection{TTY的一些数据结构}
+	为了让keyboard\_read()函数知道是哪个TTY调用它，需要定义一个TTY结构。
+	为了将TTY结构与特定的console关联起来，需要定义一个console结构，并作为TTY结构的一个成员：
+	\begin{lstlisting}
+	struct s_console;
+
+	typedef struct s_tty
+	{
+		u32 in_buf[TTY_IN_BYTES];
+		u32* p_inbuf_head;
+		u32* p_inbuf_tail;
+		int inbuf_count;
+
+		struct s_console* p_console;
+	}TTY;
+
+	typedef struct s_console
+	{
+		unsigned int current_start_addr;
+		unsigned int original_addr;
+		unsigned int v_mem_limit;
+		unsigned int cursor;
+	}CONSOLE;
+	\end{lstlisting}
+
+\subsection{构建TTY框架}
+	首先文字描述一下这个框架：
+	\begin{itemize}
+		\item[1.] 定义三个TTY结构，在tty任务中对这三个TTY进行循环，一次进行读操作和写操作。
+		\item[2.] 如果控制台是当前控制台，TTY就可以读取键盘。
+		\item[3.] 在keyboard\_read()函数中，首先处理键盘扫描码，然后将键值key传入in\_process()函数。
+		\item[4.] 在in\_process()函数中，将键值key写入TTY缓冲区。
+		\item[5.] tty任务执行tty\_do\_write()函数，然后直接向显存写入要显示的字符，还通过操作VGA的寄存器来设置光标。
+	\end{itemize}
+
+	首先改写tty任务的结构体，加入对TTY结构体的操作：
+	\begin{lstlisting}
+	#define NR_CONSOLES 3
+
+	PUBLIC TTY tty_table[NR_CONSOLES];
+	PUBLIC CONSOLE console_table[NR_CONSOLES];
+
+	#define TTY_FIRST (tty_table)
+	#define TTY_END (tty_table + NR_CONSOLES)
+
+	PUBLIC void init_tty(TTY* p_tty);
+
+	PUBLIC void task_tty()
+	{
+		TTY* p_tty;
+		init_keyboard();
+		for(p_tty = TTY_FIRST; p_tty < TTY_END; ++p_tty)
+		{
+			init_tty(p_tty);
+		}
+
+		nr_current_console = 0;
+		while(1)
+		{
+			for(p_tty=TTY_FIRST; p_tty<TTY_END; ++p_tty)
+			{
+				tty_do_read(p_tty);
+				tty_do_write(p_tty);
+			}
+		}
+	}
+
+	PRIVATE void init_tty(TTY* p_tty)
+	{
+		p_tty->inbuf_count = 0;
+		p_tty->p_inbuf_head = p_tty->p_inbuf_tail = p_tty->in_buf;
+
+		int nr_tty = p_tty - tty_table;
+		p_tty->p_console = console_table + nr_tty;
+	}
+	\end{lstlisting}
+
+	在调用tty\_do\_read()函数时，如果是当前console，就可以读取键盘缓冲区，然后用in\_process()函数将读取的键值key写入tty缓冲区：
+	\begin{lstlisting}
+	PUBLIC int is_current_console(CONSOLE* p_console);
+
+	PRIVATE void tty_do_read(TTY* p_tty)
+	{
+		if(is_current_console(p_tty->p_console))
+			keyboard_read(p_tty);
+	}
+
+	PUBLIC int is_current_console(CONSOLE* p_console)
+	{
+		return (p_console == &console_table[nr_current_console]);
+	}
+
+	PUBLIC void in_process(TTY* p_tty, u32 key)
+	{
+		char output[2];
+		memset(output, 0, 2);
+
+		if(!(key & FLAG_EXT))
+		{
+			if(p_tty->inbuf_count < TTY_IN_BYTES)
+			{
+				*(p_tty->p_inbuf_head) = key;
+				p_tty->p_inbuf_head++;
+				if(p_tty->p_inbuf_head == p_tty->in_buf + TTY_IN_BYTES)
+					p_tty->p_inbuf_head = p_tty->in_buf;
+				p_tty->inbuf_count++;
+			}
+		}
+	}
+	\end{lstlisting}
+
+	tty任务执行tty\_do\_write()函数，然后直接向显存写入要显示的字符：
+	\begin{lstlisting}
+	PUBLIC void out_char(CONSOLE* p_console, char ch);
+
+	PRIVATE void tty_do_write(TTY* p_tty)
+	{
+		if(p_tty->inbuf_count > 0)
+		{
+			char ch = *(p_tty->p_inbuf_tail);
+			
+			p_tty->p_inbuf_tail++;
+			if(p_tty->p_inbuf_tail == p_tty->in_buf + TTY_IN_BYTES)
+				p_tty->p_inbuf_tail = p_tty->in_buf;
+			
+			out_char(p_tty->p_console, ch);
+		}
+	}
+
+	PUBLIC void out_char(CONSOLE* p_console, char ch)
+	{
+		u8* p_vmem = (u8*)(V_MEM_BASE + disp_pos);
+
+		*p_vmem++ = ch;
+		*p_vmem++ = DEFAULT_CHAR_COLOR;
+		disp_pos += 2;
+
+		set_cursor(disp_pos/2);
+	}
+	\end{lstlisting}
+
+	这里的set\_cursor()函数是通过向寄存器写入值来进行光标的设置：
+	\begin{lstlisting}
+	PRIVATE void set_cursor(unsigned int position)
+	{
+		disable_int();
+		out_byte(CRTC_ADDR_REG, CURSOR_H);
+		out_byte(CRTC_DATA_REG, (position >> 8) & 0xFF);
+		out_byte(CRTC_ADDR_REG, CURSOR_L);
+		out_byte(CRTC_DATA_REG, position & 0xFF);
+	}
+	\end{lstlisting}
+
+\subsection{多控制台}
+	为了显示多个控制台，我们应该构建如下框架：
+	\begin{itemize}
+		\item[1.] 初始化每个tty结构中的console成员，设置它们初始对应的显存。
+		\item[2.] 将outchar()与console结构体挂钩，根据结构体中的cursor成员进行字符的显示。
+		\item[3.] 在in\_process()函数中，添加对Alt+Fn的处理。当按下Alt+Fn时，进行控制台的切换。
+	\end{itemize}
+
+	初始化每个tty结构中的console成员，设置它们初始对应的显存：
+	\begin{lstlisting}
+	PUBLIC void init_screen(TTY* p_tty)
+	{
+		int nr_tty = p_tty - tty_table;
+		p_tty->p_console = console_table + nr_tty;
+		int v_mem_size = V_MEM_BASE >> 1;
+		int con_v_mem_size = v_mem_size / NR_CONSOLES;
+		p_tty->p_console->original_addr = nr_tty * con_v_mem_size;
+		p_tty->p_console->v_mem_limit = con_v_mem_size;
+		p_tty->p_console->current_start_addr = p_tty->console->original_addr;
+		p_tty->p_console->cursor = p_tty->p_console->original_addr;
+
+		if(nr_tty == 0)
+		{
+			p_tty->p_console->cursor = disp_pos / 2;
+			disp_pos = 0;
+		}
+		else
+		{
+			out_char(p_tty->p_console, nr_tty + '0');
+			out_char(p_tty->p_console, '#');
+		}
+
+		set_cursor(p_tty->p_console->cursor);
+	}
+	\end{lstlisting}
+
+	将outchar()与console结构体挂钩，根据结构体中的cursor成员进行字符的显示：
+	\begin{lstlisting}
+	PUBLIC void out_char(CONSOLE* p_console, char ch)
+	{
+		u8* p_vmem = (u8*)(V_MEM_BASE + p_console->cursor * 2);
+		*p_vmem++ = ch;
+		*p_vmem++ = DEFAULT_CHAR_COLOR;
+		p_console->cursor++;
+		set_cursor(p_console->cursor);
+	}
+	\end{lstlisting}
+
+	在in\_process()函数中，添加对Alt+Fn的处理。当按下Alt+Fn时，进行控制台的切换：
+	\begin{lstlisting}
+	PUBLIC void select_console(int nr_console)
+	{
+		if((nr_console < 0) || (nr_console >= NR_CONSOLES))
+			return;
+
+		nr_current_console = nr_console;
+		set_cursor(console_table[nr_console].cursor);
+		set_vedio_start_addr(console_table[nr_console].current_start_addr);
+	}
+
+	PUBLIC void in_process(TTY* p_tty, u32 key)
+	{
+		...
+		else
+		{
+			case F1:
+			case F2:
+			case F3:
+			case F4:
+			case F5:
+			case F6:
+			case F7:
+			case F8:
+			case F9:
+			case F10:
+			case F11:
+			case F12:
+				if((key & FLAG_ALT_L) || (key & FLAG_ALT_R))
+					select_console(raw_code - F1);
+				break;
+		}
+	}
+	\end{lstlisting}	
+
+\section{实现printf函数}
+	这里的printf函数就是我们熟悉的printf函数，当某个进程调用printf()函数时，操作系统就会向控制台输出字符。\par
+
+	实现printf函数的步骤如下：
+	\begin{itemize}
+		\item[1.] 向进程表添加成员，为每个进程指定特定的TTY。
+		\item[2.] 实现系统调用write，这里的write()函数借助我们之前实现的TTY结构和outchar()进行实现。
+		\item[3.] 借助系统调用write()实现printf函数。
+	\end{itemize}
+
+	向进程表添加成员，为每个进程指定特定的TTY：
+	\begin{lstlisting}
+	typedef struct s_proc
+	{
+		STACK_FRAME regs;
+		u16 ldt_sel;
+
+		int ticks;
+		int priority;
+
+		u32 pid;
+		char p_name[16];
+
+		int nr_tty;
+	}
+	\end{lstlisting}
+
+	实现系统调用write()：
+	\begin{lstlisting}
+	// 添加关于write()函数的声明
+	PUBLIC void sys_write(char* buf, int len, PROCESS* p_proc);
+	PUBLIC void write(char* buf, int len);
+
+	// 编写write()的函数体
+	write:
+		mov eax, _NR_write
+		mov ebx, [esp + 4]
+		mov ecx, [esp + 8]
+		int INT_VECTOR_SYS_CALL
+		ret
+
+	// 编写sys_write()的函数体
+	PUBLIC void tty_write(TTY* p_tty, char* buf, int len)
+	{
+		char* p = buf;
+		int i = len;
+
+		while(i)
+		{
+			out_char(p_tty->p_console, *p++);
+			i--;
+		}
+	}
+
+	PUBLIC int sys_write(char* buf, int len, PROCESS* p_proc)
+	{
+		tty_write(&tty_table[p_proc->nr_tty], buf, len);
+		return 0;
+	}
+	\end{lstlisting}
+
+	借助系统调用write()实现printf函数：
+	\begin{lstlisting}
+	int printf(const char* fmt, ...)
+	{
+		int i;
+		char buf[256];
+
+		va_list arg = (va_list)((char*)(&fmt) + 4);
+		i = vsprintf(buf, fmt, arg);
+		write(buf, i);
+		return i;
+	}
+
+	int vsprintf(char* buf, const char* fmt, va_list args)
+	{
+		char* p;
+		char tmp[256];
+		va_list p_next_arg = args;
+
+		for(p=buf; *fmt; fmt++)
+		{
+			if(*fmt != '%')
+			{
+				*p++ = *fmt;
+				continue;
+			}
+
+			fmt++;
+
+			switch(*fmt)
+			{
+				case 'x':
+					itoa(tmp, *((int*)p_next_arg));
+					strcpy(p, tmp);
+					p_next_arg += 4;
+					p += strlen(tmp);
+					break;
+				case 's':
+					while(((char*)p_next_arg) != '\0')
+					{
+						*p = (char*)p_next_arg;
+						p++;
+						p_next_arg++;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	\end{lstlisting}
+
+\end{document}

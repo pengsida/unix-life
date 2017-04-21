@@ -1,0 +1,9 @@
+\BOOKMARK [1][-]{section.1}{实现IPC}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{增加sendrec系统调用}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{为消息的接收与发送做准备}{section.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.2.1}{扩展进程结构体}{subsection.1.2}% 4
+\BOOKMARK [3][-]{subsubsection.1.2.2}{实现phys_copy\(\)函数}{subsection.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.3}{实现msg_send\(\)函数}{section.1}% 6
+\BOOKMARK [3][-]{subsubsection.1.3.1}{实现一些辅助函数}{subsection.1.3}% 7
+\BOOKMARK [2][-]{subsection.1.4}{实现msg_receive\(\)函数}{section.1}% 8
+\BOOKMARK [1][-]{section.2}{使用IPC机制实现get_ticks\(\)函数}{}% 9

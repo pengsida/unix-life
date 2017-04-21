@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="strp.arrival.MainActivity"
+    >
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/head"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/date"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1.0"-->
+            <!--android:gravity="center"-->
+            <!--android:text="2017年2月28日"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="20sp"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/login"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1.0"-->
+            <!--android:gravity="center"-->
+            <!--android:text="登录/注册"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="20sp"/>-->
+
+    <!--</LinearLayout>-->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        >
+    </android.support.v4.view.ViewPager>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/scrollbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="10dp"-->
+        <!--android:layout_below="@id/viewPager"-->
+        <!--android:scaleType="matrix"-->
+        <!--android:src="@drawable/scrollbar"/>-->
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="9"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:gravity="bottom"
+        >
+
+        <!--layout_weight这个属性为权重，让两个textview平分这个linearLayout-->
+        <TextView
+            android:id="@+id/newsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="首页"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/funcView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="功能"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

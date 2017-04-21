@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
+        style="?android:listSeparatorTextViewStyle"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text=" 手机号:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"/>
+
+        <EditText
+            android:id="@+id/register_phone_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请输入手机号"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:inputType="phone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        style="?android:listSeparatorTextViewStyle"
+        >
+
+        <EditText
+            android:id="@+id/identify_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="start"
+            android:hint="请输入验证码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:layout_marginRight="8dp"
+            />
+
+        <Button
+            android:id="@+id/identify_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:background="@drawable/button"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:layout_marginLeft="8dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        style="?android:listSeparatorTextViewStyle"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text=" 密    码:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"/>
+
+        <EditText
+            android:id="@+id/register_pwd0_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请输入密码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:inputType="textPassword"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        style="?android:listSeparatorTextViewStyle"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="确认密码:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"/>
+
+        <EditText
+            android:id="@+id/register_pwd1_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请再次输入密码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:inputType="textPassword"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        style="?android:listSeparatorTextViewStyle"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text=" 用    户:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"/>
+
+        <Spinner android:id="@+id/spinner_register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        >
+
+        <Button
+            android:id="@+id/register_OK_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="注册"
+            android:background="@drawable/button"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:layout_marginRight="8dp"
+            />
+
+        <Button
+            android:id="@+id/register_CANCEL_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="返回"
+            android:background="@drawable/button"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:layout_marginLeft="8dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

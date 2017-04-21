@@ -1,0 +1,356 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=java,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{JavaMail的学习 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+% \clearpage
+
+\section{参考网站}
+	\url{http://www.yiibai.com/javamail_api/}
+
+\section{Address类}
+	Javax.mail.Address、Javax.mail.internet.InternetAddress：一旦您创建了Session 和Message，
+	并将内容填入消息后，就可以用 Address 确定信件地址了。和 Message 一样，Address也是个抽象类。
+	您用的是Javax.mail.internet.InternetAddress 类。
+
+\section{Authenticator}
+	与 Java.net 类一样，JavaMailAPI 也可以利用 Authenticator 通过用户名和密码访问受保护的资源。
+	对于JavaMail API来说，这些资源就是邮件服务器。
+	JavaMail Authenticator在Javax.mail包中，而且它和Java.net中同名的类Authenticator不同。
+	两者并不共享同一个Authenticator，因为JavaMail API 用于Java 1.1，它没有Java.net 类别。\par
+
+	要使用 Authenticator，先创建一个抽象类的子类，并从getPasswordAuthentication() 方法中返回PasswordAuthentication 实例。
+	创建完成后，您必需向session 注册Authenticator。
+	然后，在需要认证的时候，就会通知Authenticator。
+	您可以弹出窗口，也可以从配置文件中（虽然没有加密是不安全的）读取用户名和密码，
+	将它们作为PasswordAuthentication 对象返回给调用程序。
+
+\section{Folder类}
+	该类用于描述邮件的分级组织，如收件箱、草稿箱。\par
+
+\subsection{打开分级组织}
+	\begin{lstlisting}
+	public abstract void open(int mode);
+	\end{lstlisting}
+
+\subsection{关闭分级组织}
+	\begin{lstlisting}
+	public abstract void close(boolean expunge);
+	\end{lstlisting}
+
+\subsection{获得分级组织中的邮件}
+	\begin{lstlisting}
+	Message[] getMessages();
+	Message[] getMessages(int[] msgnums);
+	Message[] getMessages(int start, int end);
+	\end{lstlisting}
+
+\subsection{获得分级组织中的新邮件数量}
+	\begin{lstlisting}
+	int getNewMessageCount();
+	\end{lstlisting}
+
+\subsection{获得分级组织中未读邮件的数量}
+	\begin{lstlisting}
+	int getUnreadMessageCount();
+	\end{lstlisting}
+
+\section{Message类}
+	 javax.mail.Message 类是创建和解析邮件的核心API，它的实例对象代表一封电子邮件。
+
+	 发送邮件的步骤：
+	 \begin{itemize}
+		 \item[1.] 首先使用创建邮件的API。
+		 \item[2.] 将要创建邮件的数据封装到Message对象中。
+		 \item[3.] 最后把这个对象传递给邮件发送API发送出去。  
+	 \end{itemize}
+
+	 接收邮件的步骤：
+	 \begin{itemize}
+		 \item[1.] 邮件接收API把接收到的邮件数据封装在Message类的实例对象中。
+		 \item[2.] 客户端程序再使用邮件解析API。
+		 \item[3.] 从这个对象中解析出接收到的邮件数据。 
+	 \end{itemize}
+
+	 API查询网站：\par
+	 \url{file:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/ext/javamail-1.4.5/docs/javadocs/javax/mail/Message.html}
+
+\subsection{MIME解析}
+	如果在邮件中要添加附件，必须定义multipart/mixed段；
+	如果存在内嵌资源，至少要定义multipart/related段；
+	如果纯文本与超文本共存，至少要定义multipart/alternative段。
+	什么是“至少”？举个例子说，如果只有纯文本与超文本正文，
+	那么在邮件头中将类型扩大化，定义为multipart/related，
+	甚至multipart/mixed，都是允许的。\par
+
+	multipart诸类型的共同特征是，
+	在段头指定“boundary”参数字符串，段体内的每个子段以此串定界。
+	所有的子段都以“--”+boundary行开始，父段则以“--”+boundary+“--”行结束。
+	段与段之间也以空行分隔。
+	在邮件体是multipart类型的情况下，
+	邮件体的开始部分(第一个“--”+boundary行之前)可以有一些附加的文本行，
+	相当于注释，解码时应忽略。
+	段间也可以有一些附加的文本行，不会显示出来，如果有兴趣，不妨验证一下。
+
+\subsection{常用API}
+\subsubsection{设置sender}
+	\begin{lstlisting}
+	public abstract void setFrom(Address address);
+	\end{lstlisting}
+
+\subsubsection{设置recipient}
+	\begin{lstlisting}
+	public abstract void setRecipient(Address address);
+	\end{lstlisting}
+
+\subsection{获得发件人}
+	\begin{lstlisting}
+	abstract Address[] getFrom();
+	\end{lstlisting}
+
+\subsection{获得收件人}
+	\begin{lstlisting}
+	abstract Address[] getRecipients();
+	\end{lstlisting}
+
+\subsection{获得邮件的主题}
+	\begin{lstlisting}
+	abstrct String getSubject();
+	\end{lstlisting}
+
+\subsection{获得发送日期}
+	\begin{lstlisting}
+	abstract Date getSentDate();
+	\end{lstlisting}
+
+\subsection{获得邮件的ID}
+	邮件的ID表示一封邮件，函数如下：
+	\begin{lstlisting}
+	String getMessageID();
+	\end{lstlisting}
+
+\subsection{获得邮件的内容}
+	\begin{lstlisting}
+	Object getContent();
+	\end{lstlisting}
+
+\section{Properties类}
+	由于JavaMail需要和邮件服务器进行通信，
+	这就要求程序提供许多诸如服务器地址、端口、用户名、密码等信息，
+	JavaMail通过Properties对象封装这些属性的信息。\par
+
+	针对不同的的邮件协议，
+	JavaMail规定了服务提供者必须支持一系列属性，
+	下表是针对SMTP协议的一些常见属性（属性值都以String类型进行设置，属性类型栏仅表示属性是如何被解析的）：\par
+
+	\begin{itemize}
+		\item[1.] mail.smtp.host，类型为String，SMTP服务器地址。
+		\item[2.] mail.smtp.port，类型为int，SMTP服务器端口号，默认为25
+		\item[3.] mail.smtp.auth，类型为boolean，STMP服务器是否需要用户认证
+		\item[4.] mail.smtp.user，类型为String，SMTP默认的登陆用户名。
+		\item[5.] mail.smtp.from，类型为String，默认的邮件发送源地址。
+		\item[6.] mail.smtp.timeout，类型为int，I/O连接超时时间，单位为毫秒，默认为永不超时。
+	\end{itemize}
+
+	使用的例子：
+	\begin{lstlisting}
+	public class MailSenderInfo
+	{
+		private String mailServerHost;
+		private String mailServerPort = "25";
+		private String fromAddress;
+		private String toAddress;
+
+		private String userName;
+		private String password;
+		private boolean validate = true;
+
+		private String subject;
+		private String content;
+		private String[] attachFileNames;
+
+		public Properties getProperties()
+		{
+			Properties p = new Properties();
+			p.put("mail.smtp.host", this.mailServerHost);
+			p.put("mail.smtp.port", this.mailServerPort);
+			p.put("mail.smtp.auth", validate ? "true" : "false");
+			return p;
+		}
+		...
+	}
+
+	public class MailSender
+	{
+		public static boolean sendTextMail(MailSenderInfo mailInfo)
+		{
+			MyAuthenticator authenticator = null;
+			if(mailInfo.isValidate())
+				authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+
+			Session sendMailSession = Session.getInstance(mailInfo.getProperties(), authenticator);
+
+			...
+
+			return false;
+		}
+	}
+	\end{lstlisting}
+
+	可以查询SMTP、POP3和IMAP的属性的网站：\par
+	\url{file:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/ext/javamail-1.4.5/docs/javadocs/com/sun/mail/smtp/package-summary.html}\par
+	\url{file:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/ext/javamail-1.4.5/docs/javadocs/com/sun/mail/pop3/package-summary.html}\par
+	\url{file:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/ext/javamail-1.4.5/docs/javadocs/com/sun/mail/imap/package-summary.html}
+
+\section{Session类}
+	javax.mail.Session 类用于定义整个应用程序所需的环境信息，以及收集客户端与邮件服务器建立网络连接的会话信息，如邮件服务器的主机名、端口号、采用的邮件发送和接收协议等。
+	Session对象根据这些会话信息构建邮件收发的Store和Transport对象，以及为客户端创建Message对象提供信息支持。
+
+\section{Store类}
+	javax.mail.Store 类是接收邮件的核心API类，它的实例对象代表实现某个邮件接收协议的邮件接收对象，例如POP3和IMAP协议。
+	客户端程序接收邮件时，只需要使用邮件接收API得到Store对象，然后调用Store对象的接收方法，就可以从指定的 POP3服务器中获得邮件数据，并把这些邮件数据封装到表示邮件的Message对象中。
+
+\subsection{打开Folder}
+	\begin{lstlisting}
+	public abstract void getFolder();
+	\end{lstlisting}
+
+\section{Transport类}
+	javax.mail.Transport 类是发送邮件的核心API类，它的实例对象，代表实现了某个邮件发送协议的邮件发送对象，例如SMTP 协议。
+	客户端程序创建好Message对象后，只需要使用邮件发送API得到 Transport 对象，然后把 Message 对象传递给 Transport 对象，并调用它的发送方法，就可以把邮件发送给指定的SMTP服务器。
+
+\section{参考网站}
+	\url{http://mojijs.com/2016/09/219349/index.html}
+
+\end{document}

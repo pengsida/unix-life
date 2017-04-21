@@ -1,0 +1,711 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{进程间通信 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{实现IPC}
+	实现框架如下：
+	\begin{itemize}
+		\item[1.] 增加sendrec系统调用，这里的系统调用供进程调用，最终根据类型决定调用msg\_receive()还是msg\_send()函数。
+		\item[2.] 新定义MESSAGE结构体和扩展proc结构体，并且声明一个phys\_copy()函数，用于进程之间复制消息体。
+		\item[3.] 实现msg\_send()函数，用于将sender进程的消息体内容传递给目标进程。
+		\item[4.] 实现msg\_receive()函数，用于接收来自其它进程的消息。
+	\end{itemize}
+
+\subsection{增加sendrec系统调用}
+	两个函数体分别如下：
+	\begin{lstlisting}
+	sendrec:
+		mov eax, _NR_sendrec
+		mov ebx, [esp + 4]
+		mov ecx, [esp + 8]
+		mov edx, [esp + 12]
+		int INT_VECTOR_SYS_CALL
+		ret
+
+	// ==============================
+
+	PUBLIC int sys_sendrec(int function, int src_dest, MESSAGE* m, struct proc* p)
+	{
+		assert(k_reenter == 0);
+		assert((src_dest >= 0 && src_dest <= NR_TASKS + NR_PROCS) || src_dest == ANY || src_dest == INTERRUPT);
+
+		int ret = 0;
+		int caller = proc2pid(p);
+		MESSAGE* mla = (MESSAGE*)va2la(caller, m);
+		mla->source = caller;
+
+		assert(mla->source != src_dest);
+
+		if(function == SEND)
+		{
+			ret = msg_send(p, src_dest, m);
+			if(ret != 0)
+				return ret;
+		}
+		else if(function == RECEIVE)
+		{
+			ret = msg_receive(p, src_dest, m);
+			if(ret != 0)
+				return ret;
+		}
+		else
+		{
+			panic("{sys_sendrec} invalid function: %d (SEND:%d RECEIVE:%d)", function, SEND, RECEIVE);
+		}
+	}
+	\end{lstlisting}
+
+	我们这里还用了send\_recv()函数去封装sendrec()系统调用：
+	\begin{lstlisting}
+	PUBLIC int send_recv(int function, int src_dest, MESSAGE* msg)
+	{
+		int ret = 0;
+		if(function == RECEIVE)
+			memset(msg, 0, sizeof(MESSAGE));
+
+		switch(function)
+		{
+			case BOTH:
+				ret = sendrec(SEND, src_dest, msg);
+				if(ret == 0)
+					ret = sendrec(RECEIVE, src_dest, msg);
+				case SEND:
+				case RECEIVE:
+					ret = sendrec(function, src_dest, msg);
+					break;
+				default:
+					assert((function == BOTH) || (function == SEND) || (function == RECEIVE));
+					break;
+		}
+		return ret;
+	}
+	\end{lstlisting}
+
+\subsection{为消息的接收与发送做准备}
+\subsubsection{扩展进程结构体}
+	定义MESSAGE结构体：
+	\begin{lstlisting}
+	struct mess1 
+	{
+		int m1i1;
+		int m1i2;
+		int m1i3;
+		int m1i4;
+	};
+
+	struct mess2 
+	{
+		void* m2p1;
+		void* m2p2;
+		void* m2p3;
+		void* m2p4;
+	};
+
+	struct mess3 
+	{
+		int	m3i1;
+		int	m3i2;
+		int	m3i3;
+		int	m3i4;
+		u64	m3l1;
+		u64	m3l2;
+		void*	m3p1;
+		void*	m3p2;
+	};
+
+	#define	RETVAL		u.m3.m3i1
+
+	typedef struct 
+	{
+		int source;
+		int type;
+		union {
+			struct mess1 m1;
+			struct mess2 m2;
+			struct mess3 m3;
+		} u;
+	} MESSAGE;
+	\end{lstlisting}
+
+	接收方和发送方斗维护着一个消息结构体，发送方的结构体携带了消息内容，而接收方是空的。\par
+
+	为了使进程可以通信，我们要在进程体结构中增加几个成员：
+	\begin{lstlisting}
+	struct proc
+	{
+		struct stackframe regs;
+
+		u16 ldt_sel;
+		struct descriptor ldts[LDT_SIZE];
+
+		int ticks;
+		int priority;
+
+		u32 pid;
+		char name[16];
+
+		int nr_tty;
+
+		// 以下是扩展的成员
+		int p_flags;
+		/*
+		   用于表明进程的状态
+		   0，表示进程正在运行或准备运行
+		   SENDING，进程处于发送消息的状态，消息还未送达，进程被阻塞
+		   RECEIVING。进程处于接收消息的状态，消息还未收到，进程被阻塞
+		*/
+
+		MESSAGE * p_msg; // 指向消息体
+
+		int p_recvfrom;
+		/*
+		   记录进程想要从谁那里接收消息
+		*/
+
+		int p_sendto;
+		/*
+		   记录进程想要发送消息给谁
+		*/
+
+		int has_int_msg;
+		/*
+			系统是否正在等待一个中断发生
+		*/
+
+		struct proc * q_sending;
+		/*
+			向进程发送消息的进程队列中，q_sending指向第一个试图发送消息的进程
+		*/
+
+		struct proc * next_sending;
+		/*
+			向进程发送消息的进程队列中，进程如果处在这个队列中，next_sending指向下一个进程
+		*/
+	}
+	\end{lstlisting}
+
+\subsubsection{实现phys\_copy()函数}
+	这里的phys\_copy()函数可以直接借助memcpy()函数来实现：
+	\begin{lstlisting}
+	PUBLIC	void*	memcpy(void* p_dst, void* p_src, int size);
+	
+	#define	phys_copy	memcpy
+	\end{lstlisting}
+
+	为了使用phys\_copy()函数，我们需要先把消息的地址转为线性地址，算法如下：
+	\begin{itemize}
+		\item[1.] 根据上述进程结构体的定义，消息MESSAGE是proc结构体的一个成员，如果我们拥有一个MESSAGE，那么它一定是附属于进程结构体的。
+		          那么这个消息的地址值一个是相对于进程结构体的偏离地址。
+		\item[2.] 现在我们拥有相对于进程结构体的偏离地址，只需要再求出进程结构体的线性地址，两者相加就是消息的线性地址。
+	\end{itemize}
+	\begin{lstlisting}
+	// 每个进程都有自己的LDT
+	// 通过进程结构体中的LDT中的描述符可以得到相应段的基地址
+	PUBLIC int ldt_seg_linear(struct proc* p, int idx)
+	{
+		struct descriptor* d = &p->ldts[idx];
+		return d->base_high << 24 | d->base_mid << 16 | d->base_low;
+	}
+
+	PUBLIC void* va2la(int pid, void* va)
+	{
+		struct proc* p = &proc_table[pid];
+
+		u32 seg_base = ldt_seg_linear(p, INDEX_LDT_RW);
+		u32 la = seg_base + u32(va);
+
+		return (void*)la;
+	}
+	\end{lstlisting}
+
+\subsection{实现msg\_send()函数}
+	这个函数的算法如下：
+	\begin{itemize}
+		\item[1.] 首先判断是否发生死锁。
+		\item[2.] 判断目标进程dest是否正在等待sender进程的消息。
+		\item[3.] 如果是，就把消息复制给目标进程，目标进程被解除阻塞，继续运行。
+				  如果不是，sender进程被阻塞，并加入目标进程的发送队列中。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PRIVATE int msg_send(struct proc* current, int dest, MESSAGE* m)
+	{
+		struct proc* sender = current;
+		struct proc* p_dest = proc_table + dest;
+
+		assert(proc2pid(sender) != dest);
+
+		// 检测是否发生死锁
+		if(deadlock(proc2pid(), dest))
+		{
+			panic(">>DEADLOCK<< %s->%s", sender->name, p_dest->name);
+		}
+
+		// 判断目标进程p_dest是否在等待sender进程的消息
+		if((p_dest->p_flags & RECEIVING) && (p_dest->p_recvfrom == proc2pid(sender)) || p_dest->p_recvfrom == ANY)
+		{
+			assert(p_dest->p_msg);
+			assert(m);
+
+			// 将消息复制给目标进程p_dest
+			phys_copy(va2la(dest, p_dest->p_msg), va2la(proc2pid(sender), m), sizeof(MESSAGE));
+
+			// 恢复p_dest的状态
+			p_dest->p_msg = 0;
+			p_dest->p_flags &= ~RECEIVING;
+			p_dest->p_recvfrom = NO_TASK;
+
+			// 将目标进程解除阻塞
+			unblock(p_dest);
+
+			assert(p_dest->p_flags == 0);
+			assert(p_dest->p_msg == 0);
+			assert(p_dest->p_recvfrom == NO_TASK);
+			assert(p_dest->p_sendto == NO_TASK);
+			assert(sender->p_flags == 0);
+			assert(sender->p_msg == 0);
+			assert(sender->p_recvfrom == NO_TASK);
+			assert(sender->p_sendto == NO_TASK);
+		}
+		else // 目标进程没有在等待sender进程，sender进程被阻塞，加入到目标进程的发送队列中
+		{
+			sender->p_flags |= SENDING;
+			assert(sender->p_flags == SENDING);
+			sender->p_sendto = dest;
+			sender->p_msg = m;
+
+			struct proc* p;
+
+			// 将sender进程加入目标进程的发送队列中
+			if(p_dest->q_sending)
+			{
+				p = p_dest->q_sending;
+				while(p->next_sending)
+					p = p->next_sending;
+				p->next_sending = sender;
+			}
+			else
+			{
+				p_dest->q_sending = sender;
+			}
+			sender->next_sending = 0;
+			
+			// 阻塞sender进程
+			block(sender);
+
+			assert(sender->p_flags == SENDING);
+			assert(sender->p_msg != 0);
+			assert(sender->p_recvfrom == NO_TASK);
+			assert(sender->p_sendto == dest);
+		}
+		return 0;
+	}
+	\end{lstlisting}
+
+\subsubsection{实现一些辅助函数}
+	在实现msg\_send()函数的过程中，我们使用了block()和unblock()函数，用于阻塞和解锁进程。
+	在这里可以借助进程调度来实现进程的阻塞与解锁：
+	\begin{lstlisting}
+	PRIVATE void block(struct proc* p)
+	{
+		assert(p->p_flags); // 首先判断进程的状态不为0，也就是不是runnable的状态
+		schedule();
+	}
+
+	PRIVATE void unblock(struct proc* p)
+	{
+		assert(p->p_flags == 0); // 判断进程为runnable的状态
+	}
+	\end{lstlisting}
+
+	这里unblock()和block()的函数很简单，主要是利用p\_flags这个状态，然后在进程调度函数中做一些手脚：
+	\begin{lstlisting}
+	PUBLIC void schedule()
+	{
+		struct proc* p;
+		int greatest_ticks = 0;
+
+		while(!greatest_ticks)
+		{
+			for(p = &FIRST_PROC; p <= &LAST_PROC; p++)
+			{
+				// 进程的p_flags只有为0，才可能分配到cpu
+				if(p->p_flags == 0)
+				{
+					if(p->ticks > greatest_ticks)
+					{
+						greatest_ticks = p->ticks;
+						p_proc_ready = p;
+					}
+				}
+			}
+
+			// 如果进程初始ticks都为0
+			if(!greatest_ticks)
+			{
+				for(p = &FIRST_PROC; p <= &LAST_PROC; ++p)
+				{
+					// 只有进程的p_flags只有为0，才可能分配到ticks
+					if(p->p_flags == 0)
+						p->ticks = p->priority;
+				}
+			}
+		}
+	}
+	\end{lstlisting}
+
+	在实现消息传递机制中，我们还要谨防死锁。
+	这里通过判断消息的发送是否构成一个环来判断。
+	如果构成一个环，则意味着发生死锁，比如A试图发消息给B，同时B试图给C，C试图给A发消息，那么死锁就发生了。deadlock()的实现如下：
+	\begin{lstlisting}
+	PRIVATE int deadlock(int src, int dest)
+	{
+		struct proc* p = proc_table + dest;
+		while(1)
+		{
+			// 用于检测是否构成一个环
+			if(p->p_flags & SENDING)
+			{
+				if(p->p_sendto == src)
+				{
+					// 如果发现可以构成一个环时，将这个进程环打印出来
+					p = proc_table + dest;
+					printl("=_=%s",p->name);
+					do
+					{
+						assert(p->msg);
+						p = proc_table + p->p_sendto;
+						printl("->%s", p->name);
+					}while(p != proc_table + src);
+					return 1;
+				}
+				p = proc_table + p->p_sendto;
+			}
+			else
+				break;
+		}
+		return 0;
+	}
+	\end{lstlisting}
+
+\subsection{实现msg\_receive()函数}
+	这个函数的算法如下：
+	\begin{itemize}
+		\item[1.] 首先判断进程是否有一个来自硬件的消息，如果是，并且进程的消息源为ANY或INTERRUPT，就准备一个消息给进程，并返回。
+		\item[2.] 如果进程的消息源为ANY，就从自己的q\_sending中选取一个消息源，将其该源进程的消息复制给进程。
+		\item[3.] 如果进程的消息源为特定进程A，则先判断A是否在等待向自己发送消息。如果是，就把消息复制给进程。
+		\item[4.] 如果此时没有任何进程发消息给本进程，则该进程将被阻塞。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PRIVATE int msg_receive(struct proc* current, int src, MESSAGE* m)
+	{
+		struct proc* p_who_wanna_recv = current;
+		struct proc* p_from = 0;
+		struct proc* prev = 0;
+		int copyok = 0;
+
+		assert(proc2pid(p_who_wanna_recv) != src);
+
+		// 判断进程是否有一个来自硬件的消息，并且进程的消息源为ANY或INTERRUPT
+		if((p_who_wanna_recv->has_int_msg) && ((src == ANY) || (src == INTERRUPT)))
+		{
+			MESSAGE msg;
+			reset_msg(&msg);
+			msg.source = HARD_INT;
+			assert(m);
+			phys_copy(va2la(proc2pid(p_who_wanna_recv), m), &msg, sizeof(MESSAGE));
+			
+			p_who_wanna_recv->has_int_msg = 0;
+
+			assert(p_who_wanna_recv->p_flags == 0);
+			assert(p_who_wanna_recv->p_msg == 0);
+			assert(p_who_wanna_recv->p_sendto == NO_TASK);
+			assert(p_who_wanna_recv->has_int_msg == 0);
+
+			return 0;
+		}
+
+		// 如果进程的消息源为ANY
+		if(src == ANY)
+		{
+			if(p_who_wanna_recv->q_sending)
+			{
+				// 从自己的q_sending中选取一个消息
+				p_from = p_who_wanna_recv->q_sending;
+				copyok = 1;
+
+				assert(p_who_wanna_recv->p_flags == 0);
+				assert(p_who_wanna_recv->p_msg == 0);
+				assert(p_who_wanna_recv->p_recvfrom == NO_TASK);
+				assert(p_who_wanna_recv->p_sendto == NO_TASK);
+				assert(p_who_wanna_recv->q_sending != 0);
+				
+				assert(p_from->p_flags == SENDING);
+				assert(p_from->p_msg != 0);
+				assert(p_from->p_recvfrom == NO_TASK);
+				assert(p_from->p_sendto == proc(p_who_wanna_recv));
+			}
+		}
+		else // 如果进程的消息源为特定进程
+		{
+			p_from = &proc_table[src];
+
+			// 判断进程是否在发消息，并且目标为本进程
+			if((p_from->p_flags & SENDING) && (p_from->p_sendto == proc2pid(p_who_wanna_recv)))
+			{
+				copyok = 1;
+				
+				struct proc* p = p_who_wanna_recv->q_sending;
+				assert(p);
+
+				// 该循环用于找到进程队列中源进程的前一个进程prev，用于维护进程队列
+				while(p)
+				{
+					assert(p_from->p_flags & SENDING);
+					if(proc2pid(p) == src)
+					{
+						p_from = p;
+						break;
+					}
+					prev = p;
+					p = p->next_sending;
+				}
+			}
+
+			assert(p_who_wanna_recv->p_flags == 0);
+			assert(p_who_wanna_recv->p_msg == 0);
+			assert(p_who_wanna_recv->p_recvfrom == NO_TASK);
+			assert(p_who_wanna_recv->p_sendto == NO_TASK);
+			assert(p_who_wanna_recv->q_sending != 0);
+
+			assert(p_from->p_flags == SENDING);
+			assert(p_from->p_msg != 0);
+			assert(p_from->p_recvfrom == NO_TASK);
+			assert(p_from->p_sendto == proc2pid(p_who_wanna_recv));
+		}
+
+		// 如果有相应的消息源
+		if(copyok)
+		{
+			// 如果p_from就是进程队列的第一个进程
+			if(p_from == p_who_wanna_recv->q_sending)
+			{
+				assert(prev == 0);
+				// 更新进程队列
+				p_who_wanna_recv->q_sending = p_from->next_sending;
+				p_from->next_sending = 0;
+			}
+			else // 如果不是，同样是维护进程队列
+			{
+				assert(prev);
+				prev->next_sending = p_from->next_sending;
+				p_from->next_sending = 0;
+			}
+
+			assert(m);
+			assert(p_from->p_msg);
+			
+			// 将消息体复制给目标进程
+			phys_copy(va2la(proc2pid(p_who_wanna_recv), m), va2la(proc2pid(p_from), p_from->p_msg), sizeof(MESSAGE));
+			
+			p_from->p_msg = 0;
+			p_from->p_sendto = NO_TASK;
+			p_from->p_flags &= ~SENDING; // 将p_from的p_flags设为0
+			
+			// 解除对p_from的阻塞
+			unblock(p_from);
+		}
+		else
+		{
+			// 将p_who_wanna_recv的p_flags设为RECEIVING
+			p_who_wanna_recv->p_flags |= RECEIVING;
+			p_who_wanna_recv->p_msg = m;
+
+			if(src == ANY)
+				p_who_wanna_recv->p_recvfrom = ANY;
+			else
+				p_who_wanna_recv->p_recvfrom = proc2pid(p_from);
+			
+			// 阻塞目标进程p_who_wanna_recv
+			block(p_who_wanna_recv);
+
+			assert(p_who_wanna_recv->p_flags == RECEIVING);
+			assert(p_who_wanna_recv->p_msg != 0);
+			assert(p_who_wanna_recv->p_recvfrom != NO_TASK);
+			assert(p_who_wanna_recv->p_sendto == NO_TASK);
+			assert(p_who_wanna_recv->has_int_msg == 0);
+		}
+	}
+	\end{lstlisting}
+
+\section{使用IPC机制实现get\_ticks()函数}
+	这里的get\_ticks()函数首先需要向某个系统任务发出请求ticks的值，随后等待该系统任务的响应。
+	这样的行为我们定义为BOTH，也就是发送一个消息，随后马上等待接收一个消息。实现如下：
+	\begin{lstlisting}
+	PUBLIC int get_ticks()
+	{
+		MESSAGE msg;
+		memset(&msg, 0, sizeof(MESSAGE));
+		msg.type = GET_TICKS;
+		send_recv(BOTH, TASK_SYS, &msg);
+		return msg.RETVAL;
+	}
+
+	PUBLIC void task_sys()
+	{
+		MESSAGE msg;
+		while(1)
+		{
+			// 等待其他进程的消息
+			send_recv(RECEIVE, ANY, &msg);
+			int src = msg.source;
+
+			switch(msg.type)
+			{
+				case GET_TICKS:
+					msg.RETVAL = ticks;
+					// 向特定进程发送消息
+					send_recv(SEND, src, &msg);
+					break;
+				default:
+					panic("unknown msg type");
+					break;
+			}
+		}
+	}
+	\end{lstlisting}
+
+\end{document}
