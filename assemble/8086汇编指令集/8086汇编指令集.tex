@@ -216,6 +216,11 @@
 \subsection{imul}
 \subsection{inc}
 \subsection{int}
+\subsection{ins}
+	INS指令可从DX指出的外设端口输入一个字节或字到由ES: DI指定的存储器中。 
+	输入字节还是字，则由ES: DI目标操作数的属性决定，
+	且根据方向标志位DF和目标操作数的属性来修改DI的值：若（DF）= 0，则DI加1（或加2）；否则DI减1（或减2）。 
+
 \subsection{iret}
 	用于16位操作数大小的中断返回。该指令执行的过程基本上是int指令的逆过程：
 	\begin{itemize}
@@ -306,6 +311,11 @@
 \subsection{nop}
 \subsection{not}
 \subsection{or}
+\subsection{outs}
+	OUTS指令可从ES: DI指定的存储器输入一个字节或字到由DX指出的外设端口中。
+	输入字节还是字，则由ES: DI目标操作数的属性决定，
+	且根据方向标志位DF和目标操作数的属性来修改DI的值：若（DF）= 0，则DI加1（或加2）；否则DI减1（或减2）。 
+
 \subsection{push}
 \subsection{pusha}
 	pusha指令依次将ax、cx、dx、bx、sp、bp、si和di压入堆栈。

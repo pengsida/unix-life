@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}硬盘驱动程序}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}对命令块寄存器的操作}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}硬盘操作的端口}{2}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}Device寄存器与LBA三个寄存器}{4}{subsubsection.1.1.2}
+\contentsline {subsection}{\numberline {1.2}硬盘驱动程序}{4}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}初始化硬盘中断的函数}{5}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}得到硬盘信息}{6}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.3}遍历所有分区}{8}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.4}关闭硬盘}{12}{subsubsection.1.2.4}
+\contentsline {subsubsection}{\numberline {1.2.5}读写硬盘内容}{13}{subsubsection.1.2.5}
+\contentsline {subsubsection}{\numberline {1.2.6}处理IOCTL}{14}{subsubsection.1.2.6}

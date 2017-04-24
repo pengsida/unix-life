@@ -1,0 +1,745 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{文件系统 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{硬盘驱动程序}
+	对硬盘控制器的操作通过I/O端口来进行，分为两组端口，分别是命令块寄存器和控制块寄存器。如下图所示：
+	\fic{1.png}
+
+	一块PC主板上有两个IDE口，分为Primary和Secondary。对于IDE口的访问通过I/O端口地址来区分。
+	每个IDE口上可以连接两个设备，分别为主设备和从设备。通过Device寄存器可以选择哪个设备，如果Device寄存器第四位为0，就是操作主设备，如果为1就是操作从设备。
+
+\subsection{对命令块寄存器的操作}
+\subsubsection{硬盘操作的端口}
+	\begin{lstlisting}
+	#define REG_DATA	0x1F0
+	#define REG_FEATURES	0x1F1
+	#define REG_ERROR	REG_FEATURES
+	#define REG_NSECTOR	0x1F2
+	#define REG_LBA_LOW	0x1F3
+	#define REG_LBA_MID	0x1F4
+	#define REG_LBA_HIGH	0x1F5
+	#define REG_DEVICE	0x1F6
+	#define REG_STATUS	0x1F7
+	#define REG_CMD		0x1F7
+	\end{lstlisting}
+
+	状态寄存器有如下几位：
+	\begin{lstlisting}
+	#define	STATUS_BSY	0x80
+	#define	STATUS_DRDY	0x40
+	#define	STATUS_DFSE	0x20
+	#define	STATUS_DSC	0x10
+	#define	STATUS_DRQ	0x08
+	#define	STATUS_CORR	0x04
+	#define	STATUS_IDX	0x02
+	#define	STATUS_ERR	0x01
+	\end{lstlisting}
+
+	知道端口以后，我们当然想着如何操作它。首先我们定义一个结构体，用于存放操作端口的信息：
+	\begin{lstlisting}
+	struct hd_cmd {
+		u8	features;
+		u8	count;
+		u8	lba_low;
+		u8	lba_mid;
+		u8	lba_high;
+		u8	device;
+		u8	command;
+	};
+	\end{lstlisting}
+
+	随后编写操作端口的函数：
+	\begin{lstlisting}
+	PRIVATE void hd_cmd_out(struct hd_cmd* cmd)
+	{
+		if(!waitfor(STATUS_BSY, 0, HD_TIMEOUT))
+			panic("hd error");
+		
+		// 填充命令块寄存器的信息
+		out_byte(REG_DEV_CTRL, 0);
+		out_byte(REG_FEATURES, cmd->features);
+		out_byte(REG_NSECTOR, cmd->count);
+		out_byte(REG_LBA_LOW, cmd->lba_low);
+		out_byte(REG_LBA_MID, cmd->lba_mid);
+		out_byte(REG_LBA_HIGH, cmd->lba_high);
+		out_byte(REG_DEVICE, cmd->device);
+		
+		// 写入命令
+		out_byte(REG_CMD, cmd->command);
+	}
+	\end{lstlisting}
+
+	读端口中的数据的函数如下：
+	\begin{lstlisting}
+	; void port_read(u16 port, void* buf, int n);
+	port_read:
+		mov	edx, [esp + 4]		; port
+		mov	edi, [esp + 4 + 4]	; buf
+		mov	ecx, [esp + 4 + 4 + 4]	; n
+		shr	ecx, 1
+		cld
+		rep	insw ; 从DX指出的外设端口输入一个字节或字到由ES: DI指定的存储器中
+		ret
+	\end{lstlisting}
+
+\subsubsection{Device寄存器与LBA三个寄存器}
+	在操作端口的时候，我们通过Device寄存器指定设备。Device寄存器如下图所示：
+	\fic{2.png}
+
+	寄存器有三部分：
+	\begin{itemize}
+		\item[1.] DRV位，用于指定主设备还是从设备。
+		\item[2.] LBA模式位，用于指定操作模式。如果LBA位为0，对磁盘的操作使用CHS模式。如果LBA位为1，对磁盘的操作使用LBA模式。
+		\item[3.] 低四位，在CHS模式中表示磁头号，在LBA模式中表示LBA的24～27位。
+	\end{itemize}
+
+	LBA模式：用于寻址硬盘，0～7位由LBA Low寄存器指定，8～15位由LBA Mid寄存器指定，16～23位由LBA High指定，24～27位由Device寄存器的低四位指定。\par
+
+	为了更简单地表示Device寄存器，我使用一个宏来表示寄存器：
+	\begin{lstlisting}
+	#define MAKE_DEVICE_REG(lba, drv, lba_highest) (((lba) << 6) | \
+							                        ((drv) << 4) | \
+													(lba_highest & 0xF) | 0xA0)
+	\end{lstlisting}
+
+	
+
+\subsection{硬盘驱动程序}
+	首先写一个硬盘驱动程序的系统进程，这个驱动程序接收消息类型如下：
+	\begin{itemize}
+		\item[1.] 接收DEV\_IDENTIFY，用于得到硬盘信息。
+		\item[2.] 接收DEV\_OPEN，用于遍历所有分区。
+		\item[3.] 接收DEV\_CLOSE，用于关闭硬盘。
+		\item[4.] 接收DEV\_READ，用于读取硬盘内容。
+		\item[5.] 接收DEV\_WRITE，用于写入硬盘。
+		\item[6.] 接收DEV\_IOCTL，用于把请求的设备的起始扇区和扇区数目返回给调用者。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PUBLIC void task_hd()
+	{
+		MESSAGE msg;
+
+		init_hd();
+
+		while(1)
+		{
+			send_rec(RECEIVE, ANY, &msg);
+			int src = msg.source;
+			switch(msg.type)
+			{
+				case DEV_IDENTIFY:
+					hd_identify(0);
+					break;
+				case DEV_OPEN:
+					hd_open(msg.DEVICE);
+					break;
+				default:
+					dump_msg("HD driver::unknown msg", &msg);
+					spin("FS::main_loop (invalid msg.type)");
+					break;
+			}
+			send_rec(SEND, src, &msg);
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{初始化硬盘中断的函数}
+	这里的硬盘中断是为了和之后的硬盘驱动程序进行交互。
+	硬盘驱动程序操作硬盘，随即进入阻塞等待硬盘工作的完成。
+	硬盘工作完成时，将触发硬盘中断处理程序hd\_handler()，随即通知硬盘驱动程序。
+
+	\begin{lstlisting}
+	PRIVATE void init_hd()
+	{
+		u8 * pNrDrives = (u8*)(0x475);
+		printl("NrDrives:%d.\n", *pNrDrives);
+		assert(*pNrDrives);
+
+		put_irq_handler(AT_WINI_IRQ, hd_handler);
+		enable_irq(CASCADE_IRQ);
+		enable_irq(AT_WINI_IRQ);
+	}
+	\end{lstlisting}
+
+	硬盘中断处理程序如下：
+	\begin{lstlisting}
+	PUBLIC void hd_handler(int irq)
+	{
+		hd_status = in_byte(REG_STATUS);
+		inform_int(TASK_HD);
+	}
+
+	PUBLIC void inform_int(int task_nr)
+	{
+		struct proc* p = proc_table + task_nr;
+
+		// 如果TASK_HD进程正在等待硬盘中断
+		if ((p->p_flags & RECEIVING) && 
+			((p->p_recvfrom == INTERRUPT) || (p->p_recvfrom == ANY))) {
+			p->p_msg->source = INTERRUPT;
+			p->p_msg->type = HARD_INT;
+			p->p_msg = 0;
+			p->has_int_msg = 0;
+			
+			// 解除TASK_HD进程的阻塞
+			p->p_flags &= ~RECEIVING; 
+			p->p_recvfrom = NO_TASK;
+			assert(p->p_flags == 0);
+			unblock(p);
+
+			assert(p->p_flags == 0);
+			assert(p->p_msg == 0);
+			assert(p->p_recvfrom == NO_TASK);
+			assert(p->p_sendto == NO_TASK);
+		}
+		else {
+			p->has_int_msg = 1;
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{得到硬盘信息}
+
+	编写得到硬盘信息的函数，实现它的想法如下：
+	\begin{itemize}
+		\item[1.] 首先向Device寄存器的第四位指定驱动器，0表示主设备，1表示从设备。
+		\item[2.] 然后填充命令块寄存器的其他寄存器。
+		\item[3.] 然后向Command寄存器写入十六进制ECh，从而获得Data数据。
+		\item[4.] 等待硬盘中断，原因随后解释。
+		\item[5.] 最后我们通过Data寄存器读取数据，总共256个数据。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PRIVATE void hd_identify(int drive)
+	{
+		struct hd_cmd cmd;
+		cmd.device = MAKE_DEVICE_REG(0, drive, 0);
+		cmd.command = ATA_IDENTIFY;
+		hd_cmd_out(&cmd);
+		interrupt_wait();
+		port_read(REG_DATA, hdbuf, SECTOR_SIZE);
+		print_identify_info((u16*)hdbuf);
+	}
+	\end{lstlisting}
+
+	当我们硬盘驱动程序发出指令后，需要等待硬盘工作的完成。我们这里设计硬盘完成工作的时候，会触发中断，执行中断处理程序hd\_handler()，然后调用inform\_int()函数，
+	解除硬盘驱动的阻塞。
+	等待硬盘中断的函数如下：
+	\begin{lstlisting}
+	PRIVATE void interrupt_wait()
+	{
+		MESSAGE msg;
+		send_rec(RECEIVE, INTERRUPT, &msg);
+	}
+	\end{lstlisting}
+
+	现在我们的hdbuf就存放着256字节的硬盘信息，具体参数可以从AT Attachment with Packet Interface文档中茶的，
+	我们这里只打印出如下的参数：
+	\fic{3.png}
+
+	打印硬盘信息的函数如下：
+	\begin{lstlisting}
+	PRIVATE void print_identify_info(u16* hdinfo)
+	{
+		int i, k;
+		char s[64];
+		struct iden_info_ascii{
+			int idx;
+			int len;
+			char* desc;
+		} iinfo[] = {
+			{10, 20, "HD SN"}, // 定义序列号
+			{27, 40, "HD Model"} // 定义型号
+		}
+
+		for (k = 0; k < sizeof(iinfo)/sizeof(iinfo[0]); k++)
+		{
+			char* p = (char*)&hdinfo[iinfo[k].idx];
+			for(i = 0; i < iinfo[k].len/2; i++)
+			{
+				s[i*2 + 1] = *p++;
+				s[i*2] = *p++;
+			}
+			s[i*2] = 0;
+			printl("%s: %s\n", iinfo[k].desc, s);
+		}
+
+		// 得到支持的功能
+		int capabilities = hdinfo[49];
+		printl("LBA supported: %s\n", (capabilities & 0x0200) ? "Yes" : "No");
+
+		// 得到支持的命令集
+		int cmd_set_supported = hdinfo[83];
+		printl("LBA48 supported: %s\n", (cmd_set_supported & 0x0400) ? "Yes" : "No");
+
+		// 得到用户可用的最大扇区数
+		int sectors = ((int)hdinfo[61] << 16) + hdinfo[60];
+		printl("HD size: %dMB\n", sectors * 512 / 1000000);
+	}
+	\end{lstlisting}
+
+\subsubsection{遍历所有分区}
+	函数如下：
+	\begin{lstlisting}
+	PRIVATE void hd_open(int device)
+	{
+		int drive = DRV_OF_DEV(device);
+		assert(drive == 0);	/* only one drive */
+
+		// 读取硬盘驱动器的信息
+		hd_identify(drive);
+
+		// 打印分区表
+		if (hd_info[drive].open_cnt++ == 0) {
+			partition(drive * (NR_PART_PER_DRIVE + 1), P_PRIMARY);
+			print_hdinfo(&hd_info[drive]);
+		}
+	}
+	\end{lstlisting}
+
+	定义一个硬盘信息的结构体，每个硬盘都应该有一个hd\_info结构体，
+	其中primary成员用来记录所有主分区的起始扇区和扇区数目，
+	logical成员用来记录所有逻辑分区的起始扇区和扇区数目。
+	\begin{lstlisting}
+	struct part_info {
+		u32	base;	// 起始扇区
+		u32	size;   // 扇区数目
+	};
+
+	/* main drive struct, one entry per drive */
+	struct hd_info
+	{
+		int			open_cnt;
+		struct part_info	primary[NR_PRIM_PER_DRIVE];
+		struct part_info	logical[NR_SUB_PER_DRIVE];
+	};
+	\end{lstlisting}
+
+	在实现partition()函数之前，先来了解主分区和扩展分区：
+	\begin{lstlisting}
+	磁盘分区有三种形式：主分区、扩展分区和逻辑分区。
+
+	主分区最多有四个。如果要在硬盘上安装操作系统，那么这个必须有一个主分区。
+	主分区中不能再划分其他类型的分区，每个主分区相当于一个逻辑磁盘。
+
+	扩展分区不能直接使用，必须将它划分为若干个逻辑分区才能使用。
+	逻辑分区相当于一个逻辑磁盘，逻辑分区必须在扩展分区中划分。
+	扩展分区中可能又有一个扩展分区。
+
+	由主分区和逻辑分区构成的逻辑磁盘称为驱动器(Driver)或卷(Volume)。
+	\end{lstlisting}
+	
+	再来看一下硬盘分区表，
+	硬盘分区表是一个结构体数组，数组的每个成员是一个16字节的结构体，如下所示：
+	\fic{4.png}
+
+	这块分区表位于分区起始扇区的1BEh处，我们可以通过类似于hd\_identify()函数的方法得到它。
+	我们可以根据分区表来判断分区类型、起始扇区LBA和扇区数目，其中关键信息是分区类型，
+	如果分区类型是5，说明它是扩展分区，需要继续递归，否则直接打印分区信息。
+	定义一个分区表的结构体：
+	\begin{lstlisting}
+	struct part_ent {
+		u8 boot_ind;	 // 表示是否可以引导
+		u8 start_head;	 // 起始柱头号
+		u8 start_sector; // 起始扇区号
+		u8 start_cyl;	// 起始柱面号的低八位
+		u8 sys_id;	    // 分区类型
+		u8 end_head;	// 结束柱头号
+		u8 end_sector;	// 结束扇区号
+		u8 end_cyl;		// 结束柱面号的低八位
+		u32 start_sect;	// 起始扇区的LBA
+		u32 nr_sects; 	// 扇区数目
+	} PARTITION_ENTRY;
+	\end{lstlisting}
+
+	我们现在对遍历一块硬盘的分区有了基本的头绪，但还有一件事需要知道，就是向command寄存器发送命令时，
+	需要指定扇区的LBA，这个需要填充LBA low、LBA mid、LBA high和Device寄存器。这样我们就需要分区的设备号。
+	在操作系统中，有两种设备号：主设备号和次设备号。主设备号告诉操作系统应该用哪个驱动程序来处理，次设备号告诉驱动程序具体是哪个设备。
+	我们这里遍历分区用的当然是次设备号。给定一个次设备号，我们可以很容易地计算出它是主分区还是扩展分区。给定一个分区的名称，我们也很容易计算出其次设备号。\par
+
+	定义一些与设备号相关的宏：
+	\begin{lstlisting}
+	#define	MAX_DRIVES		2  // 支持硬盘的数目
+	#define	NR_PART_PER_DRIVE	4 // 每个硬盘最多有多少主分区
+	#define	NR_SUB_PER_PART		16 // 每个扩展分区最多有多少个逻辑分区
+	#define	NR_SUB_PER_DRIVE	(NR_SUB_PER_PART * NR_PART_PER_DRIVE)
+	#define	NR_PRIM_PER_DRIVE	(NR_PART_PER_DRIVE + 1)
+
+	#define	MAX_PRIM		(MAX_DRIVES * NR_PRIM_PER_DRIVE - 1)
+	#define	MAX_SUBPARTITIONS	(NR_SUB_PER_DRIVE * MAX_DRIVES)
+
+	#define	MINOR_hd1a		0x10 // 扩展分区最小设备号
+	#define	MINOR_hd2a		(MINOR_hd1a+NR_SUB_PER_PART)
+	\end{lstlisting}
+
+	得到一块分区在哪个硬盘上：
+	\begin{lstlisting}
+	#define	DRV_OF_DEV(dev) (dev <= MAX_PRIM ? \
+				dev / NR_PRIM_PER_DRIVE : \
+				(dev - MINOR_hd1a) / NR_SUB_PER_DRIVE)
+	\end{lstlisting}
+
+	partition()函数用于获取硬盘分区表，实现的想法如下：
+	\begin{itemize}
+		\item[1.] 首先判断是主分区还是扩展分区。
+		\item[2.] 然后用get\_part\_table()函数，也就是读取该分区的信息。
+		\item[3.] 因为主分区中可以包含扩展分区，所以继续递归partition()函数。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PRIVATE void partition(int device, int style)
+	{
+		int i;
+		int drive = DRV_OF_DEV(device);
+		struct hd_info * hdi = &hd_info[drive];
+
+		struct part_ent part_tbl[NR_SUB_PER_DRIVE];
+
+		// 如果是主分区
+		if (style == P_PRIMARY) {
+			get_part_table(drive, drive, part_tbl);
+
+			int nr_prim_parts = 0;
+			for (i = 0; i < NR_PART_PER_DRIVE; i++) { /* 0~3 */
+				if (part_tbl[i].sys_id == NO_PART) 
+					continue;
+
+				nr_prim_parts++;
+				int dev_nr = i + 1;		  /* 1~4 */
+				hdi->primary[dev_nr].base = part_tbl[i].start_sect;
+				hdi->primary[dev_nr].size = part_tbl[i].nr_sects;
+
+				if (part_tbl[i].sys_id == EXT_PART) /* extended */
+					partition(device + dev_nr, P_EXTENDED);
+			}
+			assert(nr_prim_parts != 0);
+		}
+		// 如果是扩展分区
+		else if (style == P_EXTENDED) {
+			int j = device % NR_PRIM_PER_DRIVE; /* 1~4 */
+			int ext_start_sect = hdi->primary[j].base;
+			int s = ext_start_sect;
+			int nr_1st_sub = (j - 1) * NR_SUB_PER_PART; /* 0/16/32/48 */
+
+			for (i = 0; i < NR_SUB_PER_PART; i++) {
+				int dev_nr = nr_1st_sub + i;/* 0~15/16~31/32~47/48~63 */
+
+				get_part_table(drive, s, part_tbl);
+
+				hdi->logical[dev_nr].base = s + part_tbl[0].start_sect;
+				hdi->logical[dev_nr].size = part_tbl[0].nr_sects;
+
+				s = ext_start_sect + part_tbl[1].start_sect;
+
+				/* no more logical partitions
+				in this extended partition */
+				if (part_tbl[1].sys_id == NO_PART)
+					break;
+			}
+		}
+		else {
+			assert(0);
+		}
+	}
+
+	PRIVATE void get_part_table(int drive, int sect_nr, struct part_ent * entry)
+	{
+		struct hd_cmd cmd;
+
+		// 先填充命令块寄存器
+		cmd.features	= 0;
+		cmd.count	= 1;
+		cmd.lba_low	= sect_nr & 0xFF;
+		cmd.lba_mid	= (sect_nr >>  8) & 0xFF;
+		cmd.lba_high	= (sect_nr >> 16) & 0xFF;
+		cmd.device	= MAKE_DEVICE_REG(1, /* LBA mode*/
+						drive,
+						(sect_nr >> 24) & 0xF);
+		
+		// 再指定命令ATA_READ
+		cmd.command	= ATA_READ;
+		hd_cmd_out(&cmd);
+		interrupt_wait();
+
+		// 读取数据到hdbuf缓冲区
+		port_read(REG_DATA, hdbuf, SECTOR_SIZE);
+
+		memcpy(entry,
+			hdbuf + PARTITION_TABLE_OFFSET,
+			sizeof(struct part_ent) * NR_PART_PER_DRIVE);
+	}
+	\end{lstlisting}
+
+	打印分区信息：
+	\begin{lstlisting}
+	PRIVATE void print_hdinfo(struct hd_info * hdi)
+	{
+		int i;
+		for (i = 0; i < NR_PART_PER_DRIVE + 1; i++) {
+			printl("%sPART_%d: base %d(0x%x), size %d(0x%x) (in sector)\n",
+				i == 0 ? " " : "     ",
+				i,
+				hdi->primary[i].base,
+				hdi->primary[i].base,
+				hdi->primary[i].size,
+				hdi->primary[i].size);
+		}
+		for (i = 0; i < NR_SUB_PER_DRIVE; i++) {
+			if (hdi->logical[i].size == 0)
+				continue;
+			printl("         "
+				"%d: base %d(0x%x), size %d(0x%x) (in sector)\n",
+				i,
+				hdi->logical[i].base,
+				hdi->logical[i].base,
+				hdi->logical[i].size,
+				hdi->logical[i].size);
+		}
+	}
+	\end{lstlisting}
+
+\subsubsection{关闭硬盘}
+	关闭硬盘的函数很简单，也就是将hd\_info的结构体成员open\_cnt减一，如下所示：
+	\begin{lstlisting}
+	PRIVATE void hd_close(int device)
+	{
+		int drive = DRV_OF_DEV(device);
+		assert(drive == 0);	/* only one drive */
+
+		hd_info[drive].open_cnt--;
+	}
+	\end{lstlisting}
+
+\subsubsection{读写硬盘内容}
+	实现这个函数的想法如下：
+	\begin{itemize}
+		\item[1.] 根据Message得到我们所要操作的扇区的扇区号。
+		\item[2.] 根据Message的类型，决定是向硬盘发出ATA\_READ命令还是ATA\_WRITE命令。
+		\item[3.] 如果是DEV\_READ，就调用port\_read()函数，然后将数据拷贝到消息体中的缓存区。
+		\item[4.] 如果是DEV\_WRITE，就调用port\_write()函数，将消息体中附带的数据写入硬盘。
+	\end{itemize}
+
+	\begin{lstlisting}
+	PRIVATE void hd_rdwt(MESSAGE * p)
+	{
+		int drive = DRV_OF_DEV(p->DEVICE);
+
+		u64 pos = p->POSITION;
+		assert((pos >> SECTOR_SIZE_SHIFT) < (1 << 31));
+
+		assert((pos & 0x1FF) == 0);
+
+		// 得到扇区号
+		u32 sect_nr = (u32)(pos >> SECTOR_SIZE_SHIFT); /* pos / SECTOR_SIZE */
+		int logidx = (p->DEVICE - MINOR_hd1a) % NR_SUB_PER_DRIVE;
+		sect_nr += p->DEVICE < MAX_PRIM ?
+			hd_info[drive].primary[p->DEVICE].base :
+			hd_info[drive].logical[logidx].base;
+		
+		// 向硬盘发出命令
+		struct hd_cmd cmd;
+		cmd.features	= 0;
+		cmd.count	= (p->CNT + SECTOR_SIZE - 1) / SECTOR_SIZE;
+		cmd.lba_low	= sect_nr & 0xFF;
+		cmd.lba_mid	= (sect_nr >>  8) & 0xFF;
+		cmd.lba_high	= (sect_nr >> 16) & 0xFF;
+		cmd.device	= MAKE_DEVICE_REG(1, drive, (sect_nr >> 24) & 0xF);
+		cmd.command	= (p->type == DEV_READ) ? ATA_READ : ATA_WRITE;
+		hd_cmd_out(&cmd);
+
+		int bytes_left = p->CNT;
+		void * la = (void*)va2la(p->PROC_NR, p->BUF);
+
+		while (bytes_left) {
+			int bytes = min(SECTOR_SIZE, bytes_left);
+			if (p->type == DEV_READ) {
+				interrupt_wait();
+				port_read(REG_DATA, hdbuf, SECTOR_SIZE);
+				phys_copy(la, (void*)va2la(TASK_HD, hdbuf), bytes);
+			}
+			else {
+				if (!waitfor(STATUS_DRQ, STATUS_DRQ, HD_TIMEOUT))
+					panic("hd writing error.");
+
+				port_write(REG_DATA, la, bytes);
+				interrupt_wait();
+			}
+			bytes_left -= SECTOR_SIZE;
+			la += SECTOR_SIZE;
+		}
+	}
+	\end{lstlisting}
+
+	这里再写一个port\_write()函数：
+	\begin{lstlisting}
+	port_write:
+		mov	edx, [esp + 4]		; port
+		mov	esi, [esp + 4 + 4]	; buf
+		mov	ecx, [esp + 4 + 4 + 4]	; n
+		shr	ecx, 1
+		cld
+		rep	outsw
+		ret
+	\end{lstlisting}
+
+\subsubsection{处理IOCTL}
+	目前这个函数只处理一个消息类型，也就是DIOCTL\_GET\_GEO，只是把硬盘的起始扇区和扇区数目返回给调用者：
+	\begin{lstlisting}
+	PRIVATE void hd_ioctl(MESSAGE * p)
+	{
+		int device = p->DEVICE;
+		int drive = DRV_OF_DEV(device);
+
+		struct hd_info * hdi = &hd_info[drive];
+
+		if (p->REQUEST == DIOCTL_GET_GEO) {
+			void * dst = va2la(p->PROC_NR, p->BUF);
+			void * src = va2la(TASK_HD,
+					device < MAX_PRIM ?
+					&hdi->primary[device] :
+					&hdi->logical[(device - MINOR_hd1a) %
+							NR_SUB_PER_DRIVE]);
+
+			phys_copy(dst, src, sizeof(struct part_info));
+		}
+		else {
+			assert(0);
+		}
+	}
+	\end{lstlisting}
+
+\end{document}

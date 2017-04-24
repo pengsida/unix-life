@@ -1,0 +1,222 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=[x86masm]Assembler,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{Hello\_World模块 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+\begin{document}
+
+% \tableofcontents
+
+% \clearpage
+
+\section{编写Hello\_World模块}
+	首先编写hello.c，代码如下：
+	\begin{lstlisting}
+	#include <linux/init.h> 
+	#include <linux/module.h> 
+	MODULE_LICENSE("Dual BSD/GPL"); 
+
+	static int hello_init(void) 
+	{ 
+		printk(KERN_ALERT "Hello, world\n"); 
+		return 0; 
+	} 
+
+	static void hello_exit(void) 
+	{ 
+		printk(KERN_ALERT "Goodbye, cruel world\n"); 
+	} 
+
+	module_init(hello_init); 
+	module_exit(hello_exit); 
+	\end{lstlisting}
+
+	写一个简单的Makefile文件：
+	\begin{lstlisting}
+	obj-m := hello.o
+	KERNELDIR := /lib/modules/$(shell uname -r)/build
+	PWD := $(shell pwd)
+
+	modules:
+		$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+	\end{lstlisting}
+
+\section{Hello\_World模块的代码解析}
+\subsection{解析hello.c}
+	hello.c中的代码很简单，这里主要说一下用到的一些API函数。\par
+	module\_init()是一个宏，用于指定模块初始化的函数，所以hello\_init()函数在模块装载到内核时会被调用。
+	module\_exit()是一个宏，用于指定模块的清除函数，所以hello\_exit()函数从内核卸载时会被调用。\par
+
+	MODULE\_LICENSE()是一个宏，用来告诉内核该模块使用的许可证。如果没有使用MODULE\_LICENSE("Dual BSD/GPL")，内核在装载该模块时会产生抱怨。\par
+
+	printk()函数和printf()函数功能类似，但printk()函数是内核函数。当模块连接到内核时，就可以调用printk()函数。
+
+
+\subsection{解析Makefile}
+	首先说明，这里不会介绍Makefile语法，而是介绍为什么Makefile的内容是这些。\par
+
+	“obj-m := hello.o”，用于说明一个模块需要从目标文件hello.o中构造，而从该目标文件构造的模块名称为hello.ko。\par
+
+	“KERNELDIR := /lib/modules/\$(shell uname -r)/build”是给变量赋值， KERNELDIR的值为当前内核源代码目录。
+	“PWD := \$(shell pwd)”中PWD的值为当前目录。\par
+
+	“\$(MAKE) -C \$(KERNELDIR) M=\$(PWD) modules”这个命令是真正用来构造模块的。
+	命令首先改变目录到-C选项指定的位置，在这个目录中有内核自己的Makefile文件，这里的Makefile文件用于真正构造模块。
+	等到该Makefile要真正地构造modules目标时，返回到-M选项指定的目录，modules目标指向的是obj-m变量中设定的模块。\par
+
+	也就是说，当我们执行“make modules”的时候，将执行“\$(MAKE) -C \$(KERNELDIR) M=\$(PWD) modules”。
+	make命令将首先进入-C选项指定的内核源码树，运行内核构造系统，其中Makefile要真正构造模块之前，make命令又回到-M选项指定的目录，
+	在该目录下生成obj-m指定的模块。
+
+\section{使用Hello\_World模块}
+	\begin{lstlisting}
+# 编译模块
+pengsida@scholes:~/ldd$ make modules 
+make -C /lib/modules/4.8.0-22-generic/build M=/home/pengsida/ldd modules
+make[1]: Entering directory '/usr/src/linux-headers-4.8.0-22-generic'
+Building modules, stage 2.
+MODPOST 1 modules
+make[1]: Leaving directory '/usr/src/linux-headers-4.8.0-22-generic'
+
+# 安装hello模块
+pengsida@scholes:~/ldd$ sudo insmod ./hello.ko
+
+# 查看hello模块是否在代码中
+pengsida@scholes:~/ldd$ lsmod | grep hello
+hello                  16384  0
+
+# 卸载hello模块
+pengsida@scholes:~/ldd$ sudo rmmod hello
+
+# 查看hello模块运行时输出的信息
+pengsida@scholes:~/ldd$ cat /var/log/syslog | grep world
+Apr 23 21:32:49 scholes kernel: [ 1779.811190] hello world
+Apr 23 21:33:40 scholes kernel: [ 1830.907433] Goodbye, cruel world
+	\end{lstlisting}
+
+\end{document}
