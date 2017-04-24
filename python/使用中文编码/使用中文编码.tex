@@ -77,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=[x86masm]Assembler,
+	language=python,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -126,82 +126,18 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{\space \qquad \space}
-\chead{浙大玉泉ubuntu有线上网 \qquad}
+\chead{使用中文编码 \qquad}
 \rhead{\qquad\thepage/\pageref{LastPage}}
 \begin{document}
 
-% \tableofcontents
+\tableofcontents
 
-% \clearpage
+\clearpage
 
-\section{浙大玉泉ubuntu有线上网}
-	步骤如下：
-	\begin{itemize}
-		\item[1.] 首先配置ubuntu连上浙大内网。
-		\item[2.] 随后使用vpn连上外网。
-	\end{itemize}
-
-\subsection{配置ubuntu连上浙大内网}
-	步骤如下：
-	\begin{itemize}
-		\item[1.] 首先在浙大学生公寓网申请一个IP，网址为：\href{http://service.chinasinew.com/zjuauth.aspx?syscode=zjuserv&redirect_url=http\%3a\%2f\%2fservice.chinasinew.com\%2flogin.ashx&sign=D41EC7A9AF38DDF5F5C7FAED27B08CB1}{“浙大学生公寓网”(点击有链接)}。
-		          \fic{1.png}
-
-				  然后查询自己ubuntu有线网卡的mac地址，命令为：
-				  \begin{lstlisting}
-	# 我的系统是16.10，所以有线网卡名称为enp4s0
-	card="enp4s0" # ubuntu14.04有线网卡名称需要改为"eth0"
-	ifconfig -a | grep -C10 $card | grep "ether" | awk -F " " '{print $2}' 
-				  \end{lstlisting}
-
-				  随后申请IP地址，需要注意的是，这个IP需要一天以后才会生效
-				  \fic{2.png}
-
-		\item[2.] 配置有线网卡为静态模式，使用如下命令配置/etc/network/interface的内容：
-		\begin{lstlisting}
-export IP="10.110.18.27" # 这个是你申请的IP
-export card="enp4s0" # card是你的网卡名
-cat >> /etc/network/interface << EOF
-
-auto $card
-iface $card inet static
-address $IP
-netmask 255.255.255.0
-gateway 10.110.18.1
-dns-nameservers 10.10.0.21
-EOF
-		\end{lstlisting}
-
-		\item[3.] 随后重启电脑，等待一天后，尝试是否可以ping通内网：
-		\begin{lstlisting}
-	ping 10.5.1.7 # 这个是浙大vpn服务器
-		\end{lstlisting}
-
-		如果可以就成功通过有线连上了浙大内网，如果失败，只能说明你/etc/network/interface内容出错了，可能你不大懂“cat”命令，也可以自己手工改/etc/network/interface文件的内容。
-		或者就是你申请IP时用的mac地址填错了。
-	\end{itemize}
-
-\subsection{使用vpn连上外网}
-	步骤如下：
-	\begin{itemize}
-		\item[1.] 到cc98上的这个帖子\url{http://www.cc98.org/dispbbs.asp?boardID=212&ID=2323871}下一个工具包并安装，命令如下：
-		\begin{lstlisting}
-	sudo apt-get install iproute
-	sudo dpkg -i xl2tpd_1.1.12-zju2_amd64.deb
-		\end{lstlisting}
-
-		\item[2.] 连接vpn：
-		\begin{lstlisting}
-# 设置上网账号和密码，用户名后面要带“@a”
-pengsida@scholes:~$ sudo vpn-connect -c
-[sudo] pengsida 的密码： 
-Configure L2TP VPN for ZJU.
-Username: 3140103545@a
-Password:
-
-# 连接vpn
-sudo vpn-connect
-		\end{lstlisting}
-	\end{itemize}
+\section{使用中文编码}
+	首行加一行如下代码：
+	\begin{lstlisting}
+	# -*- coding: utf-8 -*-
+	\end{lstlisting}
 
 \end{document}

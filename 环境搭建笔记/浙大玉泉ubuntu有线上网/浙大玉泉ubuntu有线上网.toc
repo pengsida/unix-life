@@ -1,2 +1,3 @@
 \contentsline {section}{\numberline {1}浙大玉泉ubuntu有线上网}{2}{section.1}
 \contentsline {subsection}{\numberline {1.1}配置ubuntu连上浙大内网}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}使用vpn连上外网}{3}{subsection.1.2}

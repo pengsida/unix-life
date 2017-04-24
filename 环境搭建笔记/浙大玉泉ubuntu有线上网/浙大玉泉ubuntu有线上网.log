@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  24 APR 2017 08:57
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  24 APR 2017 09:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1960,10 +1960,8 @@ Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 131.
 
-*************************************************
-* fontspec warning: "script-not-exist"
-* 
-* Font 'STSongti-SC-Regular' does not contain script 'CJK'.
+(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+File: se-ascii-print-Regular' does not contain script 'CJK'.
 *************************************************
 \g__fontspec_family_STSongti-SC-Regular_int=\count327
 .................................................
@@ -1985,23 +1983,11 @@ Package lastpage Info: Please have a look at the pageslts package at
 . NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
 . - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
 .................................................
-(./浙大玉泉ubuntu有线上网.toc
-
-LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
-(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 2.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 2.
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
 \tf@toc=\write4
 \openout4 = `浙大玉泉ubuntu有线上网.toc'.
 
+
+LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 135.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2015,35 +2001,31 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 )
 [1
 
-] 
-AED: lastpage setting LastPage
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[2
-
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 150.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 150.
- (./浙大玉泉ubuntu有线上网.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 150.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 150.
 
+LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
+(Font)              using `EU1/华文中宋(0)/m/n' instead on input line 144.
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+! Misplaced alignment tab character &.
+<recently read> &
+                 
+l.147 ...hx&sign=D41EC7A9AF38DDF5F5C7FAED27B08CB1}
+                                                  
+? 
+! Emergency stop.
+<recently read> &
+                 
+l.147 ...hx&sign=D41EC7A9AF38DDF5F5C7FAED27B08CB1}
+                                                  
+End of file on the terminal!
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 150.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 30918 strings out of 493591
- 562345 string characters out of 6143546
+ 30836 strings out of 493591
+ 560014 string characters out of 6143546
  653946 words of memory out of 5000000
- 33917 multiletter control sequences out of 15000+600000
- 9299 words of font info for 74 fonts, out of 8000000 for 9000
+ 33868 multiletter control sequences out of 15000+600000
+ 4604 words of font info for 54 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,11n,87p,10371b,349s stack positions out of 5000i,500n,10000p,200000b,80000s
-
-Output written on 浙大玉泉ubuntu有线上网.pdf (2 pages).
+ 48i,12n,87p,10371b,349s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on 浙大玉泉ubuntu有线上网.pdf (1 page).
