@@ -1,0 +1,9 @@
+\BOOKMARK [1][-]{section.1}{web代理服务器的实现}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{web代理服务器的功能}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{HTTP请求转发}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{回送HTTP内容替代}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{支持多用户访问功能}{subsection.1.1}% 5
+\BOOKMARK [2][-]{subsection.1.2}{web代理服务器的实现思路}{section.1}% 6
+\BOOKMARK [3][-]{subsubsection.1.2.1}{如何实现HTTP请求转发}{subsection.1.2}% 7
+\BOOKMARK [3][-]{subsubsection.1.2.2}{如何实现回送HTTP内容替代}{subsection.1.2}% 8
+\BOOKMARK [3][-]{subsubsection.1.2.3}{如何实现支持多用户访问功能}{subsection.1.2}% 9
