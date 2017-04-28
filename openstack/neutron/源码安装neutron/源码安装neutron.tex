@@ -1,0 +1,483 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{源码安装neutron \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{neutron源码各文件夹作用}
+    \begin{itemize}
+        \item[1.]bin/:可执行的二进制脚本文件
+		\item[2.]etc/:配置文件
+		\item[2.]build/：没有理解到位
+		\item[3.]neutron/:源码文件
+		\item[4.]tools/:工具文件夹，例如install_venv.sh，安装virtualenv,建立独立的pyhton开发环境(安装neutron需要的第三方类库)
+		\item[5.]run\_tests.sh:安装virtualenv，并进行单元测试
+		\item[6.]setup.py:利用setuptools工具，安装neutron。
+		\item[7.]setup.cfg:pbr工具，解析过滤该文件，并将解析结果作为setup.py中setup函数的默认参数。
+		\item[8.]requirements.txt:neutron的第三方依赖包
+		\item[9.]test-requirements.txt:neutron的测试依赖包
+		\item[10.]在install_venv.sh就是，利用pip安装requirements.txt，test-requirements.txt，virtualenv
+    \end{itemize}
+
+\section{手动源码安装步骤}
+	\begin{lstlisting}
+	pip install virtualenv
+	
+	virtualenv venv
+	cd venv
+
+	source bin/activate
+
+	pip install python-memcached
+	sudo apt-get install python2.7-dev
+
+	git clone http://git.trystack.cn/openstack/neutron.git /root/neutron
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install radvd
+	sudo DEBIAN_FRONTEND=noninteractive http_proxy= https_proxy= no_proxy= apt-get --option Dpkg::Options::=--force-confold --assume-yes install fakeroot make openvswitch-switch
+
+	pip install -r /root/neutron/requirements.txt
+
+	cd /root/neutron
+	python setup.py install
+	\end{lstlisting}
+
+\section{配置neutron}
+	步骤如下：
+	\begin{lstlisting}
+	cd /root/neutron && exec sudo ./tools/generate_config_file_samples.sh
+	
+	# 创建配置文件
+	mkdir /etc/neutron
+	cp /root/neutron/etc/neutron.conf.sample /etc/neutron/neutron.conf
+	cp /root/neutron/etc/policy.json /etc/neutron/policy.json
+	sed -i 's/"context_is_admin":  "role:admin"/"context_is_admin":  "role:admin or user_name:neutron"/g' /etc/neutron/policy.json
+	mkdir -p /etc/neutron/plugins/ml2
+	cp /root/neutron/etc/neutron/plugins/ml2/ml2_conf.ini.sample /etc/neutron/plugins/ml2/ml2_conf.ini
+
+	# 配置neutron服务
+	# iniset /etc/neutron/neutron.conf database connection 'mysql://neutron:NEUTRON_DBPASS@hty-mysql/neutron?charset=utf8'
+	iniset /etc/neutron/neutron.conf database connection 'mysql://root:htYun@2014@hty-mysql/neutron?charset=utf8'
+	iniset /etc/neutron/neutron.conf DEFAULT state_path /var/lib/neutron
+	iniset /etc/neutron/neutron.conf DEFAULT use_syslog False
+	iniset /etc/neutron/neutron.conf DEFAULT bind_host 0.0.0.0
+	iniset /etc/neutron/neutron.conf oslo_concurrency lock_path /var/lock/neutron
+	iniset /etc/neutron/neutron.conf nova region_name regionOne
+
+	# Format logging
+	iniset /etc/neutron/neutron.conf DEFAULT logging_context_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[01;36m%(request_id)s [00;36m%("$project_var")s %("$user_var")s%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_default_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [[00;36m-%(color)s] [01;35m%(instance)s%(color)s%(message)s[00m"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_debug_format_suffix "from (pid=%(process)d) %(funcName)s %(pathname)s:%(lineno)d"
+	iniset /etc/neutron/neutron.conf DEFAULT logging_exception_prefix "%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s [01;35m%(instance)s[00m"
+
+	# 创建相应文件夹
+	sudo install -d -o root -m 755 /etc/neutron/rootwrap.d
+	# 创建相应文件
+	sudo install -o root -m 644 /root/neutron/etc/neutron/rootwrap.d/debug.filters /root/neutron/etc/neutron/rootwrap.d/dhcp.filters /root/neutron/etc/neutron/rootwrap.d/dibbler.filters /root/neutron/etc/neutron/rootwrap.d/ebtables.filters /root/neutron/etc/neutron/rootwrap.d/ipset-firewall.filters /root/neutron/etc/neutron/rootwrap.d/iptables-firewall.filters /root/neutron/etc/neutron/rootwrap.d/l3.filters /root/neutron/etc/neutron/rootwrap.d/linuxbridge-plugin.filters /root/neutron/etc/neutron/rootwrap.d/netns-cleanup.filters /root/neutron/etc/neutron/rootwrap.d/openvswitch-plugin.filters /root/neutron/etc/neutron/rootwrap.d/privsep.filters /etc/neutron/rootwrap.d/
+
+	# 创建相应文件
+	sudo install -o root -g root -m 644 /root/neutron/etc/rootwrap.conf /etc/neutron/rootwrap.conf
+	sudo sed -e 's:^filters_path=.*$:filters_path=/etc/neutron/rootwrap.d:' -i /etc/neutron/rootwrap.conf
+	sudo sed -e 's:^exec_dirs=\(.*\)$:exec_dirs=\1,/root/venv/bin:' -i /etc/neutron/rootwrap.conf
+
+	# Set up the rootwrap sudoers for neutron
+	TEMPFILE=`mktemp`
+	ROOTWRAP_SUDOER_CMD='/root/venv/bin/neutron-rootwrap /etc/nlinuxbridgeeutron/rootwrap.conf *'
+	ROOTWRAP_DAEMON_SUDOER_CMD='/root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	STACK_USER="neutron"
+	echo "$STACK_USER ALL=(root) NOPASSWD: $ROOTWRAP_SUDOER_CMD" >$TEMPFILE
+    echo "$STACK_USER ALL=(root) NOPASSWD: $ROOTWRAP_DAEMON_SUDOER_CMD" >>$TEMPFILE
+    chmod 0440 $TEMPFILE
+    sudo chown root:root $TEMPFILE
+    sudo mv $TEMPFILE /etc/sudoers.d/neutron-rootwrap
+	iniset /etc/neutron/neutron.conf agent root_helper 'sudo /root/venv/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/neutron.conf agent root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+
+	# iniset-rpc-backend
+	iniset /etc/neutron/neutron.conf DEFAULT rpc_backend rabbit
+	iniset /etc/neutron/neutron.conf DEFAULT rabbit_host hty-mq
+	iniset /etc/neutron/neutron.conf DEFAULT rabbit_password htYun@2014
+
+	# configure neutron service
+	cp /root/neutron/etc/api-paste.ini /etc/neutron/api-paste.ini
+	iniset /etc/neutron/neutron.conf DEFAULT core_plugin ml2
+	iniset /etc/neutron/neutron.conf DEFAULT service_plugins neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+	iniset /etc/neutron/neutron.conf DEFAULT debug True
+	iniset /etc/neutron/neutron.conf oslo_policy policy_file /etc/neutron/policy.json
+	iniset /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
+	iniset /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
+
+	# neutron-setup-keystone
+	# ===========================
+
+	sudo install -d -o root /var/cache/neutron
+	rm -f /var/cache/neutron/*
+
+	# configure_auth_token_middleware
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_type password
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://hty-keystone:35357/v2.0
+	iniset /etc/neutron/neutron.conf keystone_authtoken username neutron
+	iniset /etc/neutron/neutron.conf keystone_authtoken password neutron_pass@2014
+	iniset /etc/neutron/neutron.conf keystone_authtoken user_domain_name Default
+	iniset /etc/neutron/neutron.conf keystone_authtoken admin_tenant_name service
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_uri http://hty-keystone:5000/v2.0
+	iniset /etc/neutron/neutron.conf keystone_authtoken identity_uri http://hty-keystone:35357
+	iniset /etc/neutron/neutron.conf keystone_authtoken signing_dir /var/cache/neutron
+	iniset /etc/neutron/neutron.conf keystone_authtoken memcached_servers hty-controller:11211
+	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_status_changes True
+	iniset /etc/neutron/neutron.conf DEFAULT notify_nova_on_port_data_changes True
+
+	# configure_auth_token_middleware
+	iniset /etc/neutron/neutron.conf nova auth_type password
+	iniset /etc/neutron/neutron.conf nova auth_url http://hty-keystone:35357/v2.0	
+	iniset /etc/neutron/neutron.conf nova username nova
+	iniset /etc/neutron/neutron.conf nova password nova_pass@2014
+	iniset /etc/neutron/neutron.conf nova admin_tenant_name service
+	iniset /etc/neutron/neutron.conf nova auth_uri http://hty-keystone:5000/v2.0
+	iniset /etc/neutron/neutron.conf nova signing_dir /var/cache/neutron
+	iniset /etc/neutron/neutron.conf nova memcached_servers hty-controller:11211
+
+	# neutron_plugin_configure_service
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch,linuxbridge
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1:1000
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1:1000
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks public,
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges public
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_geneve vni_ranges 1:1000
+
+	# configure_neutron_plugin_agent
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent root_helper 'sudo /root/venv/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/neutron.conf DEFAULT debug True
+
+	# neutron_plugin_configure_plugin_agent
+	# ======================================
+
+	# neutron_ovs_base_setup_bridge
+	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
+	sudo ovs-vsctl -- --may-exist add-br br-int
+	sudo ovs-vsctl --no-wait br-set-external-id br-int bridge-id br-int
+	
+	# neutron_ovs_base_configure_firewall_driver
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver iptables_hybrid
+	
+	# enable_kernel_bridge_firewall
+	sudo modprobe bridge
+	sudo modprobe br_netfilter
+	sudo sysctl -w net.bridge.bridge-nf-call-iptables=1
+	sudo sysctl -w net.bridge.bridge-nf-call-ip6tables=1
+
+	# 配置neutron
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip 127.0.0.1
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs tunnel_bridge br-tun
+
+	# neutron_ovs_base_add_bridge
+	sudo ovs-vsctl -- --may-exist add-br br-ex
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings public:br-ex
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+	iniset /etc/neutron/plugins/ml2/ml2_conf.ini ovs datapath_type system
+
+	# configure_neutron_dhcp_agent
+	cp /root/neutron/etc/dhcp_agent.ini.sample /etc/neutron/dhcp_agent.ini
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT debug True
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT dnsmasq_local_resolv True
+	iniset /etc/neutron/dhcp_agent.ini AGENT root_helper 'sudo /root/venv/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/dhcp_agent.ini AGENT root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT ovs_use_veth False
+	iniset /etc/neutron/dhcp_agent.ini DEFAULT interface_driver openvswitch
+
+	# configure_neutron_l3_agent
+	cp /root/neutron/etc/l3_agent.ini.sample /etc/neutron/l3_agent.ini
+	iniset /etc/neutron/l3_agent.ini DEFAULT debug True
+	iniset /etc/neutron/l3_agent.ini AGENT root_helper 'sudo /root/venv/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/l3_agent.ini AGENT root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/l3_agent.ini DEFAULT ovs_use_veth False
+	iniset /etc/neutron/l3_agent.ini DEFAULT interface_driver openvswitch
+	
+	# neutron_ovs_base_configure_l3_agent
+	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
+	sudo ovs-vsctl -- --may-exist add-br br-ex
+	sudo ip link set mtu 1450 dev br-ex
+	sudo ovs-vsctl br-set-external-id br-ex bridge-id br-ex
+
+	# setup NAT so that fixed guests can get out
+	sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.24.4.0/24 -j MASQUERADE
+
+	# configure_neutron_metadata_agent
+	cp /root/neutron/etc/metadata_agent.ini.sample /etc/neutron/metadata_agent.ini
+	iniset /etc/neutron/metadata_agent.ini DEFAULT debug True
+	iniset /etc/neutron/metadata_agent.ini DEFAULT nova_metadata_ip 127.0.0.1
+	iniset /etc/neutron/metadata_agent.ini DEFAULT metadata_workers 2
+	iniset /etc/neutron/metadata_agent.ini AGENT root_helper 'sudo /root/venv/bin/neutron-rootwrap /etc/neutron/rootwrap.conf'
+	iniset /etc/neutron/metadata_agent.ini AGENT root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
+
+	# configure_mutnauq
+	iniset /etc/neutron/neutron.conf DEFAULT api_workers 2
+	iniset /etc/neutron/neutron.conf DEFAULT rpc_state_report_workers 0
+
+	# 创建neutron的数据库
+	mysql -uroot -phtYun@2014 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS neutron;'
+	mysql -uroot -phtYun@2014 -h127.0.0.1 -e 'CREATE DATABASE neutron CHARACTER SET utf8;'
+	
+	# 同步neutron的数据库
+	wget https://pypi.python.org/packages/a5/e9/51b544da85a36a68debe7a7091f068d802fc515a3a202652828c73453cad/MySQL-python-1.2.5.zip#md5=654f75b302db6ed8dc5a898c625e030c
+	sudo apt-get install unzip
+	unzip MySQL-python-1.2.5.zip
+	sudo apt-get install libmysqld-dev
+	cd MySQL-python-1.2.5
+	python setup.py install
+	/root/venv/bin/neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+	\end{lstlisting}
+
+\section{开启neutron服务}
+	\begin{lstlisting}
+	# 配置screen
+	# =============
+	
+	SCREEN_NAME="stack"
+	# 建立SCREEN_NAME的screen，创建一个叫shell的窗口，窗口中所要执行的shell为/bin/bash，同时detach这个视窗
+	screen -d -m -S $SCREEN_NAME -t shell -s /bin/bash
+    sleep 1
+
+    # Set a reasonable status bar
+    SCREEN_HARDSTATUS=${SCREEN_HARDSTATUS:-}
+    if [ -z "$SCREEN_HARDSTATUS" ]; then
+        SCREEN_HARDSTATUS='%{= .} %-Lw%{= .}%> %n%f %t*%{= .}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+    fi
+	# 恢复离线的screen作业stack，并且设置状态栏的样式
+    screen -r $SCREEN_NAME -X hardstatus alwayslastline "$SCREEN_HARDSTATUS"
+	# 将PROMPT_COMMAND的值设为“/bin/true”
+    screen -r $SCREEN_NAME -X setenv PROMPT_COMMAND /bin/true
+
+	# 开启neutron-server服务
+	screen -S stack -X screen -t q-svc
+	screen -S stack -p q-svc -X logfile /root/LOGFILE/q-svc.log
+    screen -S stack -p q-svc -X log on
+	touch /root/LOGFILE/q-svc.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-svc.log'\'' q-svc.log'
+	screen -S stack -p q-svc -X stuff 'sudo /root/venv/bin/neutron-server --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/pid/q-svc.pid; fg || echo "q-svc failed to start. Exit code: $?" | tee "/pid/q-svc.failure"^M'
+
+	# 监测neutron-server服务是否启动
+	timeout 60 sh -c 'while ! wget  --no-proxy -q -O- http://hty-controller:9696; do sleep 0.5; done'
+
+	# 开启neutron-openvswitch-agent服务
+	screen -S stack -X screen -t q-agt
+	screen -S stack -p q-agt -X logfile /root/LOGFILE/q-agt.log
+    screen -S stack -p q-agt -X log on
+	touch /root/LOGFILE/q-agt.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-agt.log'\'' q-agt.log'
+	screen -S stack -p q-agt -X stuff 'sudo /root/venv/bin/neutron-openvswitch-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/pid/q-agt.pid; fg || echo "q-agt failed to start. Exit code: $?" | tee "/pid/q-agt.failure"^M'
+
+	# 开启neutron-dhcp-agent服务
+	screen -S stack -X screen -t q-dhcp
+	screen -S stack -p q-dhcp -X logfile /root/LOGFILE/q-dhcp.log
+    screen -S stack -p q-dhcp -X log on
+	touch /root/LOGFILE/q-dhcp.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-dhcp.log'\'' q-dhcp.log'
+	screen -S stack -p q-dhcp -X stuff 'sudo /root/venv/bin/neutron-dhcp-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini & echo $! >/pid/q-dhcp.pid; fg || echo "q-dhcp failed to start. Exit code: $?" | tee "/pid/q-dhcp.failure"^M'
+
+	# 开启neutron-l3-agent服务
+	screen -S stack -X screen -t q-l3
+	screen -S stack -p q-l3 -X logfile /root/LOGFILE/q-l3.log
+    screen -S stack -p q-l3 -X log on
+	touch /root/LOGFILE/q-l3.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-l3.log'\'' q-l3.log'
+	screen -S stack -p q-l3 -X stuff 'sudo /root/venv/bin/neutron-l3-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini & echo $! >/pid/q-l3.pid; fg || echo "q-l3 failed to start. Exit code: $?" | tee "/pid/q-l3.failure"^M'
+
+	# 开启neutron-metadata-agent服务
+	screen -S stack -X screen -t q-meta
+	screen -S stack -p q-meta -X logfile /root/LOGFILE/q-meta.log
+    screen -S stack -p q-meta -X log on
+	touch /root/LOGFILE/q-meta.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-meta.log'\'' q-meta.log'
+	screen -S stack -p q-meta -X stuff 'sudo /root/venv/bin/neutron-metadata-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini & echo $! >/pid/q-meta.pid; fg || echo "q-meta failed to start. Exit code: $?" | tee "/pid/q-meta.failure"^M'
+
+	创建neutron账户：
+	# ================
+
+cat >>  /etc/hosts << EOF
+127.0.0.1 hty-neutron
+EOF
+
+	ADMIN_PASSWORD=neutron_pass@2014
+	neutron_api_url=http://hty-neutron:9696
+
+	# 创建neutron用户
+	keystone user-create --name neutron --tenant service --pass $ADMIN_PASSWORD
+	keystone user-role-add --user neutron --role admin --tenant service
+	# openstack role add service --user neutron --project service --user-domain Default --project-domain Default
+
+	# 创建network这个service
+	keystone service-create --name neutron --type network --description "Neutron Service"
+	keystone endpoint-create --service neutron --publicurl $neutron_api_url --adminurl $neutron_api_url --internalurl $neutron_api_url --region regionOne
+
+	# configure_neutron_nova
+	# =======================
+
+	iniset /etc/nova/nova.conf DEFAULT use_neutron True
+	iniset /etc/nova/nova.conf neutron auth_type password
+	iniset /etc/nova/nova.conf neutron auth_url http://hty-keystone:35357/v2.0
+	iniset /etc/nova/nova.conf neutron username neutron
+	iniset /etc/nova/nova.conf neutron password neutron_pass@2014
+	iniset /etc/nova/nova.conf neutron project_name service
+	iniset /etc/nova/nova.conf neutron auth_strategy keystone
+	iniset /etc/nova/nova.conf neutron region_name regionOne
+	iniset /etc/nova/nova.conf neutron admin_tenant_name service
+	iniset /etc/nova/nova.conf neutron url http://hty-neutron:9696
+	iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
+	iniset /etc/nova/nova.conf neutron service_metadata_proxy True
+	iniset /etc/nova/nova.conf DEFAULT vif_plugging_is_fatal True
+	iniset /etc/nova/nova.conf DEFAULT vif_plugging_timeout 300
+
+	# 重启nova-compute服务
+	screen -S stack -X screen -t n-cpu
+	screen -S stack -p n-cpu -X logfile /root/LOGFILE/n-cpu.log
+    screen -S stack -p n-cpu -X log on
+	touch /root/LOGFILE/n-cpu.log
+	screen -S stack -p n-cpu -X stuff '/usr/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/pid/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/pid/n-cpu.failure"^M'
+	\end{lstlisting}
+
+\end{document}

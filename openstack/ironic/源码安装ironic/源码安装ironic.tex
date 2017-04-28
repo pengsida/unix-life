@@ -1,0 +1,405 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=bash,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\itshape\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{源码安装ironic \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{安装ironic}
+	\begin{lstlisting}
+	git clone http://git.trystack.cn/openstack/ironic /root/ironic
+
+	source ./venv/bin/activate
+	cd ironic
+	pip install -r requirements.txt
+	python setup.py install
+
+	apt-get install pkg-config
+	apt-get install libvirt-dev
+	pip install virtualbmc
+	apt-get install ipmitool
+
+	pip install python-ironicclient
+	\end{lstlisting}
+
+\section{配置ironic}
+	\begin{lstlisting}
+	# 配置ironic服务
+	# ================
+
+	# configure_ironic_dirs
+	sudo install -d -o root /etc/ironic root /root/venv/data/ironic /var/lib/ironic /root/venv/data/ironic/tftpboot /root/venv/data/ironic/tftpboot/pxelinux.cfg
+	sudo chown -R root:libvirtd /root/venv/data/ironic/tftpboot
+	sudo install -d -o root -g libvirtd /root/venv/data/ironic/httpboot
+
+	apt-get install ipxe
+	apt-get install ipxe-qemu
+	cp /usr/lib/ipxe/undionly.kpxe /root/venv/data/ironic/tftpboot
+	install -d -o root /root/LOGFILE/ironic-bm-logs/deploy_logs
+
+	# configure_ironic
+	cp /root/ironic/etc/ironic/ironic.conf.sample /etc/ironic/ironic.conf
+	iniset /etc/ironic/ironic.conf DEFAULT debug True
+	inicomment /etc/ironic/ironic.conf DEFAULT log_file
+	iniset /etc/ironic/ironic.conf database connection 'mysql://root:htYun@2014@hty-mysql/ironic?charset=utf8'
+	iniset /etc/ironic/ironic.conf DEFAULT state_path /var/lib/ironic
+	iniset /etc/ironic/ironic.conf DEFAULT use_syslog False
+	iniset /etc/ironic/ironic.conf DEFAULT host ironic
+	iniset /etc/ironic/ironic.conf agent deploy_logs_collect always
+	iniset /etc/ironic/ironic.conf agent deploy_logs_storage_backend local
+	iniset /etc/ironic/ironic.conf agent deploy_logs_local_path /root/LOGFILE/ironic-bm-logs/deploy_logs
+
+	# configure_ironic_conductor
+	# =============================
+
+	iniset /etc/ironic/ironic.conf keystone region_name regionOne
+
+	# configure_auth_for neutron
+	iniset /etc/ironic/ironic.conf neutron auth_type password
+	iniset /etc/ironic/ironic.conf neutron auth_url http://hty-keystone/identity_admin
+	iniset /etc/ironic/ironic.conf neutron username ironic
+	iniset /etc/ironic/ironic.conf neutron password ironic_pass@2014
+	iniset /etc/ironic/ironic.conf neutron project_name service
+	iniset /etc/ironic/ironic.conf neutron user_domain_id default
+	iniset /etc/ironic/ironic.conf neutron project_domain_id default
+	# iniset /etc/ironic/ironic.conf neutron cafile /root/data/ca-bundle.pem
+
+	# configure_auth_for swift
+	iniset /etc/ironic/ironic.conf swift auth_type password
+	iniset /etc/ironic/ironic.conf swift auth_url http://hty-keystone/identity_admin
+	iniset /etc/ironic/ironic.conf swift username ironic
+	iniset /etc/ironic/ironic.conf swift password ironic_pass@2014
+	iniset /etc/ironic/ironic.conf swift project_name service
+	iniset /etc/ironic/ironic.conf swift user_domain_id default
+	iniset /etc/ironic/ironic.conf swift project_domain_id default
+	# iniset /etc/ironic/ironic.conf swift cafile /root/data/ca-bundle.pem
+
+    # configure_auth_for glance
+	iniset /etc/ironic/ironic.conf glance auth_type password
+    iniset /etc/ironic/ironic.conf glance auth_url http://hty-keystone/identity_admin
+    iniset /etc/ironic/ironic.conf glance username ironic
+    iniset /etc/ironic/ironic.conf glance password ironic_pass@2014
+    iniset /etc/ironic/ironic.conf glance project_name service
+    iniset /etc/ironic/ironic.conf glance user_domain_id default
+    iniset /etc/ironic/ironic.conf glance project_domain_id default
+    # iniset /etc/ironic/ironic.conf glance cafile /root/data/ca-bundle.pem
+
+	# configure_auth_for inspector
+	iniset /etc/ironic/ironic.conf inspector auth_type password
+    iniset /etc/ironic/ironic.conf inspector auth_url http://hty-keystone/identity_admin
+    iniset /etc/ironic/ironic.conf inspector username ironic
+    iniset /etc/ironic/ironic.conf inspector password ironic_pass@2014
+    iniset /etc/ironic/ironic.conf inspector project_name service
+    iniset /etc/ironic/ironic.conf inspector user_domain_id default
+    iniset /etc/ironic/ironic.conf inspector project_domain_id default
+    # iniset /etc/ironic/ironic.conf inspector cafile /root/data/ca-bundle.pem
+
+	# configure_auth_for service_catalog
+	iniset /etc/ironic/ironic.conf service_catalog auth_type password
+    iniset /etc/ironic/ironic.conf service_catalog auth_url http://hty-keystone/identity_admin
+    iniset /etc/ironic/ironic.conf service_catalog username ironic
+    iniset /etc/ironic/ironic.conf service_catalog password ironic_pass@2014
+    iniset /etc/ironic/ironic.conf service_catalog project_name service
+    iniset /etc/ironic/ironic.conf service_catalog user_domain_id default
+    iniset /etc/ironic/ironic.conf service_catalog project_domain_id default
+    # iniset /etc/ironic/ironic.conf service_catalog cafile /root/data/ca-bundle.pem
+
+	# configure_ironic_conductor
+    cp /root/ironic/etc/ironic/rootwrap.conf /etc/ironic/rootwrap.conf
+    cp -r /root/ironic/etc/ironic/rootwrap.d /etc/ironic
+
+	tempfile=`mktemp`
+	STACK_USER="ironic"
+	rootwrap_isudoer_cmd="/root/venv/bin/ironic-rootwrap /etc/ironic/rootwrap.conf *"
+	echo "$STACK_USER ALL=(root) NOPASSWD: $rootwrap_isudoer_cmd" >$tempfile
+    chmod 0440 $tempfile
+    sudo chown root:root $tempfile
+    sudo mv $tempfile /etc/sudoers.d/ironic-rootwrap
+
+	# set up drivers / hardware types
+    iniset /etc/ironic/ironic.conf DEFAULT enabled_drivers fake,agent_ssh,agent_ipmitool,pxe_ssh,pxe_ipmitool
+    iniset /etc/ironic/ironic.conf DEFAULT enabled_hardware_types ipmi
+    iniset /etc/ironic/ironic.conf DEFAULT rootwrap_config /etc/ironic/rootwrap.conf
+    iniset /etc/ironic/ironic.conf conductor api_url http://$HOST_IP:6385
+	iniset /etc/ironic/ironic.conf pxe tftp_server $HOST_IP
+    iniset /etc/ironic/ironic.conf pxe tftp_root /root/venv/data/ironic/tftpboot
+    iniset /etc/ironic/ironic.conf pxe tftp_master_path /root/venv/data/ironic/tftpboot/master_images
+	iniset /etc/ironic/ironic.conf pxe pxe_append_params 'nofb nomodeset vga=normal console=ttyS0 systemd.journald.forward_to_console=yes '
+
+	# Set these options for scenarios in which the agent fetches the image
+    # directly from glance, and don't set them where the image is pushed
+    # over iSCSI.
+	iniset /etc/ironic/ironic.conf glance swift_temp_url_key ironic_pass@2014
+    iniset /etc/ironic/ironic.conf glance swift_endpoint_url http://$HOST_IP:8080
+    iniset /etc/ironic/ironic.conf glance swift_api_version v1
+	tenant_id=$(keystone tenant-list | grep service | awk -F " " '{print $2}')
+	iniset /etc/ironic/ironic.conf glance swift_account AUTH_${tenant_id}
+    iniset /etc/ironic/ironic.conf glance swift_container glance
+    iniset /etc/ironic/ironic.conf glance swift_temp_url_duration 3600
+    iniset /etc/ironic/ironic.conf glance glance_protocol http
+    iniset /etc/ironic/ironic.conf glance glance_host $HOST_IP
+    iniset /etc/ironic/ironic.conf glance glance_port 9292
+
+	# is_deployed_by_agent
+	iniset /etc/ironic/ironic.conf api ramdisk_heartbeat_timeout 30
+
+	# FIXME: this really needs to be tested in the gate.  For now, any
+    # test using the agent ramdisk should skip the erase_devices clean
+    # step  because it is too slow to run in the gate.
+	iniset /etc/ironic/ironic.conf deploy erase_devices_priority 0
+
+	# IRONIC_IPXE_ENABLED
+	iniset /etc/ironic/ironic.conf pxe ipxe_enabled True
+    iniset /etc/ironic/ironic.conf pxe pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
+    iniset /etc/ironic/ironic.conf pxe pxe_bootfile_name undionly.kpxe
+    iniset /etc/ironic/ironic.conf pxe uefi_pxe_config_template '$pybasedir/drivers/modules/ipxe_config.template'
+    iniset /etc/ironic/ironic.conf pxe uefi_pxe_bootfile_name ipxe.efi
+    iniset /etc/ironic/ironic.conf deploy http_root /root/venv/data/ironic/httpboot
+    iniset /etc/ironic/ironic.conf deploy http_url http://$HOST_IP:3928
+	iniset /etc/ironic/ironic.conf neutron port_setup_delay 15
+	iniset /etc/ironic/ironic.conf dhcp dhcp_provider neutron
+    iniset /etc/ironic/ironic.conf deploy default_boot_option netboot
+
+
+	# configure_ironic_api
+	# ====================
+
+	# configure_auth_token_middleware
+	iniset /etc/ironic/ironic.conf DEFAULT auth_strategy keystone
+	iniset /etc/ironic/ironic.conf keystone_authtoken auth_type password
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_url http://$HOST_IP/identity_admin
+    iniset /etc/ironic/ironic.conf keystone_authtoken username ironic
+    iniset /etc/ironic/ironic.conf keystone_authtoken password ironic_pass@2014
+    iniset /etc/ironic/ironic.conf keystone_authtoken user_domain_name Default
+    iniset /etc/ironic/ironic.conf keystone_authtoken project_name service
+    iniset /etc/ironic/ironic.conf keystone_authtoken project_domain_name Default
+    iniset /etc/ironic/ironic.conf keystone_authtoken auth_uri http://$HOST_IP/identity
+    # iniset /etc/ironic/ironic.conf keystone_authtoken cafile /root/data/ca-bundle.pem
+    iniset /etc/ironic/ironic.conf keystone_authtoken signing_dir /var/cache/ironic/api
+    iniset /etc/ironic/ironic.conf keystone_authtoken memcached_servers $HOST_IP:11211
+    iniset /etc/ironic/ironic.conf oslo_policy policy_file /etc/ironic/policy.json
+
+	# iniset_rpc_backend
+	iniset /etc/ironic/ironic.conf DEFAULT rpc_backend rabbit
+	iniset /etc/ironic/ironic.conf DEFAULT rabbit_host hty-mq
+	iniset /etc/ironic/ironic.conf DEFAULT rabbit_password htYun@2014
+	# iniset /etc/ironic/ironic.conf DEFAULT transport_url rabbit://stackrabbit:ironic_pass@2014@$HOST_IP:5672/
+
+	# configure_ironic_api
+	iniset /etc/ironic/ironic.conf api port 6385
+    iniset /etc/ironic/ironic.conf conductor automated_clean True
+	cp -p /root/ironic/etc/ironic/policy.json /etc/ironic/policy.json
+	
+	# setup_colorized_logging
+	iniset /etc/ironic/ironic.conf DEFAULT logging_context_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [%(request_id)s %(project_name)s %(user_name)s%(color)s] %(instance)s%(color)s%(message)s"
+    iniset /etc/ironic/ironic.conf DEFAULT logging_default_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [-%(color)s] %(instance)s%(color)s%(message)s"
+	iniset /etc/ironic/ironic.conf DEFAULT logging_exception_prefix "%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s %(instance)s"
+
+	ipxe_apache_conf=/etc/apache2/sites-available/ipxe-ironic.conf
+	sudo cp /root/ironic/devstack/files/apache-ipxe-ironic.template /etc/apache2/sites-available/ipxe-ironic.conf
+	sudo sed -e '
+s|%PUBLICPORT%|3928|g;
+s|%HTTPROOT%|/root/venv/data/ironic/httpboot|g;
+' -i $ipxe_apache_conf
+	sudo a2ensite ipxe-ironic
+	service apache2 stop
+	service apache2 start
+
+	# create_ironic_accounts
+	# ========================
+
+cat >>  /etc/hosts << EOF
+127.0.0.1 hty-ironic
+EOF
+
+	ADMIN_PASSWORD=ironic_pass@2014
+	ironic_api_url=http://hty-ironic:6385
+
+	# 创建ironic用户
+	keystone user-create --name ironic --tenant service --pass $ADMIN_PASSWORD
+	keystone user-role-add --user ironic --role admin --tenant service
+
+	# 创建ironic角色
+	keystone role-create --name ironic
+	keystone user-role-add --user nova --role ironic --tenant service
+
+	# 创建network这个service
+	keystone service-create --name ironic --type baremetal --description "Ironic Service"
+	keystone endpoint-create --service ironic --publicurl $ironic_api_url --adminurl $ironic_api_url --internalurl $ironic_api_url --region regionOne
+	
+	# 创建ironic的数据库
+	mysql -uroot -phtYun@2014 -h127.0.0.1 -e 'DROP DATABASE IF EXISTS ironic;'
+	mysql -uroot -phtYun@2014 -h127.0.0.1 -e 'CREATE DATABASE ironic CHARACTER SET utf8;'
+	
+	# 同步数据库
+	/root/venv/bin/ironic-dbsync --config-file=/etc/ironic/ironic.conf
+	\end{lstlisting}
+
+\section{开启ironic}
+	\begin{lstlisting}
+	# 开启ironic服务
+	# ====================
+
+	# 开启ironic-api服务
+	screen -S stack -X screen -t ir-api
+	screen -S stack -p ir-api -X logfile /root/LOGFILE/ir-api.log
+    screen -S stack -p ir-api -X log on
+	touch /root/LOGFILE/ir-api.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''ir-api.log'\'' ir-api.log'
+	screen -S stack -p ir-api -X stuff '/root/venv/bin/ironic-api --config-file=/etc/ironic/ironic.conf & echo $! >/root/venv/pid/ir-api.pid; fg || echo "ir-api failed to start. Exit code: $?" | tee "/root/venv/pid/ir-api.failure"^M'
+
+	# 开启ironic-conductor服务
+	screen -S stack -X screen -t ir-cond
+	screen -S stack -p ir-cond -X logfile /root/LOGFILE/ir-cond.log
+    screen -S stack -p ir-cond -X log on
+	touch /root/LOGFILE/ir-cond.log
+    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''ir-cond.log'\'' ir-cond.log'
+	screen -S stack -p ir-cond -X stuff '/root/venv/bin/ironic-conductor --config-file=/etc/ironic/ironic.conf & echo $! >/root/venv/pid/ir-cond.pid; fg || echo "ir-cond failed to start. Exit code: $?" | tee "/root/venv/pid/ir-cond.failure"^M'
+
+	# restart_apache_server
+	sudo service apache2 stop
+	sudo service apache2 start
+	\end{lstlisting}
+
+\end{document}

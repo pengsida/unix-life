@@ -803,7 +803,7 @@
 	# create_nova_conf_neutron
 	iniset /etc/nova/nova.conf DEFAULT use_neutron True
 	iniset /etc/nova/nova.conf neutron auth_type password
-	iniset /etc/nova/nova.conf neutron auth_url http://$HOST_IP/identity_admin/v3
+	iniset /etc/nova/nova.conf neutron auth_url http://$HOST_IP/identity_admin
 	iniset /etc/nova/nova.conf neutron username neutron
 	iniset /etc/nova/nova.conf neutron password p1111111
 	iniset /etc/nova/nova.conf neutron user_domain_name Default
