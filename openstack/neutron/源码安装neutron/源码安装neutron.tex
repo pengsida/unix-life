@@ -256,10 +256,9 @@
 
 	# configure_auth_token_middleware
 	iniset /etc/neutron/neutron.conf keystone_authtoken auth_type password
-	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://hty-keystone:35357/v2.0
-	iniset /etc/neutron/neutron.conf keystone_authtoken username neutron
-	iniset /etc/neutron/neutron.conf keystone_authtoken password neutron_pass@2014
-	iniset /etc/neutron/neutron.conf keystone_authtoken user_domain_name Default
+	iniset /etc/neutron/neutron.conf keystone_authtoken auth_url http://hty-keystone:35357
+	iniset /etc/neutron/neutron.conf keystone_authtoken admin_user neutron
+	iniset /etc/neutron/neutron.conf keystone_authtoken admin_password neutron_pass@2014
 	iniset /etc/neutron/neutron.conf keystone_authtoken admin_tenant_name service
 	iniset /etc/neutron/neutron.conf keystone_authtoken auth_uri http://hty-keystone:5000/v2.0
 	iniset /etc/neutron/neutron.conf keystone_authtoken identity_uri http://hty-keystone:35357
@@ -270,7 +269,7 @@
 
 	# configure_auth_token_middleware
 	iniset /etc/neutron/neutron.conf nova auth_type password
-	iniset /etc/neutron/neutron.conf nova auth_url http://hty-keystone:35357/v2.0	
+	iniset /etc/neutron/neutron.conf nova auth_url http://hty-keystone:35357
 	iniset /etc/neutron/neutron.conf nova username nova
 	iniset /etc/neutron/neutron.conf nova password nova_pass@2014
 	iniset /etc/neutron/neutron.conf nova admin_tenant_name service
@@ -394,46 +393,26 @@
 
 	# 开启neutron-server服务
 	screen -S stack -X screen -t q-svc
-	screen -S stack -p q-svc -X logfile /root/LOGFILE/q-svc.log
-    screen -S stack -p q-svc -X log on
-	touch /root/LOGFILE/q-svc.log
-    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-svc.log'\'' q-svc.log'
-	screen -S stack -p q-svc -X stuff 'sudo /root/venv/bin/neutron-server --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/pid/q-svc.pid; fg || echo "q-svc failed to start. Exit code: $?" | tee "/pid/q-svc.failure"^M'
+	screen -S stack -p q-svc -X stuff 'sudo /root/venv/bin/neutron-server --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini^M'
 
 	# 监测neutron-server服务是否启动
 	timeout 60 sh -c 'while ! wget  --no-proxy -q -O- http://hty-controller:9696; do sleep 0.5; done'
 
 	# 开启neutron-openvswitch-agent服务
 	screen -S stack -X screen -t q-agt
-	screen -S stack -p q-agt -X logfile /root/LOGFILE/q-agt.log
-    screen -S stack -p q-agt -X log on
-	touch /root/LOGFILE/q-agt.log
-    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-agt.log'\'' q-agt.log'
-	screen -S stack -p q-agt -X stuff 'sudo /root/venv/bin/neutron-openvswitch-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini & echo $! >/pid/q-agt.pid; fg || echo "q-agt failed to start. Exit code: $?" | tee "/pid/q-agt.failure"^M'
+	screen -S stack -p q-agt -X stuff 'sudo /root/venv/bin/neutron-openvswitch-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini^M'
 
 	# 开启neutron-dhcp-agent服务
 	screen -S stack -X screen -t q-dhcp
-	screen -S stack -p q-dhcp -X logfile /root/LOGFILE/q-dhcp.log
-    screen -S stack -p q-dhcp -X log on
-	touch /root/LOGFILE/q-dhcp.log
-    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-dhcp.log'\'' q-dhcp.log'
-	screen -S stack -p q-dhcp -X stuff 'sudo /root/venv/bin/neutron-dhcp-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini & echo $! >/pid/q-dhcp.pid; fg || echo "q-dhcp failed to start. Exit code: $?" | tee "/pid/q-dhcp.failure"^M'
+	screen -S stack -p q-dhcp -X stuff 'sudo /root/venv/bin/neutron-dhcp-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini^M'
 
 	# 开启neutron-l3-agent服务
 	screen -S stack -X screen -t q-l3
-	screen -S stack -p q-l3 -X logfile /root/LOGFILE/q-l3.log
-    screen -S stack -p q-l3 -X log on
-	touch /root/LOGFILE/q-l3.log
-    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-l3.log'\'' q-l3.log'
-	screen -S stack -p q-l3 -X stuff 'sudo /root/venv/bin/neutron-l3-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini & echo $! >/pid/q-l3.pid; fg || echo "q-l3 failed to start. Exit code: $?" | tee "/pid/q-l3.failure"^M'
+	screen -S stack -p q-l3 -X stuff 'sudo /root/venv/bin/neutron-l3-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini^M'
 
 	# 开启neutron-metadata-agent服务
 	screen -S stack -X screen -t q-meta
-	screen -S stack -p q-meta -X logfile /root/LOGFILE/q-meta.log
-    screen -S stack -p q-meta -X log on
-	touch /root/LOGFILE/q-meta.log
-    # bash -c 'cd '\''/root/LOGFILE'\'' && ln -sf '\''q-meta.log'\'' q-meta.log'
-	screen -S stack -p q-meta -X stuff 'sudo /root/venv/bin/neutron-metadata-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini & echo $! >/pid/q-meta.pid; fg || echo "q-meta failed to start. Exit code: $?" | tee "/pid/q-meta.failure"^M'
+	screen -S stack -p q-meta -X stuff 'sudo /root/venv/bin/neutron-metadata-agent --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini^M'
 
 	创建neutron账户：
 	# ================
@@ -459,25 +438,26 @@ EOF
 
 	iniset /etc/nova/nova.conf DEFAULT use_neutron True
 	iniset /etc/nova/nova.conf neutron auth_type password
-	iniset /etc/nova/nova.conf neutron auth_url http://hty-keystone:35357/v2.0
+	iniset /etc/nova/nova.conf neutron auth_url http://hty-keystone:35357
+	iniset /etc/nova/nova.conf neutron admin_auth_url http://hty-controller:35357
 	iniset /etc/nova/nova.conf neutron username neutron
 	iniset /etc/nova/nova.conf neutron password neutron_pass@2014
-	iniset /etc/nova/nova.conf neutron project_name service
 	iniset /etc/nova/nova.conf neutron auth_strategy keystone
 	iniset /etc/nova/nova.conf neutron region_name regionOne
 	iniset /etc/nova/nova.conf neutron admin_tenant_name service
+	iniset /etc/nova/nova.conf neutron admin_username nova
+	iniset /etc/nova/nova.conf neutron admin_password nova_pass@2014
 	iniset /etc/nova/nova.conf neutron url http://hty-neutron:9696
 	iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
+	iniset /etc/nova/nova.conf DEFAULT network_manager nova.network.manager.FlatDHCPManager
+	iniset /etc/nova/nova.conf DEFAULT network_api_class nova.network.neutronv2.api.API
 	iniset /etc/nova/nova.conf neutron service_metadata_proxy True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_is_fatal True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_timeout 300
 
 	# 重启nova-compute服务
 	screen -S stack -X screen -t n-cpu
-	screen -S stack -p n-cpu -X logfile /root/LOGFILE/n-cpu.log
-    screen -S stack -p n-cpu -X log on
-	touch /root/LOGFILE/n-cpu.log
-	screen -S stack -p n-cpu -X stuff '/usr/bin/nova-compute --config-file /etc/nova/nova.conf & echo $! >/pid/n-cpu.pid; fg || echo "n-cpu failed to start. Exit code: $?" | tee "/pid/n-cpu.failure"^M'
+	screen -S stack -p n-cpu -X stuff '/usr/bin/nova-compute --config-file /etc/nova/nova.conf^M'
 	\end{lstlisting}
 
 \end{document}
