@@ -181,6 +181,8 @@
 
 	cd /root/neutron
 	python setup.py install
+
+	ln -sf /root/venv/bin/neutron /usr/bin/neutron
 	\end{lstlisting}
 
 \section{配置neutron}
@@ -197,8 +199,8 @@
 	cp /root/neutron/etc/neutron/plugins/ml2/ml2_conf.ini.sample /etc/neutron/plugins/ml2/ml2_conf.ini
 
 	# 配置neutron服务
-	# iniset /etc/neutron/neutron.conf database connection 'mysql://neutron:NEUTRON_DBPASS@hty-mysql/neutron?charset=utf8'
-	iniset /etc/neutron/neutron.conf database connection 'mysql://root:htYun@2014@hty-mysql/neutron?charset=utf8'
+	iniset /etc/neutron/neutron.conf database connection 'mysql://neutron:NEUTRON_DBPASS@hty-mysql/neutron?charset=utf8'
+	# iniset /etc/neutron/neutron.conf database connection 'mysql://root:htYun@2014@hty-mysql/neutron?charset=utf8'
 	iniset /etc/neutron/neutron.conf DEFAULT state_path /var/lib/neutron
 	iniset /etc/neutron/neutron.conf DEFAULT use_syslog False
 	iniset /etc/neutron/neutron.conf DEFAULT bind_host 0.0.0.0
@@ -270,8 +272,8 @@
 	# configure_auth_token_middleware
 	iniset /etc/neutron/neutron.conf nova auth_type password
 	iniset /etc/neutron/neutron.conf nova auth_url http://hty-keystone:35357
-	iniset /etc/neutron/neutron.conf nova username nova
-	iniset /etc/neutron/neutron.conf nova password nova_pass@2014
+	iniset /etc/neutron/neutron.conf nova admin_username nova
+	iniset /etc/neutron/neutron.conf nova admin_password nova_pass@2014
 	iniset /etc/neutron/neutron.conf nova admin_tenant_name service
 	iniset /etc/neutron/neutron.conf nova auth_uri http://hty-keystone:5000/v2.0
 	iniset /etc/neutron/neutron.conf nova signing_dir /var/cache/neutron
@@ -335,15 +337,11 @@
 	iniset /etc/neutron/l3_agent.ini AGENT root_helper_daemon 'sudo /root/venv/bin/neutron-rootwrap-daemon /etc/neutron/rootwrap.conf'
 	iniset /etc/neutron/l3_agent.ini DEFAULT ovs_use_veth False
 	iniset /etc/neutron/l3_agent.ini DEFAULT interface_driver openvswitch
-	
-	# neutron_ovs_base_configure_l3_agent
+
 	neutron-ovs-cleanup --config-file /etc/neutron/neutron.conf
 	sudo ovs-vsctl -- --may-exist add-br br-ex
 	sudo ip link set mtu 1450 dev br-ex
 	sudo ovs-vsctl br-set-external-id br-ex bridge-id br-ex
-
-	# setup NAT so that fixed guests can get out
-	sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.24.4.0/24 -j MASQUERADE
 
 	# configure_neutron_metadata_agent
 	cp /root/neutron/etc/metadata_agent.ini.sample /etc/neutron/metadata_agent.ini
@@ -427,7 +425,6 @@ EOF
 	# 创建neutron用户
 	keystone user-create --name neutron --tenant service --pass $ADMIN_PASSWORD
 	keystone user-role-add --user neutron --role admin --tenant service
-	# openstack role add service --user neutron --project service --user-domain Default --project-domain Default
 
 	# 创建network这个service
 	keystone service-create --name neutron --type network --description "Neutron Service"
@@ -439,9 +436,10 @@ EOF
 	iniset /etc/nova/nova.conf DEFAULT use_neutron True
 	iniset /etc/nova/nova.conf neutron auth_type password
 	iniset /etc/nova/nova.conf neutron auth_url http://hty-keystone:35357
-	iniset /etc/nova/nova.conf neutron admin_auth_url http://hty-controller:35357
-	iniset /etc/nova/nova.conf neutron username neutron
-	iniset /etc/nova/nova.conf neutron password neutron_pass@2014
+	# iniset /etc/nova/nova.conf neutron admin_auth_url http://hty-controller:35357
+	iniset /etc/nova/nova.conf neutron admin_auth_url http://hty-keystone:5000/v2.0
+	iniset /etc/nova/nova.conf neutron admin_username neutron
+	iniset /etc/nova/nova.conf neutron admin_password neutron_pass@2014
 	iniset /etc/nova/nova.conf neutron auth_strategy keystone
 	iniset /etc/nova/nova.conf neutron region_name regionOne
 	iniset /etc/nova/nova.conf neutron admin_tenant_name service
@@ -451,6 +449,8 @@ EOF
 	iniset /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 	iniset /etc/nova/nova.conf DEFAULT network_manager nova.network.manager.FlatDHCPManager
 	iniset /etc/nova/nova.conf DEFAULT network_api_class nova.network.neutronv2.api.API
+	iniset /etc/nova/nova.conf DEFAULT linuxnet_interface_driver nova.network.linux_net.LinuxOVSInterfaceDriver
+	iniset /etc/nova/nova.conf DEFAULT security_group_api neutron
 	iniset /etc/nova/nova.conf neutron service_metadata_proxy True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_is_fatal True
 	iniset /etc/nova/nova.conf DEFAULT vif_plugging_timeout 300
@@ -458,6 +458,43 @@ EOF
 	# 重启nova-compute服务
 	screen -S stack -X screen -t n-cpu
 	screen -S stack -p n-cpu -X stuff '/usr/bin/nova-compute --config-file /etc/nova/nova.conf^M'
+	\end{lstlisting}
+
+\section{配置neutron网络}
+	\begin{lstlisting}
+	# 创建外部网络
+	neutron net-create ext-net --shared --router:external True --provider:physical_network public --provider:network_type flat
+
+	# 创建外部网络的子网
+	export FLOATING_IP_START="172.24.4.2"
+	export FLOATING_IP_END="172.24.4.254"
+	export EXTERNAL_NETWORK_GATEWAY="172.24.4.1"
+	export EXTERNAL_NETWORK_CIDR="172.24.4.0/24"
+	neutron subnet-create ext-net --name ext-subnet --allocation-pool start=$FLOATING_IP_START,end=$FLOATING_IP_END --disable-dhcp --gateway $EXTERNAL_NETWORK_GATEWAY $EXTERNAL_NETWORK_CIDR
+
+	# setup NAT so that fixed guests can get out
+	sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.24.4.0/24 -j MASQUERADE
+
+	sudo ovs-vsctl set Bridge br-ex other_config:disable-in-band=true
+	sudo ip addr add 172.24.4.1/24 dev br-ex
+	sudo ip link set br-ex up
+
+	# 创建内部网络
+	neutron net-create demo-net
+
+	# 创建内部网络的子网
+	export TENANT_NETWORK_GATEWAY="10.1.0.1"
+	export TENANT_NETWORK_CIDR="10.1.0.0/24"
+	neutron subnet-create demo-net --name demo-subnet --gateway $TENANT_NETWORK_GATEWAY $TENANT_NETWORK_CIDR
+
+	# 创建内网与外网的路由器
+	neutron router-create demo-router
+
+	# 将内网与路由器相连
+	neutron router-interface-add demo-router demo-subnet
+
+	# 将外网与路由器相连
+	neutron router-gateway-set demo-router ext-net
 	\end{lstlisting}
 
 \end{document}
