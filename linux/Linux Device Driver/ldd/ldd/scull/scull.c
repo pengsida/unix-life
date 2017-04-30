@@ -18,6 +18,20 @@
 #include <linux/module.h>
 #include <linux/init.h>
 
+#include "scull.h"
+
+MODULE_LICENSE("Dual BSD/GPL");
+
+static int scull_major = 0; // scull_major默认取0，选择动态分配
+
+static struct file_operations scull_ops = {
+    .owner = THIS_MODULE,
+    .open = scull_open,
+    .release = scull_release,
+    .read = scull_read,
+    .write = scull_write,
+};
+
 struct scull_qset
 {
     void **quantum_array;
@@ -35,15 +49,16 @@ struct scull_dev
     struct cdev cdev;        // 字符设备结构
 };
 
-int scull_init(int scull_major, int scull_minor)
+int scull_init(int scull_minor)
 {
     dev_t dev;
     int result;
-    int scull_nr_devs = 5;
+    int scull_nr_devs = 4;
+    
     if( scull_major )
     {
         dev = MKDEV(scull_major, scull_minor); // 生成设备号，scull_major为主设备号，scull_minor为次设备号
-        result = register_chrdev_region(&dev, scull_nr_devs, "scull"); // 静态分配设备号
+        result = register_chrdev_region(dev, scull_nr_devs, "scull"); // 静态分配设备号
     }
     else
     {
@@ -62,12 +77,12 @@ int scull_init(int scull_major, int scull_minor)
 static void scull_setup_cdev(struct scull_dev *dev, int index)
 {
     int err;
-    int devno = MKDEV(scull_major, scull_minor + index);
+    dev_t devno = MKDEV(scull_major, scull_minor + index);
     cdev_init(&dev->cdev, &scull_fops); // 初始化cdev结构体和file_operations结构体
     dev->cdev.owner = THIS_MODULE;
     dev->cdev.ops = &scull_fops;
-    err = cdev_add(&dev->cdev, devno, 1); // 通知内核cdev结构体的信息
-    if(err)
+    
+    if(cdev_add(&dev->cdev, devno, 1))
         printk(KERN_WARNING "Error %d adding scull%d", err, index);
 }
 
@@ -76,15 +91,18 @@ int scull_trim(struct scull_dev* dev)
 {
     struct scull_qset* next;
     struct scull_qset* qset;
-    int qset = dev->qset;
+    int scull_quanum_size = 5;
+    int scull_qset_size = 6;
+    int qset_size = dev->qset_size;
     int i;
+    
     for(qset = (scull_qset*)dev->data; qset; qset = next)
     {
         if(qset->quantum_array)
         {
-            for(i = 0; i < qset; i++)
+            for(i = 0; i < qset_size; i++)
             {
-                kfree(dptr->quantum_array[i]);
+                kfree(qset->quantum_array[i]);
             }
             kfree(dptr->quantum_array);
             dptr->quantum_array = NULL;
@@ -93,9 +111,10 @@ int scull_trim(struct scull_dev* dev)
         kfree(qset);
         qset = NULL;
     }
+    
     dev->size = 0;
-    dev->quantum = scull_quantum;
-    dev->qset = scull_qset;
+    dev->quantum_size = scull_quanum_size;
+    dev->qset_size = scull_qset_size;
     dev->data = NULL;
     return 0;
 }
@@ -225,7 +244,7 @@ ssize_t scull_write(struct file* filp, const char __user* buf, size_t count, lof
         qset->quantum_array = kmalloc(dev->qset_size * sizeof(char*), GFP_KERNEL);
         if(!qset->quantum_array)
             goto out;
-        memset(qset->quantum_array, 0, dev->qset_size * sizeof(char *));
+        memset(qset->quantum_array, 0, dev->qset_size * sizeof(char*));
     }
     
     if(!qset->quantum_array[quantum_index])

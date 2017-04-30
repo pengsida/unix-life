@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		491621781EB4EE0E00AE0317 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 491621771EB4EE0E00AE0317 /* Makefile */; };
+		4916217A1EB4F39D00AE0317 /* hello.c in Sources */ = {isa = PBXBuildFile; fileRef = 491621791EB4F39D00AE0317 /* hello.c */; };
+		4916217C1EB4F3A600AE0317 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 4916217B1EB4F3A600AE0317 /* Makefile */; };
+		4916217F1EB4F3B300AE0317 /* scull.c in Sources */ = {isa = PBXBuildFile; fileRef = 4916217D1EB4F3B300AE0317 /* scull.c */; };
 		49C7B77D1EB4A8B500116541 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 49C7B77C1EB4A8B500116541 /* main.c */; };
-		49C7B7841EB4AC5E00116541 /* scull.c in Sources */ = {isa = PBXBuildFile; fileRef = 49C7B7831EB4AC5E00116541 /* scull.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,10 +27,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		49AB26C91EB4C14E000E5462 /* scull.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scull.h; sourceTree = "<group>"; };
+		491621771EB4EE0E00AE0317 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = scull/Makefile; sourceTree = "<group>"; };
+		491621791EB4F39D00AE0317 /* hello.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = hello.c; path = hello/hello.c; sourceTree = "<group>"; };
+		4916217B1EB4F3A600AE0317 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = hello/Makefile; sourceTree = "<group>"; };
+		4916217D1EB4F3B300AE0317 /* scull.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scull.c; path = scull/scull.c; sourceTree = "<group>"; };
+		4916217E1EB4F3B300AE0317 /* scull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scull.h; path = scull/scull.h; sourceTree = "<group>"; };
+		491621801EB5592A00AE0317 /* scull_load.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_load.sh; path = scull/scull_load.sh; sourceTree = "<group>"; };
+		491621811EB5F65F00AE0317 /* scull_unload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_unload.sh; path = scull/scull_unload.sh; sourceTree = "<group>"; };
 		49C7B7791EB4A8B500116541 /* ldd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ldd; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C7B77C1EB4A8B500116541 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		49C7B7831EB4AC5E00116541 /* scull.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scull.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +49,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		491621711EB4E58800AE0317 /* scull */ = {
+			isa = PBXGroup;
+			children = (
+				4916217D1EB4F3B300AE0317 /* scull.c */,
+				4916217E1EB4F3B300AE0317 /* scull.h */,
+				491621771EB4EE0E00AE0317 /* Makefile */,
+				491621801EB5592A00AE0317 /* scull_load.sh */,
+				491621811EB5F65F00AE0317 /* scull_unload.sh */,
+			);
+			name = scull;
+			sourceTree = "<group>";
+		};
+		491621721EB4E77D00AE0317 /* hello_world */ = {
+			isa = PBXGroup;
+			children = (
+				4916217B1EB4F3A600AE0317 /* Makefile */,
+				491621791EB4F39D00AE0317 /* hello.c */,
+			);
+			name = hello_world;
+			sourceTree = "<group>";
+		};
 		49C7B7701EB4A8B400116541 = {
 			isa = PBXGroup;
 			children = (
@@ -60,9 +89,9 @@
 		49C7B77B1EB4A8B500116541 /* ldd */ = {
 			isa = PBXGroup;
 			children = (
+				491621721EB4E77D00AE0317 /* hello_world */,
+				491621711EB4E58800AE0317 /* scull */,
 				49C7B77C1EB4A8B500116541 /* main.c */,
-				49C7B7831EB4AC5E00116541 /* scull.c */,
-				49AB26C91EB4C14E000E5462 /* scull.h */,
 			);
 			path = ldd;
 			sourceTree = "<group>";
@@ -124,8 +153,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4916217A1EB4F39D00AE0317 /* hello.c in Sources */,
+				491621781EB4EE0E00AE0317 /* Makefile in Sources */,
+				4916217C1EB4F3A600AE0317 /* Makefile in Sources */,
+				4916217F1EB4F3B300AE0317 /* scull.c in Sources */,
 				49C7B77D1EB4A8B500116541 /* main.c in Sources */,
-				49C7B7841EB4AC5E00116541 /* scull.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

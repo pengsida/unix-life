@@ -1,0 +1,213 @@
+% !TeX spellcheck = en_US
+%% 字体：方正静蕾简体
+%%		 方正粗宋
+\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{cite}
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{etoolbox}%
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
+\makeatother
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\setcounter{secnumdepth}{4}
+%\titleformat*{\section}{\LARGE}
+%\renewcommand\refname{参考文献}
+%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
+\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
+\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
+%\setCJKfamilyfont{cjkhwxk}{华文行楷}
+%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
+%\newfontfamily\wryh{Microsoft YaHei}
+%\newfontfamily\hwzs{华文中宋}
+%\newfontfamily\hwst{华文宋体}
+%\newfontfamily\hwfs{华文仿宋}
+%\newfontfamily\jljt{方正静蕾简体}
+%\newfontfamily\hwxk{华文行楷}
+\newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
+\newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
+\newcommand{\yihao}{\fontsize{27.8pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoyi}{\fontsize{25.7pt}{\baselineskip}\selectfont}  
+\newcommand{\erhao}{\fontsize{23.5pt}{\baselineskip}\selectfont}  
+\newcommand{\xiaoerhao}{\fontsize{19.3pt}{\baselineskip}\selectfont} 
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}      % 字号设置  
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}    % 字号设置  
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}   % 字号设置  
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}  % 字号设置  
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}    % 字号设置 
+
+\usepackage{diagbox}
+\usepackage{multirow}
+\boldmath
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\definecolor{cred}{rgb}{0.8,0.8,0.8}
+\definecolor{cgreen}{rgb}{0,0.3,0}
+\definecolor{cpurple}{rgb}{0.5,0,0.35}
+\definecolor{cdocblue}{rgb}{0,0,0.3}
+\definecolor{cdark}{rgb}{0.95,1.0,1.0}
+\lstset{
+	language=python,
+	numbers=left,
+	numberstyle=\tiny\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	keywordstyle=\color{purple},
+	commentstyle=\color{cgreen},
+	stringstyle=\color{blue},
+	frame=lines,
+	% escapeinside=``,
+	extendedchars=true, 
+	xleftmargin=1em,
+	xrightmargin=1em, 
+	backgroundcolor=\color{cred},
+	aboveskip=1em,
+	breaklines=true,
+	tabsize=4
+} 
+
+%\newfontfamily{\consolas}{Consolas}
+%\newfontfamily{\monaco}{Monaco}
+%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+%\setmainfont{Times New Roman}
+%\setCJKmainfont{STZHONGS.TTF}
+%\setmonofont{Consolas}
+% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
+\newfontfamily{\monaco}{MONACO.TTF}
+\setCJKmainfont{STZHONGS.TTF}
+%\setmainfont{MONACO.TTF}
+%\setsansfont{MONACO.TTF}
+
+\newcommand{\fic}[1]{\begin{figure}[H]
+		\center
+		\includegraphics[width=0.8\textwidth]{#1}
+	\end{figure}}
+	
+\newcommand{\sizedfic}[2]{\begin{figure}[H]
+		\center
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{figure}}
+
+\newcommand{\codefile}[1]{\lstinputlisting{#1}}
+
+\newcommand{\interval}{\vspace{0.5em}}
+
+\newcommand{\tablestart}{
+	\interval
+	\begin{longtable}{p{2cm}p{10cm}}
+	\hline}
+\newcommand{\tableend}{
+	\hline
+	\end{longtable}
+	\interval}
+
+% 改变段间隔
+\setlength{\parskip}{0.2em}
+\linespread{1.1}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\space \qquad \space}
+\chead{linux中的staff组和wheel组 \qquad}
+\rhead{\qquad\thepage/\pageref{LastPage}}
+
+\begin{document}
+
+\tableofcontents
+
+\clearpage
+
+\section{linux中的staff组和wheel组}
+
+\subsection{wheel组的概念}
+	wheel组的概念继承自UNIX。
+	当服务器需要进行一些日常系统管理员无法执行的高级维护时，
+	往往就要用到 root 权限；
+	而“wheel” 组就是一个包含这些特殊权限的用户池；
+	也就是说，如果你不是“wheel”组的成员，就无法取得 root 权限进行一些特权的操作；
+ 
+\subsection{为什么需要 wheel 组？}
+	通常在UNIX下，即使我们是系统的管理员，也不推荐用 root 用户登录来进行系统管理。
+	一般情况下用普通用户登录，在需要 root 权限执行一些操作时，再 su 登录成为 root 用户。
+	但是，任何人只要知道了 root 的密码，就都可以通过 su 命令来登录为 root 用户——这无疑为系统带来了安全隐患。
+	所以，将普通用户加入到 wheel 组，被加入的这个普通用户就成了管理员组内的用户，
+	但如果不对一些相关的配置文件进行配置，这个管理员组内的用户与普通用户也没什么区别——就像警察下班后，没有带枪、穿这便衣和普通人（用户）一样，虽然他的的确确是警察。
+
+\subsection{如何把用户加入 wheel 组？}
+ 
+	前面说了，除了 root 用户，只有 wheel 组的成员有特权执行高级操作，那么怎么把用户提升成为 wheel 用户组成员呢？
+ 
+	可以使用vi来编辑 /etc/group 文件，将新的用户名追加到 wheel 组的末尾，就像这样：
+
+	\begin{lstlisting}
+	wheel::10:root,kc
+	\end{lstlisting}
+
+	对于服务器来说，我们希望的是剥夺被加入到 wheel 组用户以外的普通用户通过 su 命令来登录为 root 的机会
+	（即只有属于 wheel 组的用户才可以用 su 登录为 root）。这样就进一步增强了系统的安全性。具体步骤如下：
+	\begin{itemize}
+		\item[1.] 修改 /etc/pam.d/su 文件:
+		\begin{lstlisting}
+	 8 # Uncomment this to force users to be a member of group root
+	 9 # before they can use `su'. You can also add "group=foo"
+	10 # to the end of this line if you want to use a group other
+	11 # than the default "root" (but this may have side effect of
+	12 # denying "root" user, unless she's a member of "foo" or explicitly
+	13 # permitted earlier by e.g. "sufficient pam_rootok.so").
+	14 # (Replaces the `SU_WHEEL_ONLY' option from login.defs)
+	15 # auth       required   pam_wheel.so
+		\end{lstlisting}
+
+		\item[2.] 修改 /etc/login.defs 文件，在最后一行增加“SU\_WHEEL\_ONLY yes”语句。
+
+		\item[3.] 然后，用“usermod -G wheel 用户名”将一个用户添加到 wheel 组中；
+				  然后，用刚刚被添加到 wheel 组的用户登录，并执行 su 命令登录为 root 用户；这时，输入了正确的 root 密码就可以正常的登录为 root 用户了。
+	\end{itemize}
+
+\subsection{知识延展：staff 和 wheel 的区别}
+
+	下面是一段关于staff 和 wheel 区别的解释，原文来自
+	
+	The wheel group is used to control those people that can su to the root user (though this is made irrelevant by the sudo command).
+	All of the users on your system will be in the staff group, 
+	so by changing group ownership of files to staff the group permissions will apply to all users. 
+	All of the administrators on your system will be in the wheel group, 
+	so by changing group ownership of the files to wheel group permissions will apply to all of the administrators, 
+	global permissions will apply to any other users.\par
+
+	My advice is that, except for files that you have created, 
+	you leave the group ownership and permissions alone. 
+	Unix is very particular about file ownership and permissions in certain areas and changing them only leads to trouble.\par
+
+	我是这么理解的，wheel 是一个特殊的可以使用 su 切换到 root 的用户组；而 staff 组是所有普通用户的集合。
+	
+\end{document}
