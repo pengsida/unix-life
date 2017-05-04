@@ -14,287 +14,173 @@
 #include <linux/kernel.h>
 #include <linux/printk.h>
 #include <linux/semaphore.h>
-#include <asm-generic/uaccess.h>
+#include <linux/moduleparam.h>
+#include <asm/uaccess.h>
 #include <linux/module.h>
 #include <linux/init.h>
-
-#include "scull.h"
-
 MODULE_LICENSE("Dual BSD/GPL");
 
-static int scull_major = 0; // scull_major默认取0，选择动态分配
+const int scull_nr_device = 4;
+static int device_major_num = 0; // 主设备号
+static int device_minor_num = 0; // 次设备号起始处
+static int quantum_num = 5;
+static int quantum_size = 6;
 
-static struct file_operations scull_ops = {
-    .owner = THIS_MODULE,
-    .open = scull_open,
-    .release = scull_release,
-    .read = scull_read,
-    .write = scull_write,
-};
+module_param(device_major_num, int, S_IRUGO);
+module_param(quantum_num, int, S_IRUGO);
+module_param(quantum_size, int, S_IRUGO);
 
 struct scull_qset
 {
-    void **quantum_array;
-    struct scull_qset *next;
+    void** quantnum_array;
+    struct scull_qset* next;
 };
 
 struct scull_dev
 {
-    struct scull_qset *data; // 指向量子集
-    int quantum_size;        // 当前量子的大小
-    int qset_size;           // 当前数组的大小
-    unsigned long size;      // 数据总量
-    unsigned int access_key;
-    struct semaphore sem;    // 互斥信号量
-    struct cdev cdev;        // 字符设备结构
+    int total_size; // 表示设备文件的总大小
+    int quantum_num; // 量子集中的量子个数
+    int quantum_size; // 一个量子的大小
+    
+    struct scull_qset* qset_list; // 指向量子集链表的指针
+    
+    struct semaphore sem; // 互斥锁信号量
+    struct cdev dev; // 用于代表一个字符设备
 };
 
-int scull_init(int scull_minor)
+struct scull_dev* scull_devices;
+
+struct file_operations scull_ops = {
+    .owner = THIS_MODULE,
+};
+
+/*
+ 1. 获得指向量子集链表的头部
+ 2. 随着链表释放每个量子集的空间
+ */
+
+void free_scull_device(struct scull_dev* scull_device)
 {
-    dev_t dev;
-    int result;
-    int scull_nr_devs = 4;
+    struct scull_qset* qset = scull_device->qset_list;
+    struct scull_qset* temp = NULL;
+    int i;
     
-    if( scull_major )
+    while (qset)
     {
-        dev = MKDEV(scull_major, scull_minor); // 生成设备号，scull_major为主设备号，scull_minor为次设备号
-        result = register_chrdev_region(dev, scull_nr_devs, "scull"); // 静态分配设备号
+        if (qset->quantnum_array)
+        {
+            for (i = 0; i < scull_device->quantum_num; i++)
+            {
+                kfree(qset->quantnum_array[i]);
+                qset->quantnum_array[i] = NULL;
+            }
+            kfree(qset->quantnum_array);
+            qset->quantnum_array = NULL;
+        }
+        temp = qset->next;
+        kfree(qset);
+        qset = temp;
+    }
+    scull_device->total_size = 0;
+    scull_device->qset_list = NULL;
+}
+
+/*
+ 1. 从系统中移除字符设备
+ 2. 释放字符设备的内存
+ 3. 释放scull_devices结构体
+ 4. 释放设备的主设备号：如果device_major_num为0，说明分配主设备号不曾成功
+ */
+
+static void scull_exit(void)
+{
+    dev_t device_num = MKDEV(device_major_num, device_minor_num);
+    int i;
+    
+    if(scull_devices)
+    {
+        for(i = 0; i < scull_nr_device; i++)
+        {
+            cdev_del(&(scull_devices[i].dev));
+            free_scull_device(scull_devices+i);
+        }
+        
+        kfree(scull_devices);
+        scull_devices = NULL;
+    }
+    
+    if(device_major_num)
+        unregister_chrdev_region(device_num, scull_nr_device);
+    
+    printk(KERN_ALERT "SCULL: see you lala\n");
+}
+
+/*
+ 1. 首先分配设备号，如果失败，就将device_major_num设为0，并跳转到fail处
+ 2. 初始化scull_nr_device这个数据结构: 分配内存；将它的值填充为0；初始化各成员值
+ 3. 初始化cdev代表字符设备的数据结构: 调用初始化函数；初始化各成员值
+ 4. 向系统注册字符设备
+ */
+
+static int scull_init(void)
+{
+    dev_t device_num;
+    int i;
+    
+    if (device_major_num)
+    {
+        device_num = MKDEV(device_major_num, device_minor_num);
+        if(register_chrdev_region(device_num, scull_nr_device, "scull"))
+        {
+            device_major_num = 0;
+            goto fail;
+        }
     }
     else
     {
-        result = alloc_chrdev_region(&dev, scull_minor, scull_nr_devs, "scull");
-        scull_major = MAJOR(dev);
-    }
-    
-    if( result < 0 )
-    {
-        printk(KERN_WARNING "scull: can't get major %d\n", scull_major);
-        return result;
-    }
-}
-
-// 注册一个字符设备
-static void scull_setup_cdev(struct scull_dev *dev, int index)
-{
-    int err;
-    dev_t devno = MKDEV(scull_major, scull_minor + index);
-    cdev_init(&dev->cdev, &scull_fops); // 初始化cdev结构体和file_operations结构体
-    dev->cdev.owner = THIS_MODULE;
-    dev->cdev.ops = &scull_fops;
-    
-    if(cdev_add(&dev->cdev, devno, 1))
-        printk(KERN_WARNING "Error %d adding scull%d", err, index);
-}
-
-// 释放整个数据区
-int scull_trim(struct scull_dev* dev)
-{
-    struct scull_qset* next;
-    struct scull_qset* qset;
-    int scull_quanum_size = 5;
-    int scull_qset_size = 6;
-    int qset_size = dev->qset_size;
-    int i;
-    
-    for(qset = (scull_qset*)dev->data; qset; qset = next)
-    {
-        if(qset->quantum_array)
+        if (alloc_chrdev_region(&device_num, device_minor_num, scull_nr_device, "scull"))
         {
-            for(i = 0; i < qset_size; i++)
-            {
-                kfree(qset->quantum_array[i]);
-            }
-            kfree(dptr->quantum_array);
-            dptr->quantum_array = NULL;
+            device_major_num = 0;
+            goto fail;
         }
-        next = qset->next;
-        kfree(qset);
-        qset = NULL;
+        device_major_num = MAJOR(device_num);
     }
     
-    dev->size = 0;
-    dev->quantum_size = scull_quanum_size;
-    dev->qset_size = scull_qset_size;
-    dev->data = NULL;
+    printk(KERN_ALERT "SCULL: successfully allocate device num\n");
+    
+    scull_devices = kmalloc(scull_nr_device * sizeof(struct scull_dev), GFP_KERNEL);
+    if(!scull_devices)
+        goto fail;
+    
+    memset(scull_devices, 0, scull_nr_device * sizeof(struct scull_dev));
+    
+    for (i = 0; i < scull_nr_device; i++)
+    {
+        scull_devices[i].total_size = 0;
+        scull_devices[i].quantum_num = quantum_num;
+        scull_devices[i].quantum_size = quantum_size;
+        scull_devices[i].qset_list = NULL;
+        sema_init(&scull_devices[i].sem, 1);
+        
+        cdev_init(&(scull_devices[i].dev), &scull_ops);
+        scull_devices[i].dev.ops = &scull_ops;
+        scull_devices[i].dev.owner = THIS_MODULE;
+        
+        device_num = MKDEV(device_major_num, device_minor_num+i);
+        if(cdev_add(&scull_devices[i].dev, device_num, 1))
+            goto fail;
+        printk(KERN_ALERT "SCULL: register %d\n", i);
+    }
+    
+    printk(KERN_ALERT "SCULL: successfully register device\n");
+    
     return 0;
+    
+fail:
+    printk(KERN_ALERT "SCULL: something wrong\n");
+    scull_exit();
+    return -EFAULT;
 }
 
-// 得到第n个scull_qset
-// 如果没有，就一路给qset分配空间
-struct scull_qset* get_qset(struct scull_dev* dev, int n)
-{
-    struct scull_qset* qset = dev->data;
-    
-    if(!qset)
-    {
-        qset = dev->data = kmalloc(sizeof(struct scull_qset), GFP_KERNEL);
-        if(qset == NULL)
-            return NULL;
-        memset(qset, 0, sizeof(struct scull_qset));
-    }
-    
-    while(n--)
-    {
-        if(!qset->next)
-        {
-            qset->next = kmalloc(sizeof(struct scull_qset), GFP_KERNEL);
-            if(qset->next == NULL)
-                return NULL;
-            memset(qset->next, 0, sizeof(struct scull_qset));
-        }
-        qset = qset->next;
-    }
-    
-    return qset;
-}
-
-// 分配并填写置于filp->private_data里的数据结构
-int scull_open(struct inode* node, struct file* filp)
-{
-    struct scull_dev* dev;
-    dev = container_of(inode->i_cdev, struct scull_dev, cdev);
-    filp->private_data = dev;
-    
-    if((file->f_flags & O_ACCMODE) == O_WRONLY)
-        scull_trim(dev);
-    return 0;
-}
-
-int scull_release(struct inode* inode, struct file* filp)
-{
-    return 0;
-}
-
-/*
- 输入参数为filp，目的地址buf，要读取的数据量count，初始位置f_pos
- 1. 根据f_pos可以得到相应的量子集scull_qset，相应的量子，以及偏移量
- 2. 加锁
- 3. 检查f_pos是否大于dev的总大小，如果是，就直接返回
- 4. 检查f_pos+count是否大于dev的总大小，如果是，就减小count
- 5. 获取量子集
- 6. 真正读取数据使用的是copy_to_user()函数
- 需要注意的是，这个read一次最多处理一个量子
- */
-ssize_t scull_read(struct file* filp, char __user* buf, size_t count, loff_t* f_pos)
-{
-    struct scull_dev* dev = filp->private_data;
-    struct scull_qset* qset;
-    int qset_index = (long)*f_pos / (dev->quantum_size * dev->qset_size);
-    int rest = (long)*f_pos % (dev->quantum_size * dev->qset_size);
-    int quantum_index = rest / dev->quantum_size;
-    int quantum_offset = rest % dev->quantum_size;
-    ssize_t retval = 0;
-    
-    if(down_interruptible(&dev->sem))
-        return -ERESTARTSYS;
-    
-    if(*f_pos >= dev->size)
-        goto out;
-    
-    if(*f_pos + count > dev->size)
-        count = dev->size - *f_pos;
-    
-    qset = get_qset(dev, qset_index);
-    if(qset == NULL || !qset->data || !qset->data[quantum_index])
-        goto out;
-    
-    if(count > dev->quantum_size - quantum_offset)
-        count = dev->quantum_size - quantum_offset;
-    
-    if(copy_to_user(buf, qset->data[quantum_index]+quantum_offset, count))
-    {
-        retval = -EFAULT;
-        goto out;
-    }
-    *f_pos += count;
-    retval = count;
-    
-out:
-    up(&dev->sem);
-    return retval;
-}
-
-/*
-write一次只能处理一个量子
-1. 根据输入参数得到内存区域的初始位置
-    通过filp获得scull_dev结构体，也就有了量子集data，也有了量子集的大小
-    根据f_pos可以得到初始位置在第几个量子集，也可以得到偏移位置rest
-    根据rest可以得到初始位置在第几个量子，也可以得到偏移位置offset
-2. 真正写入数据的函数是copy_from_user()
-3. 更新一些数据
-*/
-ssize_t scull_write(struct file* filp, const char __user* buf, size_t count, loff_t* f_pos)
-{
-    struct scull_dev* dev = filp->private_data;
-    struct scull_qset* qset;
-    int qset_index = (long)*f_pos / (dev->quantum_size * dev->qset_size);
-    int rest = (long)*f_pos / (dev->quantum_size * dev->qset_size);
-    int quantum_index = rest / (dev->quantum_size);
-    int quantum_offset = rest % (dev->quantum_size);
-    ssize_t retval = -ENOMEM;
-    
-    if(down_interruptible(&dev->sem))
-        goto out;
-    
-    qset = get_qset(dev, qset_index);
-    if (qset == NULL)
-        goto out;
-    
-    if (!qset->quantum_array) {
-        qset->quantum_array = kmalloc(dev->qset_size * sizeof(char*), GFP_KERNEL);
-        if(!qset->quantum_array)
-            goto out;
-        memset(qset->quantum_array, 0, dev->qset_size * sizeof(char*));
-    }
-    
-    if(!qset->quantum_array[quantum_index])
-    {
-        qset->quantum_array[quantum_index] = kmalloc(dev->quantum_size, GFP_KERNEL);
-        if(!qset->quantum_array)
-            goto out;
-    }
-    
-    if(count > dev->quantum_size - quantum_offset)
-        count = dev->quantum_size - quantum_offset;
-    
-    if(copy_from_user(buf, qset->quantum_array[quantum_index] + quantum_offset, count))
-    {
-        retval = -EFAULT;
-        goto out;
-    }
-    
-    *f_pos += count;
-    retval = count;
-    
-    if(dev->size < *f_pos)
-        dev->size = *f_pos;
-    
-out:
-    up(&dev->sem);
-    return retval;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module_init(scull_init);
+module_exit(scull_exit);
