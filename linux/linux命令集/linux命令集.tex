@@ -921,6 +921,71 @@ commands:
 	# 在执行ln命令之前，目录/usr/liu中不存在a2.c文件。执行ln之后，在/usr/liu目录中才有a2.c这一项，表明m2.c和a2.c链接起来（注意，二者在物理上是同一文件），利用ls -l命令可以看到链接数的变化
 	\end{lstlisting}
 
+\section{make}
+	参数选项：
+	\begin{lstlisting}
+-b 忽略兼容性 
+
+-B 无条件make所有目标 
+
+-C dir或者--directory=DIR 
+   在读取makefile文件前，先切换到"dir"目录下，即把dir当作为当前目录。如果存在多个-C选项，make的最终当前目录是第一个目录的相对路径，如“make -C /home/root -C src”,等价于"make -C /home/root/src" 
+
+-d make执行时打印出所有的调试信息。包括:make认为那些需要重新生成的文件;那些需要比较它们的最后修改时间的文件，比较的结果；重新生成目标所要执行的命令；使用的隐含规则等。 
+
+-e 或者--environment-override 
+不允许在Makefile中对系统环境变量进行重新赋值 
+
+-f filename 或者 --file=File 或者 --makefile=File 
+使用指定的文件作为Makefile文件 
+
+-i 或者 --ingore-errors 
+忽略执行Makefile中命令时产生的错误，不退出make 
+
+-h 或者 -help 
+打印出帮助信息 
+
+-k 或者 --keep-going 
+执行命令遇到错误时不终止make的执行，make尽最大可能执行所有的命令，直到出现致命错误才终止 
+
+-n 或者 --just-print 或者 --dry-run 
+只打印出要执行的命令，但不执行命令 
+
+-o filename 或者 --old-file=File 
+指定文件“filename”不需要重建，即使相对于它的依赖已经过时，同时也不重建依赖于此文件的任何目标文件 
+
+-O[type], --output-sync[=type]
+	When running multiple jobs in parallel with -j, ensure the  output
+	of  each  job  is collected together rather than interspersed with
+	output from other jobs.  If type is not specified or is target the
+	output from the entire recipe for each target is grouped together.
+	If type is line the output from each command line within a  recipe
+	is  grouped  together.   If  type is recurse output from an entire
+	recursive make is grouped together.  If type is none  output  syn‐
+	chronization is disabled.
+
+-p 或者 --print-data-base 
+命令执行之前，打印出make读取的Makfile的所有数据（包括规则和变量的值），同时打印出make的版本信息。如果只需要打印这些数据信息矶不执行命令，可以使用“make -qp”命令。查看make执行的隐含规则和预定义变量，可以使用命令“make -p-f /dev/null”。 
+
+-q 或者 -question 
+称为“询问模式”，不执行任何命令。make只是返回一个查询状态值，返回的状态值为0表示没有目标需要重建，1表示存在需要重建的目标，2表示有错误发生。 
+
+-r 或者--no-builtin-rules 
+忽略隐规则，使之不起作用。该选项不会取消make内嵌的预定义变量。 
+
+-R 或者 --no-builtin-variabes 
+取消make内嵌的预定义变量，不过我们可以在makefile中明确定义某些变量。注意，-R选项同时打开-r选项，因为没有预定义变量，隐含规则将失去意义(隐含规则是以内嵌的预定义变量为基础的) 
+
+-s 或者 -silent 
+执行但不显示所执行的命令 
+
+-t 或者 -touch 
+把所有目标文件的最后修改时间设置为当前系统时间 
+
+-v 或者 -version 
+打印出make的版本信息
+	\end{lstlisting}
+
 \section{mknod}
 	mknod命令用于创建Linux中的字符设备文件和块设备文件。\par
 
@@ -1215,6 +1280,29 @@ commands:
 	格式：
 	\begin{lstlisting}
 	set: 用法: set [--abefhkmnptuvxBCHP] [-o 选项名] [--] [参数 ...]
+	\end{lstlisting}
+
+	选项：
+	\begin{lstlisting}
+	-a：标示已修改的变量，以供输出至环境变量。 
+	-b：使被中止的后台程序立刻回报执行状态。 
+	-C：转向所产生的文件无法覆盖已存在的文件。 
+	-d：Shell预设会用杂凑表记忆使用过的指令，以加速指令的执行。使用-d参数可取消。 
+	-e：若指令传回值不等于0，则立即退出shell。 
+	-f：取消使用通配符。 
+	-h：自动记录函数的所在位置。 
+	-H Shell：可利用"!"加<指令编号>的方式来执行history中记录的指令。 
+	-k：指令所给的参数都会被视为此指令的环境变量。 
+	-l：记录for循环的变量名称。 
+	-m：使用监视模式。 
+	-n：只读取指令，而不实际执行。 
+	-p：启动优先顺序模式。 
+	-P：启动-P参数后，执行指令时，会以实际的文件或目录来取代符号连接。 
+	-t：执行完随后的指令，即退出shell。 
+	-u：当执行时使用到未定义过的变量，则显示错误信息。 
+	-v：显示shell所读取的输入值。 
+	-x：执行指令后，会先显示该指令及所下的参数。
+	+<参数> 　取消某个set曾启动的参数
 	\end{lstlisting}
 
 \section{stat}

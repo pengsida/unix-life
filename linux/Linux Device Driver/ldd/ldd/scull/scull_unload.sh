@@ -13,6 +13,6 @@ module="scull"
 device="scull"
 nr_device=4
 
-rmmod $module
+rmmod $module || exit 1
 
 rm -f /dev/${device}[0-$[$nr_device-1]]

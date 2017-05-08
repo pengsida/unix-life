@@ -6,4 +6,4 @@ modules:
     $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
 clean:
-    rm -f $(shell ls | egrep -v '(Makefile|scull.c)')
+    rm -f $(shell ls | egrep -v "(Makefile|.*\.c|.*\.h|.*\.sh)")
