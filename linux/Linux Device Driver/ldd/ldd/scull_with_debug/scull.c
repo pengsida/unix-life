@@ -107,7 +107,7 @@ static struct scull_qset* alloc_qset(int quantum_num, int quantum_size)
     return qset;
     
 fail:
-    printk(KERN_ALERT "SCULL: memory is short in alloc_qset\n");
+    SCULL_PRINT_DEBUG("SCULL: memory is short in alloc_qset\n");
     
     for (i = 0; i < quantum_num; i++)
     {
@@ -170,7 +170,7 @@ static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
     {
         if (vfs_read(file_ptr, buf, count, pos) <= 0)
         {
-            printk(KERN_ALERT "READ_FILE: reach the end of file\n");
+            SCULL_PRINT_DEBUG("READ_FILE: reach the end of file\n");
             break;
         }
         
@@ -186,7 +186,7 @@ static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
         
         if (index >= 100)
         {
-            printk(KERN_ALERT "READ_FILE: something wrong\n");
+            SCULL_PRINT_DEBUG("READ_FILE: something wrong\n");
             break;
         }
     }
@@ -252,12 +252,12 @@ char* get_module_name(void)
     int times = 0;
     int index = 0;
     
-    printk(KERN_ALERT "READ_FILE: read_file_init\n");
+    SCULL_PRINT_DEBUG("READ_FILE: read_file_init\n");
     
     file_ptr = filp_open("/home/pengsida/ldd/scull_psd/Makefile", O_RDONLY, 0644);
     if (IS_ERR(file_ptr))
     {
-        printk(KERN_ALERT "READ_FILE: open file fail\n");
+        SCULL_PRINT_DEBUG("READ_FILE: open file fail\n");
         return -EFAULT;
     }
     set_fs(KERNEL_DS);
@@ -267,7 +267,7 @@ char* get_module_name(void)
         
         if(vfs_read(file_ptr, buf, count, &pos) <= 0)
         {
-            printk(KERN_ALERT "READ_FILE: reach the end of file\n");
+            SCULL_PRINT_DEBUG("READ_FILE: reach the end of file\n");
             break;
         }
         
@@ -277,7 +277,7 @@ char* get_module_name(void)
             {
                 squeeze(result);
                 get_name(result);
-                printk(KERN_ALERT "READ_FILE right: %s\n", result);
+                SCULL_PRINT_DEBUG("READ_FILE right: %s\n", result);
                 filp_close(file_ptr, NULL);
                 set_fs(fs);
                 return result;
@@ -286,7 +286,7 @@ char* get_module_name(void)
         
         if (times >= 10000)
         {
-            printk(KERN_ALERT "READ_FILE: something wrong\n");
+            SCULL_PRINT_DEBUG("READ_FILE: something wrong\n");
             break;
         }
         
@@ -295,7 +295,7 @@ char* get_module_name(void)
     
     filp_close(file_ptr, NULL);
     set_fs(fs);
-    printk(KERN_ALERT "READ_FILE wrong: %s\n", result);
+    SCULL_PRINT_DEBUG("READ_FILE wrong: %s\n", result);
     return result;
 }
 
@@ -348,14 +348,14 @@ ssize_t scull_read(struct file* file_ptr, char __user* buf, size_t count, loff_t
     
     if(down_interruptible(&scull_device->sem))
     {
-        printk(KERN_ALERT "SCULL in scull_read: something wrong happened to down interrupt\n");
+        SCULL_PRINT_DEBUG("SCULL in scull_read: something wrong happened to down interrupt\n");
         retval = -ERESTARTSYS;
         goto finish;
     }
     
     if (*f_pos > scull_device->total_size)
     {
-        printk(KERN_ALERT "SCULL in scull_read: f_pos is bigger than total_size\n");
+        SCULL_PRINT_DEBUG("SCULL in scull_read: f_pos is bigger than total_size\n");
         goto finish;
     }
     
@@ -370,7 +370,7 @@ ssize_t scull_read(struct file* file_ptr, char __user* buf, size_t count, loff_t
     
     if (copy_to_user(buf, qset->quantnum_array[quantum_index]+quantum_offset, count))
     {
-        printk(KERN_ALERT "SCULL in scull_read: copy_to_user fail\n");
+        SCULL_PRINT_DEBUG("SCULL in scull_read: copy_to_user fail\n");
         retval = -EFAULT;
         goto finish;
     }
@@ -402,7 +402,7 @@ ssize_t scull_write(struct file* file_ptr, const char __user* buf, size_t count,
     
     if (down_interruptible(&scull_device->sem))
     {
-        printk(KERN_ALERT "SCULL in scull_write: something wrong happened to down interrupt\n");
+        SCULL_PRINT_DEBUG("SCULL in scull_write: something wrong happened to down interrupt\n");
         retval = -ERESTARTSYS;
         goto finish;
     }
@@ -414,7 +414,7 @@ ssize_t scull_write(struct file* file_ptr, const char __user* buf, size_t count,
     
     if (copy_from_user(qset->quantnum_array[quantum_index]+quantum_offset, buf, count))
     {
-        printk(KERN_ALERT "SCULL in scull_write: copy_from_user fail\n");
+        SCULL_PRINT_DEBUG("SCULL in scull_write: copy_from_user fail\n");
         retval = -EFAULT;
         goto finish;
     }
@@ -457,7 +457,7 @@ static void scull_exit(void)
     if(device_major_num)
         unregister_chrdev_region(device_num, scull_nr_device);
     
-    printk(KERN_ALERT "SCULL: see you lala\n");
+    SCULL_PRINT_DEBUG("SCULL: see you lala\n");
 }
 
 /*
@@ -473,7 +473,7 @@ static int scull_init(void)
     int i;
     char* module_name = get_module_name();
     
-    printk(KERN_ALERT "SCULL right: %s\n", module_name);
+    SCULL_PRINT_DEBUG("SCULL right: %s\n", module_name);
     
     if (device_major_num)
     {
@@ -494,7 +494,7 @@ static int scull_init(void)
         device_major_num = MAJOR(device_num);
     }
     
-    printk(KERN_ALERT "SCULL: successfully allocate device num\n");
+    SCULL_PRINT_DEBUG("SCULL: successfully allocate device num\n");
     
     scull_devices = kmalloc(scull_nr_device * sizeof(struct scull_dev), GFP_KERNEL);
     if(!scull_devices)
@@ -518,17 +518,17 @@ static int scull_init(void)
         SCULL_PRINT_DEBUG("SCULL: %d, %d", MAJOR(device_num), MINOR(device_num));
         if(cdev_add(&scull_devices[i].dev, device_num, 1))
             goto fail;
-        printk(KERN_ALERT "SCULL: register %d\n", i);
+        SCULL_PRINT_DEBUG("SCULL: register %d\n", i);
     }
     
-    printk(KERN_ALERT "SCULL: successfully register device\n");
+    SCULL_PRINT_DEBUG("SCULL: successfully register device\n");
     
     kfree(module_name);
     
     return 0;
     
 fail:
-    printk(KERN_ALERT "SCULL: something wrong\n");
+    SCULL_PRINT_DEBUG("SCULL: something wrong\n");
     scull_exit();
     return -EFAULT;
 }
