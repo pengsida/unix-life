@@ -12,15 +12,14 @@
 #include <linux/printk.h>
 #include <linux/fs.h>
 #include <linux/types.h>
-
 /*
  设置是否输出DEBUG消息
 */
 #undef SCULL_PRINT_DEBUG
 #ifdef PRINT_DEBUG
-#define SCULL_RPINT_DEBUG(fmt, arg...) printk(KERN_ALERT, fmt, ##arg)
+#define SCULL_PRINT_DEBUG(fmt, args...) printk(KERN_ALERT, fmt, ##args)
 #else
-#define SCULL_PRINT_DEBUG(fmt, arg...) ({})
+#define SCULL_PRINT_DEBUG(fmt, args...)
 #endif
 
 struct scull_qset

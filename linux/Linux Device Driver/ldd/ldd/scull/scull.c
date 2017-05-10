@@ -16,7 +16,6 @@
 #include <linux/semaphore.h>
 #include <linux/moduleparam.h>
 #include <asm/uaccess.h>
-#include <asm-generic/uaccess.h>
 #include <asm/fcntl.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -74,7 +73,6 @@ static void free_scull_device(struct scull_dev* scull_device)
     struct scull_qset* qset = scull_device->qset_list;
     struct scull_qset* temp = NULL;
     int i;
-    int j = 0;
     
     while (qset)
     {

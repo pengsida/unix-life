@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #  scull_unload.sh
 #  ldd

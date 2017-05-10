@@ -11,6 +11,7 @@
 		4916217A1EB4F39D00AE0317 /* hello.c in Sources */ = {isa = PBXBuildFile; fileRef = 491621791EB4F39D00AE0317 /* hello.c */; };
 		4916217C1EB4F3A600AE0317 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 4916217B1EB4F3A600AE0317 /* Makefile */; };
 		4916217F1EB4F3B300AE0317 /* scull.c in Sources */ = {isa = PBXBuildFile; fileRef = 4916217D1EB4F3B300AE0317 /* scull.c */; };
+		492E59581EC1F19200BA6606 /* read_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 492E59571EC1F19200BA6606 /* read_file.c */; };
 		4953B3DA1EC004BA0070CEC2 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 4953B3D91EC004BA0070CEC2 /* Makefile */; };
 		4953B3DD1EC004CF0070CEC2 /* scull.c in Sources */ = {isa = PBXBuildFile; fileRef = 4953B3DB1EC004CF0070CEC2 /* scull.c */; };
 		49C7B77D1EB4A8B500116541 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 49C7B77C1EB4A8B500116541 /* main.c */; };
@@ -36,6 +37,7 @@
 		4916217E1EB4F3B300AE0317 /* scull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scull.h; path = scull/scull.h; sourceTree = "<group>"; };
 		491621801EB5592A00AE0317 /* scull_load.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_load.sh; path = scull/scull_load.sh; sourceTree = "<group>"; };
 		491621811EB5F65F00AE0317 /* scull_unload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_unload.sh; path = scull/scull_unload.sh; sourceTree = "<group>"; };
+		492E59571EC1F19200BA6606 /* read_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = read_file.c; path = read_file/read_file.c; sourceTree = "<group>"; };
 		4953B3D71EC004940070CEC2 /* scull_load.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_load.sh; path = scull_with_debug/scull_load.sh; sourceTree = "<group>"; };
 		4953B3D81EC004A80070CEC2 /* scull_unload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = scull_unload.sh; path = scull_with_debug/scull_unload.sh; sourceTree = "<group>"; };
 		4953B3D91EC004BA0070CEC2 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = scull_with_debug/Makefile; sourceTree = "<group>"; };
@@ -77,6 +79,14 @@
 			name = hello_world;
 			sourceTree = "<group>";
 		};
+		492E59561EC1F17000BA6606 /* read_file */ = {
+			isa = PBXGroup;
+			children = (
+				492E59571EC1F19200BA6606 /* read_file.c */,
+			);
+			name = read_file;
+			sourceTree = "<group>";
+		};
 		4953B3D61EC003E40070CEC2 /* scull_with_debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +118,7 @@
 		49C7B77B1EB4A8B500116541 /* ldd */ = {
 			isa = PBXGroup;
 			children = (
+				492E59561EC1F17000BA6606 /* read_file */,
 				4953B3D61EC003E40070CEC2 /* scull_with_debug */,
 				491621721EB4E77D00AE0317 /* hello_world */,
 				491621711EB4E58800AE0317 /* scull */,
@@ -180,6 +191,7 @@
 				4916217F1EB4F3B300AE0317 /* scull.c in Sources */,
 				4953B3DD1EC004CF0070CEC2 /* scull.c in Sources */,
 				49C7B77D1EB4A8B500116541 /* main.c in Sources */,
+				492E59581EC1F19200BA6606 /* read_file.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

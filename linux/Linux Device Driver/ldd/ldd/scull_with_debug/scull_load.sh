@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #  scull_load.sh
 #  ldd
@@ -10,12 +10,12 @@ module="scull"
 device="scull"
 nr_device=4
 
-lsmod | grep $module && exit 1
+lsmod | grep $module && rmmod $module
 rm -f /dev/${device}[0-$[${nr_device}-1]]
 
 insmod ./${module}.ko $* || exit 1
 
-major=$(awk '/${module}/ {print $1}' /proc/devices)
+major=$(awk '/'${module}'/ {print $1}' /proc/devices)
 
 for((i = 0; i < ${nr_device}; i++))
 do
@@ -24,7 +24,7 @@ done
 
 group="staff"
 
-grep -q "^group" /etc/group || group="wheel"
+grep -q "^staff" /etc/group || group="wheel"
 
 chgrp $group /dev/${device}[0-$[${nr_device}-1]]
 chmod 664 /dev/${device}[0-$[${nr_device}-1]]

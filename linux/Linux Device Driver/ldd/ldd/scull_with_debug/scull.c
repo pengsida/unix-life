@@ -16,7 +16,6 @@
 #include <linux/semaphore.h>
 #include <linux/moduleparam.h>
 #include <asm/uaccess.h>
-#include <asm-generic/uaccess.h>
 #include <asm/fcntl.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -25,12 +24,23 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 const int scull_nr_device = 4;
 static int device_major_num = 0; // 主设备号
+int device_minor_num = 0; // 次设备号起始处
 static int quantum_num = 128;
 static int quantum_size = 64;
 
 module_param(device_major_num, int, S_IRUGO);
 module_param(quantum_num, int, S_IRUGO);
 module_param(quantum_size, int, S_IRUGO);
+
+struct file_operations scull_ops = {
+    .owner = THIS_MODULE,
+    .open = scull_open,
+    .release = scull_release,
+    .read = scull_read,
+    .write = scull_write,
+};
+
+struct scull_dev* scull_devices;
 
 ////////////////////////////////////////////////////
 //                                                //
@@ -147,6 +157,148 @@ static struct scull_qset* get_qset(struct scull_dev* scull_device, int qset_inde
     
     return qset_list;
 }
+
+static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
+{
+    ssize_t count = 1;
+    char buf[2] = {0};
+    const char OBJ_M[] = "bj-m";
+    int index = 0;
+    memset(result, 0, 100);
+    
+    while (1)
+    {
+        if (vfs_read(file_ptr, buf, count, pos) <= 0)
+        {
+            printk(KERN_ALERT "READ_FILE: reach the end of file\n");
+            break;
+        }
+        
+        if (index < 4 && buf[0] != OBJ_M[index])
+            break;
+        
+        if (buf[0] == '\n')
+            return 0;
+        
+        result[index] = buf[0];
+        
+        index++;
+        
+        if (index >= 100)
+        {
+            printk(KERN_ALERT "READ_FILE: something wrong\n");
+            break;
+        }
+    }
+    
+    return 1;
+}
+
+static void copy(char* from, char* to)
+{
+    while (*from && *to)
+    {
+        *to = *from;
+        from++;
+        to++;
+    }
+    *from='\0';
+    *to='\0';
+}
+
+static void squeeze(char* result)
+{
+    while (*result)
+    {
+        if (*result == ' ')
+            copy(result+1, result);
+        result++;
+    }
+}
+
+static void get_name(char* result)
+{
+    char* start = result;
+    
+    while (*result)
+    {
+        if (*result == '=')
+        {
+            copy(result+1, start);
+            result = start;
+            continue;
+        }
+        
+        if (*result == '.')
+        {
+            *result = '\0';
+            break;
+        }
+        
+        result++;
+    }
+}
+
+char* get_module_name(void)
+{
+    struct file* file_ptr;
+    mm_segment_t fs = get_fs();
+    loff_t pos = 0;
+    char buf[2] = {0, 0};
+    const char OBJ_M[] = "obj-m";
+    char* result = kmalloc(100 * sizeof(char), GFP_KERNEL);
+    memset(result, 0, 100);
+    ssize_t count = 1;
+    int times = 0;
+    int index = 0;
+    
+    printk(KERN_ALERT "READ_FILE: read_file_init\n");
+    
+    file_ptr = filp_open("/home/pengsida/ldd/scull_psd/Makefile", O_RDONLY, 0644);
+    if (IS_ERR(file_ptr))
+    {
+        printk(KERN_ALERT "READ_FILE: open file fail\n");
+        return -EFAULT;
+    }
+    set_fs(KERNEL_DS);
+    
+    while (1)
+    {
+        
+        if(vfs_read(file_ptr, buf, count, &pos) <= 0)
+        {
+            printk(KERN_ALERT "READ_FILE: reach the end of file\n");
+            break;
+        }
+        
+        if (buf[0] == 'o')
+        {
+            if(get_specific_line(result, file_ptr, &pos) == 0)
+            {
+                squeeze(result);
+                get_name(result);
+                printk(KERN_ALERT "READ_FILE right: %s\n", result);
+                filp_close(file_ptr, NULL);
+                set_fs(fs);
+                return result;
+            }
+        }
+        
+        if (times >= 10000)
+        {
+            printk(KERN_ALERT "READ_FILE: something wrong\n");
+            break;
+        }
+        
+        times++;
+    }
+    
+    filp_close(file_ptr, NULL);
+    set_fs(fs);
+    printk(KERN_ALERT "READ_FILE wrong: %s\n", result);
+    return result;
+}
+
 
 ////////////////////////////////////////////////////
 //                                                //
@@ -317,23 +469,16 @@ static void scull_exit(void)
 
 static int scull_init(void)
 {
-    struct file_operations scull_ops = {
-        .owner = THIS_MODULE,
-        .open = scull_open,
-        .release = scull_release,
-        .read = scull_read,
-        .write = scull_write,
-    };
-    
-    struct scull_dev* scull_devices;
     dev_t device_num;
-    int device_minor_num = 0; // 次设备号起始处
     int i;
+    char* module_name = get_module_name();
+    
+    printk(KERN_ALERT "SCULL right: %s\n", module_name);
     
     if (device_major_num)
     {
         device_num = MKDEV(device_major_num, device_minor_num);
-        if(register_chrdev_region(device_num, scull_nr_device, "scull"))
+        if(register_chrdev_region(device_num, scull_nr_device, module_name))
         {
             device_major_num = 0;
             goto fail;
@@ -341,7 +486,7 @@ static int scull_init(void)
     }
     else
     {
-        if (alloc_chrdev_region(&device_num, device_minor_num, scull_nr_device, "scull"))
+        if (alloc_chrdev_region(&device_num, device_minor_num, scull_nr_device, module_name))
         {
             device_major_num = 0;
             goto fail;
@@ -377,6 +522,8 @@ static int scull_init(void)
     }
     
     printk(KERN_ALERT "SCULL: successfully register device\n");
+    
+    kfree(module_name);
     
     return 0;
     

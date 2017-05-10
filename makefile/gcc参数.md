@@ -11,7 +11,7 @@ gcc and g++分别是gnu的c & c++编译器 gcc/g++在执行编译工作的时候
 ```
 -ansi   只支持 ANSI 标准的 C 语法。这一选项将禁止 GNU C 的某些特色， 
         例如 asm 或 typeof 关键词。 
--c      只编译并生成目标文件。 
+-c      只编译并生成目标文件。
 -DMACRO 以字符串“1”定义 MACRO 宏。 
 -DMACRO=DEFN 以字符串“DEFN”定义 MACRO 宏。 
 -E      只运行 C 预编译器。 
