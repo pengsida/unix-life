@@ -99,60 +99,15 @@ static void get_name(char* result)
     }
 }
 
-char* get_absolute_path(struct task_struct* task)
-{
-    char* ret_ptr = NULL;
-    char* temp_path = NULL;
-    struct vm_area_struct* vma = NULL;
-    struct path base_path;
-    
-    temp_path = (char*)kmalloc(512, 0);
-    if (NULL == temp_path || NULL == task)
-        return NULL;
-    
-    memset(temp_path, '\0', 512);
-    
-    task_lock(task);
-    
-    if (task->mm && task->mm->mmap)
-        vma = task->mm->mmap;
-    else
-    {
-        task_unlock(task);
-        kfree(temp_path);
-        return NULL;
-    }
-    
-    while (vma)
-    {
-        if ((vma->vm_flags & VM_EXEC) && vma->vm_file)
-        {
-            base_path = vma->vm_file->f_path;
-            break;
-        }
-        vma = vma->vm_next;
-    }
-    
-    task_unlock(task);
-    ret_ptr = d_path(&base_path, temp_path, 512);
-    return ret_ptr;
-}
-
 int read_file_init(void)
 {
     struct file* file_ptr;
     mm_segment_t fs = get_fs();
     loff_t pos = 0;
     char buf[2] = {0, 0};
-    const char OBJ_M[] = "obj-m";
     char result[100] = {0};
     ssize_t count = 1;
     int times = 0;
-    int index = 0;
-    struct task_struct* task = current;
-    char* path = get_absolute_path(task);
-    
-    printk(KERN_ALERT "READ_FILE path: %s\n", path);
     
     printk(KERN_ALERT "READ_FILE: read_file_init\n");
     

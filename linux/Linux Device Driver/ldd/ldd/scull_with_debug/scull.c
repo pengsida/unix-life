@@ -183,12 +183,6 @@ static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
         result[index] = buf[0];
         
         index++;
-        
-        if (index >= 100)
-        {
-            SCULL_PRINT_DEBUG("READ_FILE: something wrong\n");
-            break;
-        }
     }
     
     return 1;
@@ -245,12 +239,10 @@ char* get_module_name(void)
     mm_segment_t fs = get_fs();
     loff_t pos = 0;
     char buf[2] = {0, 0};
-    const char OBJ_M[] = "obj-m";
     char* result = kmalloc(100 * sizeof(char), GFP_KERNEL);
-    memset(result, 0, 100);
     ssize_t count = 1;
-    int times = 0;
-    int index = 0;
+    
+    memset(result, 0, 100);
     
     SCULL_PRINT_DEBUG("READ_FILE: read_file_init\n");
     
@@ -283,14 +275,6 @@ char* get_module_name(void)
                 return result;
             }
         }
-        
-        if (times >= 10000)
-        {
-            SCULL_PRINT_DEBUG("READ_FILE: something wrong\n");
-            break;
-        }
-        
-        times++;
     }
     
     filp_close(file_ptr, NULL);
