@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}设置网络}{2}{section.1}
+\contentsline {section}{\numberline {2}配置ironic网络}{3}{section.2}
+\contentsline {section}{\numberline {3}启动ironic}{3}{section.3}
+\contentsline {section}{\numberline {4}创建物理机需要的镜像}{4}{section.4}
+\contentsline {section}{\numberline {5}创建物理机需要的flavor}{4}{section.5}
+\contentsline {section}{\numberline {6}重启nova服务}{5}{section.6}
+\contentsline {section}{\numberline {7}配置tftpd}{5}{section.7}
+\contentsline {section}{\numberline {8}配置iptable}{5}{section.8}

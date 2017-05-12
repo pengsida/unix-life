@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{第一个例子}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{配置baremetal provisioning驱动}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{上传镜像到glance服务器}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{把物理机注册为裸机节点}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{创建物理机需要的flavor}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{第二个例子}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{创建虚拟机}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.2}{注册物理机}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{启动虚拟机}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{第三个例子}{}% 10

@@ -1,0 +1,8 @@
+\BOOKMARK [1][-]{section.1}{设置网络}{}% 1
+\BOOKMARK [1][-]{section.2}{配置ironic网络}{}% 2
+\BOOKMARK [1][-]{section.3}{启动ironic}{}% 3
+\BOOKMARK [1][-]{section.4}{创建物理机需要的镜像}{}% 4
+\BOOKMARK [1][-]{section.5}{创建物理机需要的flavor}{}% 5
+\BOOKMARK [1][-]{section.6}{重启nova服务}{}% 6
+\BOOKMARK [1][-]{section.7}{配置tftpd}{}% 7
+\BOOKMARK [1][-]{section.8}{配置iptable}{}% 8

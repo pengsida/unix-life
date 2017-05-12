@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  12 MAY 2017 14:28
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.8.12)  12 MAY 2017 14:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**ironic的介绍.tex
-(./ironic的介绍.tex
+**源码安装ironic.tex
+(./源码安装ironic.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
@@ -1797,8 +1797,8 @@ Package: xeCJK-listings 2016/05/14 v3.4.0 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [left=2.5cm,right=2.5cm].
 
-(./ironic的介绍.aux)
-\openout1 = `ironic的介绍.aux'.
+(./源码安装ironic.aux)
+\openout1 = `源码安装ironic.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 132.
 LaTeX Font Info:    ... okay on input line 132.
@@ -1824,7 +1824,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 132.
 LaTeX Font Info:    ... okay on input line 132.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 132.
 LaTeX Font Info:    ... okay on input line 132.
-
 *** you should *not* be loading the inputenc package
 *** XeTeX expects the source to be in UTF8 encoding
 *** some features of other encodings may conflict, resulting in poor output.
@@ -1951,9 +1950,9 @@ LaTeX Info: Redefining \ref on input line 132.
 LaTeX Info: Redefining \pageref on input line 132.
 LaTeX Info: Redefining \nameref on input line 132.
 
-(./ironic的介绍.out) (./ironic的介绍.out)
+(./源码安装ironic.out) (./源码安装ironic.out)
 \@outlinefile=\write3
-\openout3 = `ironic的介绍.out'.
+\openout3 = `源码安装ironic.out'.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
@@ -1984,22 +1983,14 @@ Package lastpage Info: Please have a look at the pageslts package at
 . NFSS spec.: <->"STSongti-SC-Regular/BI/OT:"
 . - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
 .................................................
-(./ironic的介绍.toc
+(./源码安装ironic.toc
 
 LaTeX Font Warning: Font shape `EU1/华文中宋(0)/bx/n' undefined
 (Font)              using `EU1/华文中宋(0)/m/n' instead on input line 1.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 3.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 3.
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
 \tf@toc=\write4
-\openout4 = `ironic的介绍.toc'.
+\openout4 = `源码安装ironic.toc'.
 
 
 
@@ -2015,6 +2006,15 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 [1
 
 ]
+LaTeX Font Info:    Try loading font information for U+msa on input line 144.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 144.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2024,19 +2024,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [2
 
 ]
-File: 1.png Graphic file (type QTm)
- <use  "1.png" >
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[3
-
-]
-File: 2.jpg Graphic file (type QTm)
- <use  "2.jpg" >
+[3]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2051,29 +2045,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-*************************************************
-* xeCJK warning: "CJKfamily-Unknown"
-* 
-* Unknown CJK family `\CJKttdefault' is being ignored.
-* 
-* Try to use `\setCJKmonofont[...]{...}' to define it.
-*************************************************
-Font mapping `.tec' for font `Consolas' not found.
 
-Overfull \hbox (17.2119pt too wide) in paragraph at lines 231--233
-[][][][][][][][][] [] [][][][][][][][][] [] [][][] [] [][] [] [][] [] [][][][][
-][][][][][] [] [][][][][][][][][][][][] [] [][][][][][][][][][][][][][][][][] [
-] [][][][]$[] 
- []
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-
-Overfull \hbox (8.63048pt too wide) in paragraph at lines 236--237
-[][]$[][][][][] [] [] [] [][][][][] [] [][][][][][][][] [] [][] [] [][][][][][]
-[][][][][][][][][][][] [] [][][][][][][] [] [][] [] [][][][][][] [] [][] [] [][
-][] []
- []
-
-
+[6] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2081,25 +2059,25 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 238.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 238.
- (./ironic的介绍.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 238.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 238.
+[7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 394.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 394.
+ (./源码安装ironic.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 394.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 394.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 238.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 394.
  ) 
 Here is how much of TeX's memory you used:
- 30922 strings out of 493591
- 561854 string characters out of 6143546
- 661941 words of memory out of 5000000
- 33914 multiletter control sequences out of 15000+600000
- 9307 words of font info for 75 fonts, out of 8000000 for 9000
+ 31497 strings out of 493591
+ 565557 string characters out of 6143546
+ 843942 words of memory out of 5000000
+ 34492 multiletter control sequences out of 15000+600000
+ 9323 words of font info for 76 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,11n,87p,10366b,416s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,12n,87p,10367b,1811s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ironic的介绍.pdf (6 pages).
+Output written on 源码安装ironic.pdf (7 pages).

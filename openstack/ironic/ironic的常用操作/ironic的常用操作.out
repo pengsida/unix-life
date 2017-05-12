@@ -1,0 +1,7 @@
+\BOOKMARK [1][-]{section.1}{ironic的常用操作}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{查看node列表}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{查看所注册的node的mac地址列表}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{为物理节点创建网络端口}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{检查一个节点的设置}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.5}{删除node注册信息}{section.1}% 6
+\BOOKMARK [2][-]{subsection.1.6}{设置与某个flavor相关联}{section.1}% 7

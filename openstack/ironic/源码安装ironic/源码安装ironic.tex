@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 %% 字体：方正静蕾简体
 %%		 方正粗宋
-\documentclass[a4paper,left=1.5cm,right=1.5cm,11pt]{article}
+\documentclass[a4paper,left=2.5cm,right=2.5cm,11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
@@ -9,14 +9,7 @@
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \usepackage{titlesec}
-\usepackage{etoolbox}%
-\makeatletter
-\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}%
-\patchcmd{\ttlh@hang}{\noindent}{}{}{}%
-\makeatother
-
 \usepackage{longtable}
-\usepackage{empheq}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{rotating}
@@ -30,24 +23,35 @@
 \usepackage{xcolor}
 \usepackage{geometry}
 \setcounter{secnumdepth}{4}
-%\titleformat*{\section}{\LARGE}
-%\renewcommand\refname{参考文献}
-%\titleformat{\chapter}{\centering\bfseries\huge}{}{0.7em}{}{}
-\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
+\usepackage{mhchem}
+\usepackage{multirow}
+\usepackage{extarrows}
+\usepackage{hyperref}
+\titleformat*{\section}{\LARGE}
+\renewcommand\refname{参考文献}
+\renewcommand{\abstractname}{\sihao \cjkfzcs 摘{  }要}
+%\titleformat{\chapter}{\centering\bfseries\huge\wryh}{}{0.7em}{}{}
+%\titleformat{\section}{\LARGE\bf}{\thesection}{1em}{}{}
 \titleformat{\subsection}{\Large\bfseries}{\thesubsection}{1em}{}{}
 \titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection}{1em}{}{}
-\renewcommand{\contentsname}{{ \centerline{目{  } 录}}}
-\setCJKfamilyfont{cjkhwxk}{STXINGKA.TTF}
-%\setCJKfamilyfont{cjkhwxk}{华文行楷}
-%\setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
-%\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
+\renewcommand{\contentsname}{{\cjkfzcs \centerline{目{  } 录}}}
+\setCJKfamilyfont{cjkhwxk}{STXingkai}
+\setCJKfamilyfont{cjkfzcs}{STSongti-SC-Regular}
+% \setCJKfamilyfont{cjkhwxk}{华文行楷}
+% \setCJKfamilyfont{cjkfzcs}{方正粗宋简体}
+\newcommand*{\cjkfzcs}{\CJKfamily{cjkfzcs}}
 \newcommand*{\cjkhwxk}{\CJKfamily{cjkhwxk}}
-%\newfontfamily\wryh{Microsoft YaHei}
-%\newfontfamily\hwzs{华文中宋}
-%\newfontfamily\hwst{华文宋体}
-%\newfontfamily\hwfs{华文仿宋}
-%\newfontfamily\jljt{方正静蕾简体}
-%\newfontfamily\hwxk{华文行楷}
+\newfontfamily\wryh{Microsoft YaHei}
+\newfontfamily\hwzs{STZhongsong}
+\newfontfamily\hwst{STSong}
+\newfontfamily\hwfs{STFangsong}
+\newfontfamily\jljt{MicrosoftYaHei}
+\newfontfamily\hwxk{STXingkai}
+% \newfontfamily\hwzs{华文中宋}
+% \newfontfamily\hwst{华文宋体}
+% \newfontfamily\hwfs{华文仿宋}
+% \newfontfamily\jljt{方正静蕾简体}
+% \newfontfamily\hwxk{华文行楷}
 \newcommand{\verylarge}{\fontsize{60pt}{\baselineskip}\selectfont}  
 \newcommand{\chuhao}{\fontsize{44.9pt}{\baselineskip}\selectfont}  
 \newcommand{\xiaochu}{\fontsize{38.5pt}{\baselineskip}\selectfont}  
@@ -73,7 +77,7 @@
 \definecolor{cdocblue}{rgb}{0,0,0.3}
 \definecolor{cdark}{rgb}{0.95,1.0,1.0}
 \lstset{
-	language=bash,
+	language=[x86masm]Assembler,
 	numbers=left,
 	numberstyle=\tiny\color{black},
 	showspaces=false,
@@ -93,18 +97,14 @@
 	tabsize=4
 } 
 
-%\newfontfamily{\consolas}{Consolas}
-%\newfontfamily{\monaco}{Monaco}
-%\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
-%\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
-%\setmainfont{Times New Roman}
-%\setCJKmainfont{STZHONGS.TTF}
-%\setmonofont{Consolas}
-% \newfontfamily{\consolas}{YaHeiConsolas.ttf}
-\newfontfamily{\monaco}{MONACO.TTF}
-\setCJKmainfont{STZHONGS.TTF}
-%\setmainfont{MONACO.TTF}
-%\setsansfont{MONACO.TTF}
+\newfontfamily{\consolas}{Consolas}
+\newfontfamily{\monaco}{Monaco}
+\setmonofont[Mapping={}]{Consolas}	%英文引号之类的正常显示，相当于设置英文字体
+\setsansfont{Consolas} %设置英文字体 Monaco, Consolas,  Fantasque Sans Mono
+\setmainfont{Times New Roman}
+
+\setCJKmainfont{华文中宋}
+
 
 \newcommand{\fic}[1]{\begin{figure}[H]
 		\center
@@ -117,17 +117,6 @@
 	\end{figure}}
 
 \newcommand{\codefile}[1]{\lstinputlisting{#1}}
-
-\newcommand{\interval}{\vspace{0.5em}}
-
-\newcommand{\tablestart}{
-	\interval
-	\begin{longtable}{p{2cm}p{10cm}}
-	\hline}
-\newcommand{\tableend}{
-	\hline
-	\end{longtable}
-	\interval}
 
 % 改变段间隔
 \setlength{\parskip}{0.2em}
