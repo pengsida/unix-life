@@ -19,6 +19,12 @@
 #include <asm/fcntl.h>
 #include <linux/module.h>
 #include <linux/init.h>
+#include <linux/sched.h>
+#include <asm/current.h>
+#include <linux/fs_struct.h>
+#include <asm/string.h>
+#include <linux/seq_file.h>
+#include <linux/proc_fs.h>
 #include "scull.h"
 MODULE_LICENSE("Dual BSD/GPL");
 
@@ -58,7 +64,9 @@ static void free_scull_device(struct scull_dev* scull_device)
     struct scull_qset* qset = scull_device->qset_list;
     struct scull_qset* temp = NULL;
     int i;
+#ifdef PRINT_DEBUG
     int j = 0;
+#endif
     
     while (qset)
     {
@@ -190,7 +198,7 @@ static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
 
 static void copy(char* from, char* to)
 {
-    while (*from && *to)
+    while (*from)
     {
         *to = *from;
         from++;
@@ -233,7 +241,25 @@ static void get_name(char* result)
     }
 }
 
-char* get_module_name(void)
+static char* get_file_path(struct task_struct* task, char* get_path)
+{
+    struct path current_path;
+    char* path = NULL;
+    
+    memset(get_path, 0, 512);
+    
+    task_lock(task);
+    
+    current_path = task->fs->pwd;
+    
+    task_unlock(task);
+    
+    path = d_path(&current_path, get_path, 512);
+    copy(path, get_path);
+    return path;
+}
+
+static char* get_module_name(char* path)
 {
     struct file* file_ptr;
     mm_segment_t fs = get_fs();
@@ -246,11 +272,11 @@ char* get_module_name(void)
     
     SCULL_PRINT_DEBUG("READ_FILE: read_file_init\n");
     
-    file_ptr = filp_open("/home/pengsida/ldd/scull_psd/Makefile", O_RDONLY, 0644);
+    file_ptr = filp_open(path, O_RDONLY, 0644);
     if (IS_ERR(file_ptr))
     {
         SCULL_PRINT_DEBUG("READ_FILE: open file fail\n");
-        return -EFAULT;
+        return NULL;
     }
     set_fs(KERNEL_DS);
     
@@ -283,6 +309,110 @@ char* get_module_name(void)
     return result;
 }
 
+////////////////////////////////////////////////////
+//                                                //
+//                用于debug                        //
+//                                                //
+////////////////////////////////////////////////////
+
+#ifdef PRINT_DEBUG
+
+void* scull_seq_start(struct seq_file* sfile, loff_t* pos)
+{
+    if(*pos >= scull_nr_device)
+    {
+        SCULL_PRINT_DEBUG("SCULL in scull_seq_start: *pos is bigger than scull_nr_device\n");
+        *pos = 0;
+        return NULL;
+    }
+    
+    return scull_devices + *pos;
+}
+
+void scull_seq_stop(struct seq_file* sfile, void* v)
+{
+    return;
+}
+
+void* scull_seq_next(struct seq_file* sfile, void* v, loff_t* pos)
+{
+    *pos = *pos + 1;
+    
+    if (*pos >= scull_nr_device)
+    {
+        SCULL_PRINT_DEBUG("SCULL in scull_seq_next: *pos is bigger than scull_nr_device\n");
+        *pos = 0;
+        return NULL;
+    }
+    
+    return scull_devices + *pos;
+}
+
+int scull_seq_show(struct seq_file* sfile, void* v)
+{
+    struct scull_dev* scull_device = (struct scull_dev*)v;
+    struct scull_qset* qset_list = NULL;
+    int i = 0;
+    int j = 0;
+    
+    if (down_interruptible(&scull_device->sem))
+        return -ERESTARTSYS;
+    
+    seq_printf(sfile, "The scull_device number is %d\n", (int)(scull_device - scull_devices));
+    seq_printf(sfile, "The scull_device total size is %d\n", scull_device->total_size);
+    seq_printf(sfile, "The quantum number is %d, the quantum size is %d\n", scull_device->quantum_num, scull_device->quantum_size);
+    seq_printf(sfile, "\n");
+    
+    for (qset_list = scull_device->qset_list; qset_list; qset_list = qset_list->next, i++)
+    {
+        seq_printf(sfile, "We are in %d qset, the qset address is %p\n", i, qset_list);
+        
+        for (j = 0; j < scull_device->quantum_num; j++)
+        {
+            seq_printf(sfile, "The %d quantum address is %p\n", j, qset_list->quantnum_array[j]);
+        }
+        
+        seq_printf(sfile, "\n");
+    }
+    
+    seq_printf(sfile, "------------------------------------------------------\n");
+    
+    up(&scull_device->sem);
+    
+    return 0;
+}
+
+struct seq_operations scull_seq_operation = {
+    .start = scull_seq_start,
+    .stop = scull_seq_stop,
+    .next = scull_seq_next,
+    .show = scull_seq_show,
+};
+
+int scull_seq_file_open(struct inode* file_inode, struct file* file_ptr)
+{
+    return seq_open(file_ptr, &scull_seq_operation);
+}
+
+struct file_operations scull_seq_file_operation = {
+    .owner = THIS_MODULE,
+    .open = scull_seq_file_open,
+    .release = seq_release,
+    .read = seq_read,
+    .llseek = seq_lseek,
+};
+
+void scull_create_proc_file(void)
+{
+    proc_create("scull_seq", 0, NULL, &scull_seq_file_operation);
+}
+
+void scull_remove_proc_file(void)
+{
+    remove_proc_entry("scull_seq", NULL);
+}
+
+#endif
 
 ////////////////////////////////////////////////////
 //                                                //
@@ -426,6 +556,10 @@ static void scull_exit(void)
     dev_t device_num = MKDEV(device_major_num, device_minor_num);
     int i;
     
+#ifdef PRINT_DEBUG
+    scull_remove_proc_file();
+#endif
+    
     if(scull_devices)
     {
         for(i = 0; i < scull_nr_device; i++)
@@ -455,8 +589,13 @@ static int scull_init(void)
 {
     dev_t device_num;
     int i;
-    char* module_name = get_module_name();
-    
+    struct task_struct* task = current;
+    char* path = kmalloc(512, GFP_KERNEL);
+    char* module_name = NULL;
+    get_file_path(task, path);
+    strcat(path, "/Makefile");
+    module_name = get_module_name(path);
+    SCULL_PRINT_DEBUG("SCULL path: path is %s\n", path);
     SCULL_PRINT_DEBUG("SCULL right: %s\n", module_name);
     
     if (device_major_num)
@@ -508,14 +647,22 @@ static int scull_init(void)
     SCULL_PRINT_DEBUG("SCULL: successfully register device\n");
     
     kfree(module_name);
+    kfree(path);
+    
+#ifdef PRINT_DEBUG
+    scull_create_proc_file();
+#endif
     
     return 0;
     
 fail:
     SCULL_PRINT_DEBUG("SCULL: something wrong\n");
+    kfree(module_name);
+    kfree(path);
     scull_exit();
     return -EFAULT;
 }
 
 module_init(scull_init);
 module_exit(scull_exit);
+
