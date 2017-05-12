@@ -164,6 +164,12 @@ static struct scull_qset* get_qset(struct scull_dev* scull_device, int qset_inde
     return qset_list;
 }
 
+////////////////////////////////////////////////////
+//                                                //
+//               用于重命名模块名                    //
+//                                                //
+////////////////////////////////////////////////////
+
 static int get_specific_line(char* result, struct file* file_ptr, loff_t* pos)
 {
     ssize_t count = 1;
