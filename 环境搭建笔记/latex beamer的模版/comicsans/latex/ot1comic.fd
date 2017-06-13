@@ -1,0 +1,38 @@
+%Filename: ot1comic.fd
+%Created by: tex fontcomic
+%Created using fontinst v1.933
+
+%THIS FILE SHOULD BE PUT IN A TEX INPUTS DIRECTORY
+
+\ProvidesFile{ot1comic.fd}
+   [2013/12/19 Fontinst v1.933 font definitions for OT1/comic.]
+
+\DeclareFontFamily{OT1}{comic}{}
+
+\DeclareFontShape{OT1}{comic}{m}{n}{
+   <-> comic7t
+}{}
+
+\DeclareFontShape{OT1}{comic}{b}{n}{
+   <-> comicbd7t
+}{}
+
+\DeclareFontShape{OT1}{comic}{m}{sl}{
+   <-> comico7t
+}{}
+
+\DeclareFontShape{OT1}{comic}{b}{sl}{
+   <-> comicbdo7t
+}{}
+
+\DeclareFontShape{OT1}{comic}{m}{sc}{
+   <-> comicsc7t
+}{}
+
+\DeclareFontShape{OT1}{comic}{bx}{n}{<->ssub * comic/b/n}{}
+\DeclareFontShape{OT1}{comic}{m}{it}{<->ssub * comic/m/sl}{}
+\DeclareFontShape{OT1}{comic}{bx}{sl}{<->ssub * comic/b/sl}{}
+\DeclareFontShape{OT1}{comic}{b}{it}{<->ssub * comic/b/sl}{}
+\DeclareFontShape{OT1}{comic}{bx}{it}{<->ssub * comic/b/it}{}
+
+\endinput

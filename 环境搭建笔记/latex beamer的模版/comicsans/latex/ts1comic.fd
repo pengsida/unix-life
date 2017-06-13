@@ -1,0 +1,34 @@
+%Filename: ts1comic.fd
+%Created by: tex fontcomic
+%Created using fontinst v1.933
+
+%THIS FILE SHOULD BE PUT IN A TEX INPUTS DIRECTORY
+
+\ProvidesFile{ts1comic.fd}
+   [2013/12/19 Fontinst v1.933 font definitions for TS1/comic.]
+
+\DeclareFontFamily{TS1}{comic}{}
+
+\DeclareFontShape{TS1}{comic}{m}{n}{
+   <-> comic8c
+}{}
+
+\DeclareFontShape{TS1}{comic}{b}{n}{
+   <-> comicbd8c
+}{}
+
+\DeclareFontShape{TS1}{comic}{m}{sl}{
+   <-> comico8c
+}{}
+
+\DeclareFontShape{TS1}{comic}{b}{sl}{
+   <-> comicbdo8c
+}{}
+
+\DeclareFontShape{TS1}{comic}{bx}{n}{<->ssub * comic/b/n}{}
+\DeclareFontShape{TS1}{comic}{m}{it}{<->ssub * comic/m/sl}{}
+\DeclareFontShape{TS1}{comic}{bx}{sl}{<->ssub * comic/b/sl}{}
+\DeclareFontShape{TS1}{comic}{b}{it}{<->ssub * comic/b/sl}{}
+\DeclareFontShape{TS1}{comic}{bx}{it}{<->ssub * comic/b/it}{}
+
+\endinput

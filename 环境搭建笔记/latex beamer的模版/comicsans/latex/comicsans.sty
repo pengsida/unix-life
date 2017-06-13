@@ -1,0 +1,103 @@
+%%
+%% This is file `comicsans.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% comicsans.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2013 by Scott Pakin <scott+csan@pakin.org>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX version
+%% 2006/05/20 or later.
+%% 
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{comicsans}
+    [2013/12/19 v1.0g Support for Microsoft's Comic Sans font]
+\newif\if@ulemph \DeclareOption{ulemph}{\@ulemphtrue\@boldemphfalse}
+\newif\if@boldemph
+\DeclareOption{boldemph}{\@boldemphtrue\@ulemphfalse}
+\DeclareOption{largesymbols}{%
+  \DeclareSymbolFont{largesymbols}{OMX}{comic}{m}{n}%
+}
+\newif\if@csplusminus
+\DeclareOption{plusminus}{\@csplusminustrue}
+\ProcessOptions\relax
+\renewcommand{\rmdefault}{comic}
+\renewcommand{\ttdefault}{pcr}
+\renewcommand{\sfdefault}{phv}
+\DeclareFontFamily{OT1}{pcr}{}
+\DeclareFontShape{OT1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb7t
+}{}
+\DeclareFontShape{OT1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo7t
+}{}
+\DeclareFontShape{OT1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{OT1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{OT1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{OT1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontFamily{T1}{pcr}{}
+\DeclareFontShape{T1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb8t
+}{}
+\DeclareFontShape{T1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo8t
+}{}
+\DeclareFontShape{T1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{T1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{T1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{T1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+\RequirePackage{textcomp}
+\DeclareFontFamily{TS1}{pcr}{}
+\DeclareFontShape{TS1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb8c
+}{}
+\DeclareFontShape{TS1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo8c
+}{}
+\DeclareFontShape{TS1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{TS1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{TS1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{TS1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+\if@csplusminus
+  \DeclareTextSymbolDefault{\textpm}{U}
+  \DeclareTextSymbol{\textpm}{U}{4}
+\fi
+\if@boldemph
+  \let\emph=\textbf
+  \let\em=\bf
+  \let\itshape=\relax
+  \let\it=\relax
+\fi
+\if@ulemph
+  \RequirePackage{soul}
+  \setul{1.5pt}{1pt}
+  \let\emph=\ul
+  \let\itshape=\relax
+  \let\it=\relax
+  \let\em=\relax
+\fi
+\DeclareSymbolFont{operators}{OT1}{comic}{m}{n}
+\DeclareSymbolFont{letters}{OML}{comic}{m}{n}
+\DeclareSymbolFont{symbols}{OMS}{comic}{m}{n}
+\let\neq=\undefined
+\DeclareSymbolFont{othercomics}{U}{comic}{m}{n}
+\DeclareMathSymbol{\neq}{\mathrel}{othercomics}{3}
+\if@csplusminus
+  \DeclareMathSymbol{\pm}{\mathbin}{othercomics}{4}
+\fi
+\def\frac#1#2{{%
+  \begingroup#1\endgroup\abovewithdelims..0.75pt#2}}
+\endinput
+%%
+%% End of file `comicsans.sty'.

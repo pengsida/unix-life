@@ -1,0 +1,3417 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2013 by Scott Pakin <scott+csan@pakin.org>
+% --------------------------------------------------------
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%    http://www.latex-project.org/lppl.txt
+%
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2006/05/20 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{comicsans.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{comicsans}
+%<*package>
+    [2013/12/19 v1.0g Support for Microsoft's Comic Sans font]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{wasysym}
+\usepackage{xspace}
+\usepackage[T2A,T1]{fontenc}
+\usepackage{soul}
+\setul{1.5pt}{1pt} % Better match for Comic Sans
+\IfFileExists{hyperref.sty}{%
+  \usepackage{hyperref}
+  \hypersetup{%
+    bookmarksopen,
+    hyperindex=false,
+    pdftitle={The comicsans package},
+    pdfauthor={Scott Pakin <scott+csan@pakin.org>},
+    pdfsubject={Using Microsoft's Comic Sans font in a LaTeX document},
+    pdfkeywords={Comic Sans; font; typeface; casual script; TeX; LaTeX;
+                 Microsoft Windows; Vincent Connare}
+  }
+  \def\UrlBigBreaks{\do/}
+}{%
+}
+\usepackage[largesymbols,plusminus]{comicsans}
+\setcounter{IndexColumns}{2}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+% We define only the Cyrillic characters we need.  Later, we'll use
+% these explicitly rather than change our input encoding, hyphenation
+% patterns, etc.
+\DeclareTextSymbol{\cyra}{T2A}{224}
+\DeclareTextSymbol{\cyrch}{T2A}{247}
+\DeclareTextSymbol{\cyre}{T2A}{229}
+\DeclareTextSymbol{\cyrery}{T2A}{251}
+\DeclareTextSymbol{\cyrf}{T2A}{244}
+\DeclareTextSymbol{\cyrg}{T2A}{227}
+\DeclareTextSymbol{\cyri}{T2A}{232}
+\DeclareTextSymbol{\cyrishrt}{T2A}{233}
+\DeclareTextSymbol{\cyrk}{T2A}{234}
+\DeclareTextSymbol{\cyrl}{T2A}{235}
+\DeclareTextSymbol{\cyrm}{T2A}{236}
+\DeclareTextSymbol{\cyrn}{T2A}{237}
+\DeclareTextSymbol{\cyrr}{T2A}{240}
+\DeclareTextSymbol{\cyrs}{T2A}{241}
+\DeclareTextSymbol{\cyrsh}{T2A}{248}
+\DeclareTextSymbol{\cyrt}{T2A}{242}
+\DeclareTextSymbol{\cyrzh}{T2A}{230}
+
+% We'd like to be able to use \sum in both Computer Modern and Comic
+% Sans in this document.  We therefore declare \cmsum as the Computer
+% Modern version of \sum.
+\DeclareSymbolFont{cmlargesymbols}{OMX}{cmex}{m}{n}%
+\DeclareMathSymbol{\cmsum}{\mathop}{cmlargesymbols}{"50}
+
+% Load this document recursively and format all of the text and code.
+\begin{document}
+  \DocInput{comicsans.dtx}
+  \PrintChanges
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{345}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.0}{2002/09/10}{Initial version}
+%
+% \GetFileInfo{comicsans.dtx}
+%
+% \DoNotIndex{\.,\ ,\begingroup,\bye,\d,\fi,\font,\endencoding,\endgroup}
+% \DoNotIndex{\endinstallfonts,\endmetrics,\endsetglyph}
+% \DoNotIndex{\endsetslot,\input,\let,\n,\newcommand}
+% \DoNotIndex{\newenvironment,\newif,\relax,\renewcommand}
+% \DoNotIndex{\skewchar,,\undefined,\w}
+%
+% \title{The \textsf{comicsans} package\thanks{This document
+%   corresponds to \textsf{comicsans}~\fileversion, dated \filedate.}}
+% \author{Scott Pakin \\ \texttt{scott+csan@pakin.org}}
+%
+% ^^A  Make up for hyperref not being loaded.
+% \ifx\href\undefined
+%   \newcommand{\href}[2]{#2}
+%   \newcommand{\url}[1]{\texttt{#1}}
+%   \newcommand{\localfile}[1]{\texttt{#1}}   ^^A  See alternate definition below.
+% \else
+%   \newcommand{\localfile}[1]{\begingroup\Url{#1}}  ^^A  Non-hyperlinked \url for local files
+% \fi
+% \ifx\phantomsection\undefined
+%   \newcommand{\phantomsection}{}
+% \fi
+%
+% ^^A  Change the way the index looks.
+% \renewcommand{\usage}[1]{\textbf{#1}}
+% \makeatletter
+% \IndexPrologue{^^A
+%   \phantomsection
+%   \section*{Index}^^A
+%   \addcontentsline{toc}{section}{Index}^^A
+%   \markboth{Index}{Index}^^A
+%   Numbers written in bold refer to the page
+%   where the corresponding entry is described or referenced, the ones
+%   underlined to the
+%   \ifcodeline@index
+%     code line of the
+%   \fi
+%   definition, the rest to the
+%   \ifcodeline@index
+%     code lines
+%   \else
+%     pages
+%   \fi
+%   where the entry is used.
+% }
+%
+% ^^A  Index and categorize a special variable.  The optional argument
+% ^^A  (#1), of the form "singular|plural" categorizes the environment in
+% ^^A  the index.  The first required argument (#2) is the index term.  The
+% ^^A  next argument (#3) is the index command, usually \special@index or
+% ^^A  \index.  The final argument (#4) is the page format, probably "main"
+% ^^A  or "usage".
+% \newcommand{\specialindexcat}[4][]{^^A
+%   \def\oc@category{#1}^^A
+%   \def\oc@singular##1|##2|{##1}^^A
+%   \def\oc@plural##1|##2|{##2}^^A
+%   \ifx\oc@category\empty
+%     #3{^^A
+%       #2^^A
+%       \actualchar{\string\ttfamily\space#2}^^A
+%       \encapchar #4}^^A
+%   \else
+%     #3{^^A
+%       #2^^A
+%       \actualchar{\string\ttfamily\space#2} (\oc@singular#1|)^^A
+%       \encapchar #4}^^A
+%     #3{^^A
+%       \oc@plural#1|^^A
+%       \levelchar#2^^A
+%       \actualchar{\string\ttfamily\space#2}^^A
+%       \encapchar #4}^^A
+%   \fi
+% }
+%
+% ^^A  Define an environment similar to "environment" but designed for
+% ^^A  definitions of things other than macros or environments.  The optional
+% ^^A  argument (#1), of the form "singular|plural" categorizes the
+% ^^A  environment in the index.
+% \makeatletter
+% \newenvironment{othercode}[2][]{^^A
+%   \def\SpecialMainEnvIndex##1{^^A
+%     \@bsphack
+%     \specialindexcat[#1]{##1}{\special@index}{main}
+%     \@esphack}^^A
+%   \begin{environment}{#2}^^A
+% }{^^A
+%   \end{environment}^^A
+% }
+% \makeatother
+%
+% ^^A  Define a macro similar to "DescribeEnv" but designed for
+% ^^A  descriptions of things other than macros or environments.  The
+% ^^A  optional argument (#1), of the form "singular|plural" categorizes
+% ^^A  the environment in the index.
+% \makeatletter
+% \def\DescribeOther{^^A
+%   \leavevmode\@bsphack\begingroup\MakePrivateLetters
+%   \@ifnextchar[{\Describe@Other}{\Describe@Other[|]}}
+% \def\Describe@Other[#1]#2{\endgroup
+%   \marginpar{\raggedleft\PrintDescribeEnv{#2}}^^A
+%   \specialindexcat[#1]{#2}{\index}{usage}^^A
+%   \@esphack\ignorespaces}
+% \makeatother
+%
+% ^^A  Define commands for packages and for the string "Comic Sans".
+% \newcommand{\pkgname}[1]{^^A
+%   \textsf{#1}^^A
+%   \index{#1\actualchar\textsf{#1} (package)\encapchar usage}^^A
+%   \index{packages\levelchar#1\actualchar\textsf{#1}\encapchar usage}^^A
+% }
+% \newcommand{\fname}[2][usage]{^^A
+%   \texttt{#2}\specialindexcat[file|files]{#2}{\index}{#1}^^A
+% }
+% \newcommand{\comsan}{Comic~Sans\xspace}
+%
+% ^^A  Define a hyphenless language to use for typesetting code listings.
+% \newlanguage\hyphenlesslang\relax
+%
+% ^^A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \maketitle
+% \sloppy
+%
+% \section{Introduction}
+%
+% The \pkgname{comicsans} package makes Microsoft's \comsan font
+% available to \LaTeXe.  \pkgname{comicsans} supports all of the
+% following:
+%
+% \begin{itemize}
+%   \item Roman text, \textbf{boldface text}, \textsc{small-caps text},
+%   and---with a little extra effort---\textit{italic text}
+%
+%   \item {\usefont{T2A}{comic}{m}{n}
+%   \CYRK\cyri\cyrr\cyri\cyrl\cyri\cyrc\cyra{}
+%   (\cyrr\cyri\cyrm\cyrs\cyrk\cyri\cyrishrt{}
+%   \cyrsh\cyrr\cyri\cyrf\cyrt,
+%   \textbf{\cyrzh\cyri\cyrr\cyrn\cyrery\cyrishrt{}
+%   \cyrsh\cyrr\cyri\cyrf\cyrt},
+%   \textit{\cyrk\cyra\cyrl\cyrl\cyri\cyrg\cyrr\cyra\cyrf\cyri\cyrch\cyre\cyrs\cyrk\cyri\cyrishrt{}
+%   \cyrsh\cyrr\cyri\cyrf\cyrt})}
+%
+%   \item Mathematics using \comsan wherever possible:
+%   \[
+%     \textstyle
+%     y'(x) \approx 3 \times 10^{\log_3 2\hat{\varepsilon}} +
+%     \sum_{k=x}^\infty \frac{\xi_k}{p_{k-1}}
+%   \]
+% \end{itemize}
+%
+% \comsan is a TrueType~(TTF) font.  As such, it works particularly well
+% with pdf\LaTeX{}, which natively supports TrueType fonts.  Some \TeX{}
+% distributions also support dynamic conversion of TTF to PK (a
+% bitmapped font format long used by \TeX) so \TeX{} backends other than
+% pdf\TeX{} can (indirectly) utilize TrueType fonts, as well.
+%
+%
+% \section{Installation}
+% \label{sec:installation}
+%
+% The following is a brief summary of the \pkgname{comicsans} installation
+% procedure:
+%
+% \begin{enumerate}
+%   \item Acquire and install the \comsan TrueType (\texttt{.ttf}) files.
+%   \item{} [Optional] Generate the italic and/or Cyrillic variants
+%     of \comsan
+%   \item Install the \pkgname{comicsans} font files and refresh the \TeX{}
+%     filename database.
+%   \item Point the \TeX\ backends to the \pkgname{comicsans} files.
+% \end{enumerate}
+%
+% \noindent
+% Details are presented in
+% Sections~\ref{sec:acquire-ttf}--\ref{sec:install-map}.
+%
+% \subsection{Acquire and install the TrueType files}
+% \label{sec:acquire-ttf}
+% \pkgname{comicsans} requires the \comsan and \comsan Bold TrueType files
+% (\fname{comic.ttf} and \fname{comicbd.ttf}).  You may already have these
+% installed.  (On Windows, look in |C:\WINDOWS\Fonts| for \texttt{Comic
+% Sans MS (TrueType)} and \texttt{Comic Sans MS Bold (TrueType)}.)  If
+% not, see if a package called
+% \textsf{msttcorefonts}\index{msttcorefonts=\textsf{msttcorefonts}|usage}
+% is available for your operating system or operating-system
+% distribution.  If not, then download \fname{comic32.exe} from
+% \url{http://corefonts.sourceforge.net/} and use the freely available
+% \href{http://www.kyz.uklinux.net/cabextract.php3}{\texttt{cabextract}}
+% utility to extract \fname{comic.ttf} and \fname{comicbd.ttf} from
+% \fname{comic32.exe}.
+%
+% Install \fname{comic.ttf} and \fname{comicbd.ttf} in an appropriate,
+% \TeX-accessible location such as
+% \localfile{/usr/local/share/texmf/fonts/ttf/microsoft/comicsans/}.
+% (\TeX{} distributions for Microsoft Windows may automatically search
+% the system font directory but I haven't yet tested this hypothesis.)
+%
+% \subsection{Generate the italic and/or Cyrillic variants (optional)}
+% \label{sec:italic-cyrillic}
+% To use the T2A-encoded Cyrillic versions of \comsan you'll need to
+% install the \pkgname{cyrfinst} package, which is available from
+% \href{http://www.ctan.org}{CTAN}.\footnote{In practice only
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/supported/t2/enc-maps/encfiles/t2a.enc}{\texttt{t2a.enc}}
+% need be installed.}
+%
+% Because Microsoft doesn't make a \comsan Italic, and because TTF
+% fonts don't accept the |SlantFont| modification, we need some way of
+% handling italicized text.  The best alternative is to convert the TTF
+% fonts to PostScript Type~1 format and use |SlantFont| to dynamically
+% create oblique variants.  It may be possible to use
+% \href{http://ttf2pt1.sourceforge.net}{\texttt{ttf2pt1}} to do the
+% conversion but I don't know how to specify the various \TeX{} font
+% encodings.  Instead, I use a (free) program called
+% \href{http://fontforge.sourceforge.net}{FontForge}\index{FontForge|usage}
+% to convert TTF to Type~1:
+%
+% \begin{description}
+%   \item[\TeX{} base~1 (8r) encoding] Open \fname{comic.ttf} in
+%   FontForge\index{FontForge|usage}.  Select
+%   \textsf{Element}$\rightarrow$\textsf{Font Info\dots}, click on the
+%   \textsf{Encoding} tab, and select ``\textsf{T$\varepsilon$X
+%   Base~(8r)}'' for the encoding.  Click \textsf{OK}.  Go to
+%   \textsf{File}$\rightarrow$\textsf{Generate Fonts\dots}\ and create
+%   \fname{rcomic8r.pfb}.  Follow an analogous procedure to generate
+%   \fname{rcomicbd8r.pfb} from \fname{comicbd.ttf}.
+%
+%   \item[T2A Adobe encoding (Cyrillic)] Follow the same steps as above,
+%   but for \textsf{Encoding}, click on \textsf{Load}, select the
+%   \fname{t2a.enc} file, then choose \textsf{T2AAdobeEncoding} for the
+%   encoding.  Generate \fname{rcomiccyr.pfb} from \fname{comic.ttf} and
+%   \fname{rcomiccyrbd.pfb} from \fname{comicbd.ttf}.
+% \end{description}
+%
+% \noindent
+% If you're unable to run FontForge\index{FontForge|usage} on your
+% system and you can't find an alternate TTF$\rightarrow$PFB converter,
+% don't worry.  Although you won't be able to typeset italics,
+% Section~\ref{sec:usage} describes some \pkgname{comicsans} package
+% options that make \comsan utilize either underlined or boldfaced text
+% for emphasis.
+%
+% \subsection{Install font files and refresh \TeX's database}
+% The \pkgname{comicsans} package consists of a large number of font
+% files.  These are organized in a
+% \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tds}{TDS-compliant}
+% subdirectory rooted at |texmf|.  You should be able to copy
+% \pkgname{comicsans}'s |texmf| tree directly onto your \TeX{} tree
+% (i.e.,~|/usr/local/share/texmf|, |C:\localtexmf|, or wherever you
+% normally install \TeX{} files).  If you generated italic and/or
+% Cyrillic \comsan fonts (Section~\ref{sec:italic-cyrillic}), install
+% the corresponding \texttt{.pfb} files as well, typically in
+% \localfile{texmf/fonts/type1/microsoft/comicsans}.  Don't forget to
+% refresh the filename database if necessary.  See
+% \url{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=inst-wlcf} for
+% details specific to your \TeX\ distribution.
+%
+% \subsection{Point the \TeX\ backends to the \pkgname{comicsans} files}
+% \label{sec:install-map}
+% Most \TeX{} backends (pdf\TeX, Dvips, YAP, Xdvi, etc.)\ need
+% to incorporate the contents of \fname{comicsans.map} into their
+% private font-map files.  The exact procedure varies from one \TeX{}
+% distribution to another.  See
+% \url{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=instt1font} for
+% distribution-specific instructions on how to automatically update all
+% of the various font-map files at once.
+%
+%
+% \subsection*{Notes}
+%
+% \begin{enumerate}
+%   \item The \comsan math fonts don't seem to work properly in older
+%   versions of pdf\TeX~($\leq\,13x$).  If you have problems you should
+%   upgrade to a newer version.
+%
+%   \item It \emph{is} possible to get Dvips to use a vector
+%   (i.e.,~Type~1) version of \comsan.  If you have the patience, the
+%   following is the procedure.  First, for \emph{each}
+%   non-|SlantFont|ed line of \fname{comicsans.map}, you'll need a
+%   separate Type~1~(|.pfb|) file---eight altogether---each with a
+%   different encoding and PostScript font name.  I used
+%   FontForge\index{FontForge|usage} to produce these.  For example, I
+%   created an \fname{rcomic7m.pfb} file with the PostScript name
+%   ``|ComicSansMS-7m|'' and with \fname{texmital.enc} as the encoding
+%   vector.  Next, store all of these |.pfb| files in a directory that
+%   Dvips searches.  Finally, create a modified \fname{comicsans.map}
+%   that omits the encodings (as the |.pfb| files are already properly
+%   encoded at this point).  It should look something like the
+%   following:
+%
+% \begingroup\fussy
+% \begin{verbatim}
+%  rcomic8r ComicSansMS <rcomic8r.pfb
+%  rcomicbd8r ComicSansMS-Bold <rcomicbd8r.pfb
+%  rcomiccyr ComicSansMS-t2a <rcomict2a.pfb
+%  rcomiccyrbd ComicSansMS-Bold-t2a <rcomicbdt2a.pfb
+%  rcomic7m ComicSansMS-7m <rcomic7m.pfb
+%  rcomicbd7m ComicSansMS-Bold-7m <rcomicbd7m.pfb
+%  rcomic7y ComicSansMS-7y <rcomic7y.pfb
+%  rcomic9z ComicSansMS-9z <rcomic9z.pfb
+%  rcomico8r ComicSansMS "0.167 SlantFont" <rcomic8r.pfb
+%  rcomicbdo8r ComicSansMS "0.167 SlantFont" <rcomicbd8r.pfb
+%  rcomiccyro ComicSansMS-t2a "0.167 SlantFont" <rcomict2a.pfb
+%  rcomiccyrbdo ComicSansMS-Bold-t2a "0.167 SlantFont" <rcomicbdt2a.pfb
+% \end{verbatim}
+% \endgroup
+% \end{enumerate}
+%
+%
+% \section{Usage}
+% \label{sec:usage}
+%
+% Load \pkgname{comicsans} like any other \LaTeXe{} package, by putting
+% ``|\usepackage{comicsans}|'' in your document's preamble.  This sets
+% the default roman, typewriter, and sans-serif typefaces as shown in
+% Table~\ref{tbl:cs-fonts}.  Courier Bold is typeset 10\%~larger than
+% the requested point size.  This provides a better visual match to
+% \comsan.
+%
+% \begin{table}[htbp]
+%   \centering
+%   \begin{tabular}{@{}lll@{}}
+%     \hline
+%     \multicolumn{1}{@{}c}{Style} &
+%     \multicolumn{1}{c}{Default} &
+%     \multicolumn{1}{c@{}}{With \pkgname{comicsans}} \\
+%     \hline
+%
+%     Roman &
+%     \usefont{OT1}{cmr}{m}{n} Computer Modern &
+%     \comsan \\
+%
+%     Typewriter &
+%     \usefont{OT1}{cmtt}{m}{n} Computer Modern Typewriter &
+%     \texttt{Courier Bold} \\
+%
+%     Sans-serif &
+%     \usefont{OT1}{cmss}{m}{n} Computer Modern Sans Serif &
+%     \textsf{Helvetica} \\
+%
+%     \hline
+%   \end{tabular}
+%   \caption{\pkgname{comicsans} font-family redefinitions}
+%   \label{tbl:cs-fonts}
+% \end{table}
+%
+% \DescribeOther[package option|package options]{ulemph}
+% \LaTeX's |\emph| is usually defined to produce italics.
+% Unfortunately, \comsan doesn't include an italic variant.  One
+% alternative is to generate a slanted PostScript version of \comsan
+% as described in Section~\ref{sec:installation}.  If this is too
+% inconvenient or impossible an alternative is to use
+% \pkgname{comicsans}'s |ulemph| package option.  With |ulemph|,
+% \pkgname{comicsans} utilizes the \pkgname{soul} package's underlining
+% capabilities to typeset emphasized text \ul{like this}.  The
+% drawback---apart from being ugly---is that underlining is limited to
+% |\emph|; it doesn't work with |\em| or any of the italic macros
+% (|\textit|, |\itshape|, |\it|, etc.), which are redefined as
+% do-nothing commands.  Also, underlined emphasis tends to fail when
+% used in math mode.
+%
+% \DescribeOther[package option|package options]{boldemph}
+% The |boldemph| package option, like |ulemph|, alters the way that
+% emphasized text is rendered in \LaTeX\@.  |boldemph| typesets |\emph|
+% and |\em| in boldface \textbf{like this}.  The various italic macros
+% are redefined as do-nothing commands.
+%
+% \DescribeOther[package option|package options]{largesymbols}
+% Mathematical typesetting is clearly not a priority to Microsoft.  As a
+% result \comsan lacks most of the math characters that \TeX{} requires.
+% The \pkgname{comicsans} package utilizes characters from the Computer
+% Modern family to make up for this absense.  While many of the
+% characters are more-or-less compatible, the large symbols, with their
+% thin strokes and serifed ends, particularly stand out to my eye:
+%
+% \begingroup
+%   \[
+%     y'(x) \approx 3 \times 10^{\log_3 2\hat{\varepsilon}} +
+%     \cmsum_{k=x}^\infty \frac{\xi_k}{p_{k-1}}
+%   \]
+% \endgroup
+%
+% \noindent
+% The |largesymbols| package option uses \comsan for a number of
+% additional large symbols.  The advantage of |largesymbols| is that
+% more mathematical characters match the body font.  The
+% disadvantage---and the reason that |largesymbols| is off by
+% default---is that the large symbols are merely scaled versions of
+% their smaller counterparts, which unfortunately implies that their
+% thickness scales as well:
+%
+% \begingroup
+%   \[
+%     y'(x) \approx 3 \times 10^{\log_3 2\hat{\varepsilon}} +
+%     \sum_{k=x}^\infty \frac{\xi_k}{p_{k-1}}
+%   \]
+% \endgroup
+%
+% \noindent
+% With the |largesymbols| package option \pkgname{comicsans} gives you
+% the ability to decide for yourself which is the lesser of the two
+% evils.
+%
+% \DescribeOther[package option|package options]{plusminus}
+% \LaTeX{} defines |\pm| as ``{\usefont{OMS}{cmsy}{m}{n}\char6}'' and
+% |\mp| as ``{\usefont{OMS}{cmsy}{m}{n}\char7}''---both taken from the
+% Computer Modern Symbol font.  Although \comsan provides a
+% plus-or-minus glyph it lacks a corresponding minus-or-plus glyph.  For
+% consistency between the two glyphs \pkgname{comicsans} draws both
+% plus-or-minus and minus-or-plus from the Computer Modern Bold Symbol
+% font: ``{\usefont{OMS}{cmsy}{b}{n}\char6}'' and ``$\mp$''.  The
+% |plusminus| package option retains |\mp| as ``$\mp$'' but uses
+% \comsan's ``$\pm$'' for |\pm|.  This enables |\pm| to blend better
+% with other \comsan characters at the expense of looking quite
+% different from |\mp|.
+%
+%
+% \StopEventually{^^A
+%
+% \section{Copyright and license agreement}
+% \label{sec:license}
+%
+% Copyright \textcopyright{}~2013 by Scott Pakin
+%
+% \bigskip
+%
+% \noindent
+% This file may be distributed and/or modified under the conditions of
+% the \LaTeX{} Project Public License, either version~1.3c of this
+% license or (at your option) any later version.  The latest version of
+% this license is at \url{http://www.latex-project.org/lppl.txt} and
+% version~1.3c or later is part of all distributions of \LaTeX{}
+% version~2006/05/20 or later.
+% }
+%
+%
+% \section{Implementation: Core components}
+%
+% This section and the subsequent one contain the commented source code
+% for the \pkgname{comicsans} package.  They are likely of little
+% interest to the average user and can safely be ignored.  Advanced
+% users who want to customize or extend \pkgname{comicsans}---please
+% read the license agreement (Section~\ref{sec:license}) first---can use
+% these sections to gain a detailed understanding of the code.
+%
+% \subsection{\texttt{comicsans.sty}}
+%
+% This is the \pkgname{comicsans} package proper.  It's primary purpose
+% is to select \comsan as the default font for text and math.
+%
+%<*package>
+%
+% \subsubsection{Option processing}
+% \label{sec:opt-proc}
+%
+% \begin{macro}{\if@ulemph}
+% \begin{macro}{\@ulemphtrue}
+% \begin{macro}{\@ulemphfalse}
+% The author can use underlining for emphasis
+% (Section~\ref{sec:emphasis}) using the |ulemph| option.
+%    \begin{macrocode}
+\newif\if@ulemph \DeclareOption{ulemph}{\@ulemphtrue\@boldemphfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\if@boldemph}
+% \begin{macro}{\@boldemphtrue}
+% \begin{macro}{\@boldemphfalse}
+% The author can use boldface for emphasis (Section~\ref{sec:emphasis})
+% using the |boldemph| option.
+%    \begin{macrocode}
+\newif\if@boldemph
+\DeclareOption{boldemph}{\@boldemphtrue\@ulemphfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% Using large, mathematical symbols in \comsan is still fairly
+% experimental (read as:~ugly).  These symbols are disabled by default,
+% but the author can enable them with the |largesymbols| option.
+%    \begin{macrocode}
+\DeclareOption{largesymbols}{%
+  \DeclareSymbolFont{largesymbols}{OMX}{comic}{m}{n}%
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\if@csplusminus}
+% \begin{macro}{\@csplusminustrue}
+% \begin{macro}{\@csplusminusfalse}
+% \comsan defines a |plusminus| character (``$\pm$'') but not a
+% corresponding |minusplus| character.  For consistency we normally draw
+% both |plusminus| and |minusplus| from Computer Modern
+% (``{\usefont{OMS}{cmsy}{b}{n}\char6}'' and ``$\mp$'').  However, the
+% |plusminus| package option makes |\pm| match other \comsan symbols at
+% the expense of not matching |\mp|.
+%    \begin{macrocode}
+\newif\if@csplusminus
+\DeclareOption{plusminus}{\@csplusminustrue}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% Finally, we process the package options.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+%
+% \subsubsection{Default font families}
+%
+% \begin{macro}{\rmdefault}
+% \begin{macro}{\ttdefault}
+% \begin{macro}{\sfdefault}
+% We select \comsan as the default body font, Courier as the default
+% fixed-width font, and Helvetica as the default sans-serif font.  (Yes,
+% this is a bit odd, given that \comsan is already sans-serif.)
+%    \begin{macrocode}
+\renewcommand{\rmdefault}{comic}
+\renewcommand{\ttdefault}{pcr}
+\renewcommand{\sfdefault}{phv}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% We redefine Courier Medium as Courier Bold and Courier Italic as
+% Courier Bold Oblique in the OT1 font encoding.  We also increase the
+% size by~10\% to better match \comsan.
+%    \begin{macrocode}
+\DeclareFontFamily{OT1}{pcr}{}
+\DeclareFontShape{OT1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb7t
+}{}
+\DeclareFontShape{OT1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo7t
+}{}
+\DeclareFontShape{OT1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{OT1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{OT1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{OT1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+%    \end{macrocode}
+% We now do the same for the T1 font encoding\dots
+%    \begin{macrocode}
+\DeclareFontFamily{T1}{pcr}{}
+\DeclareFontShape{T1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb8t
+}{}
+\DeclareFontShape{T1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo8t
+}{}
+\DeclareFontShape{T1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{T1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{T1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{T1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+%    \end{macrocode}
+% \dots and the TS1 font encoding.  We first ensure that the
+% \pkgname{textcomp} package is preloaded to avoid getting an
+% ``\texttt{Encoding scheme `TS1' unknown}'' error.
+%    \begin{macrocode}
+\RequirePackage{textcomp}
+\DeclareFontFamily{TS1}{pcr}{}
+\DeclareFontShape{TS1}{pcr}{b}{n}{
+   <-> s * [1.1] pcrb8c
+}{}
+\DeclareFontShape{TS1}{pcr}{b}{it}{
+   <-> s * [1.1] pcrbo8c
+}{}
+\DeclareFontShape{TS1}{pcr}{m}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{TS1}{pcr}{bx}{n}{<->ssub * pcr/b/n}{}
+\DeclareFontShape{TS1}{pcr}{m}{it}{<->ssub * pcr/b/it}{}
+\DeclareFontShape{TS1}{pcr}{bx}{it}{<->ssub * pcr/b/it}{}
+%    \end{macrocode}
+%
+% If the |plusminus| package option was specified we draw |\textpm| from
+% |\comic9z|---the only \comsan font encoding that takes a |plusminus|
+% character from \comsan instead of borrowing the one from Computer
+% Modern Bold Symbol.
+%    \begin{macrocode}
+\if@csplusminus
+  \DeclareTextSymbolDefault{\textpm}{U}
+  \DeclareTextSymbol{\textpm}{U}{4}
+\fi
+%    \end{macrocode}
+%
+%
+% \subsubsection{Emphasis}
+% \label{sec:emphasis}
+%
+% Because Microsoft doesn't make a \comsan Italic and because TTF
+% fonts don't accept the |SlantFont| modification we need some way of
+% handling emphasized text.  The best alternative is to use a program
+% such as FontForge\index{FontForge|usage} to convert the TTF fonts to
+% PostScript Type 1 format (Section~\ref{sec:installation}).  Failing
+% that, the author can specify with the |boldemph| package option that
+% bold text should be used whenever emphasized text is requested.  An
+% alternative, with the |ulemph| package option, is to utilize the
+% \pkgname{soul} package to replace emphasis with underlining.
+% Unfortunately, \pkgname{soul} doesn't provide a way to enable
+% underlining until the end of the current group (as is needed for
+% \LaTeX~2.09's |{\em|~\dots|}| construct).  Furthermore, \pkgname{soul}
+% tends to choke on underlined mathematics.
+%
+% \bigskip
+%
+% If |boldemph| was given as a package option we utilize bold text for
+% emphasis.  Because we lack a true italic---or even an oblique variant
+% of \comsan---we replace all of the explicit italic commands with
+% |\relax|.
+%    \begin{macrocode}
+\if@boldemph
+  \let\emph=\textbf
+  \let\em=\bf
+  \let\itshape=\relax
+  \let\it=\relax
+\fi
+%    \end{macrocode}
+%
+% If |ulemph| was given as a package option we utilize underlined text
+% for emphasis.  This requires the \pkgname{soul} package.  Because we
+% lack a true italic---or even an oblique variant of \comsan---we
+% replace all of the explicit italic commands with |\relax|.
+%    \begin{macrocode}
+\if@ulemph
+  \RequirePackage{soul}
+  \setul{1.5pt}{1pt}
+  \let\emph=\ul
+  \let\itshape=\relax
+  \let\it=\relax
+%    \end{macrocode}
+% Out of necessity, we unfortunately also have to make |\em| a
+% do-nothing command.
+%    \begin{macrocode}
+  \let\em=\relax
+\fi
+%    \end{macrocode}
+%
+%
+% \subsubsection{Mathematics}
+% \label{sec:cs-math}
+%
+% \begin{othercode}[math font|math fonts]{operators}
+% \begin{othercode}[math font|math fonts]{letters}
+% \begin{othercode}[math font|math fonts]{symbols}
+% For mathematical expressions, we draw operators, letters, and symbols
+% from \comsan.  Large symbols normally come from Computer Modern, but
+% the |largesymbols| package option (Section~\ref{sec:opt-proc})
+% specifies that they should come from \comsan, as well.
+%    \begin{macrocode}
+\DeclareSymbolFont{operators}{OT1}{comic}{m}{n}
+\DeclareSymbolFont{letters}{OML}{comic}{m}{n}
+\DeclareSymbolFont{symbols}{OMS}{comic}{m}{n}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{macro}{\neq}
+% \begin{macro}{\pm}
+% We define one additional symbol font, ``|othercomics|'', from which we
+% define |\neq| as the glyph ``$\neq$'' and---if the |plusminus| package
+% option was specified---|\pm| as the glyph ``$\pm$''.
+%    \begin{macrocode}
+\let\neq=\undefined
+\DeclareSymbolFont{othercomics}{U}{comic}{m}{n}
+\DeclareMathSymbol{\neq}{\mathrel}{othercomics}{3}
+\if@csplusminus
+  \DeclareMathSymbol{\pm}{\mathbin}{othercomics}{4}
+\fi
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\frac}
+% \TeX's default fraction bar is much too thin for \comsan.  We
+% therefore redefine |\frac| to use a fraction bar with a more
+% compatible thickness.
+%    \begin{macrocode}
+\def\frac#1#2{{%
+  \begingroup#1\endgroup\abovewithdelims..0.75pt#2}}
+%    \end{macrocode}
+% \end{macro}
+%
+%</package>
+%
+%
+% \subsection{\texttt{comicsans.map}}
+% \label{sec:mapfile}
+%
+% This is a map file for pdf\LaTeX{} that provides the association
+% between TFM names (e.g.,~\fname{rcomic8r}) and PostScript names
+% (e.g.,~|ComicSansMS|).  It also specifies how fonts should be
+% re-encoded so that characters appear at the expected offsets in each
+% font.
+%
+%<*comicsans.map>
+% {\language\hyphenlesslang
+%    \begin{macrocode}
+rcomic8r ComicSansMS "TeXBase1Encoding ReEncodeFont" <8r.enc <comic.ttf
+rcomicbd8r ComicSansMS-Bold "TeXBase1Encoding ReEncodeFont" <8r.enc <comicbd.ttf
+rcomiccyr ComicSansMS "T2AAdobeEncoding ReEncodeFont" <t2a.enc <comic.ttf
+rcomiccyrbd ComicSansMS-Bold "T2AAdobeEncoding ReEncodeFont" <t2a.enc <comicbd.ttf
+rcomic7m ComicSansMS "TeXMathItalicEncoding ReEncodeFont" <texmital.enc <comic.ttf
+rcomicbd7m ComicSansMS-Bold "TeXMathItalicEncoding ReEncodeFont" <texmital.enc <comicbd.ttf
+rcomic7y ComicSansMS "TeXMathSymbolEncoding ReEncodeFont" <texmsym.enc <comic.ttf
+rcomic9z ComicSansMS "ComicSansExtraEncoding ReEncodeFont" <csextras.enc <comic.ttf
+%    \end{macrocode}
+%
+% The following four lines assume that you have PostScript Type~1
+% versions of the various \comsan fonts.  Although
+% Section~\ref{sec:installation} describes a technique for converting
+% TrueType to Type~1, my understanding of copyright law is that I am not
+% allowed to distribute \fname{rcomico8r.pfb} or \fname{rcomicbdo8r.pfb}
+% myself as these are considered derivitive works from \fname{comic.ttf}
+% and \fname{comicbd.ttf}.
+%    \begin{macrocode}
+rcomico8r ComicSansMS "0.167 SlantFont" <rcomic8r.pfb
+rcomicbdo8r ComicSansMS-Bold "0.167 SlantFont" <rcomicbd8r.pfb
+rcomiccyro ComicSansMS "0.167 SlantFont" <rcomiccyr.pfb
+rcomiccyrbdo ComicSansMS-Bold "0.167 SlantFont" <rcomiccyrbd.pfb
+%    \end{macrocode}
+% }
+%
+%</comicsans.map>
+%
+%
+% \subsection{\texttt{csextras.enc}}
+%
+% \fname{csextras.enc} is an encoding file that tells the pdf\LaTeX{}
+% backend how to reorder the glyphs in \fname{comic.ttf} to match the
+% order expected by \fname{rcomic9z.tfm}.  \fname{csextras.enc}
+% specifies only those glyphs that \fname{rcomic9z.tfm} uses (the
+% \pkgname{comicsans} ``extra'' glyphs).
+%
+%<*csextras.enc>
+% \begin{othercode}[encoding|encodings]{ComicSansExtraEncoding}
+% \begin{othercode}[glyph|glyphs]{integral}
+% \begin{othercode}[glyph|glyphs]{Sigma}
+% \begin{othercode}[glyph|glyphs]{Pi}
+% \begin{othercode}[glyph|glyphs]{notequal}
+% \begin{othercode}[glyph|glyphs]{plusminus}
+% This encoding defines |integral| (``$\int$''), |summation|
+% (``$\sum$''), and |product| (``$\prod$'').  \fname{comic7v.vf} maps \TeX's
+% \meta{symbol}|text| and \meta{symbol}|display| symbols onto these.  We
+% also define |notequal| (``$\neq$'') because this looks better than the
+% composite of |not| and |equal| (``$\not=$''); and we define
+% |plusminus| (``$\pm$'') because |comic7y| uses |cmbsy10|'s |plusminus|
+% character (``{\usefont{OMS}{cmsy}{m}{n}\char6}''), which better
+% matches its |minusplus| (``$\mp$'').
+%    \begin{macrocode}
+/ComicSansExtraEncoding [
+  /integral
+%    \end{macrocode}
+% The following two symbols are \emph{supposed} to be |/summation| and
+% |/product|.  For some reason that I don't yet understand, pdf\LaTeX{}
+% is unable to find those symbols in \fname{comic.ttf} even though
+% FontForge\index{FontForge|usage} can.  As a workaround we use |/Sigma|
+% and |/Pi|, which are sufficiently similar.
+%    \begin{macrocode}
+  /Sigma
+  /Pi
+  /notequal
+  /plusminus
+%    \end{macrocode}
+%
+% We pad the encoding to exactly 256~characters using |/.notdef|s, as
+% some programs (e.g.,~|ttf2pk|) expect to see exactly 256 encoded
+% characters.
+%    \begin{macrocode}
+  /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef
+%    \end{macrocode}
+% \centerline{$\vdots$}
+% \iffalse
+%    \begin{macrocode}
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%    \end{macrocode}
+% \fi
+%    \begin{macrocode}
+  /.notdef /.notdef /.notdef /.notdef /.notdef
+] def
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%</csextras.enc>
+%
+%
+% \subsection{\texttt{ttfonts.map}}
+%
+% Dvips doesn't currently support TrueType fonts.  However, the |ttf2pk|
+% utility (included with the FreeType library) can convert a TrueType
+% font file (|.ttf|) into a \TeX{} packed-font file (|.pk|) for use with
+% Dvips or similar tools.  |ttf2pk| requires a mapping file,
+% |ttfonts.map|, which specifies the mapping between \TeX{} font names
+% and the corresponding TrueType font file.
+%
+%<*ttfonts.map>
+%
+% The first part of \fname{ttfonts.map} contains analogous entries to those in
+% \fname{comicsans.map} (Section~\ref{sec:mapfile}).
+%
+%    \begin{macrocode}
+rcomic8r     comic.ttf    Encoding=8r.enc
+rcomicbd8r   comicbd.ttf  Encoding=8r.enc
+rcomiccyr    comic.ttf    Encoding=t2a.enc
+rcomiccyrbd  comicbd.ttf  Encoding=t2a.enc
+rcomic7m     comic.ttf    Encoding=texmital.enc
+rcomicbd7m   comicbd.ttf  Encoding=texmital.enc
+rcomic7y     comic.ttf    Encoding=texmsym.enc
+rcomic9z     comic.ttf    Encoding=csextras.enc
+%    \end{macrocode}
+%
+% Although pdf\LaTeX{} can dynamically slant only PostScript files, not
+% TrueType files, |ttf2pk| has no such limitation when producing
+% |.pk|~bitmaps.
+%
+%    \begin{macrocode}
+rcomico8r     comic.ttf    Encoding=8r.enc  Slant=0.167
+rcomicbdo8r   comicbd.ttf  Encoding=8r.enc  Slant=0.167
+rcomiccyro    comic.ttf    Encoding=t2a.enc Slant=0.167
+rcomiccyrbdo  comicbd.ttf  Encoding=t2a.enc Slant=0.167
+%    \end{macrocode}
+%
+%</ttfonts.map>
+%
+%
+% \section{Implementation: Extras}
+%
+% The files documented in this section are what I used to automate
+% creation of the \TeX/\LaTeX{} bindings for \comsan.  They are needed
+% only if you want to modify or extend these bindings.  Please read the
+% license agreement (Section~\ref{sec:license}), however, before
+% modifying any part of the \pkgname{comicsans} package.
+%
+%
+% \subsection{\texttt{csextras.etx}}
+%
+% \fname{csextras.etx} is a \pkgname{fontinst} encoding file that is used to
+% create \fname{rcomic9z.pl}.  It specifies all of the characters that should
+% appear in \fname{rcomic9z.pl}.
+%
+% We start with some boilerplate initialization.
+%
+%<*csextras.etx>
+%    \begin{macrocode}
+\relax
+\encoding
+\needsfontinstversion{1.800}
+%    \end{macrocode}
+%
+% Next, we specify the symbols that we're interested in.  We begin with
+% the large \TeX{} symbols.
+%
+% \begin{othercode}[glyph|glyphs]{integral}
+% ``$\int$''
+%    \begin{macrocode}
+\setslot{integral}
+\endsetslot
+%    \end{macrocode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{summation}
+% ``$\sum$''
+%    \begin{macrocode}
+\setslot{summation}
+\endsetslot
+%    \end{macrocode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{product}
+% ``$\prod$''
+%    \begin{macrocode}
+\setslot{product}
+\endsetslot
+%    \end{macrocode}
+% \end{othercode}
+%
+% The remaining large symbols are all scaled versions of ordinary
+% symbols---parentheses, brackets, braces, etc.---and hence don't need
+% to appear in this file.  We therefore conclude with |notequal| (a
+% nonstandard \TeX{} character) and |plusminus| (which already exists in
+% |comic7y| but uses the Computer Modern Bold Symbol version).
+%
+% \begin{othercode}[glyph|glyphs]{notequal}
+% ``$\neq$''
+%    \begin{macrocode}
+\setslot{notequal}
+\endsetslot
+%    \end{macrocode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{plusminus}
+% ``$\pm$''
+%    \begin{macrocode}
+\setslot{plusminus}
+\endsetslot
+\endencoding
+%    \end{macrocode}
+% \end{othercode}
+%
+%</csextras.etx>
+%
+%
+% \subsection{\texttt{csextras.mtx}}
+% \label{sec:csextras-mtx}
+%
+% \fname{csextras.mtx} is a \pkgname{fontinst} metrics file that is used
+% to help create \fname{comic7v.vpl}.  \fname{csextras.mtx} maps \TeX{}
+% glyph names such as ``|integraltext|'' to \comsan font names such as
+% ``|integral|''.
+%
+% One problem is that \TeX{} defines ``text style'' (small) and
+% ``display style'' (large) versions of various symbols, while \comsan
+% typically defines only the small size.  We therefore do all that we
+% can, which is to scale up the small version to a larger size.  The
+% unfortunate result is that display-style symbols tend to be
+% excessively thick.  C'est la vie.
+%
+% We start with some boilerplate initialization.
+%
+%<*csextras.mtx>
+%    \begin{macrocode}
+\relax
+\metrics
+%    \end{macrocode}
+%
+% \begin{macro}{\bigbiggerbiggest}
+% To save typing, we create a macro that defines |\big|, |\Big|,
+% |\bigg|, and |\Bigg| versions of a given symbol.
+%    \begin{macrocode}
+\setcommand\bigbiggerbiggest#1{%
+  \setglyph{#1big}
+    \glyph{#1}{1000}
+  \endsetglyph
+  \setglyph{#1Big}
+    \glyph{#1}{2500}
+  \endsetglyph
+  \setglyph{#1bigg}
+    \glyph{#1}{4000}
+  \endsetglyph
+  \setglyph{#1Bigg}
+    \glyph{#1}{5500}
+  \endsetglyph
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{othercode}[glyph|glyphs]{integraltext}
+% \begin{othercode}[glyph|glyphs]{integraldisplay}
+% Define ``$\textstyle\int$'' and ``$\displaystyle\int$''.
+%    \begin{macrocode}
+\setglyph{integraltext}
+  \glyph{integral}{1000}
+\endsetglyph
+\setglyph{integraldisplay}
+  \glyph{integral}{3000}
+\endsetglyph
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{summationtext}
+% \begin{othercode}[glyph|glyphs]{summationdisplay}
+% Define ``$\textstyle\sum$'' and ``$\displaystyle\sum$''.
+%    \begin{macrocode}
+\setglyph{summationtext}
+  \glyph{summation}{1000}
+\endsetglyph
+\setglyph{summationdisplay}
+  \glyph{summation}{3000}
+\endsetglyph
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{producttext}
+% \begin{othercode}[glyph|glyphs]{productdisplay}
+% Define ``$\textstyle\prod$'' and ``$\displaystyle\prod$''.
+%    \begin{macrocode}
+\setglyph{producttext}
+  \glyph{product}{1000}
+\endsetglyph
+\setglyph{productdisplay}
+  \glyph{product}{3000}
+\endsetglyph
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{parenleftbig}
+% \begin{othercode}[glyph|glyphs]{parenleftBig}
+% \begin{othercode}[glyph|glyphs]{parenleftbigg}
+% \begin{othercode}[glyph|glyphs]{parenleftBigg}
+% \begin{othercode}[glyph|glyphs]{parenrightbig}
+% \begin{othercode}[glyph|glyphs]{parenrightBig}
+% \begin{othercode}[glyph|glyphs]{parenrightbigg}
+% \begin{othercode}[glyph|glyphs]{parenrightBigg}
+% Define a range of sizes for ``(`` and ``)''.
+%    \begin{macrocode}
+\bigbiggerbiggest{parenleft}
+\bigbiggerbiggest{parenright}
+%    \end{macrocode}
+% \vspace{5\baselineskip}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{bracketleftbig}
+% \begin{othercode}[glyph|glyphs]{bracketleftBig}
+% \begin{othercode}[glyph|glyphs]{bracketleftbigg}
+% \begin{othercode}[glyph|glyphs]{bracketleftBigg}
+% \begin{othercode}[glyph|glyphs]{bracketrightbig}
+% \begin{othercode}[glyph|glyphs]{bracketrightBig}
+% \begin{othercode}[glyph|glyphs]{bracketrightbigg}
+% \begin{othercode}[glyph|glyphs]{bracketrightBigg}
+% Define a range of sizes for ``[`` and ``]''.
+%    \begin{macrocode}
+\bigbiggerbiggest{bracketleft}
+\bigbiggerbiggest{bracketright}
+%    \end{macrocode}
+% \vspace{5\baselineskip}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{braceleftbig}
+% \begin{othercode}[glyph|glyphs]{braceleftBig}
+% \begin{othercode}[glyph|glyphs]{braceleftbigg}
+% \begin{othercode}[glyph|glyphs]{braceleftBigg}
+% \begin{othercode}[glyph|glyphs]{bracerightbig}
+% \begin{othercode}[glyph|glyphs]{bracerightBig}
+% \begin{othercode}[glyph|glyphs]{bracerightbigg}
+% \begin{othercode}[glyph|glyphs]{bracerightBigg}
+% Define a range of sizes for ``\{`` and ``\}''.
+%    \begin{macrocode}
+\bigbiggerbiggest{braceleft}
+\bigbiggerbiggest{braceright}
+%    \end{macrocode}
+% \vspace{5\baselineskip}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{slashbig}
+% \begin{othercode}[glyph|glyphs]{slashBig}
+% \begin{othercode}[glyph|glyphs]{slashbigg}
+% \begin{othercode}[glyph|glyphs]{slashBigg}
+% \begin{othercode}[glyph|glyphs]{backslashbig}
+% \begin{othercode}[glyph|glyphs]{backslashBig}
+% \begin{othercode}[glyph|glyphs]{backslashbigg}
+% \begin{othercode}[glyph|glyphs]{backslashBigg}
+% Define a range of sizes for ``/`` and ``\textbackslash''.
+%    \begin{macrocode}
+\bigbiggerbiggest{slash}
+\bigbiggerbiggest{backslash}
+%    \end{macrocode}
+% \vspace{5\baselineskip}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[glyph|glyphs]{angleleftbig}
+% \begin{othercode}[glyph|glyphs]{angleleftBig}
+% \begin{othercode}[glyph|glyphs]{angleleftbigg}
+% \begin{othercode}[glyph|glyphs]{angleleftBigg}
+% \begin{othercode}[glyph|glyphs]{anglerightbig}
+% \begin{othercode}[glyph|glyphs]{anglerightBig}
+% \begin{othercode}[glyph|glyphs]{anglerightbigg}
+% \begin{othercode}[glyph|glyphs]{anglerightBigg}
+% Define a range of sizes for ``$\langle$`` and ``$\rangle$'' (really
+% ``$<$'' and ``$>$'').  Because the naming is inconsistent between
+% \comsan and \TeX{} (``|angleleft|'' vs.\ ``|less|'') we can't use our
+% |\bigbiggerbiggest| macro.
+%    \begin{macrocode}
+\setglyph{angleleftbig}
+  \glyph{less}{1000}
+\endsetglyph
+\setglyph{angleleftBig}
+  \glyph{less}{2500}
+\endsetglyph
+\setglyph{angleleftbigg}
+  \glyph{less}{4000}
+\endsetglyph
+\setglyph{angleleftBigg}
+  \glyph{less}{5500}
+\endsetglyph
+%    \end{macrocode}
+% \smallskip
+%    \begin{macrocode}
+\setglyph{anglerightbig}
+  \glyph{greater}{1000}
+\endsetglyph
+\setglyph{anglerightBig}
+  \glyph{greater}{2500}
+\endsetglyph
+\setglyph{anglerightbigg}
+  \glyph{greater}{4000}
+\endsetglyph
+\setglyph{anglerightBigg}
+  \glyph{greater}{5500}
+\endsetglyph
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% That's all for \fname{csextras.mtx}.
+%    \begin{macrocode}
+\endmetrics
+%    \end{macrocode}
+%
+%</csextras.mtx>
+%
+%
+% \subsection{\texttt{nompbul.mtx}}
+% \label{sec:nompbul-mtx}
+%
+% \fname{nompbul.mtx} is used by \fname{fontcomic.tex} when producing an
+% OMS-encoded version of \comsan.  \comsan's |plusminus| looks fine, but
+% the font lacks a matching |minusplus|.  For consistency we discard the
+% |plusminus|, too.  The |plusminus| package option
+% (Section~\ref{sec:opt-proc}) can re-enable it on a per-document basis.
+% \comsan also has puny |bullet| and |openbullet| characters so we
+% discard those too.
+%
+%<*nompbul.mtx>
+%
+%    \begin{macrocode}
+\relax
+\metrics
+\unsetglyph{plusminus}
+\unsetglyph{bullet}
+\unsetglyph{openbullet}
+\endmetrics
+%    \end{macrocode}
+%
+%</nompbul.mtx>
+%
+%
+% \subsection{\texttt{fontcomic.tex}}
+% \label{sec:fontcomic}
+%
+% \fname{fontcomic.tex} is a \pkgname{fontinst} file that specifies how to
+% derive various PL and VPL fonts from the TTF sources.  \fname{fontcomic.tex}
+% relies on the \pkgname{cyrfinst} package to produce Cyrillic fonts.
+% Due to a restriction of \pkgname{cyrfinst}, \fname{fontcomic.tex} must be
+% run through |latex|, not |tex|.
+%
+% Note that the fonts produced by \fname{fontcomic.tex} do not follow the
+% Berry naming scheme except for appending the encoding scheme onto the
+% end of the name.  Personally, I find ``|comicbd8r|'' more readable
+% than ``|jcsb8r|'' for \comsan Bold in the |8r|~encoding.
+%
+% We start by inputting \fname{fontinst.sty} and the various |.tex| files
+% provided by \pkgname{cyrfinst} for creating Cyrillic fonts.
+%
+%<*fontcomic.tex>
+%    \begin{macrocode}
+\input fontinst.sty
+\input fnstcorr
+\input cyralias
+%    \end{macrocode}
+%
+% I have tested \fname{fontcomic.tex} only with \pkgname{fontinst}
+% version~1.800 so we should require that explicitly.
+%    \begin{macrocode}
+\needsfontinstversion{1.800}
+\installfonts
+%    \end{macrocode}
+%
+% \begin{othercode}[file|files]{rcomic8r.pl}
+% \begin{othercode}[file|files]{rcomic8r.mtx}
+% \begin{othercode}[file|files]{rcomicbd8r.pl}
+% \begin{othercode}[file|files]{rcomicbd8r.mtx}
+% \begin{othercode}[file|files]{rcomic7m.pl}
+% \begin{othercode}[file|files]{rcomic7m.mtx}
+% \begin{othercode}[file|files]{rcomicbd7m.pl}
+% \begin{othercode}[file|files]{rcomicbd7m.mtx}
+% \begin{othercode}[file|files]{rcomic7y.pl}
+% \begin{othercode}[file|files]{rcomic7y.mtx}
+% \begin{othercode}[file|files]{rcomic9z.pl}
+% \begin{othercode}[file|files]{rcomic9z.mtx}
+% \begin{othercode}[file|files]{rcomiccyr.pl}
+% \begin{othercode}[file|files]{rcomiccyr.mtx}
+% \begin{othercode}[file|files]{rcomiccyrbd.pl}
+% \begin{othercode}[file|files]{rcomiccyrbd.mtx}
+% First, we create some ``raw'' fonts, from which everything else is
+% derived.  These are the only fonts that are referenced by
+% \fname{comicsans.map} (Section~\ref{sec:mapfile}); all other fonts produced
+% by \fname{fontcomic.tex} are defined in terms of the following.
+%    \begin{macrocode}
+  \transformfont{rcomic8r}%
+    {\reencodefont{8r}{\fromafm{rcomic}}}
+  \transformfont{rcomicbd8r}%
+    {\reencodefont{8r}{\fromafm{rcomicbd}}}
+  \transformfont{rcomic7m}%
+    {\reencodefont{oml}{\fromafm{rcomic}}}
+  \transformfont{rcomicbd7m}%
+    {\reencodefont{oml}{\fromafm{rcomicbd}}}
+  \transformfont{rcomic7y}%
+    {\reencodefont{oms}{\fromafm{rcomic}}}
+  \transformfont{rcomic9z}%
+    {\reencodefont{csextras}{\fromafm{rcomic}}}
+  \transformfont{rcomiccyr}%
+    {\reencodefont{t2a}{\fromafm{rcomic}}}
+  \transformfont{rcomiccyrbd}%
+    {\reencodefont{t2a}{\fromafm{rcomicbd}}}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{rcomico8r.pl}
+% \begin{othercode}[file|files]{rcomico8r.mtx}
+% \begin{othercode}[file|files]{rcomicbdo8r.pl}
+% \begin{othercode}[file|files]{rcomicbdo8r.mtx}
+% \begin{othercode}[file|files]{rcomiccyro.pl}
+% \begin{othercode}[file|files]{rcomiccyro.mtx}
+% \begin{othercode}[file|files]{rcomiccyrbdo.pl}
+% \begin{othercode}[file|files]{rcomiccyrbdo.mtx}
+% Next, we create ``raw'' oblique versions of \comsan and \comsan Bold
+% as Microsoft doesn't provide a true italic.
+%    \begin{macrocode}
+  \transformfont{rcomico8r}%
+    {\slantfont{167}{%
+      \reencodefont{8r}{\fromafm{rcomic}}}}
+  \transformfont{rcomicbdo8r}%
+    {\slantfont{167}{%
+      \reencodefont{8r}{\fromafm{rcomicbd}}}}
+  \transformfont{rcomiccyro}%
+    {\slantfont{167}{%
+      \reencodefont{t2a}{\fromafm{rcomic}}}}
+  \transformfont{rcomiccyrbdo}%
+    {\slantfont{167}{%
+      \reencodefont{t2a}{\fromafm{rcomicbd}}}}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{ot1comic.fd}
+% \begin{othercode}[file|files]{comic7t.vpl}
+% \begin{othercode}[file|files]{comicbd7t.vpl}
+% \begin{othercode}[file|files]{comico7t.vpl}
+% \begin{othercode}[file|files]{comicbdo7t.vpl}
+% \begin{othercode}[file|files]{comicsc7t.vpl}
+% We create versions of \comsan and \comsan Bold that are encoded
+% with the OT1 encoding (Knuth's original 7-bit encoding scheme).
+%    \begin{macrocode}
+  \installfamily{OT1}{comic}{}
+  \installfont{comic7t}
+    {rcomic8r,rcomic7m,latin}
+    {OT1}{OT1}{comic}{m}{n}{}
+  \installfont{comicbd7t}
+    {rcomicbd8r,rcomicbd7m,latin}
+    {OT1}{OT1}{comic}{b}{n}{}
+  \installfont{comico7t}
+    {rcomico8r,rcomic7m,latin}
+    {OT1}{OT1}{comic}{m}{sl}{}
+  \installfont{comicbdo7t}
+    {rcomicbdo8r,rcomicbd7m,latin}
+    {OT1}{OT1}{comic}{b}{sl}{}
+  \installfont{comicsc7t}
+    {rcomic8r,rcomic7m,latin}
+    {OT1C}{OT1}{comic}{m}{sc}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{t1comic.fd}
+% \begin{othercode}[file|files]{comic8t.vpl}
+% \begin{othercode}[file|files]{comicbd8t.vpl}
+% \begin{othercode}[file|files]{comico8t.vpl}
+% \begin{othercode}[file|files]{comicbdo8t.vpl}
+% \begin{othercode}[file|files]{comicsc8t.vpl}
+% We now do the same thing for the T1 (Cork) 8-bit encoding.
+%    \begin{macrocode}
+  \installfamily{T1}{comic}{}
+  \installfont{comic8t}
+    {rcomic8r,latin}
+    {T1}{T1}{comic}{m}{n}{}
+  \installfont{comicbd8t}
+    {rcomicbd8r,latin}
+    {T1}{T1}{comic}{b}{n}{}
+  \installfont{comico8t}
+    {rcomico8r,latin}
+    {T1}{T1}{comic}{m}{sl}{}
+  \installfont{comicbdo8t}
+    {rcomicbdo8r,latin}
+    {T1}{T1}{comic}{b}{sl}{}
+  \installfont{comicsc8t}
+    {rcomic8r,latin}
+    {T1C}{T1}{comic}{m}{sc}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{ts1comic.fd}
+% \begin{othercode}[file|files]{comic8c.vpl}
+% \begin{othercode}[file|files]{comicbd8c.vpl}
+% \begin{othercode}[file|files]{comico8c.vpl}
+% \begin{othercode}[file|files]{comicbdo8c.vpl}
+% \comsan provides many of the \pkgname{textcomp} symbols, so we encode
+% some fonts for those.  Note that we take the |bullet| and |openbullet|
+% characters from Computer Modern Bold Symbol instead of \comsan.  The
+% \comsan versions are too small, in my opinion.
+%    \begin{macrocode}
+  \installfamily{TS1}{comic}{}
+  \installfont{comic8c}
+    {rcomic8r,nompbul,cmbsy10,textcomp}
+    {TS1}{TS1}{comic}{m}{n}{}
+  \installfont{comicbd8c}
+    {rcomicbd8r,nompbul,cmbsy10,textcomp}
+    {TS1}{TS1}{comic}{b}{n}{}
+  \installfont{comico8c}
+    {rcomico8r,nompbul,cmbsy10,textcomp}
+    {TS1}{TS1}{comic}{m}{sl}{}
+  \installfont{comicbdo8c}
+    {rcomicbdo8r,nompbul,cmbsy10,textcomp}
+    {TS1}{TS1}{comic}{b}{sl}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{t2acomic.fd}
+% \begin{othercode}[file|files]{comiccyr.vpl}
+% \begin{othercode}[file|files]{comiccyrbd.vpl}
+% \begin{othercode}[file|files]{comiccyro.vpl}
+% \begin{othercode}[file|files]{comiccyrbdo.vpl}
+% Thanks to the \pkgname{cyrfinst} package, it's fairly straightforward
+% to extract the \comsan Cyrillic characters into a \LaTeX-accessible
+% font.
+%    \begin{macrocode}
+  \installfamily{T2A}{comic}{}
+  \installfont{comiccyr}
+    {rcomiccyr}
+    {T2A}{T2A}{comic}{m}{n}{}
+  \installfont{comiccyrbd}
+    {rcomiccyrbd}
+    {T2A}{T2A}{comic}{b}{n}{}
+  \installfont{comiccyro}
+    {rcomiccyro}
+    {T2A}{T2A}{comic}{m}{sl}{}
+  \installfont{comiccyrbdo}
+    {rcomiccyrbdo}
+    {T2A}{T2A}{comic}{b}{sl}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{omlcomic.fd}
+% \begin{othercode}[file|files]{comic7m.vpl}
+% \begin{othercode}[file|files]{comicbd7m.vpl}
+% The remaining fonts produced by \fname{fontcomic.tex} are math fonts.  We
+% start with math~italic (the OML 7-bit encoding), although we use roman
+% \comsan characters.  Missing math~italic characters are taken from
+% Computer Modern 10\,pt.\ Math Italic Bold (|cmmib10|).
+%    \begin{macrocode}
+  \installfamily{OML}{comic}{\skewchar\font=127}
+  \installfont{comic7m}
+    {rcomic7m,kernoff,cmmib10,kernon,mathit}
+    {OML}{OML}{comic}{m}{n}{}
+  \installfont{comicbd7m}
+    {rcomicbd7m,kernoff,cmmib10,kernon,mathit}
+    {OML}{OML}{comic}{b}{n}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{omscomic.fd}
+% \begin{othercode}[file|files]{comic7y.vpl}
+% Next up are the math~symbol characters (OMS 7-bit encoded).  These are
+% taken from \comsan when possible, Computer Modern 10\,pt. Bold Symbol
+% (|cmbsy10|) when not.  Note that we utilize \fname{nompbul.mtx}
+% (Section~\ref{sec:nompbul-mtx}) to exclude the |plusminus| glyph.
+%    \begin{macrocode}
+  \installfamily{OMS}{comic}{}
+  \installfont{comic7y}
+    {rcomic7y,rcomic8r,unsetalf,nompbul,cmbsy10,mathsy}
+    {OMS}{OMS}{comic}{m}{n}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{omxcomic.fd}
+% \begin{othercode}[file|files]{comic7v.vpl}
+% As our final math font, we produce a 7-bit OMX-encoded (math
+% extension) version of \comsan.  \comsan includes \emph{none} of the
+% required characters by default.  However, \fname{csextras.mtx}
+% (Section~\ref{sec:csextras-mtx}) can rename a few glyphs to improve
+% the situation.  Nevertheless, OMX-encoded \comsan is still not a
+% particularly pleasing font.  Authors may want to use a different
+% OMX-encoded font in its place.
+%    \begin{macrocode}
+  \installfamily{OMX}{comic}{}
+  \installfont{comic7v}
+    {rcomic9z,rcomic8r,csextras,cmex10,mathex}
+    {OMX}{OMX}{comic}{m}{n}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[file|files]{ucomic.fd}
+% \begin{othercode}[file|files]{comic9z.vpl}
+% Leftover characters are assigned to a \LaTeX{} ``U''-encoded font,
+% |comic9z|.
+%    \begin{macrocode}
+  \installfamily{U}{comic}{}
+  \installfont{comic9z}
+    {rcomic9z}
+    {CSEXTRAS}{U}{comic}{m}{n}{}
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% Those are all of the \comsan fonts I could think to create.  We can
+% finish up now.
+%    \begin{macrocode}
+\endinstallfonts
+\bye
+%    \end{macrocode}
+%
+%</fontcomic.tex>
+%
+%
+% \subsection{\texttt{Makefile}}
+%
+% The \fname{Makefile} included below automates the generation of the various
+% \comsan \LaTeX{} fonts.  I tested this \fname{Makefile} only with GNU~make,
+% only on Linux, and only with the \TeX\ Live distribution of \TeX.
+%
+% Note that the various ``|verbatim|'' lines are present for
+% \pkgname{DocStrip}'s sake and do not actually appear in the resulting
+% file.\footnote{Without the ``\texttt{verbatim}'' lines,
+% \pkgname{DocStrip} would choke on all of the end-of-line
+% ``\texttt{\textbackslash}'' characters.}  Also, many \TeX{}
+% distributions do not honor tab characters when outputting files,
+% although most |make| implementations \emph{require} tabs.  As a
+% result, \fname{comicsans.ins} specifies that the following code be written
+% to \fname{Makefile.NOTABS} with space- instead of tab-based indentation.  It
+% is up to the user to convert spaces to tabs.  (In GNU Emacs, the
+% ``\texttt{M-x tabify}'' sequence automates this conversion; entering
+% ``\texttt{cat Makefile.NOTABS \string| unexpand > Makefile}'' at the Unix
+% prompt---or ``\texttt{cat Makefile.NOTABS \string| perl
+% -ne }\verb*|'s/^        /\t/g;|\texttt{ print' > Makefile}'' if you don't
+% have \texttt{unexpand}---is even more automatic.)
+%
+% \bigskip
+% \begingroup\fussy
+%<*Makefile>
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{TFMTARGETS}
+% \begin{othercode}[Makefile variable|Makefile variables]{VFTARGETS}
+% Because we produce so many TFM and VF files, we define
+% |TFMTARGETS| and |VFTARGETS| targets for these.
+%
+%    \begin{macrocode}
+%<<verbatim>
+TFMTARGETS = comic7m.tfm comic7t.tfm comic7v.tfm        \
+             comic7y.tfm comic8c.tfm comic8t.tfm        \
+             comicbd7t.tfm comicbd8c.tfm comicbd8t.tfm  \
+             comiccyr.tfm comiccyrbd.tfm rcomic.tfm     \
+             rcomic7m.tfm rcomic8r.tfm rcomicbd.tfm     \
+             rcomicbd8r.tfm rcomiccyr.tfm rcomic7y.tfm  \
+             rcomiccyrbd.tfm rcomic9z.tfm comic9z.tfm   \
+             rcomicbd7m.tfm comicbd7m.tfm               \
+             rcomico8r.tfm rcomicbdo8r.tfm              \
+             comico7t.tfm comicbdo7t.tfm                \
+             comico8t.tfm comicbdo8t.tfm                \
+             comico8c.tfm comicbdo8c.tfm                \
+             rcomiccyro.tfm rcomiccyrbdo.tfm            \
+             comiccyro.tfm comiccyrbdo.tfm              \
+             comicsc7t.tfm comicsc8t.tfm
+
+VFTARGETS =  comic7m.vf comic7t.vf comic7v.vf       \
+             comic7y.vf comic8c.vf comic8t.vf       \
+             comicbd7t.vf comicbd8c.vf comicbd8t.vf \
+             comiccyr.vf comiccyrbd.vf comic9z.vf   \
+             comicbd7m.vf                           \
+             comico7t.vf comicbdo7t.vf              \
+             comico8t.vf comicbdo8t.vf              \
+             comico8c.vf comicbdo8c.vf              \
+             comiccyro.vf comiccyrbdo.vf            \
+             comicsc7t.vf comicsc8t.vf
+
+%verbatim>
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{PACKAGEFILES}
+% \begin{othercode}[Makefile target|Makefile targets]{all}
+% The primary Makefile targets are the |.tfm|, |.vf|, and |.fd| files.
+%    \begin{macrocode}
+PACKAGEFILES = $(TFMTARGETS) $(VFTARGETS) $(FDOUTPUTS)
+
+all: $(PACKAGEFILES)
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% We define a rule for converting a VPL file into a VF plus a TFM file
+% and a rule for converting a PL file into a TFM file.
+%    \begin{macrocode}
+%<<verbatim>
+
+.SUFFIXES: .vf .vpl .tfm .pl .ttf .afm
+
+%.vf %.tfm: %.vpl
+        vptovf $<
+
+%.tfm: %.pl
+        pltotf $<
+
+%verbatim>
+%    \end{macrocode}
+%
+% We would ideally like to define a rule for building a
+% |.|\meta{DPI}|pk| file that depends upon a corresponding |.tfm| file.
+% Unfortunately, Makefile semantics do not support such usage.  We
+% therefore parse out \meta{DPI} and call |make| recursively to ensure
+% that the requisite |.tfm| file exists.
+%    \begin{macrocode}
+%<<verbatim>
+
+%pk: comicsans.map comic.ttf comicbd.ttf
+        DPI=`echo $@ | \
+          perl -ne '/(\d+)pk$$/ && print $$1'` ; \
+        BASE=`echo $@ | \
+          perl -ne '/^(.*)\.\d+pk$$/ && print $$1'` ; \
+        gsftopk -q --mapfile=comicsans.map $$BASE $$DPI
+
+%verbatim>
+%    \end{macrocode}
+%
+% \begin{othercode}[file|files]{cmmib10.pl}
+% \begin{othercode}[file|files]{cmex10.pl}
+% \begin{othercode}[file|files]{cmbsy10.pl}
+% Kpathsea should find standard .tfm files even if they're not in the
+% current directory.  Hence, the following three targets have no
+% dependencies.
+%    \begin{macrocode}
+cmmib10.pl:
+        tftopl cmmib10.tfm > cmmib10.pl
+
+cmex10.pl:
+        tftopl cmex10.tfm > cmex10.pl
+
+cmbsy10.pl:
+        tftopl cmbsy10.tfm > cmbsy10.pl
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{FDOUTPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{LOGOUTPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{PLOUTPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{VPLOUTPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{MTXOUTPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{FONTINSTOUTPUTS}
+% \pkgname{fontinst} outputs a large number of files.  To make these
+% more manageable we define macros to represent various subsets.
+%    \begin{macrocode}
+%<<verbatim>
+
+FDOUTPUTS  = ts1comic.fd t1comic.fd ot1comic.fd  \
+             t2acomic.fd omlcomic.fd omxcomic.fd \
+             omscomic.fd ucomic.fd
+LOGOUTPUTS = fontcomic.log
+PLOUTPUTS =  rcomic.pl rcomicbd.pl rcomiccyrbd.pl      \
+             rcomic7m.pl rcomic8r.pl rcomicbd8r.pl     \
+             rcomiccyr.pl rcomic9z.pl rcomic7y.pl      \
+             rcomicbd7m.pl rcomico8r.pl rcomicbdo8r.pl \
+             rcomiccyro.pl rcomiccyrbdo.pl
+VPLOUTPUTS = comic8c.vpl comicbd8c.vpl comiccyrbd.vpl \
+             comic7m.vpl comiccyr.vpl comic7t.vpl     \
+             comicbd7t.vpl comic8t.vpl comicbd8t.vpl  \
+             comic7v.vpl comic9z.vpl comic7y.vpl      \
+             comicbd7m.vpl                            \
+             comico7t.vpl comicbdo7t.vpl              \
+             comico8t.vpl comicbdo8t.vpl              \
+             comico8c.vpl comicbdo8c.vpl              \
+             comiccyro.vpl comiccyrbdo.vpl            \
+             comicsc7t.vpl comicsc8t.vpl
+MTXOUTPUTS = cmbsy10.mtx cmex10.mtx cmmib10.mtx       \
+             rcomic.mtx rcomicbd.mtx rcomiccyrbd.mtx  \
+             rcomic7m.mtx rcomic8r.mtx rcomicbd8r.mtx \
+             rcomiccyr.mtx rcomic9z.mtx rcomic7y.mtx  \
+             rcomicbd7m.mtx                           \
+             rcomico8r.mtx rcomicbdo8r.mtx            \
+             rcomiccyro.mtx rcomiccyrbdo.mtx
+
+FONTINSTOUTPUTS = $(FDOUTPUTS) $(LOGOUTPUTS) \
+                  $(PLOUTPUTS) $(VPLOUTPUTS) \
+                  $(MTXOUTPUTS)
+
+%verbatim>
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{AFMINPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{PLINPUTS}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSEXTRAS}
+% We now define macros for all of \pkgname{fontinst}'s
+% input files, excluding those that need not exist in the
+% current directory.
+%    \begin{macrocode}
+AFMINPUTS = rcomic.afm rcomicbd.afm
+PLINPUTS  = cmbsy10.pl cmmib10.pl cmex10.pl
+CSEXTRAS  = csextras.etx csextras.mtx
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% The most important part of the Makefile is to run the \fname{fontcomic.tex}
+% \pkgname{fontinst} file through \LaTeX.  Normally \pkgname{fontinst}
+% files are run through \TeX but the \pkgname{cyrfinst} package, which
+% \fname{fontcomic.tex} uses, requires \LaTeX.
+%    \begin{macrocode}
+%<<verbatim>
+
+$(FONTINSTOUTPUTS): fontcomic.tex \
+                    $(AFMINPUTS) $(PLINPUTS) $(CSEXTRAS)
+        latex fontcomic.tex
+
+%verbatim>
+%    \end{macrocode}
+%
+% \begin{othercode}[Makefile target|Makefile targets]{doc}
+% \begin{othercode}[Makefile variable|Makefile variables]{DOCOUTPUTS}
+% To automate building the \pkgname{comicsans} documentation, we define
+% a |doc| target, which uses pdf\LaTeX{} and MakeIndex to build a nicely
+% formatted PDF document.  For some reason
+% ``\verb*|\DoNotIndex{\ }|'' doesn't seem to work.  We therefore
+% explicitly |grep| away all of the ``\verb*|\ |'' entries.
+% \changes{v1.0e}{2008/07/12}{Modified to run \texttt{pdfopt} on the generated
+%   PDF documentation}
+% \changes{v1.0d}{2008/07/06}{Modified to use
+%   \texttt{\string\string\string\pdfmapfile} to point \texttt{pdflatex} to
+%   \texttt{comicsans.map}}
+%    \begin{macrocode}
+%<<verbatim>
+
+doc: comicsans.pdf
+
+DOCOUTPUTS = comicsans.pdf comicsans.aux comicsans.glo \
+             comicsans.out comicsans.log comicsans.idx \
+             comicsans.ind comicsans.ilg comicsans.gls
+
+$(DOCOUTPUTS): comicsans.dtx $(PACKAGEFILES) comicsans.sty
+        pdflatex '\pdfmapfile{pdftex.map}\pdfmapfile{comicsans.map}\input comicsans.dtx'
+        grep -v 'indexentry{! =' comicsans.idx | \
+          makeindex -s gind.ist -o comicsans.ind
+        makeindex -s gglo.ist comicsans.glo -o comicsans.gls
+        pdflatex '\pdfmapfile{pdftex.map}\pdfmapfile{comicsans.map}\input comicsans.dtx'
+        pdflatex '\pdfmapfile{pdftex.map}\pdfmapfile{comicsans.map}\input comicsans.dtx'
+        pdfopt comicsans.pdf cs.pdf
+        mv cs.pdf comicsans.pdf
+
+%verbatim>
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{CSTEXMFDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSVFDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSTFMDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSLTXDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSDVIPSMAPDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSDVIPSENCDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSDOCDIR}
+% \begin{othercode}[Makefile variable|Makefile variables]{CSSRCDIR}
+% \changes{v1.0g}{2013/12/19}{Specified that the \texttt{Makefile} install
+%   \texttt{comicsans.ins} and \texttt{comicsans.dtx} beneath the
+%   \texttt{source} directory, as suggested by Norbert Preining}
+% \begin{othercode}[Makefile target|Makefile targets]{install}
+% \changes{v1.0f}{2008/07/12}{Specified that the \texttt{Makefile} install
+%   \texttt{comicsans.pdf} beneath the \texttt{doc} directory}
+% \begin{othercode}[Makefile target|Makefile targets]{uninstall}
+% Because \pkgname{comicsans} consists of so many files, we provide an
+% |install| target to automate installation.  We assume a \TeX{}
+% Directory Standard (TDS) distribution although the user can override
+% the various directory locations by assigning one or more of
+% |CSTEXMFDIR|, |CSVFDIR|, |CSTFMDIR|, |CSLTXDIR|, |CSDVIPSMAPDIR|,
+% |CSDVIPSENDDIR|, |CSDOCDIR|, or |CSSRCDIR| on the |make| command line.
+% Although we also provide an |uninstall| target, this is not guaranteed
+% to remove all of the directories created.  Specifically, if |install|
+% creates both a directory and a subdirectory
+% (e.g.,~|microsoft/comicsans|), only the subdirectory (|comicsans|)
+% will be deleted.
+%    \begin{macrocode}
+%<<verbatim>
+
+CSTEXMFDIR    = /usr/local/share/texmf
+CSVFDIR       = $(CSTEXMFDIR)/fonts/vf/microsoft/comicsans
+CSTFMDIR      = $(CSTEXMFDIR)/fonts/tfm/microsoft/comicsans
+CSLTXDIR      = $(CSTEXMFDIR)/tex/latex/comicsans
+CSDVIPSMAPDIR = $(CSTEXMFDIR)/fonts/map/dvips/comicsans
+CSDVIPSENCDIR = $(CSTEXMFDIR)/fonts/enc/dvips/comicsans
+CSDOCDIR      = $(CSTEXMFDIR)/doc/latex/comicsans
+CSSRCDIR      = $(CSTEXMFDIR)/source/latex/comicsans
+
+install: $(CSTEXMFDIR) $(PACKAGEFILES) comicsans.sty comicsans.pdf
+        install -d $(CSVFDIR) $(CSTFMDIR) $(CSLTXDIR) \
+          $(CSDVIPSMAPDIR) $(CSDVIPSENCDIR) $(CSDOCDIR) $(CSSRCDIR)
+        install -m 664 $(VFTARGETS) $(CSVFDIR)
+        install -m 664 $(TFMTARGETS) $(CSTFMDIR)
+        install -m 664 $(FDOUTPUTS) comicsans.sty $(CSLTXDIR)
+        install -m 664 comicsans.map $(CSDVIPSMAPDIR)
+        install -m 664 csextras.enc $(CSDVIPSENCDIR)
+        install -m 664 comicsans.pdf README $(CSDOCDIR)
+        install -m 664 comicsans.ins comicsans.dtx $(CSSRCDIR)
+
+uninstall:
+        $(RM) -rf $(CSVFDIR) $(CSTFMDIR) $(CSLTXDIR) $(CSDOCDIR) $(CSSRCDIR)
+        $(RM) -rf $(CSDVIPSMAPDIR) $(CSDVIPSENCDIR)
+
+%verbatim>
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{TARGZFILE}
+% \begin{othercode}[Makefile target|Makefile targets]{dist}
+% We make it easy to create a |.tar.gz| file containing \fname{comicsans.ins},
+% \fname{comicsans.dtx}, and all of the prebuilt \pkgname{comicsans} font
+% files.
+% \changes{v1.0b}{2006/12/14}{Restructured the distribution tree according to
+%   Jim Hefferon's suggestions}
+% \changes{v1.0e}{2008/07/12}{Moved the contents of the \texttt{texmf}
+%   directory to the top level of \texttt{comicsans.tds.zip} as suggested by
+%   Dan Luecking}
+% \changes{v1.0f}{2008/07/12}{Restructured the distribution tree according to
+%   Jim Hefferon's latest suggestions}
+% \changes{v1.0g}{2013/12/18}{Included the prebuilt \texttt{.fd} files in
+%   the distribution tree}
+%    \begin{macrocode}
+TARGZFILE = comicsans.tar.gz
+
+dist: $(TARGZFILE)
+
+$(TARGZFILE): $(PACKAGEFILES) doc
+        install -d comicsans/comicsans
+        install -m 664 README comicsans.pdf comicsans/comicsans
+        install -m 664 comicsans.dtx comicsans.ins comicsans/comicsans
+        install -d comicsans/texmf
+        $(MAKE) CSTEXMFDIR=comicsans/texmf install
+        cp -r comicsans/texmf/fonts/tfm/microsoft/comicsans comicsans/comicsans/tfm
+        cp -r comicsans/texmf/fonts/vf/microsoft/comicsans comicsans/comicsans/vf
+        install -d comicsans/comicsans/map
+        install -m 644 comicsans/texmf/fonts/map/dvips/comicsans/* comicsans/comicsans/map/
+        install -d comicsans/comicsans/enc
+        install -m 644 comicsans/texmf/fonts/enc/dvips/comicsans/* comicsans/comicsans/enc/
+        install -d comicsans/comicsans/latex
+        install -m 644 comicsans/texmf/tex/latex/comicsans/* comicsans/comicsans/latex
+        cd comicsans/texmf ; \
+          zip -r -9 -m ../comicsans.tds.zip *
+        $(RM) -r comicsans/texmf
+        tar -cf - comicsans | gzip --best > $(TARGZFILE)
+        $(RM) -r comicsans
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile variable|Makefile variables]{DPI}
+% \begin{othercode}[Makefile variable|Makefile variables]{PKFILES}
+% \begin{othercode}[Makefile target|Makefile targets]{pkfiles}
+% My understanding of copyright law is that I am not allowed to
+% distribute |.pk| files as these are considered derivitive works from
+% \fname{comic.ttf} and \fname{comicbd.ttf}.  However, I believe you \emph{are}
+% allowed to generate these files yourself for your own personal use.
+% ``\texttt{make pkfiles}'' generates PK files for 600~DPI printers at
+% the various standard \LaTeX{} point sizes (taken from \fname{ot1cmr.fd}).
+% For printers with a different number of dots per inch, ``\texttt{make
+% DPI=}\meta{resolution} |pkfiles|'' should override the 600-DPI
+% default.  If you need fonts at additional resolutions you can produce
+% them individually with ``|make| \meta{font name}|.|\meta{DPI}|pk|''.
+%    \begin{macrocode}
+%<<verbatim>
+
+DPI = 600
+
+PKFILES = $(shell perl -ane '                  \
+  $$F[0] =~ /^\w/ || next;                     \
+  foreach $$size (5..10, 10.95, 12, 14.4,      \
+                  17.28, 20.74, 24.88) {       \
+    printf "$$F[0].%dpk\n", $(DPI)*$$size/10   \
+  }                                            \
+' < comicsans.map)
+
+pkfiles: $(TFMTARGETS) $(PKFILES)
+
+%verbatim>
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+% \end{othercode}
+%
+% \begin{othercode}[Makefile target|Makefile targets]{clean}
+% \begin{othercode}[Makefile target|Makefile targets]{cleaner}
+% Finally, we define |clean| and |cleaner| target so that ``\texttt{make
+% clean}'' will delete the myriad generated files.  ``\texttt{make
+% cleaner}'' additionally deletes the files that \fname{comicsans.ins} had
+% extracted from \fname{comicsans.dtx}.
+%    \begin{macrocode}
+clean:
+        $(RM) $(PKFILES)
+        $(RM) $(TARGZFILE)
+        $(RM) $(DOCOUTPUTS)
+        $(RM) $(FONTINSTOUTPUTS)
+        $(RM) $(PLINPUTS)
+        $(RM) $(PACKAGEFILES)
+
+cleaner: clean
+        $(RM) comicsans.sty csextras.etx csextras.mtx
+        $(RM) nompbul.mtx fontcomic.tex comicsans.map
+        $(RM) csextras.enc ttfonts.map
+        $(RM) rcomic.afm rcomicbd.afm Makefile.NOTABS
+        $(RM) fonttopfb.ff alt-comicsans.map
+
+.PHONY: doc install uninstall dist pkfiles clean cleaner
+%    \end{macrocode}
+% \end{othercode}
+% \end{othercode}
+%
+%</Makefile>
+% \endgroup   ^^A  Matches the \begingroup\fussy
+%
+%
+% \subsection{\texttt{rcomic.afm} and \texttt{rcomicbd.afm}}
+%
+% \fname{fontcomic.tex} (Section~\ref{sec:fontcomic}) depends
+% upon~\fname{rcomic.afm} and \fname{rcomicbd.afm}---the Adobe font
+% metric files that specify the widths, heights, and depths of all of
+% the characters in \fname{comic.ttf} and \fname{comicbd.ttf}.  Although
+% these can be produced automatically by the |ttf2afm| utility,
+% |ttf2afm| misses a few characters, most notably |\summation| and
+% |\product|.  We therefore include versions of \fname{rcomic.afm} and
+% \fname{rcomicbd.afm} that were generated by
+% PfaEdit\index{PfaEdit|usage} (FontForge\index{FontForge|usage}'s
+% predecessor), which does a better job of finding glyphs than
+% |ttf2afm|.  Because these AFM files are long ($\sim$12~pages apiece)
+% we omit them from the \pkgname{comicsans} documentation.
+%
+%<*rcomic.afm>
+%
+% \begin{center}
+%   $\vdots$ \\
+%   599 lines of code omitted \\
+%   $\vdots$
+% \end{center}
+%
+% \iffalse
+%    \begin{macrocode}
+StartFontMetrics 2.0
+Comment Generated by pfaedit
+Comment Creation Date: Wed Jul 17 20:26:04 2002
+FontName ComicSansMS
+FullName Comic Sans MS
+FamilyName ComicSansMS
+Weight
+Notice (Copyright (c) 1995 Microsoft Corporation. All rights reserved.)
+ItalicAngle 0
+IsFixedPitch false
+UnderlinePosition -272
+UnderlineThickness 175
+Version Version 2.10
+EncodingScheme ISO10646-1
+FontBBox -93 -313 1187 1103
+CapHeight 729
+XHeight 539
+Ascender 785
+Descender -283
+StartCharMetrics 577
+C 0 ; WX 500 ; N .notdef ; B 62 0 438 800 ;
+C 32 ; WX 298 ; N space ; B 0 0 0 0 ;
+C 33 ; WX 237 ; N exclam ; B 58 -33 163 784 ;
+C 34 ; WX 424 ; N quotedbl ; B 56 453 336 776 ;
+C 35 ; WX 842 ; N numbersign ; B 15 -14 834 770 ;
+C 36 ; WX 693 ; N dollar ; B 75 -194 626 841 ;
+C 37 ; WX 820 ; N percent ; B 71 -15 786 802 ;
+C 38 ; WX 654 ; N ampersand ; B 36 -46 620 764 ;
+C 39 ; WX 388 ; N quotesingle ; B 138 556 231 811 ;
+C 40 ; WX 366 ; N parenleft ; B 55 -211 340 785 ;
+C 41 ; WX 366 ; N parenright ; B 55 -211 340 785 ;
+C 42 ; WX 529 ; N asterisk ; B 22 381 471 779 ;
+C 43 ; WX 480 ; N plus ; B 23 113 446 511 ;
+C 44 ; WX 276 ; N comma ; B 96 -168 244 70 ;
+C 45 ; WX 416 ; N hyphen ; B 54 225 371 309 ;
+C 46 ; WX 249 ; N period ; B 69 -46 191 76 ;
+C 47 ; WX 511 ; N slash ; B 41 -44 475 794 ;
+C 48 ; WX 610 ; N zero ; B 29 -20 576 760 ;
+C 49 ; WX 450 ; N one ; B 77 -1 392 762 ;
+C 50 ; WX 610 ; N two ; B 80 -2 539 750 ;
+C 51 ; WX 610 ; N three ; B 71 -23 529 746 ;
+C 52 ; WX 610 ; N four ; B 23 -13 581 762 ;
+C 53 ; WX 610 ; N five ; B 61 -31 563 754 ;
+C 54 ; WX 610 ; N six ; B 54 -36 542 760 ;
+C 55 ; WX 610 ; N seven ; B 34 -33 593 737 ;
+C 56 ; WX 610 ; N eight ; B 59 -27 550 746 ;
+C 57 ; WX 610 ; N nine ; B 54 -47 564 750 ;
+C 58 ; WX 298 ; N colon ; B 89 60 203 552 ;
+C 59 ; WX 298 ; N semicolon ; B 39 -95 201 549 ;
+C 60 ; WX 381 ; N less ; B 9 94 307 519 ;
+C 61 ; WX 510 ; N equal ; B 48 134 430 488 ;
+C 62 ; WX 381 ; N greater ; B 28 90 360 550 ;
+C 63 ; WX 523 ; N question ; B 25 -36 470 722 ;
+C 64 ; WX 931 ; N at ; B 53 -69 856 796 ;
+C 65 ; WX 731 ; N A ; B 63 -15 661 722 ;
+C 66 ; WX 630 ; N B ; B 93 -24 590 768 ;
+C 67 ; WX 602 ; N C ; B 43 -12 588 744 ;
+C 68 ; WX 721 ; N D ; B 89 -49 672 760 ;
+C 69 ; WX 624 ; N E ; B 68 -49 593 784 ;
+C 70 ; WX 606 ; N F ; B 84 -52 588 769 ;
+C 71 ; WX 679 ; N G ; B 38 -34 662 768 ;
+C 72 ; WX 768 ; N H ; B 74 -41 716 759 ;
+C 73 ; WX 546 ; N I ; B 36 -18 518 730 ; L J IJ ;
+C 74 ; WX 665 ; N J ; B 45 -59 633 740 ;
+C 75 ; WX 610 ; N K ; B 104 -54 607 748 ;
+C 76 ; WX 550 ; N L ; B 49 -46 532 753 ;
+C 77 ; WX 882 ; N M ; B 54 -41 846 750 ;
+C 78 ; WX 796 ; N N ; B 60 -39 756 758 ;
+C 79 ; WX 798 ; N O ; B 56 -30 756 740 ;
+C 80 ; WX 520 ; N P ; B 48 -12 491 768 ;
+C 81 ; WX 876 ; N Q ; B 37 -214 855 740 ;
+C 82 ; WX 628 ; N R ; B 57 -18 600 751 ;
+C 83 ; WX 693 ; N S ; B 65 -28 646 717 ;
+C 84 ; WX 679 ; N T ; B 56 -4 715 740 ;
+C 85 ; WX 736 ; N U ; B 75 -20 679 734 ;
+C 86 ; WX 649 ; N V ; B 70 -40 648 750 ;
+C 87 ; WX 1039 ; N W ; B 67 -47 1024 746 ;
+C 88 ; WX 723 ; N X ; B 33 -42 687 743 ;
+C 89 ; WX 635 ; N Y ; B 14 -35 599 743 ;
+C 90 ; WX 693 ; N Z ; B 33 -25 675 737 ;
+C 91 ; WX 376 ; N bracketleft ; B 85 -204 343 743 ;
+C 92 ; WX 549 ; N backslash ; B 86 -69 496 745 ;
+C 93 ; WX 376 ; N bracketright ; B 85 -204 343 743 ;
+C 94 ; WX 581 ; N asciicircum ; B 96 547 499 804 ;
+C 95 ; WX 626 ; N underscore ; B -18 -169 646 -76 ;
+C 96 ; WX 556 ; N grave ; B 72 575 282 812 ;
+C 97 ; WX 511 ; N a ; B 24 -33 495 510 ;
+C 98 ; WX 593 ; N b ; B 74 -21 547 770 ;
+C 99 ; WX 513 ; N c ; B 51 -31 474 520 ;
+C 100 ; WX 587 ; N d ; B 50 -23 538 779 ;
+C 101 ; WX 547 ; N e ; B 42 -23 529 511 ;
+C 102 ; WX 508 ; N f ; B 36 -79 460 781 ;
+C 103 ; WX 530 ; N g ; B 28 -276 494 500 ;
+C 104 ; WX 577 ; N h ; B 70 -31 527 783 ;
+C 105 ; WX 280 ; N i ; B 87 -3 219 732 ; L j ij ;
+C 106 ; WX 403 ; N j ; B -9 -292 321 731 ;
+C 107 ; WX 540 ; N k ; B 79 -21 526 784 ;
+C 108 ; WX 273 ; N l ; B 84 -21 197 786 ;
+C 109 ; WX 776 ; N m ; B 59 -61 737 542 ;
+C 110 ; WX 523 ; N n ; B 60 -35 492 534 ;
+C 111 ; WX 525 ; N o ; B 40 -29 474 507 ;
+C 112 ; WX 534 ; N p ; B 58 -284 493 537 ;
+C 113 ; WX 520 ; N q ; B 29 -272 461 520 ;
+C 114 ; WX 480 ; N r ; B 67 -33 449 515 ;
+C 115 ; WX 486 ; N s ; B 20 -30 446 558 ;
+C 116 ; WX 471 ; N t ; B 31 -32 443 683 ;
+C 117 ; WX 520 ; N u ; B 53 -40 476 521 ;
+C 118 ; WX 486 ; N v ; B 30 -20 474 516 ;
+C 119 ; WX 684 ; N w ; B 37 -40 658 509 ;
+C 120 ; WX 590 ; N x ; B 29 -22 563 540 ;
+C 121 ; WX 520 ; N y ; B -2 -283 500 508 ;
+C 122 ; WX 538 ; N z ; B 59 -38 508 516 ;
+C 123 ; WX 366 ; N braceleft ; B 2 -188 341 794 ;
+C 124 ; WX 421 ; N bar ; B 172 -177 260 838 ;
+C 125 ; WX 366 ; N braceright ; B 2 -188 341 794 ;
+C 126 ; WX 597 ; N asciitilde ; B 48 228 558 457 ;
+C 160 ; WX 298 ; N nonbreakingspace ; B 0 0 0 0 ;
+C 161 ; WX 237 ; N exclamdown ; B 58 -33 163 784 ;
+C 162 ; WX 623 ; N cent ; B 94 15 578 850 ;
+C 163 ; WX 793 ; N sterling ; B 18 -74 713 787 ;
+C 164 ; WX 611 ; N currency ; B 27 87 602 645 ;
+C 165 ; WX 635 ; N yen ; B 64 -26 573 712 ;
+C 166 ; WX 404 ; N brokenbar ; B 159 -22 240 828 ;
+C 167 ; WX 634 ; N section ; B 57 -38 538 802 ;
+C 168 ; WX 556 ; N dieresis ; B 107 578 477 674 ;
+C 169 ; WX 795 ; N copyright ; B 43 122 744 792 ;
+C 170 ; WX 526 ; N ordfeminine ; B 49 435 445 821 ;
+C 171 ; WX 577 ; N guillemotleft ; B 9 83 528 519 ;
+C 172 ; WX 480 ; N logicalnot ; B 23 121 447 360 ;
+C 173 ; WX 416 ; N hyphenminus ; B 54 225 371 309 ;
+C 174 ; WX 795 ; N registered ; B 44 101 752 797 ;
+C 175 ; WX 626 ; N overscore ; B -18 831 646 924 ;
+C 176 ; WX 409 ; N degree ; B 33 475 375 821 ;
+C 177 ; WX 480 ; N plusminus ; B 23 -63 446 511 ;
+C 178 ; WX 650 ; N twosuperior ; B 186 440 481 854 ;
+C 179 ; WX 650 ; N threesuperior ; B 202 417 463 831 ;
+C 180 ; WX 556 ; N acute ; B 104 579 325 813 ;
+C 181 ; WX 520 ; N mu1 ; B 10 -199 577 521 ;
+C 182 ; WX 693 ; N paragraph ; B 34 -96 648 810 ;
+C 183 ; WX 249 ; N periodcentered ; B 69 289 191 411 ;
+C 184 ; WX 556 ; N cedilla ; B 178 -218 423 57 ;
+C 185 ; WX 650 ; N onesuperior ; B 196 440 468 842 ;
+C 186 ; WX 449 ; N ordmasculine ; B 19 435 421 831 ;
+C 187 ; WX 577 ; N guillemotright ; B 9 83 528 519 ;
+C 188 ; WX 650 ; N onequarter ; B 79 -167 592 842 ;
+C 189 ; WX 650 ; N onehalf ; B 79 -175 592 842 ;
+C 190 ; WX 650 ; N threequarters ; B 79 -167 592 831 ;
+C 191 ; WX 523 ; N questiondown ; B 25 -36 470 722 ;
+C 192 ; WX 731 ; N Agrave ; B 63 -15 661 1036 ;
+C 193 ; WX 731 ; N Aacute ; B 63 -15 661 1030 ;
+C 194 ; WX 731 ; N Acircumflex ; B 63 -15 661 1021 ;
+C 195 ; WX 731 ; N Atilde ; B 63 -15 707 980 ;
+C 196 ; WX 731 ; N Adieresis ; B 63 -15 661 894 ;
+C 197 ; WX 731 ; N Aring ; B 63 -15 661 978 ;
+C 198 ; WX 1086 ; N AE ; B 22 -43 1083 792 ;
+C 199 ; WX 602 ; N Ccedilla ; B 43 -199 588 744 ;
+C 200 ; WX 624 ; N Egrave ; B 68 -49 593 1089 ;
+C 201 ; WX 624 ; N Eacute ; B 68 -49 593 1095 ;
+C 202 ; WX 624 ; N Ecircumflex ; B 68 -49 593 1103 ;
+C 203 ; WX 624 ; N Edieresis ; B 68 -49 593 952 ;
+C 204 ; WX 546 ; N Igrave ; B 36 -18 518 1056 ;
+C 205 ; WX 546 ; N Iacute ; B 36 -18 518 1043 ;
+C 206 ; WX 546 ; N Icircumflex ; B 36 -18 518 1063 ;
+C 207 ; WX 546 ; N Idieresis ; B 36 -18 518 904 ;
+C 208 ; WX 721 ; N Eth ; B -22 -49 672 760 ;
+C 209 ; WX 796 ; N Ntilde ; B 60 -39 756 989 ;
+C 210 ; WX 798 ; N Ograve ; B 56 -30 756 1041 ;
+C 211 ; WX 798 ; N Oacute ; B 56 -30 756 1033 ;
+C 212 ; WX 798 ; N Ocircumflex ; B 56 -30 756 1045 ;
+C 213 ; WX 798 ; N Otilde ; B 56 -30 756 980 ;
+C 214 ; WX 798 ; N Odieresis ; B 56 -30 756 907 ;
+C 215 ; WX 480 ; N multiply ; B 32 109 416 499 ;
+C 216 ; WX 798 ; N Oslash ; B 40 -44 797 753 ;
+C 217 ; WX 736 ; N Ugrave ; B 75 -20 679 1034 ;
+C 218 ; WX 736 ; N Uacute ; B 75 -20 679 1036 ;
+C 219 ; WX 736 ; N Ucircumflex ; B 75 -20 679 1048 ;
+C 220 ; WX 736 ; N Udieresis ; B 75 -20 679 896 ;
+C 221 ; WX 635 ; N Yacute ; B 14 -35 599 1078 ;
+C 222 ; WX 520 ; N Thorn ; B 48 -12 494 758 ;
+C 223 ; WX 443 ; N germandbls ; B 22 -77 433 767 ;
+C 224 ; WX 511 ; N agrave ; B 32 -33 502 808 ;
+C 225 ; WX 511 ; N aacute ; B 32 -33 502 813 ;
+C 226 ; WX 511 ; N acircumflex ; B 32 -33 502 830 ;
+C 227 ; WX 511 ; N atilde ; B 32 -33 521 750 ;
+C 228 ; WX 511 ; N adieresis ; B 32 -33 502 674 ;
+C 229 ; WX 511 ; N aring ; B 32 -33 502 859 ;
+C 230 ; WX 911 ; N ae ; B 32 -24 876 511 ;
+C 231 ; WX 513 ; N ccedilla ; B 51 -218 474 520 ;
+C 232 ; WX 547 ; N egrave ; B 42 -23 529 812 ;
+C 233 ; WX 547 ; N eacute ; B 42 -23 529 813 ;
+C 234 ; WX 547 ; N ecircumflex ; B 42 -23 529 826 ;
+C 235 ; WX 547 ; N edieresis ; B 42 -23 529 722 ;
+C 236 ; WX 280 ; N igrave ; B 12 -3 222 812 ;
+C 237 ; WX 280 ; N iacute ; B 46 -3 268 813 ;
+C 238 ; WX 280 ; N icircumflex ; B -70 -3 333 801 ;
+C 239 ; WX 280 ; N idieresis ; B -60 -3 309 674 ;
+C 240 ; WX 508 ; N eth ; B 90 -21 484 751 ;
+C 241 ; WX 523 ; N ntilde ; B 60 -35 525 759 ;
+C 242 ; WX 525 ; N ograve ; B 43 -29 477 812 ;
+C 243 ; WX 525 ; N oacute ; B 43 -29 477 813 ;
+C 244 ; WX 525 ; N ocircumflex ; B 43 -29 486 826 ;
+C 245 ; WX 525 ; N otilde ; B 43 -29 534 759 ;
+C 246 ; WX 525 ; N odieresis ; B 43 -29 498 674 ;
+C 247 ; WX 480 ; N divide ; B 23 91 446 557 ;
+C 248 ; WX 525 ; N oslash ; B 26 -29 503 511 ;
+C 249 ; WX 520 ; N ugrave ; B 53 -40 476 815 ;
+C 250 ; WX 520 ; N uacute ; B 53 -40 476 813 ;
+C 251 ; WX 520 ; N ucircumflex ; B 53 -40 476 826 ;
+C 252 ; WX 520 ; N udieresis ; B 53 -40 476 719 ;
+C 253 ; WX 520 ; N yacute ; B -2 -283 500 813 ;
+C 254 ; WX 534 ; N thorn ; B 54 -284 493 730 ;
+C 255 ; WX 431 ; N ydieresis ; B -2 -283 500 674 ;
+C -1 ; WX 731 ; N Amacron ; B 63 -15 661 876 ;
+C -1 ; WX 511 ; N amacron ; B 24 -33 495 657 ;
+C -1 ; WX 731 ; N Abreve ; B 63 -15 663 996 ;
+C -1 ; WX 511 ; N abreve ; B 24 -33 495 776 ;
+C -1 ; WX 731 ; N Aogonek ; B 63 -168 768 722 ;
+C -1 ; WX 511 ; N aogonek ; B 24 -168 640 510 ;
+C -1 ; WX 602 ; N Cacute ; B 43 -12 588 1033 ;
+C -1 ; WX 513 ; N cacute ; B 51 -31 474 813 ;
+C -1 ; WX 602 ; N Ccircumflex ; B 43 -12 589 1045 ;
+C -1 ; WX 513 ; N ccircumflex ; B 51 -31 497 777 ;
+C -1 ; WX 602 ; N Cdot ; B 43 -12 588 906 ;
+C -1 ; WX 513 ; N cdot ; B 51 -31 474 686 ;
+C -1 ; WX 602 ; N Ccaron ; B 43 -12 588 1015 ;
+C -1 ; WX 602 ; N ccaron ; B 51 -31 474 795 ;
+C -1 ; WX 721 ; N Dcaron ; B 89 -49 672 1015 ;
+C -1 ; WX 829 ; N dcaron ; B 50 -23 736 783 ;
+C -1 ; WX 721 ; N Dslash ; B -22 -49 672 760 ;
+C -1 ; WX 602 ; N dcroat ; B 50 -23 597 779 ;
+C -1 ; WX 624 ; N Emacron ; B 68 -49 593 916 ;
+C -1 ; WX 547 ; N emacron ; B 42 -23 529 657 ;
+C -1 ; WX 624 ; N Ebreve ; B 68 -49 593 1021 ;
+C -1 ; WX 547 ; N ebreve ; B 42 -23 529 776 ;
+C -1 ; WX 624 ; N Edot ; B 68 -49 593 930 ;
+C -1 ; WX 547 ; N edot ; B 42 -23 529 686 ;
+C -1 ; WX 624 ; N Eogonek ; B 97 -203 622 784 ;
+C -1 ; WX 547 ; N eogonek ; B 42 -188 529 511 ;
+C -1 ; WX 624 ; N Ecaron ; B 68 -49 593 1029 ;
+C -1 ; WX 547 ; N ecaron ; B 42 -23 529 795 ;
+C -1 ; WX 679 ; N Gcircumflex ; B 38 -34 662 1045 ;
+C -1 ; WX 530 ; N gcircumflex ; B 28 -276 506 826 ;
+C -1 ; WX 679 ; N Gbreve ; B 38 -34 662 996 ;
+C -1 ; WX 530 ; N gbreve ; B 28 -276 517 776 ;
+C -1 ; WX 679 ; N Gdot ; B 38 -34 662 906 ;
+C -1 ; WX 530 ; N gdot ; B 28 -276 494 686 ;
+C -1 ; WX 679 ; N Gcedilla ; B 38 -218 662 768 ;
+C -1 ; WX 530 ; N gcedilla ; B 28 -276 494 827 ;
+C -1 ; WX 768 ; N Hcircumflex ; B 74 -41 716 1045 ;
+C -1 ; WX 577 ; N hcircumflex ; B 70 -31 555 1045 ;
+C -1 ; WX 768 ; N Hbar ; B -18 -41 785 759 ;
+C -1 ; WX 577 ; N hbar ; B -6 -31 527 783 ;
+C -1 ; WX 546 ; N Itilde ; B 36 -18 518 979 ;
+C -1 ; WX 280 ; N itilde ; B -93 -3 360 759 ;
+C -1 ; WX 546 ; N Imacron ; B 36 -18 518 876 ;
+C -1 ; WX 280 ; N imacron ; B -41 -3 299 657 ;
+C -1 ; WX 546 ; N Ibreve ; B 36 -18 518 996 ;
+C -1 ; WX 280 ; N ibreve ; B -63 -3 351 776 ;
+C -1 ; WX 546 ; N Iogonek ; B 36 -168 518 730 ;
+C -1 ; WX 280 ; N iogonek ; B 23 -168 279 732 ;
+C -1 ; WX 546 ; N Idotaccent ; B 36 -18 518 906 ;
+C -1 ; WX 280 ; N dotlessi ; B 87 -3 193 500 ;
+C -1 ; WX 1126 ; N IJ ; B 36 -59 1094 740 ;
+C -1 ; WX 530 ; N ij ; B 87 -292 448 732 ;
+C -1 ; WX 665 ; N Jcircumflex ; B 45 -59 633 1045 ;
+C -1 ; WX 403 ; N jcircumflex ; B -28 -292 375 826 ;
+C -1 ; WX 610 ; N Kcedilla ; B 104 -218 607 748 ;
+C -1 ; WX 540 ; N kcedilla ; B 79 -218 526 784 ;
+C -1 ; WX 540 ; N kgreenlandic ; B 61 -21 507 569 ;
+C -1 ; WX 550 ; N Lacute ; B 49 -46 532 1033 ;
+C -1 ; WX 273 ; N lacute ; B 84 -21 325 1058 ;
+C -1 ; WX 550 ; N Lcedilla ; B 49 -218 532 753 ;
+C -1 ; WX 273 ; N lcedilla ; B 84 -218 330 786 ;
+C -1 ; WX 550 ; N Lcaron ; B 49 -46 532 753 ;
+C -1 ; WX 464 ; N lcaron ; B 84 -21 388 786 ;
+C -1 ; WX 550 ; N Ldot ; B 49 -46 532 753 ;
+C -1 ; WX 395 ; N ldot ; B 84 -21 396 786 ;
+C -1 ; WX 550 ; N Lslash ; B -63 -46 532 753 ;
+C -1 ; WX 227 ; N lslash ; B -43 -18 274 742 ;
+C -1 ; WX 796 ; N Nacute ; B 60 -39 756 1033 ;
+C -1 ; WX 523 ; N nacute ; B 60 -35 492 813 ;
+C -1 ; WX 796 ; N Ncedilla ; B 60 -218 756 758 ;
+C -1 ; WX 523 ; N ncedilla ; B 60 -218 492 534 ;
+C -1 ; WX 796 ; N Ncaron ; B 60 -39 756 1015 ;
+C -1 ; WX 523 ; N ncaron ; B 60 -35 492 795 ;
+C -1 ; WX 621 ; N napostrophe ; B 28 -35 589 774 ;
+C -1 ; WX 796 ; N Eng ; B 60 -257 756 758 ;
+C -1 ; WX 523 ; N eng ; B 60 -292 497 534 ;
+C -1 ; WX 798 ; N Omacron ; B 56 -30 756 876 ;
+C -1 ; WX 525 ; N omacron ; B 40 -29 474 657 ;
+C -1 ; WX 798 ; N Obreve ; B 56 -30 756 996 ;
+C -1 ; WX 525 ; N obreve ; B 40 -29 507 776 ;
+C -1 ; WX 798 ; N Odblacute ; B 56 -30 756 999 ;
+C -1 ; WX 525 ; N odblacute ; B 40 -29 488 779 ;
+C -1 ; WX 1193 ; N OE ; B 63 -38 1187 795 ;
+C -1 ; WX 896 ; N oe ; B 40 -29 878 511 ;
+C -1 ; WX 628 ; N Racute ; B 57 -18 600 1058 ;
+C -1 ; WX 480 ; N racute ; B 67 -33 449 813 ;
+C -1 ; WX 628 ; N Rcedilla ; B 57 -218 600 751 ;
+C -1 ; WX 480 ; N rcedilla ; B 28 -218 449 515 ;
+C -1 ; WX 628 ; N Rcaron ; B 57 -18 600 1015 ;
+C -1 ; WX 480 ; N rcaron ; B 67 -33 449 795 ;
+C -1 ; WX 693 ; N Sacute ; B 65 -28 646 1033 ;
+C -1 ; WX 486 ; N sacute ; B 20 -30 446 813 ;
+C -1 ; WX 693 ; N Scircumflex ; B 65 -28 646 1045 ;
+C -1 ; WX 486 ; N scircumflex ; B 20 -30 446 826 ;
+C -1 ; WX 693 ; N Scedilla ; B 65 -218 646 717 ;
+C -1 ; WX 486 ; N scedilla ; B 20 -218 446 558 ;
+C -1 ; WX 693 ; N Scaron ; B 65 -28 646 1015 ;
+C -1 ; WX 403 ; N scaron ; B 20 -30 447 795 ;
+C -1 ; WX 679 ; N Tcedilla ; B 56 -313 715 740 ;
+C -1 ; WX 471 ; N tcedilla ; B 31 -313 443 683 ;
+C -1 ; WX 679 ; N Tcaron ; B 56 -4 715 1039 ;
+C -1 ; WX 639 ; N tcaron ; B 31 -32 607 683 ;
+C -1 ; WX 679 ; N Tbar ; B 20 -4 679 740 ;
+C -1 ; WX 471 ; N tbar ; B 31 -32 443 683 ;
+C -1 ; WX 736 ; N Utilde ; B 75 -20 679 979 ;
+C -1 ; WX 520 ; N utilde ; B 43 -40 497 759 ;
+C -1 ; WX 736 ; N Umacron ; B 75 -20 679 876 ;
+C -1 ; WX 520 ; N umacron ; B 53 -40 476 657 ;
+C -1 ; WX 736 ; N Ubreve ; B 75 -20 679 996 ;
+C -1 ; WX 520 ; N ubreve ; B 53 -40 478 776 ;
+C -1 ; WX 736 ; N Uring ; B 75 -20 679 1079 ;
+C -1 ; WX 520 ; N uring ; B 53 -40 476 859 ;
+C -1 ; WX 736 ; N Udblacute ; B 75 -20 679 999 ;
+C -1 ; WX 520 ; N udblacute ; B 53 -40 503 779 ;
+C -1 ; WX 736 ; N Uogonek ; B 75 -217 679 734 ;
+C -1 ; WX 520 ; N uogonek ; B 53 -217 548 521 ;
+C -1 ; WX 1039 ; N Wcircumflex ; B 67 -47 1024 1045 ;
+C -1 ; WX 684 ; N wcircumflex ; B 37 -40 658 826 ;
+C -1 ; WX 635 ; N Ycircumflex ; B 14 -35 599 1045 ;
+C -1 ; WX 520 ; N ycircumflex ; B -2 -283 500 826 ;
+C -1 ; WX 635 ; N Ydieresis ; B 14 -35 599 896 ;
+C -1 ; WX 693 ; N Zacute ; B 33 -25 675 1058 ;
+C -1 ; WX 538 ; N zacute ; B 59 -38 508 813 ;
+C -1 ; WX 693 ; N Zdot ; B 33 -25 675 906 ;
+C -1 ; WX 538 ; N zdot ; B 59 -38 508 686 ;
+C -1 ; WX 693 ; N Zcaron ; B 33 -25 675 1063 ;
+C -1 ; WX 538 ; N zcaron ; B 59 -38 508 795 ;
+C -1 ; WX 508 ; N longs ; B 153 -79 460 781 ;
+C -1 ; WX 426 ; N florin ; B -51 -177 561 763 ;
+C -1 ; WX 731 ; N Aringacute ; B 63 -15 661 1102 ;
+C -1 ; WX 511 ; N aringacute ; B 32 -33 502 980 ;
+C -1 ; WX 1086 ; N AEacute ; B 22 -43 1083 1058 ;
+C -1 ; WX 911 ; N aeacute ; B 32 -24 876 813 ;
+C -1 ; WX 798 ; N Oslashacute ; B 40 -44 797 1033 ;
+C -1 ; WX 525 ; N oslashacute ; B 26 -29 503 813 ;
+C -1 ; WX 556 ; N circumflex ; B 94 569 497 826 ;
+C -1 ; WX 556 ; N caron ; B 138 574 466 795 ;
+C -1 ; WX 556 ; N macron ; B 135 579 475 657 ;
+C -1 ; WX 556 ; N breve ; B 104 575 517 776 ;
+C -1 ; WX 556 ; N dotaccent ; B 154 577 274 686 ;
+C -1 ; WX 556 ; N ring ; B 128 579 458 859 ;
+C -1 ; WX 556 ; N ogonek ; B 145 -168 401 84 ;
+C -1 ; WX 556 ; N tilde ; B 83 577 536 759 ;
+C -1 ; WX 556 ; N hungarumlaut ; B 102 577 464 779 ;
+C -1 ; WX 298 ; N uni037E ; B 39 -95 201 549 ;
+C -1 ; WX 556 ; N tonos ; B 227 561 360 735 ;
+C -1 ; WX 556 ; N dieresistonos ; B 59 561 516 735 ;
+C -1 ; WX 731 ; N Alphatonos ; B 63 -15 661 760 ;
+C -1 ; WX 249 ; N anoteleia ; B 69 289 191 411 ;
+C -1 ; WX 789 ; N Epsilontonos ; B 69 -49 757 784 ;
+C -1 ; WX 982 ; N Etatonos ; B 95 -41 931 760 ;
+C -1 ; WX 756 ; N Iotatonos ; B 21 -18 728 760 ;
+C -1 ; WX 876 ; N Omicrontonos ; B 46 -30 834 760 ;
+C -1 ; WX 850 ; N Upsilontonos ; B 21 -35 813 760 ;
+C -1 ; WX 969 ; N Omegatonos ; B 31 -69 938 796 ;
+C -1 ; WX 280 ; N iotadieresistonos ; B -54 -3 403 735 ;
+C -1 ; WX 731 ; N Alpha ; B 63 -15 661 722 ;
+C -1 ; WX 630 ; N Beta ; B 93 -24 590 768 ;
+C -1 ; WX 616 ; N Gamma ; B 88 -4 581 740 ;
+C -1 ; WX 794 ; N Delta ; B 47 -36 782 813 ;
+C -1 ; WX 624 ; N Epsilon ; B 68 -49 593 784 ;
+C -1 ; WX 693 ; N Zeta ; B 33 -25 675 737 ;
+C -1 ; WX 768 ; N Eta ; B 74 -41 716 759 ;
+C -1 ; WX 798 ; N Theta ; B 56 -30 756 740 ;
+C -1 ; WX 546 ; N Iota ; B 36 -18 518 730 ;
+C -1 ; WX 610 ; N Kappa ; B 104 -54 607 748 ;
+C -1 ; WX 689 ; N Lambda ; B 7 -40 693 760 ;
+C -1 ; WX 882 ; N Mu ; B 54 -41 846 750 ;
+C -1 ; WX 796 ; N Nu ; B 60 -39 756 758 ;
+C -1 ; WX 720 ; N Xi ; B 41 -16 693 736 ;
+C -1 ; WX 798 ; N Omicron ; B 56 -30 756 740 ;
+C -1 ; WX 908 ; N Pi ; B 51 -19 858 766 ;
+C -1 ; WX 520 ; N Rho ; B 48 -12 491 768 ;
+C -1 ; WX 747 ; N Sigma ; B 60 -14 679 743 ;
+C -1 ; WX 679 ; N Tau ; B 56 -4 715 740 ;
+C -1 ; WX 635 ; N Upsilon ; B 14 -35 599 743 ;
+C -1 ; WX 638 ; N Phi ; B 44 -18 622 730 ;
+C -1 ; WX 723 ; N Chi ; B 33 -42 687 743 ;
+C -1 ; WX 673 ; N Psi ; B 34 -13 650 756 ;
+C -1 ; WX 959 ; N Omega ; B 31 -69 929 796 ;
+C -1 ; WX 546 ; N Iotadieresis ; B 36 -18 518 904 ;
+C -1 ; WX 635 ; N Upsilondieresis ; B 14 -35 599 896 ;
+C -1 ; WX 532 ; N alphatonos ; B 24 -33 505 735 ;
+C -1 ; WX 491 ; N epsilontonos ; B 76 -26 445 735 ;
+C -1 ; WX 523 ; N etatonos ; B 60 -157 501 735 ;
+C -1 ; WX 280 ; N iotatonos ; B 85 -3 218 735 ;
+C -1 ; WX 520 ; N upsilondieresistonos ; B 36 -31 516 735 ;
+C -1 ; WX 532 ; N alpha ; B 24 -33 505 533 ;
+C -1 ; WX 586 ; N beta ; B 54 -197 535 723 ;
+C -1 ; WX 486 ; N gamma ; B 30 -164 474 516 ;
+C -1 ; WX 525 ; N delta ; B 40 -29 491 742 ;
+C -1 ; WX 491 ; N epsilon ; B 76 -26 445 514 ;
+C -1 ; WX 513 ; N zeta ; B 51 -203 497 757 ;
+C -1 ; WX 523 ; N eta ; B 60 -157 501 534 ;
+C -1 ; WX 610 ; N theta ; B 29 -20 576 760 ;
+C -1 ; WX 280 ; N iota ; B 87 -3 193 500 ;
+C -1 ; WX 540 ; N kappa ; B 60 -21 506 522 ;
+C -1 ; WX 486 ; N lambda ; B 30 -12 474 667 ;
+C -1 ; WX 520 ; N mu ; B 53 -196 476 521 ;
+C -1 ; WX 486 ; N nu ; B 30 -20 474 516 ;
+C -1 ; WX 513 ; N xi ; B 51 -203 446 778 ;
+C -1 ; WX 525 ; N omicron ; B 40 -29 474 507 ;
+C -1 ; WX 627 ; N pi ; B 18 -21 613 512 ;
+C -1 ; WX 525 ; N rho ; B 15 -203 474 507 ;
+C -1 ; WX 513 ; N sigma1 ; B 51 -203 464 520 ;
+C -1 ; WX 525 ; N sigma ; B 40 -29 546 507 ;
+C -1 ; WX 471 ; N tau ; B 31 -32 443 517 ;
+C -1 ; WX 520 ; N upsilon ; B 36 -31 487 527 ;
+C -1 ; WX 615 ; N phi ; B 55 -196 560 504 ;
+C -1 ; WX 590 ; N chi ; B 15 -182 531 524 ;
+C -1 ; WX 585 ; N psi ; B 31 -200 555 533 ;
+C -1 ; WX 760 ; N omega ; B 27 -21 710 522 ;
+C -1 ; WX 280 ; N iotadieresis ; B -60 -3 309 674 ;
+C -1 ; WX 520 ; N upsilondieresis ; B 36 -31 487 674 ;
+C -1 ; WX 525 ; N omicrontonos ; B 40 -29 474 735 ;
+C -1 ; WX 520 ; N upsilontonos ; B 36 -31 487 735 ;
+C -1 ; WX 760 ; N omegatonos ; B 27 -21 710 735 ;
+C -1 ; WX 624 ; N afii10023 ; B 68 -49 593 952 ;
+C -1 ; WX 850 ; N afii10051 ; B 20 -137 802 740 ;
+C -1 ; WX 616 ; N afii10052 ; B 88 -4 581 1033 ;
+C -1 ; WX 602 ; N afii10053 ; B 43 -12 588 744 ;
+C -1 ; WX 693 ; N afii10054 ; B 65 -28 646 717 ;
+C -1 ; WX 546 ; N afii10055 ; B 36 -18 518 730 ;
+C -1 ; WX 546 ; N afii10056 ; B 36 -18 518 904 ;
+C -1 ; WX 665 ; N afii10057 ; B 45 -59 633 740 ;
+C -1 ; WX 1000 ; N afii10058 ; B 12 -10 967 745 ;
+C -1 ; WX 977 ; N afii10059 ; B 23 -13 938 759 ;
+C -1 ; WX 846 ; N afii10060 ; B 20 -20 773 740 ;
+C -1 ; WX 633 ; N afii10061 ; B 78 -8 592 1033 ;
+C -1 ; WX 635 ; N afii10062 ; B 14 -19 599 996 ;
+C -1 ; WX 729 ; N afii10145 ; B 60 -136 677 750 ;
+C -1 ; WX 731 ; N afii10017 ; B 63 -15 661 722 ;
+C -1 ; WX 604 ; N afii10018 ; B 75 -7 552 744 ;
+C -1 ; WX 630 ; N afii10019 ; B 93 -24 590 768 ;
+C -1 ; WX 616 ; N afii10020 ; B 88 -4 581 740 ;
+C -1 ; WX 768 ; N afii10021 ; B 43 -164 728 754 ;
+C -1 ; WX 624 ; N afii10022 ; B 68 -49 593 784 ;
+C -1 ; WX 859 ; N afii10024 ; B 14 -8 839 751 ;
+C -1 ; WX 601 ; N afii10025 ; B 32 -21 548 737 ;
+C -1 ; WX 747 ; N afii10026 ; B 63 -26 678 756 ;
+C -1 ; WX 747 ; N afii10027 ; B 63 -26 678 996 ;
+C -1 ; WX 633 ; N afii10028 ; B 78 -8 592 751 ;
+C -1 ; WX 738 ; N afii10029 ; B 12 -11 652 745 ;
+C -1 ; WX 882 ; N afii10030 ; B 54 -41 846 750 ;
+C -1 ; WX 768 ; N afii10031 ; B 74 -41 716 759 ;
+C -1 ; WX 798 ; N afii10032 ; B 56 -30 756 740 ;
+C -1 ; WX 908 ; N afii10033 ; B 51 -19 858 766 ;
+C -1 ; WX 520 ; N afii10034 ; B 48 -12 491 768 ;
+C -1 ; WX 602 ; N afii10035 ; B 43 -12 588 744 ;
+C -1 ; WX 679 ; N afii10036 ; B 56 -4 715 740 ;
+C -1 ; WX 635 ; N afii10037 ; B 14 -19 599 743 ;
+C -1 ; WX 638 ; N afii10038 ; B 44 -18 622 730 ;
+C -1 ; WX 723 ; N afii10039 ; B 33 -42 687 743 ;
+C -1 ; WX 773 ; N afii10040 ; B 60 -145 750 750 ;
+C -1 ; WX 617 ; N afii10041 ; B 51 -15 548 754 ;
+C -1 ; WX 906 ; N afii10042 ; B 48 -8 848 750 ;
+C -1 ; WX 957 ; N afii10043 ; B 48 -145 934 750 ;
+C -1 ; WX 759 ; N afii10044 ; B 18 -7 708 741 ;
+C -1 ; WX 1075 ; N afii10045 ; B 75 -18 1030 740 ;
+C -1 ; WX 604 ; N afii10046 ; B 75 -7 552 740 ;
+C -1 ; WX 654 ; N afii10047 ; B 42 -7 604 733 ;
+C -1 ; WX 1130 ; N afii10048 ; B 41 -30 1088 751 ;
+C -1 ; WX 628 ; N afii10049 ; B 12 -19 574 751 ;
+C -1 ; WX 511 ; N afii10065 ; B 24 -33 495 510 ;
+C -1 ; WX 525 ; N afii10066 ; B 37 -29 504 772 ;
+C -1 ; WX 503 ; N afii10067 ; B 63 -23 468 512 ;
+C -1 ; WX 470 ; N afii10068 ; B 65 -23 458 518 ;
+C -1 ; WX 592 ; N afii10069 ; B 16 -128 570 520 ;
+C -1 ; WX 547 ; N afii10070 ; B 42 -23 529 511 ;
+C -1 ; WX 682 ; N afii10072 ; B 32 -13 635 519 ;
+C -1 ; WX 439 ; N afii10073 ; B 51 -23 388 523 ;
+C -1 ; WX 636 ; N afii10074 ; B 48 -29 559 513 ;
+C -1 ; WX 636 ; N afii10075 ; B 48 -29 559 776 ;
+C -1 ; WX 492 ; N afii10076 ; B 62 -13 474 519 ;
+C -1 ; WX 646 ; N afii10077 ; B 14 -20 578 520 ;
+C -1 ; WX 734 ; N afii10078 ; B 21 -29 706 520 ;
+C -1 ; WX 559 ; N afii10079 ; B 36 -26 501 541 ;
+C -1 ; WX 591 ; N afii10080 ; B 33 -31 559 531 ;
+C -1 ; WX 646 ; N afii10081 ; B 103 -22 580 511 ;
+C -1 ; WX 534 ; N afii10082 ; B 58 -284 493 537 ;
+C -1 ; WX 513 ; N afii10083 ; B 51 -31 474 520 ;
+C -1 ; WX 471 ; N afii10084 ; B 31 -32 443 517 ;
+C -1 ; WX 520 ; N afii10085 ; B -2 -283 500 508 ;
+C -1 ; WX 810 ; N afii10086 ; B 41 -284 783 537 ;
+C -1 ; WX 590 ; N afii10087 ; B 29 -22 563 540 ;
+C -1 ; WX 618 ; N afii10088 ; B 86 -123 591 530 ;
+C -1 ; WX 533 ; N afii10089 ; B 36 -26 480 533 ;
+C -1 ; WX 771 ; N afii10090 ; B 52 -25 721 530 ;
+C -1 ; WX 792 ; N afii10091 ; B 52 -163 784 530 ;
+C -1 ; WX 621 ; N afii10092 ; B 8 -7 596 532 ;
+C -1 ; WX 790 ; N afii10093 ; B 62 -22 765 516 ;
+C -1 ; WX 491 ; N afii10094 ; B 62 -7 449 516 ;
+C -1 ; WX 513 ; N afii10095 ; B 52 -21 469 515 ;
+C -1 ; WX 902 ; N afii10096 ; B 41 -31 860 548 ;
+C -1 ; WX 505 ; N afii10097 ; B 16 -19 447 512 ;
+C -1 ; WX 547 ; N afii10071 ; B 42 -23 529 722 ;
+C -1 ; WX 560 ; N afii10099 ; B -33 -200 500 783 ;
+C -1 ; WX 470 ; N afii10100 ; B 65 -23 458 813 ;
+C -1 ; WX 513 ; N afii10101 ; B 38 -25 455 511 ;
+C -1 ; WX 486 ; N afii10102 ; B 20 -30 446 558 ;
+C -1 ; WX 280 ; N afii10103 ; B 87 -3 219 732 ;
+C -1 ; WX 280 ; N afii10104 ; B -60 -3 309 674 ;
+C -1 ; WX 403 ; N afii10105 ; B -9 -292 321 731 ;
+C -1 ; WX 889 ; N afii10106 ; B 14 -19 866 529 ;
+C -1 ; WX 773 ; N afii10107 ; B 43 -11 734 517 ;
+C -1 ; WX 577 ; N afii10108 ; B -33 -31 527 783 ;
+C -1 ; WX 492 ; N afii10109 ; B 62 -13 474 813 ;
+C -1 ; WX 520 ; N afii10110 ; B -2 -283 500 776 ;
+C -1 ; WX 618 ; N afii10193 ; B 66 -168 535 530 ;
+C -1 ; WX 616 ; N afii10050 ; B 88 -4 581 868 ;
+C -1 ; WX 470 ; N afii10098 ; B 65 -23 461 656 ;
+C -1 ; WX 1039 ; N Wgrave ; B 67 -47 1024 1031 ;
+C -1 ; WX 684 ; N wgrave ; B 37 -40 658 812 ;
+C -1 ; WX 1039 ; N Wacute ; B 67 -47 1024 1033 ;
+C -1 ; WX 684 ; N wacute ; B 37 -40 658 813 ;
+C -1 ; WX 1039 ; N Wdieresis ; B 67 -47 1024 894 ;
+C -1 ; WX 684 ; N wdieresis ; B 37 -40 658 674 ;
+C -1 ; WX 635 ; N Ygrave ; B 14 -35 599 1031 ;
+C -1 ; WX 520 ; N ygrave ; B -2 -283 500 812 ;
+C -1 ; WX 441 ; N endash ; B 21 265 405 371 ;
+C -1 ; WX 882 ; N emdash ; B 32 266 834 366 ;
+C -1 ; WX 882 ; N afii00208 ; B 32 266 834 366 ;
+C -1 ; WX 626 ; N underscoredbl ; B -18 -267 646 -27 ;
+C -1 ; WX 180 ; N quoteleft ; B 37 534 139 775 ;
+C -1 ; WX 180 ; N quoteright ; B 28 534 135 774 ;
+C -1 ; WX 298 ; N quotesinglbase ; B 39 -95 199 110 ;
+C -1 ; WX 180 ; N quotereversed ; B 28 534 135 774 ;
+C -1 ; WX 393 ; N quotedblleft ; B 34 531 327 789 ;
+C -1 ; WX 393 ; N quotedblright ; B 50 487 355 772 ;
+C -1 ; WX 411 ; N quotedblbase ; B 39 -95 372 110 ;
+C -1 ; WX 596 ; N dagger ; B 24 -102 565 829 ;
+C -1 ; WX 596 ; N daggerdbl ; B 28 -102 569 829 ;
+C -1 ; WX 387 ; N bullet ; B 89 272 285 469 ;
+C -1 ; WX 675 ; N ellipsis ; B 86 -33 607 79 ;
+C -1 ; WX 1241 ; N perthousand ; B 71 -15 1158 802 ;
+C -1 ; WX 180 ; N minute ; B 28 534 135 774 ;
+C -1 ; WX 331 ; N second ; B 28 534 301 774 ;
+C -1 ; WX 381 ; N guilsinglleft ; B 51 94 349 519 ;
+C -1 ; WX 381 ; N guilsinglright ; B 51 94 349 519 ;
+C -1 ; WX 449 ; N exclamdbl ; B 58 -33 377 784 ;
+C -1 ; WX 610 ; N radicalex ; B -76 696 644 794 ;
+C -1 ; WX 811 ; N fraction ; B 12 -27 783 831 ;
+C -1 ; WX 526 ; N nsuperior ; B 95 391 425 781 ;
+C -1 ; WX 989 ; N franc ; B 84 -52 958 769 ;
+C -1 ; WX 793 ; N afii08941 ; B 41 -74 711 787 ;
+C -1 ; WX 1188 ; N peseta ; B 48 -32 1143 768 ;
+C -1 ; WX 610 ; N Euro ; B -22 -17 609 773 ;
+C -1 ; WX 820 ; N afii61248 ; B 38 -15 786 783 ;
+C -1 ; WX 488 ; N afii61289 ; B 9 -21 407 801 ;
+C -1 ; WX 1157 ; N afii61352 ; B 60 -39 1100 758 ;
+C -1 ; WX 882 ; N trademark ; B 37 413 853 786 ;
+C -1 ; WX 959 ; N Ohm ; B 31 -69 929 796 ;
+C -1 ; WX 549 ; N estimated ; B 29 -10 520 533 ;
+C -1 ; WX 650 ; N oneeighth ; B 79 -191 592 842 ;
+C -1 ; WX 650 ; N threeeighths ; B 79 -191 592 831 ;
+C -1 ; WX 650 ; N fiveeighths ; B 79 -191 592 838 ;
+C -1 ; WX 650 ; N seveneighths ; B 79 -191 592 836 ;
+C -1 ; WX 508 ; N partialdiff ; B 90 -21 484 751 ;
+C -1 ; WX 794 ; N Delta ; B 47 -36 782 813 ;
+C -1 ; WX 908 ; N product ; B 51 -136 858 766 ;
+C -1 ; WX 747 ; N summation ; B 21 -153 711 726 ;
+C -1 ; WX 480 ; N minus ; B 23 266 446 360 ;
+C -1 ; WX 249 ; N uni2219 ; B 69 289 191 411 ;
+C -1 ; WX 607 ; N radical ; B 24 -34 588 796 ;
+C -1 ; WX 836 ; N infinity ; B 71 149 765 470 ;
+C -1 ; WX 699 ; N integral ; B 39 -198 642 840 ;
+C -1 ; WX 619 ; N approxequal ; B 60 120 589 586 ;
+C -1 ; WX 510 ; N notequal ; B 48 40 430 598 ;
+C -1 ; WX 381 ; N lessequal ; B 9 -63 369 519 ;
+C -1 ; WX 381 ; N greaterequal ; B 17 -63 369 550 ;
+C -1 ; WX 734 ; N H22073 ; B 177 0 559 381 ;
+C -1 ; WX 642 ; N H18543 ; B 188 60 449 321 ;
+C -1 ; WX 642 ; N H18551 ; B 180 51 458 330 ;
+C -1 ; WX 722 ; N lozenge ; B 29 -41 699 799 ;
+C -1 ; WX 642 ; N H18533 ; B 183 59 449 324 ;
+C -1 ; WX 642 ; N openbullet ; B 174 50 458 333 ;
+C -1 ; WX 658 ; N fi ; B 36 -79 597 781 ;
+C -1 ; WX 655 ; N fl ; B 34 -79 605 790 ;
+C -1 ; WX 388 ; N uF003 ; B 136 582 276 829 ;
+C -1 ; WX 388 ; N uF004 ; B 167 582 295 827 ;
+C -1 ; WX 388 ; N uF005 ; B 167 582 295 827 ;
+C -1 ; WX 0 ; N .null ; B 0 0 0 0 ;
+C -1 ; WX 476 ; N nonmarkingreturn ; B 0 0 0 0 ;
+C -1 ; WX 416 ; N sfthyphen ; B 54 225 371 309 ;
+C -1 ; WX 249 ; N middot ; B 69 289 191 411 ;
+EndCharMetrics
+EndFontMetrics
+%    \end{macrocode}
+% \fi
+%
+%</rcomic.afm>
+%
+% \bigskip
+%
+%<*rcomicbd.afm>
+%
+% \begin{center}
+%   $\vdots$ \\
+%   598 lines of code omitted \\
+%   $\vdots$
+% \end{center}
+%
+% \iffalse
+%    \begin{macrocode}
+StartFontMetrics 2.0
+Comment Generated by pfaedit
+Comment Creation Date: Wed Jul 17 20:26:52 2002
+FontName ComicSansMS-Bold
+FullName Comic Sans MS Bold
+FamilyName ComicSansMS
+Weight
+Notice (Copyright (c) 1995 Microsoft Corporation. All rights reserved.)
+ItalicAngle 0
+IsFixedPitch false
+UnderlinePosition -272
+UnderlineThickness 175
+Version Version 2.10
+EncodingScheme ISO10646-1
+FontBBox -112 -292 1230 1103
+CapHeight 729
+XHeight 539
+Ascender 783
+Descender -283
+StartCharMetrics 576
+C 0 ; WX 500 ; N .notdef ; B 62 0 438 800 ;
+C 32 ; WX 433 ; N space ; B 0 0 0 0 ;
+C 33 ; WX 237 ; N exclam ; B 39 -33 182 784 ;
+C 34 ; WX 437 ; N quotedbl ; B 37 453 395 776 ;
+C 35 ; WX 842 ; N numbersign ; B -14 -12 831 787 ;
+C 36 ; WX 693 ; N dollar ; B 47 -189 644 838 ;
+C 37 ; WX 820 ; N percent ; B 52 -15 806 802 ;
+C 38 ; WX 654 ; N ampersand ; B 17 -46 639 764 ;
+C 39 ; WX 433 ; N quotesingle ; B 147 453 281 774 ;
+C 40 ; WX 366 ; N parenleft ; B 34 -211 361 785 ;
+C 41 ; WX 366 ; N parenright ; B 34 -211 361 785 ;
+C 42 ; WX 529 ; N asterisk ; B 3 381 490 779 ;
+C 43 ; WX 610 ; N plus ; B 81 113 543 511 ;
+C 44 ; WX 433 ; N comma ; B 105 -168 292 70 ;
+C 45 ; WX 610 ; N hyphen ; B 106 205 501 328 ;
+C 46 ; WX 433 ; N period ; B 134 -51 295 83 ;
+C 47 ; WX 511 ; N slash ; B 21 -44 494 794 ;
+C 48 ; WX 610 ; N zero ; B 10 -20 596 760 ;
+C 49 ; WX 610 ; N one ; B 115 -1 469 762 ;
+C 50 ; WX 610 ; N two ; B 60 -2 558 750 ;
+C 51 ; WX 610 ; N three ; B 51 -23 549 746 ;
+C 52 ; WX 610 ; N four ; B 3 -13 601 762 ;
+C 53 ; WX 610 ; N five ; B 41 -31 583 751 ;
+C 54 ; WX 610 ; N six ; B 43 -36 571 760 ;
+C 55 ; WX 610 ; N seven ; B 14 -33 613 737 ;
+C 56 ; WX 610 ; N eight ; B 39 -27 570 746 ;
+C 57 ; WX 610 ; N nine ; B 25 -47 575 750 ;
+C 58 ; WX 433 ; N colon ; B 147 60 300 552 ;
+C 59 ; WX 433 ; N semicolon ; B 104 -95 305 549 ;
+C 60 ; WX 610 ; N less ; B 117 94 453 519 ;
+C 61 ; WX 610 ; N equal ; B 92 134 513 489 ;
+C 62 ; WX 610 ; N greater ; B 143 90 514 550 ;
+C 63 ; WX 565 ; N question ; B 41 -36 524 751 ;
+C 64 ; WX 931 ; N at ; B 34 -69 876 796 ;
+C 65 ; WX 731 ; N A ; B 44 -15 680 722 ;
+C 66 ; WX 630 ; N B ; B 65 -24 602 768 ;
+C 67 ; WX 618 ; N C ; B 24 -12 607 744 ;
+C 68 ; WX 721 ; N D ; B 69 -49 692 760 ;
+C 69 ; WX 624 ; N E ; B 45 -49 609 784 ;
+C 70 ; WX 606 ; N F ; B 45 -52 584 769 ;
+C 71 ; WX 679 ; N G ; B 19 -34 682 768 ;
+C 72 ; WX 768 ; N H ; B 54 -41 735 759 ;
+C 73 ; WX 546 ; N I ; B 17 -18 538 730 ; L J IJ ;
+C 74 ; WX 665 ; N J ; B 26 -59 653 740 ;
+C 75 ; WX 610 ; N K ; B 52 -54 595 748 ;
+C 76 ; WX 550 ; N L ; B 29 -46 552 753 ;
+C 77 ; WX 882 ; N M ; B 35 -41 865 750 ;
+C 78 ; WX 812 ; N N ; B 40 -39 776 758 ;
+C 79 ; WX 798 ; N O ; B 29 -30 768 740 ;
+C 80 ; WX 532 ; N P ; B 29 -12 511 768 ;
+C 81 ; WX 876 ; N Q ; B 18 -214 875 740 ;
+C 82 ; WX 640 ; N R ; B 44 -18 620 751 ;
+C 83 ; WX 693 ; N S ; B 23 -30 673 717 ;
+C 84 ; WX 695 ; N T ; B 4 -4 702 740 ;
+C 85 ; WX 736 ; N U ; B 38 -36 690 740 ;
+C 86 ; WX 674 ; N V ; B 35 -40 651 750 ;
+C 87 ; WX 1039 ; N W ; B 24 -47 1020 746 ;
+C 88 ; WX 723 ; N X ; B 5 -42 699 743 ;
+C 89 ; WX 635 ; N Y ; B -6 -35 618 743 ;
+C 90 ; WX 693 ; N Z ; B 5 -25 687 737 ;
+C 91 ; WX 376 ; N bracketleft ; B 65 -204 363 743 ;
+C 92 ; WX 549 ; N backslash ; B 66 -69 516 745 ;
+C 93 ; WX 376 ; N bracketright ; B 30 -204 327 743 ;
+C 94 ; WX 610 ; N asciicircum ; B 84 547 525 804 ;
+C 95 ; WX 626 ; N underscore ; B -37 -169 666 -77 ;
+C 96 ; WX 556 ; N grave ; B 53 575 302 812 ;
+C 97 ; WX 555 ; N a ; B 27 -33 537 510 ;
+C 98 ; WX 593 ; N b ; B 43 -21 552 770 ;
+C 99 ; WX 513 ; N c ; B 17 -31 479 520 ;
+C 100 ; WX 587 ; N d ; B 23 -23 550 779 ;
+C 101 ; WX 559 ; N e ; B 22 -23 523 511 ;
+C 102 ; WX 508 ; N f ; B 17 -79 480 781 ;
+C 103 ; WX 530 ; N g ; B 8 -276 513 500 ;
+C 104 ; WX 577 ; N h ; B 51 -31 546 783 ;
+C 105 ; WX 280 ; N i ; B 67 -15 238 732 ; L j ij ;
+C 106 ; WX 403 ; N j ; B -29 -292 340 731 ;
+C 107 ; WX 540 ; N k ; B 45 -21 531 783 ;
+C 108 ; WX 273 ; N l ; B 65 -21 201 784 ;
+C 109 ; WX 776 ; N m ; B 41 -61 757 542 ;
+C 110 ; WX 523 ; N n ; B 33 -35 503 534 ;
+C 111 ; WX 525 ; N o ; B 20 -29 494 507 ;
+C 112 ; WX 534 ; N p ; B 38 -284 512 537 ;
+C 113 ; WX 520 ; N q ; B 9 -272 480 520 ;
+C 114 ; WX 480 ; N r ; B 40 -33 460 515 ;
+C 115 ; WX 486 ; N s ; B 25 -30 451 521 ;
+C 116 ; WX 471 ; N t ; B 12 -32 462 683 ;
+C 117 ; WX 520 ; N u ; B 25 -40 487 521 ;
+C 118 ; WX 486 ; N v ; B 10 -20 494 516 ;
+C 119 ; WX 684 ; N w ; B 17 -40 677 509 ;
+C 120 ; WX 590 ; N x ; B 10 -22 582 540 ;
+C 121 ; WX 552 ; N y ; B 2 -283 544 508 ;
+C 122 ; WX 538 ; N z ; B 23 -38 512 516 ;
+C 123 ; WX 366 ; N braceleft ; B -17 -188 360 794 ;
+C 124 ; WX 421 ; N bar ; B 151 -177 279 838 ;
+C 125 ; WX 366 ; N braceright ; B -17 -188 360 794 ;
+C 126 ; WX 610 ; N asciitilde ; B 22 228 571 457 ;
+C 160 ; WX 476 ; N nonbreakingspace ; B 0 0 0 0 ;
+C 161 ; WX 237 ; N exclamdown ; B 60 -33 204 784 ;
+C 162 ; WX 610 ; N cent ; B 38 16 562 849 ;
+C 163 ; WX 793 ; N sterling ; B -2 -74 732 787 ;
+C 164 ; WX 610 ; N currency ; B 0 87 614 645 ;
+C 165 ; WX 610 ; N yen ; B 23 -26 571 712 ;
+C 166 ; WX 421 ; N brokenbar ; B 154 -177 280 836 ;
+C 167 ; WX 634 ; N section ; B 37 -38 563 802 ;
+C 168 ; WX 556 ; N dieresis ; B 93 568 495 701 ;
+C 169 ; WX 795 ; N copyright ; B 24 122 763 792 ;
+C 170 ; WX 610 ; N ordfeminine ; B 64 435 500 821 ;
+C 171 ; WX 638 ; N guillemotleft ; B 3 83 635 519 ;
+C 172 ; WX 610 ; N logicalnot ; B 74 91 536 395 ;
+C 173 ; WX 610 ; N hyphenminus ; B 106 205 501 328 ;
+C 174 ; WX 795 ; N registered ; B 24 101 771 797 ;
+C 175 ; WX 626 ; N overscore ; B -37 831 666 923 ;
+C 176 ; WX 610 ; N degree ; B 107 475 488 821 ;
+C 177 ; WX 610 ; N plusminus ; B 74 -63 537 511 ;
+C 178 ; WX 610 ; N twosuperior ; B 145 440 480 854 ;
+C 179 ; WX 610 ; N threesuperior ; B 154 405 454 841 ;
+C 180 ; WX 556 ; N acute ; B 84 579 345 813 ;
+C 181 ; WX 610 ; N mu1 ; B -2 -199 604 521 ;
+C 182 ; WX 760 ; N paragraph ; B 15 -96 702 810 ;
+C 183 ; WX 610 ; N periodcentered ; B 221 283 382 417 ;
+C 184 ; WX 556 ; N cedilla ; B 159 -218 442 57 ;
+C 185 ; WX 610 ; N onesuperior ; B 155 418 466 842 ;
+C 186 ; WX 610 ; N ordmasculine ; B 84 435 525 831 ;
+C 187 ; WX 638 ; N guillemotright ; B 3 83 635 519 ;
+C 188 ; WX 610 ; N onequarter ; B 38 -191 590 842 ;
+C 189 ; WX 610 ; N onehalf ; B 31 -200 583 842 ;
+C 190 ; WX 610 ; N threequarters ; B 31 -191 583 841 ;
+C 191 ; WX 565 ; N questiondown ; B 41 -36 524 781 ;
+C 192 ; WX 731 ; N Agrave ; B 63 -15 700 1036 ;
+C 193 ; WX 731 ; N Aacute ; B 63 -15 700 1030 ;
+C 194 ; WX 731 ; N Acircumflex ; B 63 -15 700 1054 ;
+C 195 ; WX 731 ; N Atilde ; B 63 -15 746 980 ;
+C 196 ; WX 731 ; N Adieresis ; B 63 -15 700 921 ;
+C 197 ; WX 731 ; N Aring ; B 63 -15 700 978 ;
+C 198 ; WX 1086 ; N AE ; B 2 -43 1102 792 ;
+C 199 ; WX 618 ; N Ccedilla ; B 24 -199 607 745 ;
+C 200 ; WX 624 ; N Egrave ; B 45 -49 609 1089 ;
+C 201 ; WX 624 ; N Eacute ; B 45 -49 609 1095 ;
+C 202 ; WX 624 ; N Ecircumflex ; B 45 -49 609 1103 ;
+C 203 ; WX 624 ; N Edieresis ; B 45 -49 609 979 ;
+C 204 ; WX 546 ; N Igrave ; B 36 -18 557 1027 ;
+C 205 ; WX 546 ; N Iacute ; B 17 -18 538 1030 ;
+C 206 ; WX 546 ; N Icircumflex ; B 36 -18 557 1063 ;
+C 207 ; WX 546 ; N Idieresis ; B 17 -18 538 931 ;
+C 208 ; WX 721 ; N Eth ; B -42 -49 692 760 ;
+C 209 ; WX 812 ; N Ntilde ; B 40 -39 776 989 ;
+C 210 ; WX 798 ; N Ograve ; B 56 -30 795 1037 ;
+C 211 ; WX 798 ; N Oacute ; B 29 -30 768 1033 ;
+C 212 ; WX 798 ; N Ocircumflex ; B 56 -30 795 1042 ;
+C 213 ; WX 798 ; N Otilde ; B 56 -30 795 980 ;
+C 214 ; WX 798 ; N Odieresis ; B 29 -30 768 934 ;
+C 215 ; WX 610 ; N multiply ; B 97 109 520 499 ;
+C 216 ; WX 798 ; N Oslash ; B 20 -44 816 753 ;
+C 217 ; WX 736 ; N Ugrave ; B 38 -36 690 1034 ;
+C 218 ; WX 736 ; N Uacute ; B 38 -36 690 1036 ;
+C 219 ; WX 736 ; N Ucircumflex ; B 38 -36 690 1048 ;
+C 220 ; WX 736 ; N Udieresis ; B 38 -36 690 922 ;
+C 221 ; WX 635 ; N Yacute ; B 14 -35 638 1078 ;
+C 222 ; WX 520 ; N Thorn ; B 29 -12 514 758 ;
+C 223 ; WX 533 ; N germandbls ; B 41 -77 491 767 ;
+C 224 ; WX 555 ; N agrave ; B 27 -33 537 808 ;
+C 225 ; WX 555 ; N aacute ; B 27 -33 537 813 ;
+C 226 ; WX 555 ; N acircumflex ; B 27 -33 537 830 ;
+C 227 ; WX 555 ; N atilde ; B 27 -33 537 750 ;
+C 228 ; WX 555 ; N adieresis ; B 27 -33 537 701 ;
+C 229 ; WX 555 ; N aring ; B 27 -33 537 859 ;
+C 230 ; WX 911 ; N ae ; B 13 -24 896 511 ;
+C 231 ; WX 513 ; N ccedilla ; B 31 -218 493 520 ;
+C 232 ; WX 559 ; N egrave ; B 22 -23 523 812 ;
+C 233 ; WX 559 ; N eacute ; B 22 -23 523 813 ;
+C 234 ; WX 559 ; N ecircumflex ; B 22 -23 523 826 ;
+C 235 ; WX 559 ; N edieresis ; B 22 -23 523 749 ;
+C 236 ; WX 280 ; N igrave ; B 12 -15 261 812 ;
+C 237 ; WX 280 ; N iacute ; B 46 -15 307 813 ;
+C 238 ; WX 280 ; N icircumflex ; B -70 -15 372 826 ;
+C 239 ; WX 280 ; N idieresis ; B -54 -15 348 701 ;
+C 240 ; WX 508 ; N eth ; B 42 -21 476 751 ;
+C 241 ; WX 523 ; N ntilde ; B 33 -35 544 759 ;
+C 242 ; WX 525 ; N ograve ; B 43 -29 517 812 ;
+C 243 ; WX 525 ; N oacute ; B 24 -29 498 813 ;
+C 244 ; WX 525 ; N ocircumflex ; B 43 -29 525 826 ;
+C 245 ; WX 525 ; N otilde ; B 43 -29 574 759 ;
+C 246 ; WX 525 ; N odieresis ; B 24 -29 507 701 ;
+C 247 ; WX 610 ; N divide ; B 74 91 537 557 ;
+C 248 ; WX 533 ; N oslash ; B 15 -34 522 507 ;
+C 249 ; WX 520 ; N ugrave ; B 53 -40 515 815 ;
+C 250 ; WX 520 ; N uacute ; B 53 -40 515 813 ;
+C 251 ; WX 520 ; N ucircumflex ; B 53 -40 535 826 ;
+C 252 ; WX 520 ; N udieresis ; B 53 -40 521 701 ;
+C 253 ; WX 552 ; N yacute ; B 2 -283 544 813 ;
+C 254 ; WX 534 ; N thorn ; B 35 -284 512 730 ;
+C 255 ; WX 552 ; N ydieresis ; B 2 -283 544 701 ;
+C -1 ; WX 731 ; N Amacron ; B 44 -15 680 896 ;
+C -1 ; WX 555 ; N amacron ; B 27 -33 537 676 ;
+C -1 ; WX 731 ; N Abreve ; B 44 -15 682 996 ;
+C -1 ; WX 555 ; N abreve ; B 27 -33 537 776 ;
+C -1 ; WX 731 ; N Aogonek ; B 44 -168 753 722 ;
+C -1 ; WX 555 ; N aogonek ; B 27 -168 646 510 ;
+C -1 ; WX 618 ; N Cacute ; B 24 -12 607 1033 ;
+C -1 ; WX 513 ; N cacute ; B 17 -31 479 813 ;
+C -1 ; WX 618 ; N Ccircumflex ; B 24 -12 624 1070 ;
+C -1 ; WX 513 ; N ccircumflex ; B 17 -31 516 826 ;
+C -1 ; WX 618 ; N Cdot ; B 24 -12 607 925 ;
+C -1 ; WX 513 ; N cdot ; B 17 -31 479 706 ;
+C -1 ; WX 618 ; N Ccaron ; B 24 -12 607 1015 ;
+C -1 ; WX 513 ; N ccaron ; B 17 -31 486 795 ;
+C -1 ; WX 721 ; N Dcaron ; B 69 -49 692 1015 ;
+C -1 ; WX 764 ; N dcaron ; B 23 -23 741 783 ;
+C -1 ; WX 721 ; N Dslash ; B -42 -49 692 760 ;
+C -1 ; WX 587 ; N dcroat ; B 23 -23 633 779 ;
+C -1 ; WX 624 ; N Emacron ; B 45 -49 609 935 ;
+C -1 ; WX 559 ; N emacron ; B 22 -23 523 676 ;
+C -1 ; WX 624 ; N Ebreve ; B 45 -49 609 1021 ;
+C -1 ; WX 559 ; N ebreve ; B 22 -23 535 776 ;
+C -1 ; WX 624 ; N Edot ; B 45 -49 609 964 ;
+C -1 ; WX 559 ; N edot ; B 22 -23 523 706 ;
+C -1 ; WX 624 ; N Eogonek ; B 45 -198 609 784 ;
+C -1 ; WX 559 ; N eogonek ; B 22 -188 523 511 ;
+C -1 ; WX 624 ; N Ecaron ; B 45 -49 609 1029 ;
+C -1 ; WX 559 ; N ecaron ; B 22 -23 523 795 ;
+C -1 ; WX 679 ; N Gcircumflex ; B 19 -34 682 1045 ;
+C -1 ; WX 530 ; N gcircumflex ; B 8 -276 526 826 ;
+C -1 ; WX 679 ; N Gbreve ; B 19 -34 682 996 ;
+C -1 ; WX 530 ; N gbreve ; B 8 -276 535 776 ;
+C -1 ; WX 679 ; N Gdot ; B 19 -34 682 925 ;
+C -1 ; WX 530 ; N gdot ; B 8 -276 513 706 ;
+C -1 ; WX 679 ; N Gcedilla ; B 19 -218 682 768 ;
+C -1 ; WX 530 ; N gcedilla ; B 8 -276 513 827 ;
+C -1 ; WX 768 ; N Hcircumflex ; B 54 -41 735 1045 ;
+C -1 ; WX 577 ; N hcircumflex ; B 51 -31 628 1045 ;
+C -1 ; WX 874 ; N Hbar ; B 21 -41 867 759 ;
+C -1 ; WX 577 ; N hbar ; B -46 -31 546 783 ;
+C -1 ; WX 546 ; N Itilde ; B 17 -18 538 979 ;
+C -1 ; WX 280 ; N itilde ; B -93 -15 399 759 ;
+C -1 ; WX 546 ; N Imacron ; B 17 -18 538 896 ;
+C -1 ; WX 280 ; N imacron ; B -60 -15 357 676 ;
+C -1 ; WX 546 ; N Ibreve ; B 17 -18 538 996 ;
+C -1 ; WX 280 ; N ibreve ; B -72 -15 379 776 ;
+C -1 ; WX 546 ; N Iogonek ; B 17 -205 538 730 ;
+C -1 ; WX 280 ; N iogonek ; B 8 -168 304 732 ;
+C -1 ; WX 546 ; N Idotaccent ; B 17 -18 538 925 ;
+C -1 ; WX 280 ; N dotlessi ; B 67 -15 213 512 ;
+C -1 ; WX 1175 ; N IJ ; B 17 -59 1148 740 ;
+C -1 ; WX 559 ; N ij ; B 67 -292 492 732 ;
+C -1 ; WX 665 ; N Jcircumflex ; B 26 -59 653 1045 ;
+C -1 ; WX 403 ; N jcircumflex ; B -29 -292 443 826 ;
+C -1 ; WX 610 ; N Kcedilla ; B 52 -228 595 748 ;
+C -1 ; WX 540 ; N kcedilla ; B 45 -228 531 783 ;
+C -1 ; WX 540 ; N kgreenlandic ; B 60 -21 545 568 ;
+C -1 ; WX 550 ; N Lacute ; B 29 -46 552 1033 ;
+C -1 ; WX 273 ; N lacute ; B 65 -21 345 1058 ;
+C -1 ; WX 550 ; N Lcedilla ; B 29 -218 552 753 ;
+C -1 ; WX 273 ; N lcedilla ; B 41 -203 325 784 ;
+C -1 ; WX 550 ; N Lcaron ; B 29 -46 552 753 ;
+C -1 ; WX 460 ; N lcaron ; B 65 -21 412 784 ;
+C -1 ; WX 550 ; N Ldot ; B 29 -46 552 753 ;
+C -1 ; WX 414 ; N ldot ; B 65 -21 396 784 ;
+C -1 ; WX 628 ; N Lslash ; B 1 -46 637 753 ;
+C -1 ; WX 354 ; N lslash ; B 6 -14 357 742 ;
+C -1 ; WX 812 ; N Nacute ; B 40 -39 776 1033 ;
+C -1 ; WX 523 ; N nacute ; B 33 -35 503 813 ;
+C -1 ; WX 812 ; N Ncedilla ; B 40 -218 776 758 ;
+C -1 ; WX 523 ; N ncedilla ; B 33 -267 503 534 ;
+C -1 ; WX 812 ; N Ncaron ; B 40 -39 776 1015 ;
+C -1 ; WX 523 ; N ncaron ; B 33 -35 503 795 ;
+C -1 ; WX 640 ; N napostrophe ; B 37 -35 620 824 ;
+C -1 ; WX 812 ; N Eng ; B 40 -262 776 758 ;
+C -1 ; WX 523 ; N eng ; B 33 -217 503 534 ;
+C -1 ; WX 798 ; N Omacron ; B 29 -30 768 896 ;
+C -1 ; WX 525 ; N omacron ; B 20 -29 494 676 ;
+C -1 ; WX 798 ; N Obreve ; B 29 -30 768 996 ;
+C -1 ; WX 525 ; N obreve ; B 20 -29 526 776 ;
+C -1 ; WX 798 ; N Odblacute ; B 29 -30 768 999 ;
+C -1 ; WX 525 ; N odblacute ; B 20 -29 564 779 ;
+C -1 ; WX 1193 ; N OE ; B 43 -38 1207 795 ;
+C -1 ; WX 896 ; N oe ; B 20 -29 898 511 ;
+C -1 ; WX 640 ; N Racute ; B 44 -18 620 1033 ;
+C -1 ; WX 480 ; N racute ; B 40 -33 460 813 ;
+C -1 ; WX 640 ; N Rcedilla ; B 44 -218 620 751 ;
+C -1 ; WX 480 ; N rcedilla ; B 12 -218 460 515 ;
+C -1 ; WX 640 ; N Rcaron ; B 44 -18 620 1015 ;
+C -1 ; WX 480 ; N rcaron ; B 40 -33 460 795 ;
+C -1 ; WX 693 ; N Sacute ; B 23 -30 673 1033 ;
+C -1 ; WX 486 ; N sacute ; B 25 -30 451 813 ;
+C -1 ; WX 693 ; N Scircumflex ; B 23 -30 673 1045 ;
+C -1 ; WX 486 ; N scircumflex ; B 11 -30 453 826 ;
+C -1 ; WX 693 ; N Scedilla ; B 23 -218 673 717 ;
+C -1 ; WX 486 ; N scedilla ; B 25 -218 451 521 ;
+C -1 ; WX 693 ; N Scaron ; B 50 -30 700 1015 ;
+C -1 ; WX 507 ; N scaron ; B 0 -30 426 795 ;
+C -1 ; WX 695 ; N Tcedilla ; B 4 -292 702 740 ;
+C -1 ; WX 471 ; N tcedilla ; B 12 -292 462 683 ;
+C -1 ; WX 695 ; N Tcaron ; B 4 -4 702 1015 ;
+C -1 ; WX 639 ; N tcaron ; B 12 -32 622 683 ;
+C -1 ; WX 695 ; N Tbar ; B 4 -4 702 740 ;
+C -1 ; WX 471 ; N tbar ; B 12 -32 462 683 ;
+C -1 ; WX 736 ; N Utilde ; B 38 -36 690 979 ;
+C -1 ; WX 520 ; N utilde ; B 24 -40 516 759 ;
+C -1 ; WX 736 ; N Umacron ; B 38 -36 690 896 ;
+C -1 ; WX 520 ; N umacron ; B 25 -40 492 676 ;
+C -1 ; WX 736 ; N Ubreve ; B 38 -36 690 996 ;
+C -1 ; WX 520 ; N ubreve ; B 25 -40 496 776 ;
+C -1 ; WX 736 ; N Uring ; B 38 -36 690 1079 ;
+C -1 ; WX 520 ; N uring ; B 25 -40 487 859 ;
+C -1 ; WX 736 ; N Udblacute ; B 38 -36 690 999 ;
+C -1 ; WX 520 ; N udblacute ; B 25 -40 544 779 ;
+C -1 ; WX 736 ; N Uogonek ; B 38 -208 690 740 ;
+C -1 ; WX 520 ; N uogonek ; B 25 -208 592 521 ;
+C -1 ; WX 1039 ; N Wcircumflex ; B 24 -47 1020 1045 ;
+C -1 ; WX 684 ; N wcircumflex ; B 17 -40 677 826 ;
+C -1 ; WX 635 ; N Ycircumflex ; B -6 -35 618 1045 ;
+C -1 ; WX 552 ; N ycircumflex ; B 2 -283 544 826 ;
+C -1 ; WX 635 ; N Ydieresis ; B 14 -35 638 923 ;
+C -1 ; WX 693 ; N Zacute ; B 5 -25 687 1033 ;
+C -1 ; WX 538 ; N zacute ; B 23 -38 512 813 ;
+C -1 ; WX 693 ; N Zdot ; B 5 -25 687 925 ;
+C -1 ; WX 538 ; N zdot ; B 23 -38 512 706 ;
+C -1 ; WX 693 ; N Zcaron ; B 5 -25 687 1063 ;
+C -1 ; WX 538 ; N zcaron ; B 23 -38 512 795 ;
+C -1 ; WX 508 ; N longs ; B 133 -79 480 781 ;
+C -1 ; WX 588 ; N florin ; B -35 -177 615 763 ;
+C -1 ; WX 731 ; N Aringacute ; B 44 -15 680 1091 ;
+C -1 ; WX 555 ; N aringacute ; B 27 -33 537 980 ;
+C -1 ; WX 1086 ; N AEacute ; B 2 -43 1102 1058 ;
+C -1 ; WX 911 ; N aeacute ; B 13 -24 896 813 ;
+C -1 ; WX 798 ; N Oslashacute ; B 20 -44 816 1033 ;
+C -1 ; WX 525 ; N oslashacute ; B 15 -34 522 813 ;
+C -1 ; WX 556 ; N circumflex ; B 75 569 516 826 ;
+C -1 ; WX 556 ; N caron ; B 119 574 486 795 ;
+C -1 ; WX 556 ; N macron ; B 96 559 514 676 ;
+C -1 ; WX 556 ; N breve ; B 84 575 535 776 ;
+C -1 ; WX 556 ; N dotaccent ; B 134 558 293 706 ;
+C -1 ; WX 556 ; N ring ; B 108 579 478 859 ;
+C -1 ; WX 556 ; N ogonek ; B 125 -168 421 84 ;
+C -1 ; WX 556 ; N tilde ; B 63 577 555 759 ;
+C -1 ; WX 556 ; N hungarumlaut ; B 83 577 540 779 ;
+C -1 ; WX 433 ; N uni037E ; B 104 -95 305 549 ;
+C -1 ; WX 556 ; N tonos ; B 207 561 388 763 ;
+C -1 ; WX 617 ; N dieresistonos ; B 44 561 579 735 ;
+C -1 ; WX 731 ; N Alphatonos ; B 44 -15 680 763 ;
+C -1 ; WX 433 ; N anoteleia ; B 134 283 295 417 ;
+C -1 ; WX 847 ; N Epsilontonos ; B 49 -49 833 784 ;
+C -1 ; WX 982 ; N Etatonos ; B 65 -41 950 763 ;
+C -1 ; WX 775 ; N Iotatonos ; B 41 -18 767 763 ;
+C -1 ; WX 876 ; N Omicrontonos ; B 31 -30 846 763 ;
+C -1 ; WX 850 ; N Upsilontonos ; B 7 -35 833 763 ;
+C -1 ; WX 959 ; N Omegatonos ; B 12 -69 948 796 ;
+C -1 ; WX 280 ; N iotadieresistonos ; B -112 -15 423 735 ;
+C -1 ; WX 731 ; N Alpha ; B 44 -15 680 722 ;
+C -1 ; WX 630 ; N Beta ; B 65 -24 602 768 ;
+C -1 ; WX 550 ; N Gamma ; B 29 -46 552 755 ;
+C -1 ; WX 794 ; N Delta ; B 7 -36 781 813 ;
+C -1 ; WX 624 ; N Epsilon ; B 45 -49 609 784 ;
+C -1 ; WX 693 ; N Zeta ; B 5 -25 687 737 ;
+C -1 ; WX 768 ; N Eta ; B 54 -41 735 759 ;
+C -1 ; WX 798 ; N Theta ; B 29 -30 768 740 ;
+C -1 ; WX 546 ; N Iota ; B 17 -18 538 730 ;
+C -1 ; WX 610 ; N Kappa ; B 52 -54 595 748 ;
+C -1 ; WX 689 ; N Lambda ; B -3 -51 701 772 ;
+C -1 ; WX 882 ; N Mu ; B 35 -41 865 750 ;
+C -1 ; WX 812 ; N Nu ; B 40 -39 776 758 ;
+C -1 ; WX 720 ; N Xi ; B 13 -32 667 756 ;
+C -1 ; WX 798 ; N Omicron ; B 29 -30 768 740 ;
+C -1 ; WX 908 ; N Pi ; B 31 -30 877 766 ;
+C -1 ; WX 532 ; N Rho ; B 29 -12 511 768 ;
+C -1 ; WX 725 ; N Sigma ; B 11 -17 686 746 ;
+C -1 ; WX 695 ; N Tau ; B 4 -4 702 740 ;
+C -1 ; WX 635 ; N Upsilon ; B -6 -35 618 743 ;
+C -1 ; WX 615 ; N Phi ; B 24 -18 581 730 ;
+C -1 ; WX 723 ; N Chi ; B 5 -42 699 743 ;
+C -1 ; WX 722 ; N Psi ; B 35 -13 690 756 ;
+C -1 ; WX 959 ; N Omega ; B 12 -69 948 796 ;
+C -1 ; WX 546 ; N Iotadieresis ; B 17 -18 538 931 ;
+C -1 ; WX 635 ; N Upsilondieresis ; B -6 -35 618 923 ;
+C -1 ; WX 555 ; N alphatonos ; B 27 -33 537 763 ;
+C -1 ; WX 491 ; N epsilontonos ; B 56 -26 464 763 ;
+C -1 ; WX 523 ; N etatonos ; B 41 -157 521 763 ;
+C -1 ; WX 280 ; N iotatonos ; B 65 -15 246 763 ;
+C -1 ; WX 520 ; N upsilondieresistonos ; B 16 -31 555 735 ;
+C -1 ; WX 555 ; N alpha ; B 27 -33 537 513 ;
+C -1 ; WX 586 ; N beta ; B 34 -197 555 723 ;
+C -1 ; WX 523 ; N gamma ; B 10 -198 513 516 ;
+C -1 ; WX 525 ; N delta ; B 20 -29 499 749 ;
+C -1 ; WX 491 ; N epsilon ; B 56 -26 464 514 ;
+C -1 ; WX 513 ; N zeta ; B 31 -203 516 757 ;
+C -1 ; WX 523 ; N eta ; B 41 -157 521 534 ;
+C -1 ; WX 610 ; N theta ; B 10 -20 596 760 ;
+C -1 ; WX 280 ; N iota ; B 67 -15 213 512 ;
+C -1 ; WX 540 ; N kappa ; B 60 -21 545 521 ;
+C -1 ; WX 486 ; N lambda ; B 10 -12 494 667 ;
+C -1 ; WX 520 ; N mu ; B 33 -205 495 521 ;
+C -1 ; WX 486 ; N nu ; B 10 -20 494 516 ;
+C -1 ; WX 513 ; N xi ; B 31 -203 465 778 ;
+C -1 ; WX 525 ; N omicron ; B 20 -29 494 507 ;
+C -1 ; WX 627 ; N pi ; B 9 -36 609 415 ;
+C -1 ; WX 525 ; N rho ; B -5 -203 493 507 ;
+C -1 ; WX 513 ; N sigma1 ; B 31 -203 484 520 ;
+C -1 ; WX 559 ; N sigma ; B 20 -29 585 507 ;
+C -1 ; WX 471 ; N tau ; B 12 -32 462 517 ;
+C -1 ; WX 520 ; N upsilon ; B 16 -31 507 527 ;
+C -1 ; WX 639 ; N phi ; B 24 -201 617 504 ;
+C -1 ; WX 590 ; N chi ; B -4 -182 551 524 ;
+C -1 ; WX 622 ; N psi ; B 24 -200 588 533 ;
+C -1 ; WX 760 ; N omega ; B 18 -21 740 522 ;
+C -1 ; WX 280 ; N iotadieresis ; B -54 -15 348 701 ;
+C -1 ; WX 520 ; N upsilondieresis ; B 16 -31 507 701 ;
+C -1 ; WX 525 ; N omicrontonos ; B 20 -29 494 763 ;
+C -1 ; WX 520 ; N upsilontonos ; B 16 -31 507 763 ;
+C -1 ; WX 760 ; N omegatonos ; B 18 -21 740 763 ;
+C -1 ; WX 624 ; N afii10023 ; B 45 -49 609 979 ;
+C -1 ; WX 850 ; N afii10051 ; B 0 -137 822 740 ;
+C -1 ; WX 550 ; N afii10052 ; B 29 -46 552 1033 ;
+C -1 ; WX 602 ; N afii10053 ; B 24 -12 607 744 ;
+C -1 ; WX 693 ; N afii10054 ; B 23 -30 673 717 ;
+C -1 ; WX 546 ; N afii10055 ; B 17 -18 538 730 ;
+C -1 ; WX 546 ; N afii10056 ; B 17 -18 538 931 ;
+C -1 ; WX 665 ; N afii10057 ; B 26 -59 653 740 ;
+C -1 ; WX 1000 ; N afii10058 ; B -8 -10 986 745 ;
+C -1 ; WX 977 ; N afii10059 ; B 3 -13 958 759 ;
+C -1 ; WX 846 ; N afii10060 ; B 0 -20 793 740 ;
+C -1 ; WX 633 ; N afii10061 ; B 59 -8 612 1033 ;
+C -1 ; WX 644 ; N afii10062 ; B 9 -19 633 996 ;
+C -1 ; WX 729 ; N afii10145 ; B 40 -136 696 750 ;
+C -1 ; WX 731 ; N afii10017 ; B 44 -15 680 722 ;
+C -1 ; WX 604 ; N afii10018 ; B 56 -7 572 744 ;
+C -1 ; WX 630 ; N afii10019 ; B 65 -24 602 768 ;
+C -1 ; WX 550 ; N afii10020 ; B 29 -46 552 755 ;
+C -1 ; WX 768 ; N afii10021 ; B 24 -164 748 754 ;
+C -1 ; WX 624 ; N afii10022 ; B 45 -49 609 784 ;
+C -1 ; WX 859 ; N afii10024 ; B -5 -8 859 751 ;
+C -1 ; WX 601 ; N afii10025 ; B 12 -21 567 737 ;
+C -1 ; WX 747 ; N afii10026 ; B 44 -26 698 756 ;
+C -1 ; WX 747 ; N afii10027 ; B 44 -26 698 996 ;
+C -1 ; WX 633 ; N afii10028 ; B 59 -8 612 751 ;
+C -1 ; WX 738 ; N afii10029 ; B 2 -11 682 745 ;
+C -1 ; WX 882 ; N afii10030 ; B 35 -41 865 750 ;
+C -1 ; WX 768 ; N afii10031 ; B 54 -41 735 759 ;
+C -1 ; WX 798 ; N afii10032 ; B 29 -30 768 740 ;
+C -1 ; WX 908 ; N afii10033 ; B 31 -30 877 766 ;
+C -1 ; WX 532 ; N afii10034 ; B 29 -12 511 768 ;
+C -1 ; WX 618 ; N afii10035 ; B 24 -12 607 744 ;
+C -1 ; WX 695 ; N afii10036 ; B 4 -4 702 740 ;
+C -1 ; WX 644 ; N afii10037 ; B 9 -19 633 743 ;
+C -1 ; WX 615 ; N afii10038 ; B 24 -18 581 730 ;
+C -1 ; WX 723 ; N afii10039 ; B 5 -42 699 743 ;
+C -1 ; WX 773 ; N afii10040 ; B 40 -145 770 750 ;
+C -1 ; WX 617 ; N afii10041 ; B 31 -15 568 754 ;
+C -1 ; WX 906 ; N afii10042 ; B 28 -8 868 750 ;
+C -1 ; WX 957 ; N afii10043 ; B 28 -145 953 750 ;
+C -1 ; WX 759 ; N afii10044 ; B -1 -7 727 741 ;
+C -1 ; WX 1075 ; N afii10045 ; B 56 -18 1049 740 ;
+C -1 ; WX 604 ; N afii10046 ; B 56 -7 572 740 ;
+C -1 ; WX 654 ; N afii10047 ; B 22 -7 623 733 ;
+C -1 ; WX 1130 ; N afii10048 ; B 21 -30 1108 751 ;
+C -1 ; WX 628 ; N afii10049 ; B -7 -19 593 751 ;
+C -1 ; WX 555 ; N afii10065 ; B 27 -33 537 510 ;
+C -1 ; WX 525 ; N afii10066 ; B 17 -29 524 772 ;
+C -1 ; WX 503 ; N afii10067 ; B 44 -23 488 512 ;
+C -1 ; WX 470 ; N afii10068 ; B 45 -23 478 518 ;
+C -1 ; WX 592 ; N afii10069 ; B -4 -128 590 520 ;
+C -1 ; WX 559 ; N afii10070 ; B 22 -23 523 511 ;
+C -1 ; WX 682 ; N afii10072 ; B 12 -13 655 519 ;
+C -1 ; WX 439 ; N afii10073 ; B 32 -23 408 523 ;
+C -1 ; WX 636 ; N afii10074 ; B 34 -29 584 513 ;
+C -1 ; WX 636 ; N afii10075 ; B 34 -29 584 776 ;
+C -1 ; WX 492 ; N afii10076 ; B 43 -13 493 519 ;
+C -1 ; WX 646 ; N afii10077 ; B -5 -20 598 520 ;
+C -1 ; WX 734 ; N afii10078 ; B 1 -29 725 520 ;
+C -1 ; WX 559 ; N afii10079 ; B 17 -26 521 541 ;
+C -1 ; WX 591 ; N afii10080 ; B 14 -31 579 531 ;
+C -1 ; WX 646 ; N afii10081 ; B 83 -22 600 511 ;
+C -1 ; WX 534 ; N afii10082 ; B 38 -284 512 537 ;
+C -1 ; WX 513 ; N afii10083 ; B 17 -31 479 520 ;
+C -1 ; WX 471 ; N afii10084 ; B 12 -32 462 517 ;
+C -1 ; WX 552 ; N afii10085 ; B 2 -283 544 508 ;
+C -1 ; WX 810 ; N afii10086 ; B 21 -284 803 537 ;
+C -1 ; WX 590 ; N afii10087 ; B 10 -22 582 540 ;
+C -1 ; WX 618 ; N afii10088 ; B 66 -123 610 530 ;
+C -1 ; WX 533 ; N afii10089 ; B 17 -26 500 533 ;
+C -1 ; WX 771 ; N afii10090 ; B 32 -25 740 530 ;
+C -1 ; WX 792 ; N afii10091 ; B 32 -163 804 530 ;
+C -1 ; WX 621 ; N afii10092 ; B -12 -7 615 532 ;
+C -1 ; WX 790 ; N afii10093 ; B 42 -22 784 516 ;
+C -1 ; WX 491 ; N afii10094 ; B 42 -7 469 516 ;
+C -1 ; WX 513 ; N afii10095 ; B 33 -21 489 515 ;
+C -1 ; WX 902 ; N afii10096 ; B 21 -31 880 548 ;
+C -1 ; WX 505 ; N afii10097 ; B -3 -19 466 512 ;
+C -1 ; WX 559 ; N afii10071 ; B 22 -23 523 749 ;
+C -1 ; WX 560 ; N afii10099 ; B -53 -200 519 783 ;
+C -1 ; WX 470 ; N afii10100 ; B 45 -23 478 813 ;
+C -1 ; WX 513 ; N afii10101 ; B 19 -25 475 511 ;
+C -1 ; WX 486 ; N afii10102 ; B 25 -30 451 521 ;
+C -1 ; WX 280 ; N afii10103 ; B 67 -15 238 732 ;
+C -1 ; WX 280 ; N afii10104 ; B -54 -15 348 701 ;
+C -1 ; WX 403 ; N afii10105 ; B -29 -292 340 731 ;
+C -1 ; WX 889 ; N afii10106 ; B -5 -19 886 529 ;
+C -1 ; WX 773 ; N afii10107 ; B 23 -11 753 517 ;
+C -1 ; WX 577 ; N afii10108 ; B -44 -31 546 783 ;
+C -1 ; WX 492 ; N afii10109 ; B 43 -13 493 813 ;
+C -1 ; WX 552 ; N afii10110 ; B 2 -283 544 776 ;
+C -1 ; WX 618 ; N afii10193 ; B 47 -168 555 530 ;
+C -1 ; WX 616 ; N afii10050 ; B 69 -4 601 868 ;
+C -1 ; WX 470 ; N afii10098 ; B 45 -23 480 656 ;
+C -1 ; WX 1039 ; N Wgrave ; B 24 -47 1020 1031 ;
+C -1 ; WX 684 ; N wgrave ; B 17 -40 677 812 ;
+C -1 ; WX 1039 ; N Wacute ; B 24 -47 1020 1033 ;
+C -1 ; WX 684 ; N wacute ; B 17 -40 677 813 ;
+C -1 ; WX 1039 ; N Wdieresis ; B 24 -47 1020 921 ;
+C -1 ; WX 684 ; N wdieresis ; B 17 -40 677 701 ;
+C -1 ; WX 635 ; N Ygrave ; B -6 -35 618 1031 ;
+C -1 ; WX 552 ; N ygrave ; B 2 -283 544 812 ;
+C -1 ; WX 441 ; N endash ; B 1 265 424 371 ;
+C -1 ; WX 882 ; N emdash ; B 13 266 854 365 ;
+C -1 ; WX 882 ; N afii00208 ; B 13 266 854 365 ;
+C -1 ; WX 626 ; N underscoredbl ; B -18 -291 646 -62 ;
+C -1 ; WX 226 ; N quoteleft ; B 37 534 178 775 ;
+C -1 ; WX 226 ; N quoteright ; B 37 534 178 775 ;
+C -1 ; WX 433 ; N quotesinglbase ; B 105 -168 292 70 ;
+C -1 ; WX 226 ; N quotereversed ; B 37 534 178 775 ;
+C -1 ; WX 433 ; N quotedblleft ; B 15 531 400 789 ;
+C -1 ; WX 433 ; N quotedblright ; B 24 531 410 789 ;
+C -1 ; WX 429 ; N quotedblbase ; B 27 -168 409 70 ;
+C -1 ; WX 610 ; N dagger ; B 12 -102 592 829 ;
+C -1 ; WX 596 ; N daggerdbl ; B 8 -102 589 829 ;
+C -1 ; WX 610 ; N bullet ; B 175 272 411 469 ;
+C -1 ; WX 675 ; N ellipsis ; B 67 -33 626 79 ;
+C -1 ; WX 1241 ; N perthousand ; B 52 -15 1177 802 ;
+C -1 ; WX 226 ; N minute ; B 37 534 178 775 ;
+C -1 ; WX 423 ; N second ; B 37 534 368 775 ;
+C -1 ; WX 610 ; N guilsinglleft ; B 117 94 453 519 ;
+C -1 ; WX 610 ; N guilsinglright ; B 143 90 514 550 ;
+C -1 ; WX 449 ; N exclamdbl ; B 39 -33 397 784 ;
+C -1 ; WX 610 ; N radicalex ; B -76 696 644 794 ;
+C -1 ; WX 811 ; N fraction ; B -7 -27 802 831 ;
+C -1 ; WX 526 ; N nsuperior ; B 75 391 445 781 ;
+C -1 ; WX 989 ; N franc ; B 45 -52 969 769 ;
+C -1 ; WX 793 ; N afii08941 ; B 35 -74 732 787 ;
+C -1 ; WX 1268 ; N peseta ; B 29 -32 1230 768 ;
+C -1 ; WX 618 ; N Euro ; B -57 -12 607 744 ;
+C -1 ; WX 853 ; N afii61248 ; B 39 -15 827 783 ;
+C -1 ; WX 539 ; N afii61289 ; B 53 -47 504 813 ;
+C -1 ; WX 1206 ; N afii61352 ; B 50 -39 1178 758 ;
+C -1 ; WX 882 ; N trademark ; B 18 413 872 786 ;
+C -1 ; WX 959 ; N Ohm ; B 12 -69 948 796 ;
+C -1 ; WX 549 ; N estimated ; B 29 -10 520 533 ;
+C -1 ; WX 650 ; N oneeighth ; B 31 -191 583 842 ;
+C -1 ; WX 650 ; N threeeighths ; B 31 -191 583 841 ;
+C -1 ; WX 650 ; N fiveeighths ; B 31 -191 583 838 ;
+C -1 ; WX 650 ; N seveneighths ; B 31 -191 583 836 ;
+C -1 ; WX 508 ; N partialdiff ; B 42 -21 476 751 ;
+C -1 ; WX 794 ; N Delta ; B 7 -36 781 813 ;
+C -1 ; WX 908 ; N product ; B 31 -136 877 766 ;
+C -1 ; WX 747 ; N summation ; B 2 -153 731 726 ;
+C -1 ; WX 610 ; N minus ; B 50 247 551 382 ;
+C -1 ; WX 607 ; N radical ; B 4 -34 607 796 ;
+C -1 ; WX 836 ; N infinity ; B 52 149 784 470 ;
+C -1 ; WX 699 ; N integral ; B 19 -198 661 840 ;
+C -1 ; WX 610 ; N approxequal ; B 19 120 587 586 ;
+C -1 ; WX 610 ; N notequal ; B 92 40 513 598 ;
+C -1 ; WX 610 ; N lessequal ; B 88 -63 487 519 ;
+C -1 ; WX 610 ; N greaterequal ; B 96 -63 487 550 ;
+C -1 ; WX 734 ; N H22073 ; B 177 0 559 381 ;
+C -1 ; WX 642 ; N H18543 ; B 188 60 449 321 ;
+C -1 ; WX 642 ; N H18551 ; B 180 51 458 330 ;
+C -1 ; WX 722 ; N lozenge ; B 9 -41 718 799 ;
+C -1 ; WX 642 ; N H18533 ; B 183 59 449 324 ;
+C -1 ; WX 642 ; N openbullet ; B 174 50 458 333 ;
+C -1 ; WX 658 ; N fi ; B 17 -79 626 779 ;
+C -1 ; WX 655 ; N fl ; B 14 -79 625 790 ;
+C -1 ; WX 388 ; N uF003 ; B 131 582 281 829 ;
+C -1 ; WX 388 ; N uF004 ; B 162 582 300 827 ;
+C -1 ; WX 388 ; N uF005 ; B 162 582 300 827 ;
+C -1 ; WX 0 ; N .null ; B 0 0 0 0 ;
+C -1 ; WX 433 ; N nonmarkingreturn ; B 0 0 0 0 ;
+C -1 ; WX 610 ; N sfthyphen ; B 106 205 501 328 ;
+C -1 ; WX 249 ; N middot ; B 69 289 191 411 ;
+EndCharMetrics
+EndFontMetrics
+%    \end{macrocode}
+% \fi
+%
+%</rcomicbd.afm>
+%
+%
+% \section{Implementation: Vietnamese typesetting support}
+% \changes{v1.0a}{2002/12/02}{Included H\`an Th\'{\^e} Th\`anh's modifications
+%   for Vietnamese typesetting}
+%
+% In October 2006, H\`an Th\'{\^e} Th\`anh requested a few changes to
+% the \pkgname{comicsans} package to support Vietnamese typesetting.
+% Unfortunately, these changes require converting the \comsan fonts
+% from TTF to Type~1 format using
+% \href{http://fontforge.sourceforge.net}{FontForge}\index{FontForge|usage},
+% which doesn't run natively under Windows.  (Also, there is always some
+% quality loss when converting font formats.)  Furthermore, Microsoft's
+% license prohibits distributing the generated Type~1 files directly.
+%
+% This section presents Th\`anh's instructions (reformatted but
+% otherwise verbatim from his e-mail) and supplemental files needed to
+% use the \comsan fonts in a Vietnamese-language context.
+%
+% \bigskip\itshape
+%
+% Hi,
+%
+% I am working vietnamese support for the math font survey and encounter
+% a problem with the \pkgname{comicsans} package.  The explanation is
+% rather lengthy and dry, however the solution consists of 2 changes:
+%
+% \begin{enumerate}
+%   \item replace the pfb's for each encoding by a single pfb, ie~replace
+%   \fname{rcomic8r.pfb} and \fname{rcomiccyr.pfb} by
+%   \fname{ComicSansMS.pfb}.  \fname{ComicSansMS.pfb} is just a pfb
+%   converted by
+%   \href{http://fontforge.sourceforge.net}{fontforge}\index{FontForge|usage}
+%   from \fname{comic.ttf} by running
+%
+% \begin{verbatim}
+%  fontforge fonttopfb.ff comic.ttf comicbd.ttf
+% \end{verbatim}
+%
+%   \fname{fonttopfb.ff} is a script to convert ttf to pfb using
+%   \href{http://fontforge.sourceforge.net}{fontforge}\index{FontForge|usage},
+%   attached with this mail.
+%
+%   \bigskip
+%
+%<*fonttopfb.ff>
+% \begingroup
+% \language\hyphenlesslang
+%    \begin{macrocode}
+#! /usr/bin/env fontforge
+
+i = 1;
+while (i < $argc)
+  Print("converting ", $argv[i], "...");
+  Open($argv[i]);
+
+  SetFontOrder(3); # convert from quadratic to cubic curves
+  ScaleToEm(1000);  # to standard Postscript sizes, also scales underline value
+
+  # clear TT hints and generate T1 hints
+  SelectAll();
+  ClearInstrs();
+  ClearHints();
+  AutoHint();
+
+  Generate($fontname+".pfb", "", -1);
+  i++;
+endloop
+%    \end{macrocode}
+% \endgroup
+%</fonttopfb.ff>
+%
+%   \item reencode the fonts explicitly by changing the map file
+%   \fname{comicsans.map} so that the following lines:
+% \begin{verbatim}
+%  rcomico8r ComicSansMS "0.167 SlantFont" <rcomic8r.pfb
+%  rcomicbdo8r ComicSansMS "0.167 SlantFont" <rcomicbd8r.pfb
+%  rcomiccyro ComicSansMS "0.167 SlantFont" <rcomiccyr.pfb
+%  rcomiccyrbdo ComicSansMS "0.167 SlantFont" <rcomiccyrbd.pfb
+% \end{verbatim}
+%   become
+% \begin{verbatim}
+%  rcomico8r ComicSansMS "0.167 SlantFont TeXBase1Encoding ReEncodeFont" <ComicSansMS.pfb <8r.enc
+%  rcomicbdo8r ComicSansMS-Bold "0.167 SlantFont" <ComicSansMS-Bold.pfb <8r.enc
+%  rcomiccyro ComicSansMS "0.167 SlantFont T2AAdobeEncoding ReEncodeFont" <ComicSansMS.pfb <t2a.enc
+%  rcomiccyrbdo ComicSansMS-Bold "0.167 SlantFont T2AAdobeEncoding ReEncodeFont" <ComicSansMS-Bold.pfb <t2a.enc
+% \end{verbatim}
+%
+%<*alt-comicsans.map>
+% {\language\hyphenlesslang
+%    \begin{macrocode}
+rcomic8r ComicSansMS "TeXBase1Encoding ReEncodeFont" <8r.enc <comic.ttf
+rcomicbd8r ComicSansMS-Bold "TeXBase1Encoding ReEncodeFont" <8r.enc <comicbd.ttf
+rcomiccyr ComicSansMS "T2AAdobeEncoding ReEncodeFont" <t2a.enc <comic.ttf
+rcomiccyrbd ComicSansMS-Bold "T2AAdobeEncoding ReEncodeFont" <t2a.enc <comicbd.ttf
+rcomic7m ComicSansMS "TeXMathItalicEncoding ReEncodeFont" <texmital.enc <comic.ttf
+rcomicbd7m ComicSansMS-Bold "TeXMathItalicEncoding ReEncodeFont" <texmital.enc <comicbd.ttf
+rcomic7y ComicSansMS "TeXMathSymbolEncoding ReEncodeFont" <texmsym.enc <comic.ttf
+rcomic9z ComicSansMS "ComicSansExtraEncoding ReEncodeFont" <csextras.enc <comic.ttf
+%    \end{macrocode}
+%    \begin{macrocode}
+rcomico8r ComicSansMS "0.167 SlantFont TeXBase1Encoding ReEncodeFont" <ComicSansMS.pfb <8r.enc
+rcomicbdo8r ComicSansMS-Bold "0.167 SlantFont" <ComicSansMS-Bold.pfb <8r.enc
+rcomiccyro ComicSansMS "0.167 SlantFont T2AAdobeEncoding ReEncodeFont" <ComicSansMS.pfb <t2a.enc
+rcomiccyrbdo ComicSansMS-Bold "0.167 SlantFont T2AAdobeEncoding ReEncodeFont" <ComicSansMS-Bold.pfb <t2a.enc
+%    \end{macrocode}
+% }
+%</alt-comicsans.map>
+% \end{enumerate}
+%
+% Do you think it is possible to adapt these changes to your package?
+% It would simplify my life a lot~~{\normalfont\smiley}
+%
+% \begin{flushright}
+%   Thanks for your consideration, \\
+%   Th\`anh
+% \end{flushright}
+% \normalfont
+%
+% \Finale
+\endinput

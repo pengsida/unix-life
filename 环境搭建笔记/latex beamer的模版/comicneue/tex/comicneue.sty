@@ -1,0 +1,118 @@
+% Comic Neue for LaTeX
+%
+% Silke Hofstra, tex@slxh.nl
+%
+% This file selects either the OTF or the TYPE1 fonts based on
+% the LaTeX engine used.
+%
+% Licenced under the LPPL v1.3 or higher.
+%
+\RequirePackage{ l3keys2e, xparse }
+\ProvidesExplClass
+	{comicneue}
+	{2015/07/03}
+	{1.0}
+	{Craig Rozynski's Comic Neue fonts}
+
+\pdftex_if_engine:F{ \bool_set_true:N \comicneue_otf }
+
+\tl_set:Nn \comicneue_scale {1}
+
+\keys_define:nn{ comicneue_options }{
+	default     .bool_set:N = \comicneue_default,
+	sfdefault   .bool_set:N = \comicneue_sfdefault,
+	nosfdefault .bool_set_inverse:N = \comicneue_sfdefault,
+	light       .bool_set:N = \comicneue_light,
+	regular     .bool_set_inverse:N = \comicneue_light,
+	angular     .bool_set:N = \comicneue_angular,
+	scale       .tl_set:N = \comicneue_scale,
+	opentype    .bool_set:N = \comicneue_otf,
+	type1       .bool_set_inverse:N = \comicneue_otf,
+	scaled      .meta:n = scale,
+	otf         .meta:n = opentype,
+	t1          .meta:n = type1,
+}
+
+\keys_set:nn{ comicneue_options }{ sfdefault, regular }
+\ProcessKeysOptions{ comicneue_options }
+
+\bool_if:NTF \comicneue_otf {
+	\RequirePackage{ fontspec }
+	
+	\bool_if:NTF \comicneue_light
+		{ \tl_set:Nn \comicneue_regstyle {Light} }
+		{ \tl_set:Nn \comicneue_regstyle {Regular} }
+
+	\bool_if:NTF \comicneue_angular
+		{ \tl_set:Nn \comicneue_style {-Angular} }
+		{ \tl_set:Nn \comicneue_style {} }
+
+	\defaultfontfeatures {
+		Ligatures       = TeX,
+		Scale           = \comicneue_scale,
+		Extension       = .otf,
+		BoldFont        = *_Bold,
+		BoldItalicFont  = *_Bold_Oblique }
+	
+	\bool_if:NT \comicneue_sfdefault {
+		\setsansfont
+			[ UprightFont   = *_\comicneue_regstyle,
+			  ItalicFont    = *_\comicneue_regstyle _Oblique ]
+			{ComicNeue\comicneue_style}
+	}
+	
+	\newfontfamily \comicneue
+		[ UprightFont   = *_Regular,
+		  ItalicFont    = *_Regular_Oblique ]
+		{ComicNeue}
+
+	\newfontfamily \comicneuelight
+		[ UprightFont   = *_Light,
+		  ItalicFont    = *_Light_Oblique ]
+		{ComicNeue}
+	
+	\newfontfamily \comicneueangular
+		[ UprightFont   = *_Regular,
+		  ItalicFont    = *_Regular_Oblique ]
+		{ComicNeue-Angular}
+
+	\newfontfamily \comicneueangularlight
+		[ UprightFont   = *_Light,
+		  ItalicFont    = *_Light_Oblique ]
+		{ComicNeue-Angular}
+
+	\defaultfontfeatures{}
+}{
+	\RequirePackage[ OT1, LY1, T1 ]{ fontenc }
+	\RequirePackage{ mweights }
+
+	\bool_if:NTF \comicneue_light
+		{ \tl_set:Nn \mdseries@sf {l} }
+		{ \tl_set:Nn \mdseries@sf {m} }
+
+	\bool_if:NTF \comicneue_angular
+		{ \tl_set:Nn \comicneue_style {Angular} }
+		{ \tl_set:Nn \comicneue_style {} }
+
+	\bool_if:NT \comicneue_sfdefault
+		{ \tl_set:Nn \sfdefault {ComicNeue\comicneue_style-TLF} }
+		
+	\bool_if:NT \comicneue_default
+		{ \tl_set:Nx \seriesdefault{\mdseries@sf} }
+
+	\NewDocumentCommand \comicneue {}
+		{ \fontfamily{ComicNeue-TLF}\selectfont }
+	
+	\NewDocumentCommand \comicneuelight {}
+		{ \fontfamily{ComicNeue-TLF}\fontseries{l}\selectfont }
+	
+	\NewDocumentCommand \comicneueangular {}
+		{ \fontfamily{ComicNeueAngular-TLF}\selectfont }
+	
+	\NewDocumentCommand \comicneueangularlight {} 
+		{ \fontfamily{ComicNeueAngular-TLF}\fontseries{l}\selectfont }
+}
+
+\bool_if:NT \comicneue_default {
+	\tl_set:Nn \familydefault {\sfdefault}
+}

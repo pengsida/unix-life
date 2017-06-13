@@ -1,0 +1,40 @@
+\documentclass[varwidth]{standalone}
+\usepackage{array}
+\usepackage[default,opentype]{comicneue}
+
+\newcommand*\spA{abcde}
+\newcommand*\spB{01469}
+\newcommand*\spr[1][\spA]{& #1 & #1 & #1 \\}
+\begin{document}
+Normal
+\begin{tabular}{
+		>{}l
+		>{\comicneuelight}c
+		>{\comicneue}c
+		>{\comicneue\bfseries}c }
+	& Light & Regular & Bold \\
+	normal               \spr
+	italic               \spr[\itshape\spA]
+	capitals             \spr[\MakeUppercase\spA]
+	italic capitals      \spr[\itshape\MakeUppercase\spA]
+	numbers              \spr[\spB]
+	italic numbers       \spr[\itshape\spB]
+\end{tabular}
+
+\comicneueangular
+Angular
+\begin{tabular}{
+		>{}l
+		>{\comicneueangularlight}c
+		>{\comicneueangular}c
+		>{\comicneueangular\bfseries}c }
+	& Light & Regular & Bold \\
+	normal               \spr
+	italic               \spr[\itshape\spA]
+	capitals             \spr[\MakeUppercase\spA]
+	italic capitals      \spr[\itshape\MakeUppercase\spA]
+	numbers              \spr[\spB]
+	italic numbers       \spr[\itshape\spB]
+\end{tabular}
+
+\end{document}

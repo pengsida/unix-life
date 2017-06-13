@@ -1,0 +1,67 @@
+% THIS FILE WAS AUTOMATICALLY GENERATED -- DO NOT EDIT
+
+%%AutoEnc_lfux4uwsguci35a7dzjrzwsj7f
+% Encoding created by otftotfm on Fri Jul  3 14:24:41 2015
+% Command line follows encoding
+/AutoEnc_lfux4uwsguci35a7dzjrzwsj7f [
+%00
+  /.notdef /Euro /.notdef /.notdef /.notdef /dotaccent /hungarumlaut /ogonek
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%10
+  /.notdef /.notdef /grave /acute /caron /breve /macron /.notdef
+  /cedilla /germandbls /ae /oe /oslash /AE /OE /Oslash
+%20
+  /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+  /parenleft /parenright /asterisk /plus /comma /hyphen /period /slash
+%30
+  /zero /one /two /three /four /five /six /seven
+  /eight /nine /colon /semicolon /less /equal /greater /question
+%40
+  /at /A /B /C /D /E /F /G
+  /H /I /J /K /L /M /N /O
+%50
+  /P /Q /R /S /T /U /V /W
+  /X /Y /Z /bracketleft /backslash /bracketright /.notdef /underscore
+%60
+  /quoteleft /a /b /c /d /e /f /g
+  /h /i /j /k /l /m /n /o
+%70
+  /p /q /r /s /t /u /v /w
+  /x /y /z /braceleft /bar /braceright /.notdef /dieresis
+%80
+  /Lslash /quotesingle /.notdef /.notdef /.notdef /ellipsis /.notdef /.notdef
+  /.notdef /.notdef /Scaron /guilsinglleft /OE /Zcaron /asciicircum /.notdef
+%90
+  /lslash /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
+  /.notdef /trademark /scaron /guilsinglright /oe /zcaron /asciitilde /Ydieresis
+%A0
+  /.notdef /exclamdown /cent /sterling /currency /yen /.notdef /section
+  /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /uni00AD /registered /macron
+%B0
+  /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+  /cedilla /onesuperior /ordmasculine /guillemotright /.notdef /.notdef /.notdef /questiondown
+%C0
+  /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+  /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+%D0
+  /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+  /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+%E0
+  /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+  /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+%F0
+  /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+  /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
+] def
+% Command line: 'otftotfm --automatic --encoding=fontools_ly1
+% --tfm-directory=fonts/tfm/rozynski/comicneue
+% --vf-directory=fonts/vf/rozynski/comicneue
+% --type1-directory=fonts/type1/rozynski/comicneue
+% --truetype-directory=fonts/truetype/rozynski/comicneue
+% --encoding-directory=fonts/enc/dvips/comicneue
+% --map-file=fonts/map/dvips/comicneue/ComicNeueAngular.map --no-updmap
+% --coding-scheme=TEX TYPEWRITER AND WINDOWS ANSI --feature=kern --ligkern=f
+% i =: fi --ligkern=f l =: fl --ligkern=f f =: ff --ligkern=ff i =: ffi
+% --ligkern=ff l =: ffl
+% fonts/opentype/rozynski/comicneue/ComicNeue-Angular_Bold_Oblique.otf
+% ComicNeueAngular-BoldOblique-tlf-ly1'

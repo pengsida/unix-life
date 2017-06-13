@@ -1,0 +1,17 @@
+%Filename: omscomic.fd
+%Created by: tex fontcomic
+%Created using fontinst v1.933
+
+%THIS FILE SHOULD BE PUT IN A TEX INPUTS DIRECTORY
+
+\ProvidesFile{omscomic.fd}
+   [2013/12/19 Fontinst v1.933 font definitions for OMS/comic.]
+
+\DeclareFontFamily{OMS}{comic}{}
+
+\DeclareFontShape{OMS}{comic}{m}{n}{
+   <-> comic7y
+}{}
+
+
+\endinput

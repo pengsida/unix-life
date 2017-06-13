@@ -1,0 +1,122 @@
+%%
+%% Copyright (C) 2013 by Scott Pakin <scott+csan@pakin.org>
+%%
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%%
+%%    http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.3c or later is part of all distributions of LaTeX version
+%% 2006/05/20 or later.
+%%
+
+\input docstrip.tex
+\keepsilent
+
+\usedir{tex/latex/comicsans}
+
+%--------------------------------------------------------------------------%
+% Generate files for processing by TeX.  Preamble and postamble lines      %
+% are prefixed with percent signs and the file ends with \endinput.        %
+%--------------------------------------------------------------------------%
+
+\preamble
+
+This is a generated file.
+
+Copyright (C) 2013 by Scott Pakin <scott+csan@pakin.org>
+
+This file may be distributed and/or modified under the conditions of
+the LaTeX Project Public License, either version 1.3c of this license
+or (at your option) any later version.  The latest version of this
+license is in:
+
+   http://www.latex-project.org/lppl.txt
+
+and version 1.3c or later is part of all distributions of LaTeX version
+2006/05/20 or later.
+
+\endpreamble
+
+\generate{\file{comicsans.sty}{\from{comicsans.dtx}{package}}}
+\generate{\file{csextras.etx}{\from{comicsans.dtx}{csextras.etx}}}
+\generate{\file{csextras.mtx}{\from{comicsans.dtx}{csextras.mtx}}}
+\generate{\file{nompbul.mtx}{\from{comicsans.dtx}{nompbul.mtx}}}
+\generate{\file{fontcomic.tex}{\from{comicsans.dtx}{fontcomic.tex}}}
+
+
+%--------------------------------------------------------------------------%
+% Generate files for processing by Dvips or PostScript.  Preamble and      %
+% postamble lines are prefixed with percent signs but the \endinput line   %
+% is omitted.                                                              %
+%--------------------------------------------------------------------------%
+
+\postamble
+\endpostamble
+
+\generate{\file{rcomic.afm}{\from{comicsans.dtx}{rcomic.afm}}}
+\generate{\file{rcomicbd.afm}{\from{comicsans.dtx}{rcomicbd.afm}}}
+\generate{\file{ttfonts.map}{\from{comicsans.dtx}{ttfonts.map}}}
+\generate{\file{alt-comicsans.map}{\from{comicsans.dtx}{alt-comicsans.map}}}
+\generate{\file{comicsans.map}{\from{comicsans.dtx}{comicsans.map}}}
+\generate{\file{csextras.enc}{\from{comicsans.dtx}{csextras.enc}}}
+
+
+%--------------------------------------------------------------------------%
+% Generate a Makefile.  Preamble and postamble lines are prefixed with     %
+% hash marks and the \endinput line is omitted.                            %
+%--------------------------------------------------------------------------%
+
+{\catcode`#=11\gdef\MetaPrefix{#}}
+\preamble
+
+This is a generated file.
+
+Copyright (C) 2013 by Scott Pakin <scott+csan@pakin.org>
+
+This file may be distributed and/or modified under the conditions of
+the LaTeX Project Public License, either version 1.3c of this license
+or (at your option) any later version.  The latest version of this
+license is in:
+
+   http://www.latex-project.org/lppl.txt
+
+and version 1.3c or later is part of all distributions of LaTeX version
+2006/05/20 or later.
+
+\endpreamble
+\postamble
+\endpostamble
+
+\generate{\file{Makefile.NOTABS}{\from{comicsans.dtx}{Makefile}}}
+
+
+%--------------------------------------------------------------------------%
+% Generate a FontForge script.  The preamble and postamble are omitted     %
+% entirely.                                                                %
+%--------------------------------------------------------------------------%
+
+\nopreamble
+\nopostamble
+\generate{\file{fonttopfb.ff}{\from{comicsans.dtx}{fonttopfb.ff}}}
+
+
+%--------------------------------------------------------------------------%
+% Refer the user to the documentation for further installation             %
+% instructions.                                                            %
+%--------------------------------------------------------------------------%
+
+
+\obeyspaces
+\Msg{***********************************************************}
+\Msg{*                                                         *}
+\Msg{* See the documentation (comicsans.pdf) for information   *}
+\Msg{* about which files need to be installed where.           *}
+\Msg{*                                                         *}
+\Msg{* Happy TeXing!                                           *}
+\Msg{*                                                         *}
+\Msg{***********************************************************}
+
+\endbatchfile

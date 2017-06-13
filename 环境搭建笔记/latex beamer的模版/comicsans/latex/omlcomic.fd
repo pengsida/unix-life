@@ -1,0 +1,22 @@
+%Filename: omlcomic.fd
+%Created by: tex fontcomic
+%Created using fontinst v1.933
+
+%THIS FILE SHOULD BE PUT IN A TEX INPUTS DIRECTORY
+
+\ProvidesFile{omlcomic.fd}
+   [2013/12/19 Fontinst v1.933 font definitions for OML/comic.]
+
+\DeclareFontFamily{OML}{comic}{\skewchar \font =127}
+
+\DeclareFontShape{OML}{comic}{m}{n}{
+   <-> comic7m
+}{}
+
+\DeclareFontShape{OML}{comic}{b}{n}{
+   <-> comicbd7m
+}{}
+
+\DeclareFontShape{OML}{comic}{bx}{n}{<->ssub * comic/b/n}{}
+
+\endinput

@@ -1,0 +1,67 @@
+% THIS FILE WAS AUTOMATICALLY GENERATED -- DO NOT EDIT
+
+%%AutoEnc_t3s7zgsp6rmucn3jpovtr4z7aa
+% Encoding created by otftotfm on Fri Jul  3 14:24:41 2015
+% Command line follows encoding
+/AutoEnc_t3s7zgsp6rmucn3jpovtr4z7aa [
+%00
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /cedilla /ogonek /.notdef /C /bar
+%10
+  /exclam /asterisk /.notdef /question /questiondown /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /exclamdown /.notdef
+%20
+  /.notdef /endash /.notdef /.notdef /dollar /.notdef /.notdef /quotesingle
+  /.notdef /.notdef /.notdef /.notdef /comma /.notdef /period /.notdef
+%30
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%40
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%50
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%60
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%70
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%80
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /bullet /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%90
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /trademark
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%A0
+  /.notdef /.notdef /cent /sterling /currency /yen /.notdef /section
+  /.notdef /copyright /ordfeminine /.notdef /logicalnot /.notdef /registered /.notdef
+%B0
+  /degree /plusminus /twosuperior /threesuperior /.notdef /mu /paragraph /periodcentered
+  /.notdef /onesuperior /ordmasculine /.notdef /.notdef /.notdef /.notdef /Euro
+%C0
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%D0
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /multiply /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%E0
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+%F0
+  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /divide /.notdef
+  /.notdef /.notdef /.notdef /.notdef /l /.notdef /i /f
+] def
+% Command line: 'otftotfm --automatic --encoding=fontools_ts1
+% --tfm-directory=fonts/tfm/rozynski/comicneue
+% --vf-directory=fonts/vf/rozynski/comicneue
+% --type1-directory=fonts/type1/rozynski/comicneue
+% --truetype-directory=fonts/truetype/rozynski/comicneue
+% --encoding-directory=fonts/enc/dvips/comicneue
+% --map-file=fonts/map/dvips/comicneue/ComicNeueAngular.map --no-updmap
+% --coding-scheme=TEX TEXT COMPANION SYMBOLS 1---TS1 --ligkern=f i =: fi
+% --ligkern=f l =: fl --ligkern=f f =: ff --ligkern=ff i =: ffi --ligkern=ff
+% l =: ffl
+% fonts/opentype/rozynski/comicneue/ComicNeue-Angular_Bold_Oblique.otf
+% ComicNeueAngular-BoldOblique-tlf-ts1'
